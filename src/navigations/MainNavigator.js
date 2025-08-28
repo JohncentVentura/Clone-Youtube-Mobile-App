@@ -44,11 +44,31 @@ export default function MainNavigator() {
         //tabBarLabel: ({ focused }) => (focused ? route.name : ""), // Hide label if not active
       })}
     >
-      <BottomTab.Screen name="HomeDrawer" component={HomeDrawer} />
-      <BottomTab.Screen name="ShortsStack" component={ShortsStack} />
-      <BottomTab.Screen name="UploadStack" component={UploadStack} />
-      <BottomTab.Screen name="SubscriptionsStack" component={SubscriptionsStack} />
-      <BottomTab.Screen name="YouStack" component={YouStack} />
+      <BottomTab.Screen
+        name="HomeDrawer"
+        component={HomeDrawer}
+        options={{ title: "Home" }}
+      />
+      <BottomTab.Screen
+        name="ShortsStack"
+        component={ShortsStack}
+        options={{ title: "Shorts" }}
+      />
+      <BottomTab.Screen
+        name="UploadStack"
+        component={UploadStack}
+        options={{ title: "Upload" }}
+      />
+      <BottomTab.Screen
+        name="SubscriptionsStack"
+        component={SubscriptionsStack}
+        options={{ title: "Subscriptions" }}
+      />
+      <BottomTab.Screen
+        name="YouStack"
+        component={YouStack}
+        options={{ title: "You" }}
+      />
     </BottomTab.Navigator>
   );
 }

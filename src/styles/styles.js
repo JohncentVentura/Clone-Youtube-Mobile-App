@@ -2,16 +2,15 @@ import { StyleSheet, Dimensions } from "react-native";
 
 //maybe use useWindowDimensions hook???
 export const screenWidth = Dimensions.get("window").width * 1; //Multiply by 1 to get 100%
+export const screenHeight = Dimensions.get("window").height * 1; //Multiply by 1 to get 100%
 
 export const styles = StyleSheet.create({
   homeScreenContainer: {
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
+    //justifyContent: "flex-start",
+    //alignItems: "flex-start",
     width: screenWidth,
   },
   homeScreenVideoContainer: {
-    flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center",
     width: "100%",
@@ -21,6 +20,12 @@ export const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     alignItems: "center",
     width: "100%",
+  },
+  autoPlayVideo: {
+    width: "100%",
+    height: screenHeight * 0.25,
+    resizeMode: "stretch",
+    overflow: "hidden",
   },
   homeVideoImage: {
     width: "95%",
@@ -48,12 +53,12 @@ export const styles = StyleSheet.create({
     lineHeight: 16,
   },
   titleTextSize: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
     lineHeight: 32,
   },
   subtitleTextSize: {
-    fontSize: 20,
+    fontSize: 19,
     fontWeight: "bold",
   },
   linkTextSize: {

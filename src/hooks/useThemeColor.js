@@ -7,7 +7,7 @@ export function useThemeColor(props, colorName) {
   //props.light or props.dark
   const colorFromProps = props[theme];
 
-  console.log("theme:", theme);
+  //console.log("theme:", theme);
 
   //If props.light or props.dark exists → use that, Else → use default color theme and colorName from Colors.js
   return colorFromProps ? colorFromProps : Colors[theme][colorName];
