@@ -1,14 +1,22 @@
-import { Colors } from "../styles/Colors";
-import { useColorScheme } from "./useColorScheme";
+import { useColorScheme } from "react-native";
 
-export function useThemeColor(props, colorName) {
+export function useThemeColor(colorName) {
   //If useColorScheme() is not null or undefined then it uses the devices theme, else it uses 'light' as the default value
-  const theme = useColorScheme() ?? "light";
-  //props.light or props.dark
-  const colorFromProps = props[theme];
-
-  //console.log("theme:", theme);
-
-  //If props.light or props.dark exists → use that, Else → use default color theme and colorName from Colors.js
-  return colorFromProps ? colorFromProps : Colors[theme][colorName];
+  const colorTheme = useColorScheme() ?? "light";
+  return colors[colorTheme][colorName];
 }
+
+const colors = {
+  light: {
+    foreground: "#282828ff",
+    gray: "#b6b6b6ff",
+    background: "#ffffffff",
+    primary: "#FF0000ff",
+  },
+  dark: {
+    foreground: "#ffffffff",
+    gray: "#b6b6b6ff",
+    background: "#282828ff",
+    primary: "#FF0000ff",
+  },
+};

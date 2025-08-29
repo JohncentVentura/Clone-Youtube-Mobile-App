@@ -1,6 +1,7 @@
 import { Text, View } from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useNavigation } from "@react-navigation/native";
+import { useThemeColor } from "../hooks/useThemeColor";
 import HomeScreen from "../screens/HomeScreen";
 
 const TopTab = createMaterialTopTabNavigator();
@@ -14,13 +15,17 @@ export default function HomeTopTabs() {
       screenOptions={{
         tabBarScrollEnabled: true, // Enables horizontal scrolling
         tabBarItemStyle: { width: "auto" }, // Set width for each tab
-        tabBarStyle: { backgroundColor: "#fff" },
-        tabBarIndicatorStyle: { backgroundColor: "red" },
+        tabBarIndicatorStyle: { backgroundColor: useThemeColor("primary") },
+        tabBarActiveTintColor: useThemeColor("foreground"),
+        tabBarInactiveTintColor: useThemeColor("gray"),
+        tabBarStyle: {
+          backgroundColor: useThemeColor("background"),
+        },
       }}
     >
       <TopTab.Screen
         name="@"
-        component={TestScreen}
+        component={HomeScreen}
         listeners={{
           tabPress: (e) => {
             e.preventDefault(); // Stop default navigation

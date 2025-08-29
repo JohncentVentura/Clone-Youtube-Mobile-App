@@ -1,7 +1,12 @@
 import { Text, View, FlatList, ScrollView } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { styles } from "../styles/styles";
-import { ThemedText, ThemedView } from "../components/ThemedComponents";
+import { styles, screenWidth } from "../styles/styles";
+import {
+  ThemedView,
+  ThemedFlatList,
+  ThemedText,
+  ThemedIcon,
+} from "../components/ThemedComponents";
 import { useThemeColor } from "../hooks/useThemeColor";
 import {
   HomeVideoImage,
@@ -38,33 +43,35 @@ const videos = [
 
 export default function HomeScreen() {
   return (
-    <ScrollView style={styles.homeScreenContainer}>
-      {videos.map((video) => (
-        <ThemedView style={styles.homeScreenVideoContainer} key={video.id}>
-          <AutoPlayVideo source={video.source} thumbnail={video.thumbnail} />
-          <ThemedView style={styles.homeScreenVideoInfoContainer}>
-            <HomeChannelImage
-              source={{
-                uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjIDlX73Bezvep3MYr26IQSFBElpVGpNW0QAS6nsZdgpffU-ptjpyjccu-PUz6J2E3J_Y&usqp=CAU",
-              }}
-              style={{ flex: 2 }}
-            />
-            <ThemedView style={{ flex: 10 }}>
-              <ThemedText type="title">Video Title</ThemedText>
-              <ThemedText type="small">
-                Channel Name * Views Count * Uploaded Date
-              </ThemedText>
-            </ThemedView>
-            <ThemedView style={{ flex: 1 }}>
-              <MaterialCommunityIcons
+    <ThemedView>
+      <ThemedFlatList
+        keyExtractor={(item) => item.id}
+        style={styles.homeScreenContainer}
+        data={videos}
+        renderItem={({ item }) => (
+          <ThemedView style={styles.homeScreenVideoContainer}>
+            <AutoPlayVideo source={item.source} thumbnail={item.thumbnail} />
+            <ThemedView style={styles.homeScreenVideoInfoContainer}>
+              <HomeChannelImage
+                source={{
+                  uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjIDlX73Bezvep3MYr26IQSFBElpVGpNW0QAS6nsZdgpffU-ptjpyjccu-PUz6J2E3J_Y&usqp=CAU",
+                }}
+                style={{ flex: 2 }}
+              />
+              <ThemedView style={{ flex: 10 }}>
+                <ThemedText type="title">Video Title</ThemedText>
+                <ThemedText type="small">
+                  Channel Name * Views Count * Uploaded Date
+                </ThemedText>
+              </ThemedView>
+              <ThemedIcon
+                IconComponent={MaterialCommunityIcons}
                 name="dots-vertical"
-                size={24}
-                color={useThemeColor({}, "text")}
               />
             </ThemedView>
           </ThemedView>
-        </ThemedView>
-      ))}
-    </ScrollView>
+        )}
+      />
+    </ThemedView>
   );
 }

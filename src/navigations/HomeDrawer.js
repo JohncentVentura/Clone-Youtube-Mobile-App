@@ -1,5 +1,8 @@
+import { View } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { MaterialIcons } from "@expo/vector-icons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useThemeColor } from "../hooks/useThemeColor";
 import HomeTopTabs from "./HomeTopTabs";
 import HomeScreen from "../screens/HomeScreen";
 
@@ -11,18 +14,60 @@ export default function HomeDrawer() {
       id="HomeDrawer"
       initialRouteName="HomeTopTabs"
       screenOptions={({ route, navigation }) => ({
-        headerLeft: () => {
-          // Show back button only when not on initialRoute
-          if (route.name !== "HomeTopTabs") {
+        drawerIndicatorStyle: { backgroundColor: useThemeColor("primary") },
+        drawerActiveTintColor: useThemeColor("foreground"),
+        drawerInactiveTintColor: useThemeColor("gray"),
+        drawerStyle: {
+          backgroundColor: useThemeColor("background"),
+        },
+        headerStyle: {
+          backgroundColor: useThemeColor("background"),
+        },
+        headerTintColor: useThemeColor("foreground"),
+        headerLeft: ({ initialRouteName }) => {
+          //Show arrow-back button when not on initialRoute
+          if (route.name !== initialRouteName) {
             return (
-              <MaterialIcons
+              <Ionicons
                 name="arrow-back"
                 size={24}
                 onPress={() => navigation.goBack()}
               />
             );
           }
-          return null; // no button on HomeTopTabs
+          return null; //No arrow-back button on initialRoute
+        },
+        headerRight: () => {
+          return (
+            <>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  width: 120,
+                }}
+              >
+                <MaterialIcons
+                  name="screen-share"
+                  size={24}
+                  color="black"
+                  onPress={() => {}}
+                />
+                <MaterialIcons
+                  name="notifications-none"
+                  size={24}
+                  color="black"
+                  onPress={() => {}}
+                />
+                <MaterialIcons
+                  name="search"
+                  size={24}
+                  color="black"
+                  onPress={() => {}}
+                />
+              </View>
+            </>
+          );
         },
       })}
     >

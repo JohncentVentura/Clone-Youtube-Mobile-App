@@ -1,17 +1,9 @@
-import { Text, View } from "react-native";
+import { View, FlatList, Text } from "react-native";
 import { useThemeColor } from "../hooks/useThemeColor";
 import { styles } from "../styles/styles";
 
-export function ThemedText({
-  style,
-  lightColor,
-  darkColor,
-  type = "default",
-  children,
-  ...rest
-}) {
-  //useThemeColor() 1st parameter assings value to props.light & props.dark, 2nd parameter assigns value to colorName. list of can be used colorName is in Colors.js
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
+export function ThemedText({ style, type = "default", children, ...rest }) {
+  const color = useThemeColor("foreground");
 
   return (
     <Text
@@ -32,22 +24,37 @@ export function ThemedText({
   );
 }
 
-export function ThemedView({
-  style,
-  lightColor,
-  darkColor,
-  children,
-  ...otherProps
-}) {
-  //useThemeColor() 1st parameter assings value to props.light & props.dark, 2nd parameter assigns value to colorName. list of can be used colorName is in Colors.js
-  const backgroundColor = useThemeColor(
-    { light: lightColor, dark: darkColor },
-    "background"
-  );
+export function ThemedView({ style, children, ...otherProps }) {
+  const backgroundColor = useThemeColor("background");
 
   return (
     <View style={[{ backgroundColor }, style]} {...otherProps}>
       {children}
     </View>
+  );
+}
+
+export function ThemedFlatList({ style, children, ...otherProps }) {
+  const backgroundColor = useThemeColor("background");
+
+  return (
+    <FlatList style={[{ backgroundColor }, style]} {...otherProps}>
+      {children}
+    </FlatList>
+  );
+}
+
+export function ThemedIcon({ IconComponent, style, name, size, ...rest }) {
+  const color = useThemeColor("foreground");
+  const iconSize = 24;
+
+  return (
+    <IconComponent
+      name={name}
+      size={iconSize}
+      color={color}
+      style={style}
+      {...rest}
+    />
   );
 }
