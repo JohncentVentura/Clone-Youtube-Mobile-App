@@ -28,7 +28,7 @@ export function ThemedView({ style, children, ...otherProps }) {
   const backgroundColor = useThemeColor("background");
 
   return (
-    <View style={[{ backgroundColor }, style]} {...otherProps}>
+    <View style={[{ backgroundColor: useThemeColor("background")}, style]} {...otherProps}>
       {children}
     </View>
   );
@@ -44,15 +44,13 @@ export function ThemedFlatList({ style, children, ...otherProps }) {
   );
 }
 
-export function ThemedIcon({ IconComponent, style, name, size, ...rest }) {
-  const color = useThemeColor("foreground");
-  const iconSize = 24;
-
+//Requires IconComponent and name
+export function ThemedIcon({ IconComponent, style, name, size, color, ...rest }) {
   return (
     <IconComponent
       name={name}
-      size={iconSize}
-      color={color}
+      size={size || 24}
+      color={color || useThemeColor("foreground")}
       style={style}
       {...rest}
     />

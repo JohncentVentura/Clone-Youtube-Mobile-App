@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useThemeColor } from "../hooks/useThemeColor";
+import { ThemedIcon } from "../components/ThemedComponents";
 import HomeDrawer from "./HomeDrawer";
 import ShortsStack from "./ShortsStack";
 import UploadStack from "./UploadStack";
@@ -33,10 +34,13 @@ export default function MainNavigator() {
           }
 
           return (
-            <Ionicons
+            <ThemedIcon
+              IconComponent={Ionicons}
               name={iconName}
-              size={26}
-              color={focused ? "black" : "gray"}
+              size={24}
+              color={
+                focused ? useThemeColor("foreground") : useThemeColor("gray")
+              }
             />
           );
         },

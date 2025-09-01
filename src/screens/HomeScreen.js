@@ -1,18 +1,20 @@
-import { Text, View, FlatList, ScrollView } from "react-native";
+import { Text, View, FlatList, ScrollView, ActivityIndicator } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { styles, screenWidth } from "../styles/styles";
+import {
+  HomeVideoImage,
+  HomeChannelImage,
+} from "../components/ImageComponents";
 import {
   ThemedView,
   ThemedFlatList,
   ThemedText,
   ThemedIcon,
 } from "../components/ThemedComponents";
-import { useThemeColor } from "../hooks/useThemeColor";
-import {
-  HomeVideoImage,
-  HomeChannelImage,
-} from "../components/ImageComponents";
 import { AutoPlayVideo } from "../components/VideoComponents";
+import { fetchTrendingVideos } from "../api/YoutubeService";
+import { useFetch } from "../hooks/useFetch";
+
 
 const videos = [
   {
@@ -42,6 +44,11 @@ const videos = [
 ];
 
 export default function HomeScreen() {
+  const { data, loading } = useFetch(fetchTrendingVideos);
+  
+  if (loading) return <ActivityIndicator size="large" />;
+  //else console.log(data);
+  
   return (
     <ThemedView>
       <ThemedFlatList
@@ -55,6 +62,7 @@ export default function HomeScreen() {
               <HomeChannelImage
                 source={{
                   uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjIDlX73Bezvep3MYr26IQSFBElpVGpNW0QAS6nsZdgpffU-ptjpyjccu-PUz6J2E3J_Y&usqp=CAU",
+                  //uri: "https://www.youtube.com/watch?v=" + data.items[0].id
                 }}
                 style={{ flex: 2 }}
               />

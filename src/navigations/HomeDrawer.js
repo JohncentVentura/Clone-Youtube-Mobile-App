@@ -2,6 +2,7 @@ import { View } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { ThemedIcon } from "../components/ThemedComponents";
 import { useThemeColor } from "../hooks/useThemeColor";
 import HomeTopTabs from "./HomeTopTabs";
 import HomeScreen from "../screens/HomeScreen";
@@ -47,22 +48,19 @@ export default function HomeDrawer() {
                   width: 120,
                 }}
               >
-                <MaterialIcons
+                <ThemedIcon
+                  IconComponent={MaterialIcons}
                   name="screen-share"
-                  size={24}
-                  color="black"
                   onPress={() => {}}
                 />
-                <MaterialIcons
+                <ThemedIcon
+                  IconComponent={MaterialIcons}
                   name="notifications-none"
-                  size={24}
-                  color="black"
                   onPress={() => {}}
                 />
-                <MaterialIcons
+                <ThemedIcon
+                  IconComponent={MaterialIcons}
                   name="search"
-                  size={24}
-                  color="black"
                   onPress={() => {}}
                 />
               </View>
