@@ -1,4 +1,4 @@
-import { View, FlatList, Text } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import { useThemeColor } from "../hooks/useThemeColor";
 import { styles } from "../styles/styles";
 
@@ -45,7 +45,7 @@ export function ThemedFlatList({ style, children, ...otherProps }) {
 }
 
 //Requires IconComponent and name
-export function ThemedIcon({ IconComponent, style, name, size, color, ...rest }) {
+export function ThemedIcon({ style, IconComponent, name, size, color, ...rest }) {
   return (
     <IconComponent
       name={name}

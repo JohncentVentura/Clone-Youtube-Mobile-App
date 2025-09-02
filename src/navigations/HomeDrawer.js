@@ -29,9 +29,9 @@ export default function HomeDrawer() {
           //Show arrow-back button when not on initialRoute
           if (route.name !== initialRouteName) {
             return (
-              <Ionicons
+              <ThemedIcon
+                IconComponent={Ionicons}
                 name="arrow-back"
-                size={24}
                 onPress={() => navigation.goBack()}
               />
             );

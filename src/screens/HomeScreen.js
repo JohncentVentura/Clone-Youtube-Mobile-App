@@ -1,6 +1,14 @@
-import { Text, View, FlatList, ScrollView, ActivityIndicator } from "react-native";
+import { useState, useCallback } from "react";
+import {
+  Text,
+  View,
+  FlatList,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { styles, screenWidth } from "../styles/styles";
+import { fetchTrendingVideos } from "../api/youtubeService";
 import {
   HomeVideoImage,
   HomeChannelImage,
@@ -12,9 +20,9 @@ import {
   ThemedIcon,
 } from "../components/ThemedComponents";
 import { AutoPlayVideo } from "../components/VideoComponents";
-import { fetchTrendingVideos } from "../api/YoutubeService";
 import { useFetch } from "../hooks/useFetch";
 
+import YoutubePlayer from "react-native-youtube-iframe";
 
 const videos = [
   {
@@ -44,13 +52,20 @@ const videos = [
 ];
 
 export default function HomeScreen() {
-  const { data, loading } = useFetch(fetchTrendingVideos);
-  
-  if (loading) return <ActivityIndicator size="large" />;
-  //else console.log(data);
-  
+  const { data, loading, error } = useFetch(fetchTrendingVideos);
+
+  if (loading) {
+    return <ActivityIndicator size="large" />;
+  } else if (!loading && !data) {
+    console.log(error);
+  } else if (!loading && data) {
+    console.log(data);
+  }
+
   return (
     <ThemedView>
+      <YoutubePlayer videoId={data?.items[0].id} />
+
       <ThemedFlatList
         keyExtractor={(item) => item.id}
         style={styles.homeScreenContainer}
@@ -81,5 +96,25 @@ export default function HomeScreen() {
         )}
       />
     </ThemedView>
+  );
+}
+
+export function YouTubePlayer({ videoId }) {
+  const [playing, setPlaying] = useState(false);
+
+  const onStateChange = useCallback((state) => {
+    if (state === "ended") {
+      setPlaying(false);
+    }
+  }, []);
+
+  return (
+    <YoutubePlayer
+      width={screenWidth}
+      height={250}
+      play={playing}
+      videoId={videoId} // Pass the YouTube video ID
+      onChangeState={onStateChange}
+    />
   );
 }

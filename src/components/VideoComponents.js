@@ -4,7 +4,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { Video } from "expo-av";
 import { styles } from "../styles/styles";
 
-export function AutoPlayVideo({ source, thumbnail, style }) {
+export function AutoPlayVideo({ style, source, thumbnail }) {
   const [showThumbnail, setShowThumbnail] = useState(true);
   const videoRef = useRef(null);
   const isFocused = useIsFocused();
@@ -31,14 +31,14 @@ export function AutoPlayVideo({ source, thumbnail, style }) {
     <View style={[styles.autoPlayVideo, style]}>
       {showThumbnail ? (
         <Image
-          source={{ uri: thumbnail }}
           style={{ width: "100%", height: "100%", resizeMode: "cover" }}
+          source={{ uri: thumbnail }}
         />
       ) : (
         <Video
-          ref={videoRef}
-          source={{ uri: source }}
           style={{ width: "100%", height: "100%", resizeMode: "stretch" }}
+          source={{ uri: source }}
+          ref={videoRef}
           resizeMode="cover"
           shouldPlay={isFocused}
           isLooping={false}

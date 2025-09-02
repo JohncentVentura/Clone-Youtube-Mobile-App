@@ -1,7 +1,7 @@
 import { Image } from "react-native";
 import { styles } from "../styles/styles";
 
-export function HomeVideoImage({ source, style }) {
+export function HomeVideoImage({ style, source }) {
   return (
     <Image
       source={source}
@@ -11,7 +11,7 @@ export function HomeVideoImage({ source, style }) {
   );
 }
 
-export function HomeChannelImage({ source, style }) {
+export function HomeChannelImage({ style, source }) {
   return (
     <Image
       source={source}
