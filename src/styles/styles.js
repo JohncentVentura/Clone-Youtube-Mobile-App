@@ -5,38 +5,37 @@ export const screenWidth = Dimensions.get("window").width * 1; //Multiply by 1 t
 export const screenHeight = Dimensions.get("window").height * 1; //Multiply by 1 to get 100%
 
 export const styles = StyleSheet.create({
-  homeScreenContainer: {
-    //justifyContent: "flex-start",
-    //alignItems: "flex-start",
+  homeContainer: {
+    flex: 1,
     width: screenWidth,
   },
-  homeScreenVideoContainer: {
+  homeVideoContainer: {
     justifyContent: "flex-start",
     alignItems: "center",
     width: "100%",
   },
-  homeScreenVideoInfoContainer: {
+  homeVideoInfoContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
     width: "100%",
   },
-  autoPlayVideo: {
-    width: "100%",
-    height: screenHeight * 0.25,
-    resizeMode: "stretch",
-    overflow: "hidden",
-  },
   homeVideoImage: {
     width: "95%",
     height: 200,
-    resizeMode: "stretch",
+    //resizeMode: "stretch",
   },
   homeChannelImage: {
     width: "10%",
     height: "80%",
-    resizeMode: "stretch",
+    //resizeMode: "stretch",
     borderRadius: 100,
+  },
+  largeVideo: {
+    width: "100%",
+    height: screenHeight * 0.3,
+    //resizeMode: "stretch",
+    overflow: "hidden",
   },
   /********************TEXTS********************/
   defaultTextSize: {

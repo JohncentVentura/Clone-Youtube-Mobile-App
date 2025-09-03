@@ -1,10 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Image, View } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
-import { Video } from "expo-av";
-import { styles } from "../styles/styles";
+import { styles, screenWidth, screenHeight } from "../styles/styles";
+import {
+  ThemedView,
+  ThemedFlatList,
+  ThemedText,
+  ThemedIcon,
+} from "../components/ThemedComponents";
 
-export function AutoPlayVideo({ style, source, thumbnail }) {
+import { Video } from "expo-av";
+import YoutubePlayer from "react-native-youtube-iframe";
+
+export function ExpoAVVideo({ style, source, thumbnail }) {
   const [showThumbnail, setShowThumbnail] = useState(true);
   const videoRef = useRef(null);
   const isFocused = useIsFocused();
@@ -28,15 +36,16 @@ export function AutoPlayVideo({ style, source, thumbnail }) {
   };
 
   return (
-    <View style={[styles.autoPlayVideo, style]}>
+    <ThemedView style={[styles.largeVideo, style]}>
       {showThumbnail ? (
         <Image
-          style={{ width: "100%", height: "100%", resizeMode: "cover" }}
+          style={{ width: "100%", height: "100%",  }}
           source={{ uri: thumbnail }}
+          resizeMode="cover"
         />
       ) : (
         <Video
-          style={{ width: "100%", height: "100%", resizeMode: "stretch" }}
+          style={{ width: "100%", height: "100%",  }}
           source={{ uri: source }}
           ref={videoRef}
           resizeMode="cover"
@@ -45,6 +54,29 @@ export function AutoPlayVideo({ style, source, thumbnail }) {
           onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
         />
       )}
-    </View>
+    </ThemedView>
   );
 }
+
+  export function RNYIYoutubePlayer({ style, data }) {
+    const [playing, setPlaying] = useState(false);
+
+    const onStateChange = useCallback((state) => {
+      if (state === "ended") {
+        setPlaying(false);
+      }
+    }, []);
+
+    return (
+      <ThemedView style={[styles.largeVideo, style]}>
+        <YoutubePlayer
+          width={"100%"}
+          height={"100%"}
+          resizeMode="stretch"
+          play={playing}
+          videoId={data?.items[0].id}
+          onChangeState={onStateChange}
+        />
+      </ThemedView>
+    );
+  }

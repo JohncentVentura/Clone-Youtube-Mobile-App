@@ -3,12 +3,10 @@ import { useThemeColor } from "../hooks/useThemeColor";
 import { styles } from "../styles/styles";
 
 export function ThemedText({ style, type = "default", children, ...rest }) {
-  const color = useThemeColor("foreground");
-
   return (
     <Text
       style={[
-        { color },
+        { color: useThemeColor("foreground") },
         type === "default" ? styles.defaultTextSize : undefined,
         type === "title" ? styles.titleTextSize : undefined,
         type === "defaultSemiBold" ? styles.defaultSemiBoldTextSize : undefined,
@@ -24,35 +22,44 @@ export function ThemedText({ style, type = "default", children, ...rest }) {
   );
 }
 
-export function ThemedView({ style, children, ...otherProps }) {
-  const backgroundColor = useThemeColor("background");
-
+//Requires IconComponent and name
+export function ThemedIcon({
+  style,
+  IconComponent,
+  name,
+  size,
+  color,
+  ...rest
+}) {
   return (
-    <View style={[{ backgroundColor: useThemeColor("background")}, style]} {...otherProps}>
+    <IconComponent
+      style={style}
+      name={name}
+      size={size || 24}
+      color={color || useThemeColor("foreground")}
+      {...rest}
+    />
+  );
+}
+
+export function ThemedView({ style, children, ...otherProps }) {
+  return (
+    <View
+      style={[{ backgroundColor: useThemeColor("background") }, style]}
+      {...otherProps}
+    >
       {children}
     </View>
   );
 }
 
 export function ThemedFlatList({ style, children, ...otherProps }) {
-  const backgroundColor = useThemeColor("background");
-
   return (
-    <FlatList style={[{ backgroundColor }, style]} {...otherProps}>
+    <FlatList
+      style={[{ backgroundColor: useThemeColor("background") }, style]}
+      {...otherProps}
+    >
       {children}
     </FlatList>
-  );
-}
-
-//Requires IconComponent and name
-export function ThemedIcon({ style, IconComponent, name, size, color, ...rest }) {
-  return (
-    <IconComponent
-      name={name}
-      size={size || 24}
-      color={color || useThemeColor("foreground")}
-      style={style}
-      {...rest}
-    />
   );
 }

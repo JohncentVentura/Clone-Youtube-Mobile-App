@@ -8,7 +8,7 @@ export const fetchTrendingVideos = async () => {
       part: 'snippet', //Tells the API to include video details like title, description, thumbnails
       chart: 'mostPopular',
       regionCode: 'US',
-      maxResults: 10,
+      maxResults: 5,
     },
   });
   return response.data;
