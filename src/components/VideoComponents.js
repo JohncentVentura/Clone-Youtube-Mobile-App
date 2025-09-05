@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Image, View } from "react-native";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
+import { VideoView, useVideoPlayer } from "expo-video";
 import { styles, screenWidth, screenHeight } from "../styles/styles";
 import {
   ThemedView,
@@ -9,9 +10,11 @@ import {
   ThemedIcon,
 } from "../components/ThemedComponents";
 
-import { Video } from "expo-av";
+
 import YoutubePlayer from "react-native-youtube-iframe";
 
+/*
+import { Video } from "expo-av";
 export function ExpoAVVideo({ style, source, thumbnail }) {
   const [showThumbnail, setShowThumbnail] = useState(true);
   const videoRef = useRef(null);
@@ -39,13 +42,13 @@ export function ExpoAVVideo({ style, source, thumbnail }) {
     <ThemedView style={[styles.largeVideo, style]}>
       {showThumbnail ? (
         <Image
-          style={{ width: "100%", height: "100%",  }}
+          style={{ width: "100%", height: "100%" }}
           source={{ uri: thumbnail }}
           resizeMode="cover"
         />
       ) : (
         <Video
-          style={{ width: "100%", height: "100%",  }}
+          style={{ width: "100%", height: "100%" }}
           source={{ uri: source }}
           ref={videoRef}
           resizeMode="cover"
@@ -57,26 +60,57 @@ export function ExpoAVVideo({ style, source, thumbnail }) {
     </ThemedView>
   );
 }
+*/
 
-  export function RNYIYoutubePlayer({ style, data }) {
-    const [playing, setPlaying] = useState(false);
+export function RNYIYoutubePlayer({ style, videoId }) {
+  const [playing, setPlaying] = useState(false);
 
-    const onStateChange = useCallback((state) => {
-      if (state === "ended") {
-        setPlaying(false);
-      }
-    }, []);
+  const onStateChange = useCallback((state) => {
+    if (state === "ended") {
+      setPlaying(false);
+    }
+  }, []);
 
-    return (
-      <ThemedView style={[styles.largeVideo, style]}>
-        <YoutubePlayer
-          width={"100%"}
-          height={"100%"}
-          resizeMode="stretch"
-          play={playing}
-          videoId={data?.items[0].id}
-          onChangeState={onStateChange}
-        />
-      </ThemedView>
-    );
-  }
+  return (
+    <ThemedView style={[styles.largeVideo, style]}>
+      <YoutubePlayer
+        width={"100%"}
+        height={"100%"}
+        resizeMode="stretch"
+        play={playing}
+        videoId={videoId}
+        onChangeState={onStateChange}
+      />
+    </ThemedView>
+  );
+
+  
+}
+
+export function PexelsVideoView({ video }) {
+  // pick first playable MP4
+  const file = video.video_files.find(v => v.file_type === "video/mp4") || video.video_files[0];
+
+  // create player bound to this URL
+  const player = useVideoPlayer(file.link, (player) => {
+    player.loop = true;
+    player.play();
+  });
+
+  return (
+    <ThemedView style={{ marginVertical: 20 }}>
+      <VideoView
+        style={{
+          width: screenWidth,
+          height: 220,
+          borderRadius: 10,
+          backgroundColor: "#000",
+          alignSelf: "center",
+        }}
+        resizeMode="cover"
+        player={player}
+        nativeControls={false}
+      />
+    </ThemedView>
+  );
+}

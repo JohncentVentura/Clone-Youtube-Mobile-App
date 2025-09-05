@@ -25,7 +25,7 @@ export default function HomeTopTabs() {
     >
       <TopTab.Screen
         name="@"
-        component={HomeScreen}
+        component={TestScreen}
         listeners={{
           tabPress: (e) => {
             e.preventDefault(); // Stop default navigation

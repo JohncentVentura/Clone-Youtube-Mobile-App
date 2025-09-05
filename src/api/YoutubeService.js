@@ -1,9 +1,9 @@
 //apiClient Has the YouTube base URL and automatically adds the API key to every request
-import apiClient from './apiConfig';
+import youtubeAPIClient from './youtubeAPI';
 
-export const fetchTrendingVideos = async () => {
+export const fetchTrendingYoutubeVideos = async () => {
   //Calls the YouTube Videos API endpoint (/videos)
-  const response = await apiClient.get('/videos', {
+  const response = await youtubeAPIClient.get('/videos', {
     params: {
       part: 'snippet', //Tells the API to include video details like title, description, thumbnails
       chart: 'mostPopular',
@@ -14,9 +14,9 @@ export const fetchTrendingVideos = async () => {
   return response.data;
 };
 
-export const searchVideos = async (query) => {
+export const searchYoutubeVideos = async (query) => {
   //Calls the YouTube Search API endpoint (/search)
-  const response = await apiClient.get('/search', {
+  const response = await youtubeAPIClient.get('/search', {
     params: {
       part: 'snippet',
       q: query, //The search keyword (provided when you call this function)
