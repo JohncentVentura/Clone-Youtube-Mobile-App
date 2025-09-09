@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     width: "100%",
+    marginBottom: screenHeight * 0.025,
   },
   homeVideoInfoContainer: {
     flexDirection: "row",
@@ -20,21 +21,14 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
   },
-  homeVideoImage: {
-    width: "95%",
-    height: 200,
-    //resizeMode: "stretch",
-  },
   homeChannelImage: {
-    width: "10%",
-    height: "80%",
-    //resizeMode: "stretch",
     borderRadius: 100,
+    width: "10%",
+    height: "100%",
   },
   largeVideo: {
     width: "100%",
     height: screenHeight * 0.3,
-    //resizeMode: "stretch",
     overflow: "hidden",
   },
   /********************TEXTS********************/

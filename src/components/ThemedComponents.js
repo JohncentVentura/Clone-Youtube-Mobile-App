@@ -1,4 +1,4 @@
-import { FlatList, Text, View } from "react-native";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { useThemeColor } from "../hooks/useThemeColor";
 import { styles } from "../styles/styles";
 
@@ -61,5 +61,16 @@ export function ThemedFlatList({ style, children, ...otherProps }) {
     >
       {children}
     </FlatList>
+  );
+}
+
+export function ThemedTouchableOpacity({ style, children, ...otherProps }) {
+  return (
+    <TouchableOpacity
+      style={[{ backgroundColor: useThemeColor("background") }, style]}
+      {...otherProps}
+    >
+      {children}
+    </TouchableOpacity>
   );
 }

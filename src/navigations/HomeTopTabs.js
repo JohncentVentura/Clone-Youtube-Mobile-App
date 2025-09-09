@@ -1,38 +1,39 @@
-import { Text, View } from "react-native";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { View, TouchableOpacity } from "react-native";
+import {
+  createMaterialTopTabNavigator,
+  MaterialTopTabBar,
+} from "@react-navigation/material-top-tabs";
 import { useNavigation } from "@react-navigation/native";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import {
+  ThemedFlatList,
+  ThemedIcon,
+  ThemedText,
+  ThemedTouchableOpacity,
+  ThemedView,
+} from "../components/ThemedComponents";
 import { useThemeColor } from "../hooks/useThemeColor";
 import HomeScreen from "../screens/HomeScreen";
 
 const TopTab = createMaterialTopTabNavigator();
 
 export default function HomeTopTabs() {
-  const navigation = useNavigation();
-
   return (
     <TopTab.Navigator
-      initialRouteName="All"
+      //initialRouteName="All"
+      tabBar={(props) => <HomeDrawerButtonTab {...props} />}
       screenOptions={{
+        tabBarItemStyle: { width: "auto" },
         tabBarScrollEnabled: true, // Enables horizontal scrolling
-        tabBarItemStyle: { width: "auto" }, // Set width for each tab
-        tabBarIndicatorStyle: { backgroundColor: useThemeColor("primary") },
         tabBarActiveTintColor: useThemeColor("foreground"),
         tabBarInactiveTintColor: useThemeColor("gray"),
+        tabBarIndicatorStyle: { backgroundColor: useThemeColor("primary") },
         tabBarStyle: {
           backgroundColor: useThemeColor("background"),
+          elevation: 0,
         },
       }}
     >
-      <TopTab.Screen
-        name="@"
-        component={TestScreen}
-        listeners={{
-          tabPress: (e) => {
-            e.preventDefault(); // Stop default navigation
-            navigation.getParent("HomeDrawer")?.openDrawer(); // Access the drawer and open it
-          },
-        }}
-      />
       <TopTab.Screen name="All" component={HomeScreen} />
       <TopTab.Screen name="New to you" component={TestScreen} />
       <TopTab.Screen name="Live" component={TestScreen} />
@@ -43,10 +44,28 @@ export default function HomeTopTabs() {
   );
 }
 
+function HomeDrawerButtonTab(props) {
+  const navigation = useNavigation();
+
+  return (
+    <ThemedView style={{ flexDirection: "row", alignItems: "center" }}>
+      <ThemedTouchableOpacity
+        onPress={() => navigation.getParent("HomeDrawer")?.openDrawer()}
+        style={{paddingHorizontal: 10}}
+      >
+        <ThemedIcon IconComponent={Ionicons} name="compass-outline"/>
+      </ThemedTouchableOpacity>
+      <ThemedView style={{ flex: 1 }}>
+        <MaterialTopTabBar {...props} />
+      </ThemedView>
+    </ThemedView>
+  );
+}
+
 function TestScreen() {
   return (
-    <View>
-      <Text>Test Screen</Text>
-    </View>
+    <ThemedView>
+      <ThemedText>Test Screen</ThemedText>
+    </ThemedView>
   );
 }

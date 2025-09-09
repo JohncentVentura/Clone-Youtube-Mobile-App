@@ -9,7 +9,7 @@ export function useThemeColor(colorName) {
 const colors = {
   light: {
     foreground: "#282828ff",
-    gray: "#b6b6b6ff",
+    gray: "#8c8c8cff",
     background: "#ffffffff",
     primary: "#FF0000ff",
   },

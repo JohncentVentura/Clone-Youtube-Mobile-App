@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { useThemeColor } from "../hooks/useThemeColor";
 import { ThemedIcon } from "../components/ThemedComponents";
+import { useThemeColor } from "../hooks/useThemeColor";
 import HomeDrawer from "./HomeDrawer";
 import ShortsStack from "./ShortsStack";
 import UploadStack from "./UploadStack";
@@ -13,12 +13,16 @@ const BottomTab = createBottomTabNavigator();
 export default function MainNavigator() {
   return (
     <BottomTab.Navigator
-      screenOptions={({ route }) => ({
+      screenOptions={(
+        { route },
+        activeColor = useThemeColor("foreground"),
+        inactiveColor = useThemeColor("gray")
+      ) => ({
         headerShown: false,
         tabBarStyle: { backgroundColor: useThemeColor("background") },
-        tabBarActiveTintColor: useThemeColor("foreground"),
-        tabBarInactiveTintColor: useThemeColor("gray"),
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarActiveTintColor: activeColor,
+        tabBarInactiveTintColor: inactiveColor,
+        tabBarIcon: ({ focused }) => {
           let iconName;
 
           if (route.name === "HomeDrawer") {
@@ -38,9 +42,7 @@ export default function MainNavigator() {
               IconComponent={Ionicons}
               name={iconName}
               size={24}
-              color={
-                focused ? useThemeColor("foreground") : useThemeColor("gray")
-              }
+              color={focused ? activeColor : inactiveColor}
             />
           );
         },
@@ -59,7 +61,7 @@ export default function MainNavigator() {
       <BottomTab.Screen
         name="UploadStack"
         component={UploadStack}
-        options={{ title: "Upload", tabBarLabel: () => null }}
+        options={{ title: "Upload"}} //use {tabBarLabel: () => null} to hide label
       />
       <BottomTab.Screen
         name="SubscriptionsStack"

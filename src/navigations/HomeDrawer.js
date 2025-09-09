@@ -1,11 +1,12 @@
-import { View } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Fontisto from "@expo/vector-icons/Fontisto";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { ThemedIcon } from "../components/ThemedComponents";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { ThemedIcon, ThemedView } from "../components/ThemedComponents";
 import { useThemeColor } from "../hooks/useThemeColor";
 import HomeTopTabs from "./HomeTopTabs";
 import HomeScreen from "../screens/HomeScreen";
+import { screenWidth } from "../styles/styles";
 
 const Drawer = createDrawerNavigator();
 
@@ -13,66 +14,78 @@ export default function HomeDrawer() {
   return (
     <Drawer.Navigator
       id="HomeDrawer"
-      initialRouteName="HomeTopTabs"
+      initialRouteName="YoutubeScreen"
       screenOptions={({ route, navigation }) => ({
-        drawerIndicatorStyle: { backgroundColor: useThemeColor("primary") },
         drawerActiveTintColor: useThemeColor("foreground"),
         drawerInactiveTintColor: useThemeColor("gray"),
+        drawerIndicatorStyle: useThemeColor("primary"),
         drawerStyle: {
           backgroundColor: useThemeColor("background"),
         },
+        headerTintColor: useThemeColor("foreground"),
         headerStyle: {
           backgroundColor: useThemeColor("background"),
+          
         },
-        headerTintColor: useThemeColor("foreground"),
-        headerLeft: ({ initialRouteName }) => {
-          //Show arrow-back button when not on initialRoute
-          if (route.name !== initialRouteName) {
-            return (
-              <ThemedIcon
-                IconComponent={Ionicons}
-                name="arrow-back"
-                onPress={() => navigation.goBack()}
-              />
-            );
-          }
-          return null; //No arrow-back button on initialRoute
+        headerLeft: () => {
+          return (
+            <ThemedIcon
+              IconComponent={Ionicons}
+              name="arrow-back"
+              style={{marginLeft: 15}}
+              onPress={() => navigation.goBack()}
+            />
+          );
         },
         headerRight: () => {
           return (
             <>
-              <View
+              <ThemedView
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-around",
-                  width: 120,
                 }}
               >
                 <ThemedIcon
                   IconComponent={MaterialIcons}
                   name="screen-share"
+                  style={{marginRight: 25}}
                   onPress={() => {}}
                 />
                 <ThemedIcon
                   IconComponent={MaterialIcons}
                   name="notifications-none"
+                  style={{marginRight: 25}}
                   onPress={() => {}}
                 />
                 <ThemedIcon
                   IconComponent={MaterialIcons}
                   name="search"
+                  style={{marginRight: 15}}
                   onPress={() => {}}
                 />
-              </View>
+              </ThemedView>
             </>
           );
         },
       })}
     >
       <Drawer.Screen
-        name="HomeTopTabs"
+        name="YoutubeScreen"
         component={HomeTopTabs}
-        options={{ headerLeft: false, title: "Youtube" }}
+        options={{
+          headerLeft: () => {
+            return (
+              <ThemedIcon
+                IconComponent={Fontisto}
+                name="youtube-play"
+                style={{marginLeft: 15}}
+                color={useThemeColor("primary")}
+              />
+            );
+          },
+          title: "Youtube",
+        }}
       />
       <Drawer.Screen
         name="MusicScreen"

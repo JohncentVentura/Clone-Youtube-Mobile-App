@@ -7,14 +7,17 @@ import {
   ThemedView,
   ThemedFlatList,
   ThemedText,
+  ThemedTouchableOpacity,
   ThemedIcon,
 } from "../components/ThemedComponents";
 
 
 import YoutubePlayer from "react-native-youtube-iframe";
+import { useThemeColor } from "../hooks/useThemeColor";
 
 /*
 import { Video } from "expo-av";
+import { ThemedTouchableOpacity } from './ThemedComponents';
 export function ExpoAVVideo({ style, source, thumbnail }) {
   const [showThumbnail, setShowThumbnail] = useState(true);
   const videoRef = useRef(null);
@@ -88,29 +91,37 @@ export function RNYIYoutubePlayer({ style, videoId }) {
 }
 
 export function PexelsVideoView({ video }) {
+  const isFocused = useIsFocused();
+
   // pick first playable MP4
   const file = video.video_files.find(v => v.file_type === "video/mp4") || video.video_files[0];
 
   // create player bound to this URL
   const player = useVideoPlayer(file.link, (player) => {
-    player.loop = true;
-    player.play();
+    player.loop = false;
   });
 
+  //*
+  useEffect(() => {
+    if (isFocused) {
+      player.play();
+    } else {
+      player.pause();
+    }
+  }, [isFocused]);
+  //*/
+
   return (
-    <ThemedView style={{ marginVertical: 20 }}>
       <VideoView
         style={{
           width: screenWidth,
-          height: 220,
-          borderRadius: 10,
-          backgroundColor: "#000",
+          height: screenHeight * 0.25,
+          backgroundColor: useThemeColor("primary"),
           alignSelf: "center",
         }}
-        resizeMode="cover"
+        resizeMode="stretch"
         player={player}
         nativeControls={false}
       />
-    </ThemedView>
   );
 }

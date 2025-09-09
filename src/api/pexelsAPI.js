@@ -1,9 +1,9 @@
 import Constants from "expo-constants";
 const { PEXELS_API_URL, PEXELS_API_KEY } = Constants.expoConfig.extra;
 
-export async function pexelsAPIfetchVideos(query = "nature") {
+export async function pexelsAPIfetchVideos(query = "nature", pageCount = 5) {
   try {
-    const url = `${PEXELS_API_URL}/search?query=${query}&per_page=6`;
+    const url = `${PEXELS_API_URL}/search?query=${query}&per_page=${pageCount}`;
     //console.log("Fetching from:", url);
 
     const response = await fetch(url, {
@@ -13,7 +13,7 @@ export async function pexelsAPIfetchVideos(query = "nature") {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
+      throw new Error(`HTTP status: ${response.status}`);
     }
 
     //const text = await response.text();

@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ActivityIndicator } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { styles, screenWidth, screenHeight } from "../styles/styles";
 import { fetchTrendingYoutubeVideos } from "../api/youtubeService";
@@ -15,6 +8,7 @@ import {
   ThemedView,
   ThemedFlatList,
   ThemedText,
+  ThemedTouchableOpacity,
   ThemedIcon,
 } from "../components/ThemedComponents";
 import {
@@ -22,11 +16,17 @@ import {
   RNYIYoutubePlayer,
   PexelsVideoView,
 } from "../components/VideoComponents";
+import { useThemeColor } from "../hooks/useThemeColor";
 import { useFetch } from "../hooks/useFetch";
 import { pexelsAPIfetchVideos } from "../api/pexelsAPI";
+import HomeVideoScreen from "./HomeVideoScreen";
 
-export default function HomeScreen() {
-  return <PexelsAPIFlatList />;
+export default function HomeScreen({ navigation }) {
+  return (
+    <ThemedView style={styles.homeContainer}>
+      <PexelsAPIFlatList navigation={navigation} />
+    </ThemedView>
+  );
 }
 
 export function HardCodedVideosFlatList() {
@@ -120,40 +120,38 @@ export function RNYIYoutubePlayerFlatList() {
   );
 }
 
-export function PexelsAPIFlatList() {
+export function PexelsAPIFlatList({ navigation }) {
   const [videos, setVideos] = useState([]);
 
   useEffect(() => {
     async function loadVideos() {
-      const data = await pexelsAPIfetchVideos("city");
+      const data = await pexelsAPIfetchVideos("life");
       setVideos(data);
+      console.log("useEffect HomeScreen pexelsAPIfetchVideos");
     }
     loadVideos();
   }, []);
 
   return (
-    /*
-    <FlatList
-      data={videos}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => <PexelsVideoView video={item}/>}
-    />
-    */
-
     <ThemedView style={styles.homeContainer}>
       <ThemedFlatList
         data={videos}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <ThemedView style={styles.homeVideoContainer}>
-            <PexelsVideoView video={item} />
+            <ThemedTouchableOpacity
+              onPress={() =>
+                navigation.navigate("HomeVideoScreen", { videoId: item.id })
+              }
+            >
+              <PexelsVideoView video={item} />
+            </ThemedTouchableOpacity>
             <ThemedView style={styles.homeVideoInfoContainer}>
               <HomeChannelImage
+                style={{ flex: 2 }}
                 source={{
                   uri: item.video_pictures[0].picture,
                 }}
-                style={{ flex: 2 }}
-                resizeMode="stretch"
               />
               <ThemedView style={{ flex: 10 }}>
                 <ThemedText type="title">Video Title</ThemedText>
