@@ -10,6 +10,12 @@ import {
   ThemedText,
   ThemedTouchableOpacity,
   ThemedIcon,
+  HeaderRightIconsContainer,
+  HeaderNotificationIcon,
+  HeaderSearchIcon,
+  HeaderScreenShareIcon,
+  HeaderCaptionIcon,
+  HeaderSettingIcon,
 } from "../components/ThemedComponents";
 import {
   ExpoAVVideo,
@@ -20,11 +26,97 @@ import { useThemeColor } from "../hooks/useThemeColor";
 import { useFetch } from "../hooks/useFetch";
 import { pexelsAPIfetchVideos } from "../api/pexelsAPI";
 import HomeVideoScreen from "./HomeVideoScreen";
+import { createStackNavigator } from "@react-navigation/stack";
+import { useNavigation } from "@react-navigation/native";
 
-export default function HomeScreen({ navigation }) {
+const VideoStack = createStackNavigator();
+
+export default function HomeScreen() {
+  return (
+    <VideoStack.Navigator
+      screenOptions={{
+        headerShown: false,
+        headerLeft: () => {
+          return (
+            <HeaderRightIconsContainer>
+              <HeaderScreenShareIcon
+                style={styles.headerRightIcon}
+                onPress={() => console.log("Screen Share Press")}
+              />
+              <HeaderCaptionIcon
+                style={styles.headerRightIcon}
+                onPress={() => console.log("Caption Press")}
+              />
+              <HeaderSettingIcon
+                style={styles.headerRightIcon}
+                onPress={() => console.log("Setting Press")}
+              />
+            </HeaderRightIconsContainer>
+          );
+        },
+      }}
+    >
+      <VideoStack.Screen name="HomeScreen" component={PexelsAPIFlatList} />
+      <VideoStack.Screen
+        name="HomeVideoScreen"
+        component={HomeVideoScreen}
+        options={{ headerShown: true }}
+      />
+    </VideoStack.Navigator>
+  );
+}
+
+export function PexelsAPIFlatList() {
+  const navigation = useNavigation();
+  const [videos, setVideos] = useState([]);
+  const [query, setQuery] = useState("life");
+
+  useEffect(() => {
+    async function loadVideos() {
+      const data = await pexelsAPIfetchVideos(query);
+      setVideos(data);
+      console.log("useEffect HomeScreen pexelsAPIfetchVideos");
+    }
+    loadVideos();
+  }, []);
+
   return (
     <ThemedView style={styles.homeContainer}>
-      <PexelsAPIFlatList navigation={navigation} />
+      <ThemedFlatList
+        data={videos}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <ThemedView style={styles.homeVideoContainer}>
+            <ThemedTouchableOpacity
+              onPress={() =>
+                navigation.navigate("HomeVideoScreen", { video: item })
+              }
+            >
+              <PexelsVideoView video={item} />
+            </ThemedTouchableOpacity>
+
+            <ThemedView style={styles.homeVideoInfoContainer}>
+              <ThemedView style={{ flex: 1 }}>
+                <HomeChannelImage
+                  source={{ uri: item.video_pictures[0].picture }}
+                />
+              </ThemedView>
+              <ThemedView style={{ flex: 5 }}>
+                <ThemedText type="title">Video Title</ThemedText>
+                <ThemedText type="small">
+                  Channel Name * {item.id} Views * Uploaded Date
+                </ThemedText>
+              </ThemedView>
+              <ThemedView style={{ flex: 1, alignItems: "flex-end" }}>
+                <ThemedIcon
+                  IconComponent={MaterialCommunityIcons}
+                  name="dots-vertical"
+                />
+              </ThemedView>
+            </ThemedView>
+          </ThemedView>
+        )}
+      />
     </ThemedView>
   );
 }
@@ -117,56 +209,5 @@ export function RNYIYoutubePlayerFlatList() {
         </ThemedView>
       )}
     </>
-  );
-}
-
-export function PexelsAPIFlatList({ navigation }) {
-  const [videos, setVideos] = useState([]);
-
-  useEffect(() => {
-    async function loadVideos() {
-      const data = await pexelsAPIfetchVideos("life");
-      setVideos(data);
-      console.log("useEffect HomeScreen pexelsAPIfetchVideos");
-    }
-    loadVideos();
-  }, []);
-
-  return (
-    <ThemedView style={styles.homeContainer}>
-      <ThemedFlatList
-        data={videos}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <ThemedView style={styles.homeVideoContainer}>
-            <ThemedTouchableOpacity
-              onPress={() =>
-                navigation.navigate("HomeVideoScreen", { videoId: item.id })
-              }
-            >
-              <PexelsVideoView video={item} />
-            </ThemedTouchableOpacity>
-            <ThemedView style={styles.homeVideoInfoContainer}>
-              <HomeChannelImage
-                style={{ flex: 2 }}
-                source={{
-                  uri: item.video_pictures[0].picture,
-                }}
-              />
-              <ThemedView style={{ flex: 10 }}>
-                <ThemedText type="title">Video Title</ThemedText>
-                <ThemedText type="small">
-                  Channel Name * Views Count * Uploaded Date
-                </ThemedText>
-              </ThemedView>
-              <ThemedIcon
-                IconComponent={MaterialCommunityIcons}
-                name="dots-vertical"
-              />
-            </ThemedView>
-          </ThemedView>
-        )}
-      />
-    </ThemedView>
   );
 }

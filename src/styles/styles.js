@@ -3,35 +3,48 @@ import { StyleSheet, Dimensions } from "react-native";
 //maybe use useWindowDimensions hook???
 export const screenWidth = Dimensions.get("window").width * 1; //Multiply by 1 to get 100%
 export const screenHeight = Dimensions.get("window").height * 1; //Multiply by 1 to get 100%
+const globaloffsetHorizontal = 15;
 
 export const styles = StyleSheet.create({
+  headerLeftIcon: {
+    marginLeft: globaloffsetHorizontal,
+  },
+  headerRightIconsContainer: {
+    marginRight: globaloffsetHorizontal,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  headerRightIcon: {
+    marginLeft: 25,
+  },
   homeContainer: {
-    flex: 1,
     width: screenWidth,
+    flex: 1,
   },
   homeVideoContainer: {
+    marginBottom: screenHeight * 0.025,
+    width: "100%",
     justifyContent: "flex-start",
     alignItems: "center",
-    width: "100%",
-    marginBottom: screenHeight * 0.025,
   },
   homeVideoInfoContainer: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
+    paddingTop: screenHeight * 0.005,
+    paddingHorizontal: globaloffsetHorizontal,
     width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
   },
   homeChannelImage: {
     borderRadius: 100,
-    width: "10%",
-    height: "100%",
+    width: 45,
+    height: 45,
   },
   largeVideo: {
     width: "100%",
     height: screenHeight * 0.3,
     overflow: "hidden",
   },
-  /********************TEXTS********************/
+  /****************************************Texts****************************************/
   defaultTextSize: {
     fontSize: 16,
     lineHeight: 24,
@@ -41,7 +54,7 @@ export const styles = StyleSheet.create({
     lineHeight: 24,
     fontWeight: "600",
   },
-  smallTextSize:{
+  smallTextSize: {
     fontSize: 12,
     lineHeight: 16,
   },

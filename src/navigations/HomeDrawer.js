@@ -1,71 +1,62 @@
-import { createDrawerNavigator } from "@react-navigation/drawer";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { ThemedIcon, ThemedView } from "../components/ThemedComponents";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  ThemedIcon,
+  ThemedView,
+  HeaderRightIconsContainer,
+  HeaderNotificationIcon,
+  HeaderSearchIcon,
+  HeaderScreenShareIcon,
+} from "../components/ThemedComponents";
 import { useThemeColor } from "../hooks/useThemeColor";
 import HomeTopTabs from "./HomeTopTabs";
 import HomeScreen from "../screens/HomeScreen";
-import { screenWidth } from "../styles/styles";
+import { styles, screenWidth } from "../styles/styles";
 
 const Drawer = createDrawerNavigator();
 
 export default function HomeDrawer() {
   return (
     <Drawer.Navigator
-      id="HomeDrawer"
-      initialRouteName="YoutubeScreen"
-      screenOptions={({ route, navigation }) => ({
-        drawerActiveTintColor: useThemeColor("foreground"),
-        drawerInactiveTintColor: useThemeColor("gray"),
-        drawerIndicatorStyle: useThemeColor("primary"),
+      id="HomeDrawer" //Used by HomeTopTab.js to navigate and open this drawer
+      screenOptions={({ navigation }) => ({
         drawerStyle: {
           backgroundColor: useThemeColor("background"),
         },
-        headerTintColor: useThemeColor("foreground"),
+        drawerActiveTintColor: useThemeColor("foreground"),
+        drawerInactiveTintColor: useThemeColor("gray"),
         headerStyle: {
           backgroundColor: useThemeColor("background"),
-          
         },
+        headerTintColor: useThemeColor("foreground"),
         headerLeft: () => {
           return (
             <ThemedIcon
               IconComponent={Ionicons}
               name="arrow-back"
-              style={{marginLeft: 15}}
+              style={styles.headerLeftIcon}
               onPress={() => navigation.goBack()}
             />
           );
         },
         headerRight: () => {
           return (
-            <>
-              <ThemedView
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                }}
-              >
-                <ThemedIcon
-                  IconComponent={MaterialIcons}
-                  name="screen-share"
-                  style={{marginRight: 25}}
-                  onPress={() => {}}
-                />
-                <ThemedIcon
-                  IconComponent={MaterialIcons}
-                  name="notifications-none"
-                  style={{marginRight: 25}}
-                  onPress={() => {}}
-                />
-                <ThemedIcon
-                  IconComponent={MaterialIcons}
-                  name="search"
-                  style={{marginRight: 15}}
-                  onPress={() => {}}
-                />
-              </ThemedView>
-            </>
+            <HeaderRightIconsContainer>
+              <HeaderScreenShareIcon
+                style={styles.headerRightIcon}
+                onPress={() => console.log("Screen Share Press")}
+              />
+              <HeaderNotificationIcon
+                style={styles.headerRightIcon}
+                onPress={() => console.log("Notificiation Press")}
+              />
+              <HeaderSearchIcon
+                style={styles.headerRightIcon}
+                onPress={() => console.log("Search Press")}
+              />
+            </HeaderRightIconsContainer>
           );
         },
       })}
@@ -79,7 +70,7 @@ export default function HomeDrawer() {
               <ThemedIcon
                 IconComponent={Fontisto}
                 name="youtube-play"
-                style={{marginLeft: 15}}
+                style={styles.headerLeftIcon}
                 color={useThemeColor("primary")}
               />
             );

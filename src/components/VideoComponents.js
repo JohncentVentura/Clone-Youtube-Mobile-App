@@ -116,7 +116,7 @@ export function PexelsVideoView({ video }) {
         style={{
           width: screenWidth,
           height: screenHeight * 0.25,
-          backgroundColor: useThemeColor("primary"),
+          backgroundColor: useThemeColor("background"),
           alignSelf: "center",
         }}
         resizeMode="stretch"

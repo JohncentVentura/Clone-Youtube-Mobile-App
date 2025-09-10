@@ -1,9 +1,9 @@
-import { Text, View } from 'react-native';
+import { ThemedView, ThemedText } from "../components/ThemedComponents";
 
 export default function YouScreen() {
   return (
-    <View>
-      <Text>YouScreen Body</Text>
-    </View>
+    <ThemedView style={{flex: 1}}>
+      <ThemedText>YouScreen Body</ThemedText>
+    </ThemedView>
   );
 }

@@ -9,31 +9,33 @@ import SubscriptionsStack from "./SubscriptionsStack";
 import YouStack from "./YouStack";
 
 const BottomTab = createBottomTabNavigator();
+const bottomTabNames = [
+  "HomeDrawer",
+  "ShortsStack",
+  "UploadStack",
+  "SubscriptionsStack",
+  "YouStack",
+];
 
 export default function MainNavigator() {
   return (
     <BottomTab.Navigator
-      screenOptions={(
-        { route },
-        activeColor = useThemeColor("foreground"),
-        inactiveColor = useThemeColor("gray")
-      ) => ({
+      screenOptions={({ route }) => ({
         headerShown: false,
         tabBarStyle: { backgroundColor: useThemeColor("background") },
-        tabBarActiveTintColor: activeColor,
-        tabBarInactiveTintColor: inactiveColor,
+        tabBarActiveTintColor: useThemeColor("foreground"),
         tabBarIcon: ({ focused }) => {
           let iconName;
 
-          if (route.name === "HomeDrawer") {
+          if (route.name === bottomTabNames[0]) {
             iconName = focused ? "home-sharp" : "home-outline";
-          } else if (route.name === "ShortsStack") {
+          } else if (route.name === bottomTabNames[1]) {
             iconName = focused ? "videocam" : "videocam-outline";
-          } else if (route.name === "UploadStack") {
+          } else if (route.name === bottomTabNames[2]) {
             iconName = focused ? "add-circle" : "add-circle-outline";
-          } else if (route.name === "SubscriptionsStack") {
+          } else if (route.name === bottomTabNames[3]) {
             iconName = focused ? "albums" : "albums-outline";
-          } else if (route.name === "YouStack") {
+          } else if (route.name === bottomTabNames[4]) {
             iconName = focused ? "person-circle" : "person-circle-outline";
           }
 
@@ -42,34 +44,36 @@ export default function MainNavigator() {
               IconComponent={Ionicons}
               name={iconName}
               size={24}
-              color={focused ? activeColor : inactiveColor}
+              color={
+                focused ? useThemeColor("foreground") : useThemeColor("gray")
+              }
             />
           );
         },
       })}
     >
       <BottomTab.Screen
-        name="HomeDrawer"
+        name={bottomTabNames[0]}
         component={HomeDrawer}
         options={{ title: "Home" }}
       />
       <BottomTab.Screen
-        name="ShortsStack"
+        name={bottomTabNames[1]}
         component={ShortsStack}
         options={{ title: "Shorts" }}
       />
       <BottomTab.Screen
-        name="UploadStack"
+        name={bottomTabNames[2]}
         component={UploadStack}
-        options={{ title: "Upload"}} //use {tabBarLabel: () => null} to hide label
+        options={{ title: "Upload" }} //use {tabBarLabel: () => null} in options to hide label
       />
       <BottomTab.Screen
-        name="SubscriptionsStack"
+        name={bottomTabNames[3]}
         component={SubscriptionsStack}
         options={{ title: "Subscriptions" }}
       />
       <BottomTab.Screen
-        name="YouStack"
+        name={bottomTabNames[4]}
         component={YouStack}
         options={{ title: "You" }}
       />

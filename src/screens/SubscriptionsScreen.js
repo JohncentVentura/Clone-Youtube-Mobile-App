@@ -1,9 +1,9 @@
-import { Text, View } from 'react-native';
+import { ThemedView, ThemedText } from "../components/ThemedComponents";
 
 export default function SubscriptionsScreen() {
   return (
-    <View>
-      <Text>SubscriptionsScreen Body</Text>
-    </View>
+    <ThemedView style={{flex: 1}}>
+      <ThemedText>SubscriptionsScreen Body</ThemedText>
+    </ThemedView>
   );
 }

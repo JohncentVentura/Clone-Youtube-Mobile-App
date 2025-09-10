@@ -1,9 +1,9 @@
-import { Text, View } from "react-native";
+import { ThemedView, ThemedText } from "../components/ThemedComponents";
 
 export default function ShortsScreen() {
   return (
-    <View>
-      <Text>ShortsScreen Body</Text>
-    </View>
+    <ThemedView style={{flex: 1}}>
+      <ThemedText>ShortsScreen Body</ThemedText>
+    </ThemedView>
   );
 }
