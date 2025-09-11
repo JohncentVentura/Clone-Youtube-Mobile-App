@@ -3,19 +3,37 @@ import { StyleSheet, Dimensions } from "react-native";
 //maybe use useWindowDimensions hook???
 export const screenWidth = Dimensions.get("window").width * 1; //Multiply by 1 to get 100%
 export const screenHeight = Dimensions.get("window").height * 1; //Multiply by 1 to get 100%
+
+export const colors = {
+  light: {
+    foreground: "#282828ff",
+    gray: "#8c8c8cff",
+    background: "#ffffffff",
+    primary: "#FF0000ff",
+    //grayBackground: "#cdcdcdff",
+  },
+  dark: {
+    foreground: "#ffffffff",
+    gray: "#b6b6b6ff",
+    background: "#282828ff",
+    primary: "#FF0000ff",
+    //grayBackground: "#363636ff",
+  },
+};
+
 const globaloffsetHorizontal = 15;
 
 export const styles = StyleSheet.create({
   headerLeftIcon: {
-    marginLeft: globaloffsetHorizontal,
+    paddingLeft: globaloffsetHorizontal,
   },
   headerRightIconsContainer: {
-    marginRight: globaloffsetHorizontal,
+    paddingRight: globaloffsetHorizontal,
     flexDirection: "row",
     alignItems: "center",
   },
   headerRightIcon: {
-    marginLeft: 25,
+    paddingLeft: 25,
   },
   homeContainer: {
     width: screenWidth,

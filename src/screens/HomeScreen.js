@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, Button } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { styles, screenWidth, screenHeight } from "../styles/styles";
 import { fetchTrendingYoutubeVideos } from "../api/youtubeService";
@@ -20,22 +20,25 @@ import {
 import {
   ExpoAVVideo,
   RNYIYoutubePlayer,
-  PexelsVideoView,
+  LargeVideo,
+  LargeVideoFlatList,
 } from "../components/VideoComponents";
 import { useThemeColor } from "../hooks/useThemeColor";
 import { useFetch } from "../hooks/useFetch";
 import { pexelsAPIfetchVideos } from "../api/pexelsAPI";
-import HomeVideoScreen from "./HomeVideoScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 
 const VideoStack = createStackNavigator();
+const homeScreens = {
+  homeFlatListScreen: "HomeFlatListScreen",
+  homeVideoScreen: "HomeVideoScreen",
+};
 
 export default function HomeScreen() {
   return (
     <VideoStack.Navigator
       screenOptions={{
-        headerShown: false,
         headerLeft: () => {
           return (
             <HeaderRightIconsContainer>
@@ -56,9 +59,13 @@ export default function HomeScreen() {
         },
       }}
     >
-      <VideoStack.Screen name="HomeScreen" component={PexelsAPIFlatList} />
       <VideoStack.Screen
-        name="HomeVideoScreen"
+        name={homeScreens.homeFlatListScreen}
+        component={HomeFlatListScreen}
+        options={{ headerShown: false }}
+      />
+      <VideoStack.Screen
+        name={homeScreens.homeVideoScreen}
         component={HomeVideoScreen}
         options={{ headerShown: true }}
       />
@@ -66,57 +73,62 @@ export default function HomeScreen() {
   );
 }
 
-export function PexelsAPIFlatList() {
+export function HomeFlatListScreen() {
   const navigation = useNavigation();
-  const [videos, setVideos] = useState([]);
   const [query, setQuery] = useState("life");
+  const [videos, setVideos] = useState([]);
 
   useEffect(() => {
     async function loadVideos() {
       const data = await pexelsAPIfetchVideos(query);
       setVideos(data);
-      console.log("useEffect HomeScreen pexelsAPIfetchVideos");
     }
     loadVideos();
   }, []);
 
   return (
     <ThemedView style={styles.homeContainer}>
-      <ThemedFlatList
-        data={videos}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <ThemedView style={styles.homeVideoContainer}>
-            <ThemedTouchableOpacity
-              onPress={() =>
-                navigation.navigate("HomeVideoScreen", { video: item })
-              }
-            >
-              <PexelsVideoView video={item} />
-            </ThemedTouchableOpacity>
-
-            <ThemedView style={styles.homeVideoInfoContainer}>
-              <ThemedView style={{ flex: 1 }}>
-                <HomeChannelImage
-                  source={{ uri: item.video_pictures[0].picture }}
-                />
-              </ThemedView>
-              <ThemedView style={{ flex: 5 }}>
-                <ThemedText type="title">Video Title</ThemedText>
-                <ThemedText type="small">
-                  Channel Name * {item.id} Views * Uploaded Date
-                </ThemedText>
-              </ThemedView>
-              <ThemedView style={{ flex: 1, alignItems: "flex-end" }}>
-                <ThemedIcon
-                  IconComponent={MaterialCommunityIcons}
-                  name="dots-vertical"
-                />
-              </ThemedView>
-            </ThemedView>
-          </ThemedView>
-        )}
+      <LargeVideoFlatList
+        homeScreens={homeScreens}
+        videos={videos}
+        navigation={navigation}
       />
+    </ThemedView>
+  );
+}
+
+export function HomeVideoScreen({ navigation, route }) {
+  const { video } = route.params;
+
+  return (
+    <ThemedView style={styles.homeContainer}>
+      <LargeVideo video={video} />
+      <ThemedView>
+        <ThemedText>Video Title</ThemedText>
+        <ThemedView style={{ flexDirection: "row" }}>
+          <ThemedText>{video.id} views * 1y ago * ...more (Link)</ThemedText>
+        </ThemedView>
+        <ThemedView style={{ flexDirection: "row" }}>
+          <HomeChannelImage source={{ uri: video.video_pictures[0].picture }} />
+          <ThemedText>Channel Name {video.id} Subsribers</ThemedText>
+          <Button title="Subscribe" />
+        </ThemedView>
+        <ThemedView style={{ flexDirection: "row" }}>
+          <Button title="Like | Dislike" />
+          <Button title="Share" />
+          <Button title="Remix" />
+          <Button title="Download" />
+        </ThemedView>
+        <ThemedView>
+          <ThemedText>Comments 5.1k</ThemedText>
+          <ThemedView style={{ flexDirection: "row" }}>
+            <HomeChannelImage
+              source={{ uri: video.video_pictures[0].picture }}
+            />
+            <ThemedText>{video.video_pictures[0].picture}</ThemedText>
+          </ThemedView>
+        </ThemedView>
+      </ThemedView>
     </ThemedView>
   );
 }

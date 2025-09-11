@@ -13,7 +13,7 @@ import {
 } from "../components/ThemedComponents";
 import { useThemeColor } from "../hooks/useThemeColor";
 import HomeScreen from "../screens/HomeScreen";
-import { screenWidth } from "../styles/styles";
+import { styles, screenHeight, screenWidth } from "../styles/styles";
 
 const TopTab = createMaterialTopTabNavigator();
 
@@ -22,15 +22,18 @@ export default function HomeTopTabs() {
     <TopTab.Navigator
       tabBar={(props) => <HomeDrawerButtonTab {...props} />}
       screenOptions={{
-        tabBarItemStyle: { width: "auto" },
         tabBarScrollEnabled: true, // Enables horizontal scrolling
+        tabBarItemStyle: { width: "auto" },
         tabBarStyle: {
           backgroundColor: useThemeColor("background"),
-          elevation: 0,
+          elevation: 0, // removes drop shadow
         },
-        tabBarActiveTintColor: useThemeColor("foreground"),
-        tabBarInactiveTintColor: useThemeColor("gray"),
-        tabBarIndicatorStyle: { backgroundColor: useThemeColor("primary") },
+        tabBarInactiveTintColor: useThemeColor("foreground"),
+        tabBarActiveTintColor: useThemeColor("background"),
+        tabBarIndicatorStyle: {
+          backgroundColor: useThemeColor("foreground"),
+          height: "100%",
+        },
       }}
     >
       <TopTab.Screen name="All" component={HomeScreen} />
@@ -47,14 +50,14 @@ function HomeDrawerButtonTab(props) {
   const navigation = useNavigation();
 
   return (
-    <ThemedView style={{ flexDirection: "row", alignItems: "center" }}>
+    <ThemedView style={styles.headerRightIconsContainer}>
       <ThemedTouchableOpacity
         onPress={() => navigation.getParent("HomeDrawer")?.openDrawer()}
-        style={{ paddingHorizontal: screenWidth * 0.025 }}
+        style={styles.headerLeftIcon}
       >
-        <ThemedIcon IconComponent={Ionicons} name="compass-outline" size={27} />
-      </ThemedTouchableOpacity>
-      <ThemedView style={{ flex: 1 }}>
+        <ThemedIcon IconComponent={Ionicons} name="compass-outline" size={24} />
+      </ThemedTouchableOpacity> 
+      <ThemedView style={{ flex: 1, marginLeft: screenWidth * 0.04 }}>
         <MaterialTopTabBar {...props} />
       </ThemedView>
     </ThemedView>
@@ -63,7 +66,7 @@ function HomeDrawerButtonTab(props) {
 
 function TestScreen() {
   return (
-    <ThemedView style={{flex: 1}}>
+    <ThemedView style={{ flex: 1 }}>
       <ThemedText>Test Screen</ThemedText>
     </ThemedView>
   );

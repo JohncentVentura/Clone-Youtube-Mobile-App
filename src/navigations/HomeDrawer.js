@@ -1,19 +1,21 @@
 import Fontisto from "@expo/vector-icons/Fontisto";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
   ThemedIcon,
+  ThemedText,
   ThemedView,
   HeaderRightIconsContainer,
+  HeaderScreenShareIcon,
   HeaderNotificationIcon,
   HeaderSearchIcon,
-  HeaderScreenShareIcon,
 } from "../components/ThemedComponents";
 import { useThemeColor } from "../hooks/useThemeColor";
 import HomeTopTabs from "./HomeTopTabs";
 import HomeScreen from "../screens/HomeScreen";
-import { styles, screenWidth } from "../styles/styles";
+import { styles } from "../styles/styles";
 
 const Drawer = createDrawerNavigator();
 
@@ -24,11 +26,15 @@ export default function HomeDrawer() {
       screenOptions={({ navigation }) => ({
         drawerStyle: {
           backgroundColor: useThemeColor("background"),
+          elevation: 0,
         },
+        drawerInactiveTintColor: useThemeColor("foreground"),
+        drawerActiveBackgroundColor: useThemeColor("background"),
         drawerActiveTintColor: useThemeColor("foreground"),
-        drawerInactiveTintColor: useThemeColor("gray"),
+        drawerItemStyle: { borderRadius: 0 },
         headerStyle: {
           backgroundColor: useThemeColor("background"),
+          elevation: 0, // removes drop shadow
         },
         headerTintColor: useThemeColor("foreground"),
         headerLeft: () => {
@@ -65,6 +71,18 @@ export default function HomeDrawer() {
         name="YoutubeScreen"
         component={HomeTopTabs}
         options={{
+          drawerIcon: ({}) => {
+            return (
+              <ThemedIcon
+                IconComponent={Fontisto}
+                name="youtube-play"
+                color={useThemeColor("primary")}
+              />
+            );
+          },
+          drawerLabel: ({}) => {
+            return <ThemedText type="title">Youtube</ThemedText>;
+          },
           headerLeft: () => {
             return (
               <ThemedIcon
@@ -75,48 +93,132 @@ export default function HomeDrawer() {
               />
             );
           },
-          title: "Youtube",
+          headerTitle: () => {
+            return <ThemedText type="title">Youtube</ThemedText>;
+          },
         }}
       />
       <Drawer.Screen
         name="MusicScreen"
         component={HomeScreen}
-        options={{ title: "Music" }}
+        options={{
+          drawerIcon: ({}) => {
+            return (
+              <ThemedIcon
+                IconComponent={Ionicons}
+                name="musical-note-outline"
+              />
+            );
+          },
+          drawerLabel: ({}) => {
+            return <ThemedText type="defaultSemiBold">Music</ThemedText>;
+          },
+        }}
       />
       <Drawer.Screen
         name="MoviesScreen"
         component={HomeScreen}
-        options={{ title: "Movies" }}
+        options={{
+          drawerIcon: ({}) => {
+            return (
+              <ThemedIcon
+                IconComponent={MaterialCommunityIcons}
+                name="movie-open-outline"
+              />
+            );
+          },
+          drawerLabel: ({}) => {
+            return <ThemedText type="defaultSemiBold">Movies</ThemedText>;
+          },
+        }}
       />
       <Drawer.Screen
         name="LiveScreen"
         component={HomeScreen}
-        options={{ title: "Live" }}
+        options={{
+          drawerIcon: ({}) => {
+            return <ThemedIcon IconComponent={MaterialIcons} name="live-tv" />;
+          },
+          drawerLabel: ({}) => {
+            return <ThemedText type="defaultSemiBold">Live</ThemedText>;
+          },
+        }}
       />
       <Drawer.Screen
         name="GamingScreen"
         component={HomeScreen}
-        options={{ title: "Gaming" }}
+        options={{
+          drawerIcon: ({}) => {
+            return (
+              <ThemedIcon
+                IconComponent={MaterialCommunityIcons}
+                name="youtube-gaming"
+              />
+            );
+          },
+          drawerLabel: ({}) => {
+            return <ThemedText type="defaultSemiBold">Gaming</ThemedText>;
+          },
+        }}
       />
       <Drawer.Screen
         name="NewsScreen"
         component={HomeScreen}
-        options={{ title: "News" }}
+        options={{
+          drawerIcon: ({}) => {
+            return (
+              <ThemedIcon IconComponent={Ionicons} name="newspaper-outline" />
+            );
+          },
+          drawerLabel: ({}) => {
+            return <ThemedText type="defaultSemiBold">News</ThemedText>;
+          },
+        }}
       />
       <Drawer.Screen
         name="SportsScreen"
         component={HomeScreen}
-        options={{ title: "Sports" }}
+        options={{
+          drawerIcon: ({}) => {
+            return (
+              <ThemedIcon IconComponent={Ionicons} name="trophy-outline" />
+            );
+          },
+          drawerLabel: ({}) => {
+            return <ThemedText type="defaultSemiBold">Sports</ThemedText>;
+          },
+        }}
       />
       <Drawer.Screen
         name="LearningScreen"
         component={HomeScreen}
-        options={{ title: "Learning" }}
+        options={{
+          drawerIcon: ({}) => {
+            return (
+              <ThemedIcon
+                IconComponent={MaterialIcons}
+                name="lightbulb-outline"
+              />
+            );
+          },
+          drawerLabel: ({}) => {
+            return <ThemedText type="defaultSemiBold">Learning</ThemedText>;
+          },
+        }}
       />
       <Drawer.Screen
         name="FashionAndBeautyScreen"
         component={HomeScreen}
-        options={{ title: "Fashion & Beauty" }}
+        options={{
+          drawerIcon: ({}) => {
+            return <ThemedIcon IconComponent={Ionicons} name="brush-outline" />;
+          },
+          drawerLabel: ({}) => {
+            return (
+              <ThemedText type="defaultSemiBold">Fashion & Beauty</ThemedText>
+            );
+          },
+        }}
       />
     </Drawer.Navigator>
   );

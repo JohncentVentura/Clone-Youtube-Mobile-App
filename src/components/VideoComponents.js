@@ -11,9 +11,11 @@ import {
   ThemedIcon,
 } from "../components/ThemedComponents";
 
-
 import YoutubePlayer from "react-native-youtube-iframe";
 import { useThemeColor } from "../hooks/useThemeColor";
+import { useNavigation } from "@react-navigation/native";
+import { HomeChannelImage } from "../components/ImageComponents";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 /*
 import { Video } from "expo-av";
@@ -86,15 +88,15 @@ export function RNYIYoutubePlayer({ style, videoId }) {
       />
     </ThemedView>
   );
-
-  
 }
 
-export function PexelsVideoView({ video }) {
+export function LargeVideo({ video }) {
   const isFocused = useIsFocused();
 
   // pick first playable MP4
-  const file = video.video_files.find(v => v.file_type === "video/mp4") || video.video_files[0];
+  const file =
+    video.video_files.find((v) => v.file_type === "video/mp4") ||
+    video.video_files[0];
 
   // create player bound to this URL
   const player = useVideoPlayer(file.link, (player) => {
@@ -112,16 +114,58 @@ export function PexelsVideoView({ video }) {
   //*/
 
   return (
-      <VideoView
-        style={{
-          width: screenWidth,
-          height: screenHeight * 0.25,
-          backgroundColor: useThemeColor("background"),
-          alignSelf: "center",
-        }}
-        resizeMode="stretch"
-        player={player}
-        nativeControls={false}
-      />
+    <VideoView
+      style={{
+        width: screenWidth,
+        height: screenHeight * 0.25,
+        backgroundColor: useThemeColor("background"),
+        alignSelf: "center",
+      }}
+      resizeMode="stretch"
+      player={player}
+      nativeControls={false}
+    />
+  );
+}
+
+export function LargeVideoFlatList({ homeScreens, videos, navigation }) {
+  console.log(homeScreens)
+
+  return (
+    <ThemedFlatList
+      data={videos}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({ item }) => (
+        <ThemedView style={styles.homeVideoContainer}>
+          <ThemedTouchableOpacity
+            onPress={() =>
+              navigation.navigate(homeScreens.homeVideoScreen, { video: item })
+            }
+          >
+            <LargeVideo video={item} />
+          </ThemedTouchableOpacity>
+
+          <ThemedView style={styles.homeVideoInfoContainer}>
+            <ThemedView style={{ flex: 1 }}>
+              <HomeChannelImage
+                source={{ uri: item.video_pictures[0].picture }}
+              />
+            </ThemedView>
+            <ThemedView style={{ flex: 5 }}>
+              <ThemedText type="title">Video Title</ThemedText>
+              <ThemedText type="small">
+                Channel Name * {item.id} Views * Uploaded Date
+              </ThemedText>
+            </ThemedView>
+            <ThemedView style={{ flex: 1, alignItems: "flex-end" }}>
+              <ThemedIcon
+                IconComponent={MaterialCommunityIcons}
+                name="dots-vertical"
+              />
+            </ThemedView>
+          </ThemedView>
+        </ThemedView>
+      )}
+    />
   );
 }

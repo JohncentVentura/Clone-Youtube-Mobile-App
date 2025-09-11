@@ -43,10 +43,7 @@ export default function MainNavigator() {
             <ThemedIcon
               IconComponent={Ionicons}
               name={iconName}
-              size={24}
-              color={
-                focused ? useThemeColor("foreground") : useThemeColor("gray")
-              }
+              color={focused ? useThemeColor("primary") : useThemeColor("gray")}
             />
           );
         },
