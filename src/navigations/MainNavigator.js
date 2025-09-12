@@ -1,12 +1,13 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { ThemedIcon } from "../components/ThemedComponents";
+import { ThemedIcon, ThemedText } from "../components/ThemedComponents";
 import { useThemeColor } from "../hooks/useThemeColor";
 import HomeDrawer from "./HomeDrawer";
 import ShortsStack from "./ShortsStack";
 import UploadStack from "./UploadStack";
 import SubscriptionsStack from "./SubscriptionsStack";
 import YouStack from "./YouStack";
+import { colors, textSizes } from "../styles/styles";
 
 const BottomTab = createBottomTabNavigator();
 const bottomTabNames = [
@@ -22,8 +23,7 @@ export default function MainNavigator() {
     <BottomTab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarStyle: { backgroundColor: useThemeColor("background") },
-        tabBarActiveTintColor: useThemeColor("foreground"),
+        tabBarStyle: { backgroundColor: useThemeColor(colors.background) },
         tabBarIcon: ({ focused }) => {
           let iconName;
 
@@ -41,39 +41,50 @@ export default function MainNavigator() {
 
           return (
             <ThemedIcon
+              color={focused ? colors.primary : colors.gray}
               IconComponent={Ionicons}
               name={iconName}
-              color={focused ? useThemeColor("primary") : useThemeColor("gray")}
             />
+          );
+        },
+        tabBarLabel: ({ focused }) => {
+          let labelName;
+
+          if (route.name === bottomTabNames[0]) {
+            labelName = focused ? "Welcome" : "Home";
+          } else if (route.name === bottomTabNames[1]) {
+            labelName = focused ? "Long" : "Shorts";
+          } else if (route.name === bottomTabNames[2]) {
+            labelName = focused ? "Up" : "Upload";
+          } else if (route.name === bottomTabNames[3]) {
+            labelName = focused ? "Sub" : "Subscriptions";
+          } else if (route.name === bottomTabNames[4]) {
+            labelName = focused ? "Me" : "You";
+          }
+
+          return (
+            <ThemedText
+              color={focused ? colors.foreground : colors.gray}
+              size={textSizes.xs2}
+            >
+              {labelName}
+            </ThemedText>
           );
         },
       })}
     >
-      <BottomTab.Screen
-        name={bottomTabNames[0]}
-        component={HomeDrawer}
-        options={{ title: "Home" }}
-      />
-      <BottomTab.Screen
-        name={bottomTabNames[1]}
-        component={ShortsStack}
-        options={{ title: "Shorts" }}
-      />
+      <BottomTab.Screen name={bottomTabNames[0]} component={HomeDrawer} />
+      <BottomTab.Screen name={bottomTabNames[1]} component={ShortsStack} />
       <BottomTab.Screen
         name={bottomTabNames[2]}
         component={UploadStack}
-        options={{ title: "Upload" }} //use {tabBarLabel: () => null} in options to hide label
+        //options={{tabBarLabel: () => null}}
       />
       <BottomTab.Screen
         name={bottomTabNames[3]}
         component={SubscriptionsStack}
-        options={{ title: "Subscriptions" }}
       />
-      <BottomTab.Screen
-        name={bottomTabNames[4]}
-        component={YouStack}
-        options={{ title: "You" }}
-      />
+      <BottomTab.Screen name={bottomTabNames[4]} component={YouStack} />
     </BottomTab.Navigator>
   );
 }

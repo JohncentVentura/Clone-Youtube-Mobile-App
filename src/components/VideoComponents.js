@@ -2,7 +2,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import { VideoView, useVideoPlayer } from "expo-video";
-import { styles, screenWidth, screenHeight } from "../styles/styles";
+import {
+  styles,
+  screenWidth,
+  screenHeight,
+  textSizes,
+  colors,
+} from "../styles/styles";
 import {
   ThemedView,
   ThemedFlatList,
@@ -90,7 +96,7 @@ export function RNYIYoutubePlayer({ style, videoId }) {
   );
 }
 
-export function LargeVideo({ video }) {
+export function LargeVideoView({ style, video }) {
   const isFocused = useIsFocused();
 
   // pick first playable MP4
@@ -115,12 +121,15 @@ export function LargeVideo({ video }) {
 
   return (
     <VideoView
-      style={{
-        width: screenWidth,
-        height: screenHeight * 0.25,
-        backgroundColor: useThemeColor("background"),
-        alignSelf: "center",
-      }}
+      style={[
+        {
+          width: screenWidth,
+          height: screenHeight * 0.25,
+          backgroundColor: useThemeColor("background"),
+          alignSelf: "center",
+        },
+        style,
+      ]}
       resizeMode="stretch"
       player={player}
       nativeControls={false}
@@ -128,8 +137,8 @@ export function LargeVideo({ video }) {
   );
 }
 
-export function LargeVideoFlatList({ homeScreens, videos, navigation }) {
-  console.log(homeScreens)
+export function LargeVideoFlatList({ videos, navigation, homeScreens }) {
+  console.log(homeScreens);
 
   return (
     <ThemedFlatList
@@ -142,7 +151,7 @@ export function LargeVideoFlatList({ homeScreens, videos, navigation }) {
               navigation.navigate(homeScreens.homeVideoScreen, { video: item })
             }
           >
-            <LargeVideo video={item} />
+            <LargeVideoView video={item} />
           </ThemedTouchableOpacity>
 
           <ThemedView style={styles.homeVideoInfoContainer}>
@@ -152,8 +161,10 @@ export function LargeVideoFlatList({ homeScreens, videos, navigation }) {
               />
             </ThemedView>
             <ThemedView style={{ flex: 5 }}>
-              <ThemedText type="title">Video Title</ThemedText>
-              <ThemedText type="small">
+              <ThemedText size={textSizes.xl} style={{ fontWeight: "600" }}>
+                Video Title
+              </ThemedText>
+              <ThemedText size={textSizes.xs} color={colors.gray}>
                 Channel Name * {item.id} Views * Uploaded Date
               </ThemedText>
             </ThemedView>

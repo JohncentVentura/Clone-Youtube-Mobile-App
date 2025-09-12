@@ -1,10 +1,11 @@
 import { StyleSheet, Dimensions } from "react-native";
 
-//maybe use useWindowDimensions hook???
+//Maybe use useWindowDimensions hook?
 export const screenWidth = Dimensions.get("window").width * 1; //Multiply by 1 to get 100%
 export const screenHeight = Dimensions.get("window").height * 1; //Multiply by 1 to get 100%
+const globalOffsetHorizontal = 16;
 
-export const colors = {
+export const colorNames = {
   light: {
     foreground: "#282828ff",
     gray: "#8c8c8cff",
@@ -14,21 +15,39 @@ export const colors = {
   },
   dark: {
     foreground: "#ffffffff",
-    gray: "#b6b6b6ff",
+    gray: "#848484ff",
     background: "#282828ff",
     primary: "#FF0000ff",
     //grayBackground: "#363636ff",
   },
 };
 
-const globaloffsetHorizontal = 15;
+export const colors = {
+  foreground: "foreground",
+  gray: "gray",
+  background: "background",
+  primary: "primary",
+};
+
+export const textSizes = {
+  xs2: "xs2",
+  xs: "xs",
+  sm: "sm",
+  base: "base",
+  lg: "lg",
+  xl: "xl",
+  xl2: "2xl",
+  xl3: "3xl",
+  xl4: "4xl",
+  xl5: "5xl",
+};
 
 export const styles = StyleSheet.create({
   headerLeftIcon: {
-    paddingLeft: globaloffsetHorizontal,
+    paddingLeft: globalOffsetHorizontal,
   },
   headerRightIconsContainer: {
-    paddingRight: globaloffsetHorizontal,
+    paddingRight: globalOffsetHorizontal,
     flexDirection: "row",
     alignItems: "center",
   },
@@ -47,7 +66,7 @@ export const styles = StyleSheet.create({
   },
   homeVideoInfoContainer: {
     paddingTop: screenHeight * 0.005,
-    paddingHorizontal: globaloffsetHorizontal,
+    paddingHorizontal: globalOffsetHorizontal,
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
@@ -62,7 +81,38 @@ export const styles = StyleSheet.create({
     height: screenHeight * 0.3,
     overflow: "hidden",
   },
-  /****************************************Texts****************************************/
+  /******************************Texts******************************/
+  xs2TextSize: {
+    fontSize: 10,
+  },
+  xsTextSize: {
+    fontSize: 12,
+  },
+  smTextSize: {
+    fontSize: 14,
+  },
+  baseTextSize: {
+    fontSize: 16,
+  },
+  lgTextSize: {
+    fontSize: 18,
+  },
+  xlTextSize: {
+    fontSize: 20,
+  },
+  xl2TextSize: {
+    fontSize: 22,
+  },
+  xl3TextSize: {
+    fontSize: 24,
+  },
+  xl4TextSize: {
+    fontSize: 26,
+  },
+  xl5TextSize: {
+    fontSize: 28,
+  },
+
   defaultTextSize: {
     fontSize: 16,
     lineHeight: 24,

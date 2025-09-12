@@ -13,7 +13,7 @@ import {
 } from "../components/ThemedComponents";
 import { useThemeColor } from "../hooks/useThemeColor";
 import HomeScreen from "../screens/HomeScreen";
-import { styles, screenHeight, screenWidth } from "../styles/styles";
+import { styles, screenHeight, screenWidth, colors } from "../styles/styles";
 
 const TopTab = createMaterialTopTabNavigator();
 
@@ -22,16 +22,16 @@ export default function HomeTopTabs() {
     <TopTab.Navigator
       tabBar={(props) => <HomeDrawerButtonTab {...props} />}
       screenOptions={{
-        tabBarScrollEnabled: true, // Enables horizontal scrolling
         tabBarItemStyle: { width: "auto" },
+        tabBarScrollEnabled: true, // Enables horizontal scrolling
         tabBarStyle: {
-          backgroundColor: useThemeColor("background"),
+          backgroundColor: useThemeColor(colors.background),
           elevation: 0, // removes drop shadow
         },
-        tabBarInactiveTintColor: useThemeColor("foreground"),
-        tabBarActiveTintColor: useThemeColor("background"),
+        tabBarInactiveTintColor: useThemeColor(colors.foreground),
+        tabBarActiveTintColor: useThemeColor(colors.background),
         tabBarIndicatorStyle: {
-          backgroundColor: useThemeColor("foreground"),
+          backgroundColor: useThemeColor(colors.foreground),
           height: "100%",
         },
       }}
@@ -52,12 +52,12 @@ function HomeDrawerButtonTab(props) {
   return (
     <ThemedView style={styles.headerRightIconsContainer}>
       <ThemedTouchableOpacity
-        onPress={() => navigation.getParent("HomeDrawer")?.openDrawer()}
         style={styles.headerLeftIcon}
+        onPress={() => navigation.getParent("HomeDrawer")?.openDrawer()}
       >
         <ThemedIcon IconComponent={Ionicons} name="compass-outline" size={24} />
-      </ThemedTouchableOpacity> 
-      <ThemedView style={{ flex: 1, marginLeft: screenWidth * 0.04 }}>
+      </ThemedTouchableOpacity>
+      <ThemedView style={{ flex: 1, marginLeft: 12 }}>
         <MaterialTopTabBar {...props} />
       </ThemedView>
     </ThemedView>

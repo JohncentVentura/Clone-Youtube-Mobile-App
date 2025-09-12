@@ -15,7 +15,7 @@ import {
 import { useThemeColor } from "../hooks/useThemeColor";
 import HomeTopTabs from "./HomeTopTabs";
 import HomeScreen from "../screens/HomeScreen";
-import { styles } from "../styles/styles";
+import { styles, textSizes, colors } from "../styles/styles";
 
 const Drawer = createDrawerNavigator();
 
@@ -24,25 +24,19 @@ export default function HomeDrawer() {
     <Drawer.Navigator
       id="HomeDrawer" //Used by HomeTopTab.js to navigate and open this drawer
       screenOptions={({ navigation }) => ({
-        drawerStyle: {
-          backgroundColor: useThemeColor("background"),
-          elevation: 0,
-        },
-        drawerInactiveTintColor: useThemeColor("foreground"),
-        drawerActiveBackgroundColor: useThemeColor("background"),
-        drawerActiveTintColor: useThemeColor("foreground"),
+        drawerStyle: { backgroundColor: useThemeColor(colors.background) },
+        drawerActiveBackgroundColor: useThemeColor(colors.background),
         drawerItemStyle: { borderRadius: 0 },
         headerStyle: {
-          backgroundColor: useThemeColor("background"),
+          backgroundColor: useThemeColor(colors.background),
           elevation: 0, // removes drop shadow
         },
-        headerTintColor: useThemeColor("foreground"),
         headerLeft: () => {
           return (
             <ThemedIcon
+              style={styles.headerLeftIcon}
               IconComponent={Ionicons}
               name="arrow-back"
-              style={styles.headerLeftIcon}
               onPress={() => navigation.goBack()}
             />
           );
@@ -74,27 +68,35 @@ export default function HomeDrawer() {
           drawerIcon: ({}) => {
             return (
               <ThemedIcon
+                color={colors.primary}
                 IconComponent={Fontisto}
                 name="youtube-play"
-                color={useThemeColor("primary")}
               />
             );
           },
           drawerLabel: ({}) => {
-            return <ThemedText type="title">Youtube</ThemedText>;
+            return (
+              <ThemedText size={textSizes.xl2} style={{ fontWeight: "bold" }}>
+                Youtube
+              </ThemedText>
+            );
           },
           headerLeft: () => {
             return (
               <ThemedIcon
+                style={styles.headerLeftIcon}
+                color={colors.primary}
                 IconComponent={Fontisto}
                 name="youtube-play"
-                style={styles.headerLeftIcon}
-                color={useThemeColor("primary")}
               />
             );
           },
           headerTitle: () => {
-            return <ThemedText type="title">Youtube</ThemedText>;
+            return (
+              <ThemedText size={textSizes.xl2} style={{ fontWeight: "bold" }}>
+                Youtube
+              </ThemedText>
+            );
           },
         }}
       />
@@ -111,7 +113,7 @@ export default function HomeDrawer() {
             );
           },
           drawerLabel: ({}) => {
-            return <ThemedText type="defaultSemiBold">Music</ThemedText>;
+            return <ThemedText style={{ fontWeight: "500" }}>Music</ThemedText>;
           },
         }}
       />
@@ -128,7 +130,9 @@ export default function HomeDrawer() {
             );
           },
           drawerLabel: ({}) => {
-            return <ThemedText type="defaultSemiBold">Movies</ThemedText>;
+            return (
+              <ThemedText style={{ fontWeight: "500" }}>Movies</ThemedText>
+            );
           },
         }}
       />
@@ -140,7 +144,7 @@ export default function HomeDrawer() {
             return <ThemedIcon IconComponent={MaterialIcons} name="live-tv" />;
           },
           drawerLabel: ({}) => {
-            return <ThemedText type="defaultSemiBold">Live</ThemedText>;
+            return <ThemedText style={{ fontWeight: "500" }}>Live</ThemedText>;
           },
         }}
       />
@@ -157,7 +161,9 @@ export default function HomeDrawer() {
             );
           },
           drawerLabel: ({}) => {
-            return <ThemedText type="defaultSemiBold">Gaming</ThemedText>;
+            return (
+              <ThemedText style={{ fontWeight: "500" }}>Gaming</ThemedText>
+            );
           },
         }}
       />
@@ -171,7 +177,7 @@ export default function HomeDrawer() {
             );
           },
           drawerLabel: ({}) => {
-            return <ThemedText type="defaultSemiBold">News</ThemedText>;
+            return <ThemedText style={{ fontWeight: "500" }}>News</ThemedText>;
           },
         }}
       />
@@ -185,7 +191,9 @@ export default function HomeDrawer() {
             );
           },
           drawerLabel: ({}) => {
-            return <ThemedText type="defaultSemiBold">Sports</ThemedText>;
+            return (
+              <ThemedText style={{ fontWeight: "500" }}>Sports</ThemedText>
+            );
           },
         }}
       />
@@ -202,7 +210,9 @@ export default function HomeDrawer() {
             );
           },
           drawerLabel: ({}) => {
-            return <ThemedText type="defaultSemiBold">Learning</ThemedText>;
+            return (
+              <ThemedText style={{ fontWeight: "500" }}>Learning</ThemedText>
+            );
           },
         }}
       />
@@ -215,7 +225,9 @@ export default function HomeDrawer() {
           },
           drawerLabel: ({}) => {
             return (
-              <ThemedText type="defaultSemiBold">Fashion & Beauty</ThemedText>
+              <ThemedText style={{ fontWeight: "500" }}>
+                Fashion & Beauty
+              </ThemedText>
             );
           },
         }}
