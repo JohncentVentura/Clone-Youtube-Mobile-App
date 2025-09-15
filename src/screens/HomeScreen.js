@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Button } from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
+import { ActivityIndicator, Button, StyleSheet } from "react-native";
+import Foundation from "@expo/vector-icons/Foundation";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Octicons from "@expo/vector-icons/Octicons";
@@ -18,6 +18,7 @@ import {
   HeaderNotificationIcon,
   HeaderSearchIcon,
   HeaderScreenShareIcon,
+  ThemedScrollView,
   HeaderCaptionIcon,
   HeaderSettingIcon,
 } from "../components/ThemedComponents";
@@ -41,10 +42,31 @@ const homeScreens = {
 };
 
 export default function HomeScreen() {
+  const bg = useThemeColor(colors.background);
+  const fg = useThemeColor(colors.foreground);
+
   return (
     <VideoStack.Navigator
-      screenOptions={{
+      screenOptions={({ navigation, route }) => ({
+        headerStyle: {
+          backgroundColor: bg,
+          elevation: 0,
+        },
+        headerTintColor: fg,
         headerLeft: () => {
+          return (
+            <ThemedIcon
+              style={styles.headerLeftIcon}
+              IconComponent={Ionicons}
+              name="arrow-back"
+              onPress={() => navigation.goBack()}
+            />
+          );
+        },
+        headerTitle: () => {
+          return null;
+        },
+        headerRight: () => {
           return (
             <HeaderRightIconsContainer>
               <HeaderScreenShareIcon
@@ -62,7 +84,7 @@ export default function HomeScreen() {
             </HeaderRightIconsContainer>
           );
         },
-      }}
+      })}
     >
       <VideoStack.Screen
         name={homeScreens.homeFlatListScreen}
@@ -108,14 +130,13 @@ export function HomeVideoScreen({ navigation, route }) {
   const videoUrl = video.url;
   const splitUrl = videoUrl.split("/");
   const slug = splitUrl[splitUrl.length - 2];
-  const videoTitle = slug.replace(/\d+/g, ""); // remove all digits
-  console.log(videoTitle);
+  const videoTitle = slug.replace(/\d+/g, ""); //remove all digits
+  //console.log(videoTitle);
 
   return (
     <ThemedView style={styles.homeContainer}>
       <ThemedView style={{ width: screenWidth, paddingHorizontal: 12 }}>
         <LargeVideoView style={{ marginBottom: 8 }} video={video} />
-
         <ThemedText
           style={{ marginBottom: 8, fontWeight: "bold" }}
           size={textSizes.xl}
@@ -123,6 +144,7 @@ export function HomeVideoScreen({ navigation, route }) {
           Titled {videoTitle}
         </ThemedText>
 
+        {/*ThemedView for total views, uploaded date, & ...more link*/}
         <ThemedView style={{ marginBottom: 8, flexDirection: "row" }}>
           <ThemedText color={colors.gray} size={textSizes.sm}>
             {video.id} views
@@ -134,9 +156,17 @@ export function HomeVideoScreen({ navigation, route }) {
           >
             1y ago
           </ThemedText>
-          <ThemedText size={textSizes.sm}>...more</ThemedText>
+          <ThemedText
+            size={textSizes.sm}
+            onPress={() => {
+              console.log("...more press");
+            }}
+          >
+            ...more
+          </ThemedText>
         </ThemedView>
 
+        {/*ThemedView for Channel image, channel name, subscribers, & subscribe button*/}
         <ThemedView
           style={{
             marginBottom: 8,
@@ -174,13 +204,12 @@ export function HomeVideoScreen({ navigation, route }) {
           </ThemedPressable>
         </ThemedView>
 
-        {/* TODO: Turn this into a ThemedScrollView to scroll it horizontally */}
-        <ThemedView
+        {/*ThemedScrollView for likes, shares, & other buttons */}
+        <ThemedScrollView
+          horizontal={true}
           style={{
             marginBottom: 8,
             width: screenWidth,
-            flexDirection: "row",
-            alignItems: "center",
           }}
         >
           <ThemedPressable
@@ -193,8 +222,8 @@ export function HomeVideoScreen({ navigation, route }) {
           >
             <ThemedIcon
               style={{ paddingRight: 10 }}
-              IconComponent={AntDesign}
-              name="like2"
+              IconComponent={Foundation}
+              name="like"
               size={14}
               onPress={() => console.log("Liked Press")}
             />
@@ -209,12 +238,10 @@ export function HomeVideoScreen({ navigation, route }) {
               style={{ paddingRight: 10, fontWeight: "500" }}
               color={colors.foreground}
               size={textSizes.xs}
-            >
-              |
-            </ThemedText>
+            ></ThemedText>
             <ThemedIcon
-              IconComponent={AntDesign}
-              name="dislike2"
+              IconComponent={Foundation}
+              name="dislike"
               size={14}
               onPress={() => console.log("Disliked Press")}
             />
@@ -270,7 +297,7 @@ export function HomeVideoScreen({ navigation, route }) {
               alignItems: "center",
             }}
             backgroundColor={colors.gray}
-            onPress={() => console.log("Remix Press")}
+            onPress={() => console.log("Download Press")}
           >
             <ThemedIcon IconComponent={Octicons} name="download" size={16} />
             <ThemedText
@@ -288,19 +315,46 @@ export function HomeVideoScreen({ navigation, route }) {
               alignItems: "center",
             }}
             backgroundColor={colors.gray}
-            onPress={() => console.log("Remix Press")}
+            onPress={() => console.log("Save Press")}
           >
-            <ThemedIcon IconComponent={Octicons} name="download" size={16} />
+            <ThemedIcon
+              IconComponent={Ionicons}
+              name="bookmark-outline"
+              size={16}
+            />
             <ThemedText
               style={{ paddingLeft: 4, fontWeight: "500" }}
               color={colors.foreground}
               size={textSizes.xs}
             >
-              Template
+              Save
             </ThemedText>
           </ThemedPressable>
-        </ThemedView>
+          <ThemedPressable
+            style={{
+              marginRight: 8,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+            backgroundColor={colors.gray}
+            onPress={() => console.log("Report Press")}
+          >
+            <ThemedIcon
+              IconComponent={Ionicons}
+              name="flag-outline"
+              size={16}
+            />
+            <ThemedText
+              style={{ paddingLeft: 4, fontWeight: "500" }}
+              color={colors.foreground}
+              size={textSizes.xs}
+            >
+              Report
+            </ThemedText>
+          </ThemedPressable>
+        </ThemedScrollView>
 
+        {/*ThemedView for comments*/}
         <ThemedView style={{ marginBottom: 8 }} backgroundColor={colors.gray}>
           <ThemedView
             style={{ flexDirection: "row", alignItems: "center" }}

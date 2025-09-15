@@ -10,12 +10,47 @@ import YouStack from "./YouStack";
 import { colors, textSizes } from "../styles/styles";
 
 const BottomTab = createBottomTabNavigator();
-const bottomTabNames = [
-  "HomeDrawer",
-  "ShortsStack",
-  "UploadStack",
-  "SubscriptionsStack",
-  "YouStack",
+const bottomTabItems = [
+  {
+    route: "HomeDrawer",
+    activeIconName: "home-sharp",
+    inactiveIconName: "home-outline",
+    activeLabel: "Welcome",
+    inactiveLabel: "Home",
+    component: HomeDrawer,
+  },
+  {
+    route: "ShortsStack",
+    activeIconName: "videocam",
+    inactiveIconName: "videocam-outline",
+    activeLabel: "Shorter",
+    inactiveLabel: "Shorts",
+    component: ShortsStack,
+  },
+  {
+    route: "UploadStack",
+    activeIconName: "add-circle",
+    inactiveIconName: "add-circle-outline",
+    activeLabel: "But I'm shy",
+    inactiveLabel: "Upload",
+    component: UploadStack,
+  },
+  {
+    route: "SubscriptionsStack",
+    activeIconName: "albums",
+    inactiveIconName: "albums-outline",
+    activeLabel: "Please like &",
+    inactiveLabel: "Subscriptions",
+    component: SubscriptionsStack,
+  },
+  {
+    route: "YouStack",
+    activeIconName: "person-circle",
+    inactiveIconName: "person-circle-outline",
+    activeLabel: "Who? Me?",
+    inactiveLabel: "You",
+    component: YouStack,
+  },
 ];
 
 export default function MainNavigator() {
@@ -25,66 +60,64 @@ export default function MainNavigator() {
         headerShown: false,
         tabBarStyle: { backgroundColor: useThemeColor(colors.background) },
         tabBarIcon: ({ focused }) => {
-          let iconName;
+          let activeIconName, inactiveIconName;
 
-          if (route.name === bottomTabNames[0]) {
-            iconName = focused ? "home-sharp" : "home-outline";
-          } else if (route.name === bottomTabNames[1]) {
-            iconName = focused ? "videocam" : "videocam-outline";
-          } else if (route.name === bottomTabNames[2]) {
-            iconName = focused ? "add-circle" : "add-circle-outline";
-          } else if (route.name === bottomTabNames[3]) {
-            iconName = focused ? "albums" : "albums-outline";
-          } else if (route.name === bottomTabNames[4]) {
-            iconName = focused ? "person-circle" : "person-circle-outline";
-          }
+          bottomTabItems.map((item) => {
+            if (route.name === item.route) {
+              activeIconName = item.activeIconName;
+              inactiveIconName = item.inactiveIconName;
+            }
+          });
 
           return (
             <ThemedIcon
               color={focused ? colors.primary : colors.gray}
               IconComponent={Ionicons}
-              name={iconName}
+              name={focused ? activeIconName : inactiveIconName}
             />
           );
         },
         tabBarLabel: ({ focused }) => {
-          let labelName;
+          let label;
 
-          if (route.name === bottomTabNames[0]) {
-            labelName = focused ? "Welcome" : "Home";
-          } else if (route.name === bottomTabNames[1]) {
-            labelName = focused ? "Long" : "Shorts";
-          } else if (route.name === bottomTabNames[2]) {
-            labelName = focused ? "Up" : "Upload";
-          } else if (route.name === bottomTabNames[3]) {
-            labelName = focused ? "Sub" : "Subscriptions";
-          } else if (route.name === bottomTabNames[4]) {
-            labelName = focused ? "Me" : "You";
-          }
+          bottomTabItems.map((item) => {
+            if (route.name === item.route) {
+              label = focused ? item.activeLabel : item.inactiveLabel;
+            }
+          });
 
           return (
             <ThemedText
               color={focused ? colors.foreground : colors.gray}
               size={textSizes.xs2}
             >
-              {labelName}
+              {label}
             </ThemedText>
           );
         },
       })}
     >
-      <BottomTab.Screen name={bottomTabNames[0]} component={HomeDrawer} />
-      <BottomTab.Screen name={bottomTabNames[1]} component={ShortsStack} />
       <BottomTab.Screen
-        name={bottomTabNames[2]}
-        component={UploadStack}
-        //options={{tabBarLabel: () => null}}
+        name={bottomTabItems[0].route}
+        component={bottomTabItems[0].component}
       />
       <BottomTab.Screen
-        name={bottomTabNames[3]}
-        component={SubscriptionsStack}
+        name={bottomTabItems[1].route}
+        component={bottomTabItems[1].component}
       />
-      <BottomTab.Screen name={bottomTabNames[4]} component={YouStack} />
+      <BottomTab.Screen
+        name={bottomTabItems[2].route}
+        component={bottomTabItems[2].component}
+        //options={{tabBarLabel: () => null}} //To hide the label
+      />
+      <BottomTab.Screen
+        name={bottomTabItems[3].route}
+        component={bottomTabItems[3].component}
+      />
+      <BottomTab.Screen
+        name={bottomTabItems[4].route}
+        component={bottomTabItems[4].component}
+      />
     </BottomTab.Navigator>
   );
 }

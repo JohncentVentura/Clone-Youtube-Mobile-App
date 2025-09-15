@@ -138,7 +138,7 @@ export function LargeVideoView({ style, video }) {
 }
 
 export function LargeVideoFlatList({ videos, navigation, homeScreens }) {
-  console.log(homeScreens);
+  //console.log(homeScreens);
 
   return (
     <ThemedFlatList

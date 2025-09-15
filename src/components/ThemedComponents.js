@@ -1,10 +1,11 @@
-import AntDesign from "@expo/vector-icons/AntDesign";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import {
   FlatList,
   Pressable,
+  ScrollView,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -36,11 +37,11 @@ export function ThemedFlatList({
 }
 
 /*
-*
-*
-* TODO: Use textSize for the sizes of the ThemedIcon
-*
-*/
+ *
+ *
+ * TODO: Use textSize for the sizes of the ThemedIcon
+ *
+ */
 
 //Requires IconComponent and name
 export function ThemedIcon({
@@ -89,6 +90,33 @@ export function ThemedPressable({
     >
       {children}
     </Pressable>
+  );
+}
+
+export function ThemedScrollView({
+  style,
+  backgroundColor,
+  children,
+  ...otherProps
+}) {
+  return (
+    <ScrollView
+      style={[
+        {
+          backgroundColor:
+            useThemeColor(backgroundColor) || useThemeColor(colors.background),
+        },
+        style,
+      ]}
+      contentContainerStyle={StyleSheet.create({
+        flexDirection: "row",
+        alignItems: "center",
+      })}
+      scrollEnabled={true}
+      {...otherProps}
+    >
+      {children}
+    </ScrollView>
   );
 }
 
@@ -215,10 +243,10 @@ export function HeaderScreenShareIcon({ style, size, onPress, ...otherProps }) {
 
 export function HeaderSearchIcon({ style, size, onPress, ...otherProps }) {
   return (
-    <AntDesign
+    <Ionicons
       style={style}
       color={useThemeColor(colors.foreground)}
-      name="search1"
+      name="search"
       size={size || 24}
       onPress={onPress}
       {...otherProps}
