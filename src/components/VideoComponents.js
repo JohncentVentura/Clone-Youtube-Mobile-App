@@ -1,78 +1,20 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
-import { useIsFocused } from "@react-navigation/native";
-import { VideoView, useVideoPlayer } from "expo-video";
-import {
-  styles,
-  screenWidth,
-  screenHeight,
-  textSizes,
-  colors,
-} from "../styles/styles";
-import {
-  ThemedView,
-  ThemedFlatList,
-  ThemedText,
-  ThemedTouchableOpacity,
-  ThemedIcon,
-} from "../components/ThemedComponents";
-
-import YoutubePlayer from "react-native-youtube-iframe";
-import { useThemeColor } from "../hooks/useThemeColor";
-import { useNavigation } from "@react-navigation/native";
-import { HomeChannelImage } from "../components/ImageComponents";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useIsFocused } from "@react-navigation/native";
+import { useVideoPlayer, VideoView } from "expo-video";
+import { useCallback, useEffect, useState } from "react";
+import { HomeChannelImage } from "../components/ImageComponents";
+import {
+  ThemedFlatList,
+  ThemedIcon,
+  ThemedPressable,
+  ThemedText,
+  ThemedView,
+} from "../components/ThemedComponents";
+import { styles, screenWidth, screenHeight } from "../styles/styles";
+import { useTheme } from "../styles/ThemeContext";
 
-/*
-import { Video } from "expo-av";
-import { ThemedTouchableOpacity } from './ThemedComponents';
-export function ExpoAVVideo({ style, source, thumbnail }) {
-  const [showThumbnail, setShowThumbnail] = useState(true);
-  const videoRef = useRef(null);
-  const isFocused = useIsFocused();
-
-  // Handle focus change: play or pause video
-  useEffect(() => {
-    if (isFocused) {
-      videoRef.current?.playAsync();
-      setShowThumbnail(false);
-    } else {
-      videoRef.current?.pauseAsync();
-      setShowThumbnail(true);
-    }
-  }, [isFocused]);
-
-  // Handle video finish
-  const handlePlaybackStatusUpdate = (status) => {
-    if (status.didJustFinish) {
-      setShowThumbnail(true);
-    }
-  };
-
-  return (
-    <ThemedView style={[styles.largeVideo, style]}>
-      {showThumbnail ? (
-        <Image
-          style={{ width: "100%", height: "100%" }}
-          source={{ uri: thumbnail }}
-          resizeMode="cover"
-        />
-      ) : (
-        <Video
-          style={{ width: "100%", height: "100%" }}
-          source={{ uri: source }}
-          ref={videoRef}
-          resizeMode="cover"
-          shouldPlay={isFocused}
-          isLooping={false}
-          onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-        />
-      )}
-    </ThemedView>
-  );
-}
-*/
-
+//Deprecated: imports and function for using Youtube API
+import YoutubePlayer from "react-native-youtube-iframe";
 export function RNYIYoutubePlayer({ style, videoId }) {
   const [playing, setPlaying] = useState(false);
 
@@ -97,6 +39,7 @@ export function RNYIYoutubePlayer({ style, videoId }) {
 }
 
 export function LargeVideoView({ style, video }) {
+  const { colors } = useTheme();
   const isFocused = useIsFocused();
 
   // pick first playable MP4
@@ -109,7 +52,6 @@ export function LargeVideoView({ style, video }) {
     player.loop = false;
   });
 
-  //*
   useEffect(() => {
     if (isFocused) {
       player.play();
@@ -117,27 +59,27 @@ export function LargeVideoView({ style, video }) {
       player.pause();
     }
   }, [isFocused]);
-  //*/
 
   return (
     <VideoView
+      nativeControls={false}
+      player={player}
+      resizeMode="stretch"
       style={[
         {
           width: screenWidth,
           height: screenHeight * 0.25,
-          backgroundColor: useThemeColor("background"),
+          backgroundColor: colors.background,
           alignSelf: "center",
         },
         style,
       ]}
-      resizeMode="stretch"
-      player={player}
-      nativeControls={false}
     />
   );
 }
 
 export function LargeVideoFlatList({ videos, navigation, homeScreens }) {
+  const { colors, fontSizes } = useTheme();
   //console.log(homeScreens);
 
   return (
@@ -146,13 +88,13 @@ export function LargeVideoFlatList({ videos, navigation, homeScreens }) {
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
         <ThemedView style={styles.homeVideoContainer}>
-          <ThemedTouchableOpacity
+          <ThemedPressable
             onPress={() =>
               navigation.navigate(homeScreens.homeVideoScreen, { video: item })
             }
           >
             <LargeVideoView video={item} />
-          </ThemedTouchableOpacity>
+          </ThemedPressable>
 
           <ThemedView style={styles.homeVideoInfoContainer}>
             <ThemedView style={{ flex: 1 }}>
@@ -161,10 +103,12 @@ export function LargeVideoFlatList({ videos, navigation, homeScreens }) {
               />
             </ThemedView>
             <ThemedView style={{ flex: 5 }}>
-              <ThemedText size={textSizes.xl} style={{ fontWeight: "600" }}>
+              <ThemedText style={{ fontSize: fontSizes.xl, fontWeight: "600" }}>
                 Video Title
               </ThemedText>
-              <ThemedText size={textSizes.xs} color={colors.gray}>
+              <ThemedText
+                style={{ color: colors.gray, fontSize: fontSizes.xs }}
+              >
                 Channel Name * {item.id} Views * Uploaded Date
               </ThemedText>
             </ThemedView>

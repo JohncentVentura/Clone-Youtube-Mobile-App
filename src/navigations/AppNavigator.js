@@ -1,14 +1,17 @@
-import { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import MainNavigator from "./MainNavigator";
+import { useState } from "react";
+import { ThemeProvider } from "../styles/ThemeContext";
 import AuthNavigator from "./AuthNavigator";
+import MainNavigator from "./MainNavigator";
 
 export default function AppNavigator() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-  
+
   return (
-    <NavigationContainer>
-      {isLoggedIn ? <MainNavigator /> : <AuthNavigator />}
-    </NavigationContainer>
+    <ThemeProvider>
+      <NavigationContainer>
+        {isLoggedIn ? <MainNavigator /> : <AuthNavigator />}
+      </NavigationContainer>
+    </ThemeProvider>
   );
 }

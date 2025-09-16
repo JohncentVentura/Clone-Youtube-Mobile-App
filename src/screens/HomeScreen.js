@@ -1,39 +1,63 @@
-import { useEffect, useState } from "react";
-import { ActivityIndicator, Button, StyleSheet } from "react-native";
 import Foundation from "@expo/vector-icons/Foundation";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Octicons from "@expo/vector-icons/Octicons";
-import { styles, screenWidth, screenHeight } from "../styles/styles";
-import { fetchTrendingYoutubeVideos } from "../api/youtubeService";
+import { useNavigation } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { useEffect, useState } from "react";
+import { ActivityIndicator } from "react-native";
+import { pexelsAPIfetchVideos } from "../api/pexelsAPI";
 import { HomeChannelImage } from "../components/ImageComponents";
 import {
-  ThemedView,
-  ThemedFlatList,
-  ThemedText,
-  ThemedTouchableOpacity,
-  ThemedIcon,
-  ThemedPressable,
   HeaderRightIconsContainer,
-  HeaderNotificationIcon,
-  HeaderSearchIcon,
-  HeaderScreenShareIcon,
-  ThemedScrollView,
   HeaderCaptionIcon,
   HeaderSettingIcon,
+  HeaderScreenShareIcon,
+  ThemedButton,
+  ThemedIcon,
+  ThemedPressable,
+  ThemedRowScrollView,
+  ThemedText,
+  ThemedView,
 } from "../components/ThemedComponents";
 import {
-  ExpoAVVideo,
   RNYIYoutubePlayer,
   LargeVideoView,
   LargeVideoFlatList,
 } from "../components/VideoComponents";
-import { useThemeColor } from "../hooks/useThemeColor";
-import { useFetch } from "../hooks/useFetch";
-import { pexelsAPIfetchVideos } from "../api/pexelsAPI";
-import { createStackNavigator } from "@react-navigation/stack";
-import { useNavigation } from "@react-navigation/native";
-import { colors, textSizes } from "../styles/styles";
+import { styles, screenWidth } from "../styles/styles";
+import { useTheme } from "../styles/ThemeContext";
+
+//Deprecated: Imports and export for using youtube API
+import { fetchTrendingYoutubeVideos } from "../api/youtubeService";
+import { useFetch } from "../api/useFetch";
+export function RNYIYoutubePlayerFlatList() {
+  const { data, loading, error } = useFetch(fetchTrendingYoutubeVideos);
+
+  if (loading) {
+    console.log("Loading...");
+  } else if (data) {
+    console.log(data);
+  } else if (error) {
+    console.log(error);
+  }
+
+  return (
+    <>
+      {!data ? (
+        <ActivityIndicator size="large" />
+      ) : (
+        <ThemedView style={styles.homeContainer}>
+          <RNYIYoutubePlayer videoId={data?.items[0].id} />
+          <RNYIYoutubePlayer videoId={data?.items[1].id} />
+          <RNYIYoutubePlayer videoId={data?.items[2].id} />
+          <RNYIYoutubePlayer videoId={data?.items[3].id} />
+          <RNYIYoutubePlayer videoId={data?.items[4].id} />
+        </ThemedView>
+      )}
+    </>
+  );
+}
 
 const VideoStack = createStackNavigator();
 const homeScreens = {
@@ -42,17 +66,16 @@ const homeScreens = {
 };
 
 export default function HomeScreen() {
-  const bg = useThemeColor(colors.background);
-  const fg = useThemeColor(colors.foreground);
+  const { colors } = useTheme();
 
   return (
     <VideoStack.Navigator
-      screenOptions={({ navigation, route }) => ({
+      screenOptions={({ navigation }) => ({
         headerStyle: {
-          backgroundColor: bg,
+          backgroundColor: colors.background,
           elevation: 0,
         },
-        headerTintColor: fg,
+        headerTintColor: colors.foreground,
         headerLeft: () => {
           return (
             <ThemedIcon
@@ -124,12 +147,16 @@ export function HomeFlatListScreen() {
   );
 }
 
-export function HomeVideoScreen({ navigation, route }) {
+export function HomeVideoScreen({ route }) {
+  const { colors, fontSizes, iconSizes } = useTheme();
   const { video } = route.params;
 
   const videoUrl = video.url;
+  //console.log("videoUrl: " + videoUrl);
   const splitUrl = videoUrl.split("/");
+  //console.log("splitUrl: " + splitUrl);
   const slug = splitUrl[splitUrl.length - 2];
+  //console.log("slug: " + slug);
   const videoTitle = slug.replace(/\d+/g, ""); //remove all digits
   //console.log(videoTitle);
 
@@ -138,26 +165,28 @@ export function HomeVideoScreen({ navigation, route }) {
       <ThemedView style={{ width: screenWidth, paddingHorizontal: 12 }}>
         <LargeVideoView style={{ marginBottom: 8 }} video={video} />
         <ThemedText
-          style={{ marginBottom: 8, fontWeight: "bold" }}
-          size={textSizes.xl}
+          style={{
+            marginBottom: 8,
+            fontSize: fontSizes.xl,
+            fontWeight: "bold",
+          }}
         >
           Titled {videoTitle}
         </ThemedText>
 
         {/*ThemedView for total views, uploaded date, & ...more link*/}
         <ThemedView style={{ marginBottom: 8, flexDirection: "row" }}>
-          <ThemedText color={colors.gray} size={textSizes.sm}>
+          <ThemedText style={{ color: colors.gray, fontSize: fontSizes.sm }}>
             {video.id} views
           </ThemedText>
           <ThemedText
-            style={{ marginHorizontal: 8 }}
+            style={{ fontSize: fontSizes.sm, marginHorizontal: 8 }}
             color={colors.gray}
-            size={textSizes.sm}
           >
             1y ago
           </ThemedText>
           <ThemedText
-            size={textSizes.sm}
+            style={{ fontSize: fontSizes.sm }}
             onPress={() => {
               console.log("...more press");
             }}
@@ -170,7 +199,7 @@ export function HomeVideoScreen({ navigation, route }) {
         <ThemedView
           style={{
             marginBottom: 8,
-            width: screenWidth,
+            width: "100%",
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
@@ -188,186 +217,183 @@ export function HomeVideoScreen({ navigation, route }) {
             <ThemedText style={{ marginHorizontal: 8, fontWeight: "500" }}>
               Channel Name
             </ThemedText>
-            <ThemedText color={colors.gray} size={textSizes.sm}>
+            <ThemedText style={{ color: colors.gray, fontSize: fontSizes.sm }}>
               {video.video_pictures[0].id}k
             </ThemedText>
           </ThemedView>
-          <ThemedPressable>
+          <ThemedButton>
             <ThemedText
-              style={{ fontWeight: "500" }}
-              color={colors.background}
-              size={textSizes.xs}
+              style={{
+                color: colors.background,
+                fontSize: fontSizes.xs,
+                fontWeight: "500",
+              }}
               onPress={() => console.log("Subscribe Press")}
             >
               Subscribe
             </ThemedText>
-          </ThemedPressable>
+          </ThemedButton>
         </ThemedView>
 
         {/*ThemedScrollView for likes, shares, & other buttons */}
-        <ThemedScrollView
-          horizontal={true}
-          style={{
-            marginBottom: 8,
-            width: screenWidth,
-          }}
-        >
-          <ThemedPressable
-            style={{
-              marginRight: 8,
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-            backgroundColor={colors.gray}
-          >
+        <ThemedRowScrollView style={{ marginBottom: 8 }}>
+          <ThemeGrayButton style={{ marginRight: 8 }}>
             <ThemedIcon
               style={{ paddingRight: 10 }}
               IconComponent={Foundation}
               name="like"
-              size={14}
+              size={iconSizes.xs}
               onPress={() => console.log("Liked Press")}
             />
             <ThemedText
-              style={{ paddingRight: 10, fontWeight: "500" }}
-              color={colors.foreground}
-              size={textSizes.xs}
+              style={{
+                paddingRight: 10,
+                color: colors.foreground,
+                fontSize: fontSizes.xs,
+                fontWeight: "500",
+              }}
             >
               {video.duration}
             </ThemedText>
             <ThemedText
-              style={{ paddingRight: 10, fontWeight: "500" }}
-              color={colors.foreground}
-              size={textSizes.xs}
-            ></ThemedText>
+              style={{
+                paddingRight: 10,
+                colors: colors.foreground,
+                fontSize: fontSizes.xs,
+                fontWeight: "500",
+              }}
+            >
+              |
+            </ThemedText>
             <ThemedIcon
               IconComponent={Foundation}
               name="dislike"
-              size={14}
+              size={iconSizes.xs}
               onPress={() => console.log("Disliked Press")}
             />
-          </ThemedPressable>
-          <ThemedPressable
-            style={{
-              marginRight: 8,
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-            backgroundColor={colors.gray}
+          </ThemeGrayButton>
+          <ThemeGrayButton
+            style={{ marginRight: 8 }}
             onPress={() => console.log("Share Press")}
           >
             <ThemedIcon
               IconComponent={MaterialCommunityIcons}
               name="share"
-              size={16}
+              size={iconSizes.xs}
             />
             <ThemedText
-              style={{ paddingLeft: 2, fontWeight: "500" }}
-              color={colors.foreground}
-              size={textSizes.xs}
+              style={{
+                paddingLeft: 2,
+                color: colors.foreground,
+                fontSize: fontSizes.xs,
+                fontWeight: "500",
+              }}
             >
               Share
             </ThemedText>
-          </ThemedPressable>
-          <ThemedPressable
-            style={{
-              marginRight: 8,
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-            backgroundColor={colors.gray}
+          </ThemeGrayButton>
+          <ThemeGrayButton
+            style={{ marginRight: 8 }}
             onPress={() => console.log("Remix Press")}
           >
             <ThemedIcon
               IconComponent={Ionicons}
               name="videocam-outline"
-              size={16}
+              size={iconSizes.xs}
             />
             <ThemedText
-              style={{ paddingLeft: 4, fontWeight: "500" }}
-              color={colors.foreground}
-              size={textSizes.xs}
+              style={{
+                paddingLeft: 4,
+                color: colors.foreground,
+                fontSize: fontSizes.xs,
+                fontWeight: "500",
+              }}
             >
               Remix
             </ThemedText>
-          </ThemedPressable>
-          <ThemedPressable
-            style={{
-              marginRight: 8,
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-            backgroundColor={colors.gray}
+          </ThemeGrayButton>
+          <ThemeGrayButton
+            style={{ marginRight: 8 }}
             onPress={() => console.log("Download Press")}
           >
-            <ThemedIcon IconComponent={Octicons} name="download" size={16} />
+            <ThemedIcon
+              IconComponent={Octicons}
+              name="download"
+              size={iconSizes.xs}
+            />
             <ThemedText
-              style={{ paddingLeft: 4, fontWeight: "500" }}
-              color={colors.foreground}
-              size={textSizes.xs}
+              style={{
+                paddingLeft: 4,
+                color: colors.foreground,
+                fontSize: fontSizes.xs,
+                fontWeight: "500",
+              }}
             >
               Download
             </ThemedText>
-          </ThemedPressable>
-          <ThemedPressable
-            style={{
-              marginRight: 8,
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-            backgroundColor={colors.gray}
+          </ThemeGrayButton>
+          <ThemeGrayButton
+            style={{ marginRight: 8 }}
             onPress={() => console.log("Save Press")}
           >
             <ThemedIcon
               IconComponent={Ionicons}
               name="bookmark-outline"
-              size={16}
+              size={iconSizes.xs}
             />
             <ThemedText
-              style={{ paddingLeft: 4, fontWeight: "500" }}
-              color={colors.foreground}
-              size={textSizes.xs}
+              style={{
+                paddingLeft: 4,
+                color: colors.foreground,
+                fontSize: fontSizes.xs,
+                fontWeight: "500",
+              }}
             >
               Save
             </ThemedText>
-          </ThemedPressable>
-          <ThemedPressable
-            style={{
-              marginRight: 8,
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-            backgroundColor={colors.gray}
+          </ThemeGrayButton>
+          <ThemeGrayButton
+            style={{ marginRight: 8 }}
             onPress={() => console.log("Report Press")}
           >
             <ThemedIcon
               IconComponent={Ionicons}
               name="flag-outline"
-              size={16}
+              size={iconSizes.xs}
             />
             <ThemedText
-              style={{ paddingLeft: 4, fontWeight: "500" }}
-              color={colors.foreground}
-              size={textSizes.xs}
+              style={{
+                paddingLeft: 4,
+                color: colors.foreground,
+                fontSize: fontSizes.xs,
+                fontWeight: "500",
+              }}
             >
               Report
             </ThemedText>
-          </ThemedPressable>
-        </ThemedScrollView>
+          </ThemeGrayButton>
+        </ThemedRowScrollView>
 
         {/*ThemedView for comments*/}
-        <ThemedView style={{ marginBottom: 8 }} backgroundColor={colors.gray}>
+        <ThemedView style={{ marginBottom: 8, backgroundColor: colors.gray }}>
           <ThemedView
-            style={{ flexDirection: "row", alignItems: "center" }}
-            backgroundColor={colors.gray}
+            style={{
+              backgroundColor: colors.gray,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
           >
             <ThemedText style={{ paddingRight: 6, fontWeight: "500" }}>
               Comments
             </ThemedText>
-            <ThemedText size={textSizes.sm}>5.1k</ThemedText>
+            <ThemedText size={fontSizes.sm}>5.1k</ThemedText>
           </ThemedView>
           <ThemedView
-            style={{ paddingHorizontal: 8, flexDirection: "row" }}
-            backgroundColor={colors.gray}
+            style={{
+              paddingHorizontal: 8,
+              backgroundColor: colors.gray,
+              flexDirection: "row",
+            }}
           >
             <HomeChannelImage
               style={{ marginRight: 8 }}
@@ -381,93 +407,22 @@ export function HomeVideoScreen({ navigation, route }) {
   );
 }
 
-export function HardCodedVideosFlatList() {
-  const hardCodedVideos = [
-    {
-      id: "1",
-      source: "https://www.pexels.com/download/video/3843091/",
-      thumbnail:
-        "https://images.pexels.com/videos/3843091/clouds-country-hiking-mountain-3843091.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    },
-    {
-      id: "2",
-      source: "https://www.pexels.com/download/video/3843091/",
-      thumbnail:
-        "https://images.pexels.com/videos/3843091/clouds-country-hiking-mountain-3843091.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    },
-    {
-      id: "3",
-      source: "https://www.pexels.com/download/video/3843091/",
-      thumbnail:
-        "https://images.pexels.com/videos/3843091/clouds-country-hiking-mountain-3843091.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    },
-    {
-      id: "4",
-      source: "https://www.pexels.com/download/video/3843091/",
-      thumbnail:
-        "https://images.pexels.com/videos/3843091/clouds-country-hiking-mountain-3843091.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    },
-  ];
+export function ThemeGrayButton({ style, children, ...rest }) {
+  const { colors } = useTheme();
 
   return (
-    <ThemedView style={styles.homeContainer}>
-      <ThemedFlatList
-        data={hardCodedVideos}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <ThemedView style={styles.homeVideoContainer}>
-            <ExpoAVVideo source={item.source} thumbnail={item.thumbnail} />
-            <ThemedView style={styles.homeVideoInfoContainer}>
-              <HomeChannelImage
-                source={{
-                  uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjIDlX73Bezvep3MYr26IQSFBElpVGpNW0QAS6nsZdgpffU-ptjpyjccu-PUz6J2E3J_Y&usqp=CAU",
-                  //uri: "https://www.youtube.com/watch?v=" + data.items[0].id
-                }}
-                style={{ flex: 2 }}
-                resizeMode="stretch"
-              />
-              <ThemedView style={{ flex: 10 }}>
-                <ThemedText type="title">Video Title</ThemedText>
-                <ThemedText type="small">
-                  Channel Name * Views Count * Uploaded Date
-                </ThemedText>
-              </ThemedView>
-              <ThemedIcon
-                IconComponent={MaterialCommunityIcons}
-                name="dots-vertical"
-              />
-            </ThemedView>
-          </ThemedView>
-        )}
-      />
-    </ThemedView>
-  );
-}
-
-export function RNYIYoutubePlayerFlatList() {
-  const { data, loading, error } = useFetch(fetchTrendingYoutubeVideos);
-
-  if (loading) {
-    console.log("Loading...");
-  } else if (data) {
-    console.log(data);
-  } else if (error) {
-    console.log(error);
-  }
-
-  return (
-    <>
-      {!data ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <ThemedView style={styles.homeContainer}>
-          <RNYIYoutubePlayer videoId={data?.items[0].id} />
-          <RNYIYoutubePlayer videoId={data?.items[1].id} />
-          <RNYIYoutubePlayer videoId={data?.items[2].id} />
-          <RNYIYoutubePlayer videoId={data?.items[3].id} />
-          <RNYIYoutubePlayer videoId={data?.items[4].id} />
-        </ThemedView>
-      )}
-    </>
+    <ThemedButton
+      style={[
+        {
+          backgroundColor: colors.gray,
+          flexDirection: "row",
+          alignItems: "center",
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      {children}
+    </ThemedButton>
   );
 }

@@ -1,15 +1,17 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { useThemeColor } from "../hooks/useThemeColor";
 import ShortsScreen from "../screens/ShortsScreen";
+import { useTheme } from "../styles/ThemeContext";
 
 const Stack = createStackNavigator();
 
 export default function ShortsStack() {
+  const { colors } = useTheme();
+
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: useThemeColor("background") },
-        headerTintColor: useThemeColor("foreground"),
+        headerStyle: { backgroundColor: colors.background },
+        headerTintColor: colors.foreground,
       }}
     >
       <Stack.Screen name="Shorts" component={ShortsScreen} />

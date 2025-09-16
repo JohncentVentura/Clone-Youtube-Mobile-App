@@ -5,19 +5,20 @@ import {
 } from "@react-navigation/material-top-tabs";
 import { useNavigation } from "@react-navigation/native";
 import {
-  ThemedFlatList,
   ThemedIcon,
+  ThemedPressable,
   ThemedText,
-  ThemedTouchableOpacity,
   ThemedView,
 } from "../components/ThemedComponents";
-import { useThemeColor } from "../hooks/useThemeColor";
 import HomeScreen from "../screens/HomeScreen";
-import { styles, screenHeight, screenWidth, colors } from "../styles/styles";
+import { styles } from "../styles/styles";
+import { useTheme } from "../styles/ThemeContext";
 
 const TopTab = createMaterialTopTabNavigator();
 
 export default function HomeTopTabs() {
+  const { colors } = useTheme();
+
   return (
     <TopTab.Navigator
       tabBar={(props) => <HomeDrawerButtonTab {...props} />}
@@ -25,13 +26,13 @@ export default function HomeTopTabs() {
         tabBarItemStyle: { width: "auto" },
         tabBarScrollEnabled: true, // Enables horizontal scrolling
         tabBarStyle: {
-          backgroundColor: useThemeColor(colors.background),
+          backgroundColor: colors.background,
           elevation: 0, // removes drop shadow
         },
-        tabBarInactiveTintColor: useThemeColor(colors.foreground),
-        tabBarActiveTintColor: useThemeColor(colors.background),
+        tabBarInactiveTintColor: colors.foreground,
+        tabBarActiveTintColor: colors.background,
         tabBarIndicatorStyle: {
-          backgroundColor: useThemeColor(colors.foreground),
+          backgroundColor: colors.foreground,
           height: "100%",
         },
       }}
@@ -51,12 +52,15 @@ function HomeDrawerButtonTab(props) {
 
   return (
     <ThemedView style={styles.headerRightIconsContainer}>
-      <ThemedTouchableOpacity
-        style={styles.headerLeftIcon}
+      <ThemedPressable
+        style={[
+          styles.headerLeftIcon,
+          { paddingHorizontal: 0, paddingVertical: 0 },
+        ]}
         onPress={() => navigation.getParent("HomeDrawer")?.openDrawer()}
       >
-        <ThemedIcon IconComponent={Ionicons} name="compass-outline" size={24} />
-      </ThemedTouchableOpacity>
+        <ThemedIcon IconComponent={Ionicons} name="compass-outline" />
+      </ThemedPressable>
       <ThemedView style={{ flex: 1, marginLeft: 12 }}>
         <MaterialTopTabBar {...props} />
       </ThemedView>

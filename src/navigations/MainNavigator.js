@@ -1,13 +1,12 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { ThemedIcon, ThemedText } from "../components/ThemedComponents";
-import { useThemeColor } from "../hooks/useThemeColor";
+import { useTheme } from "../styles/ThemeContext";
 import HomeDrawer from "./HomeDrawer";
 import ShortsStack from "./ShortsStack";
 import UploadStack from "./UploadStack";
 import SubscriptionsStack from "./SubscriptionsStack";
 import YouStack from "./YouStack";
-import { colors, textSizes } from "../styles/styles";
 
 const BottomTab = createBottomTabNavigator();
 const bottomTabItems = [
@@ -54,11 +53,13 @@ const bottomTabItems = [
 ];
 
 export default function MainNavigator() {
+  const { colors, fontSizes } = useTheme();
+
   return (
     <BottomTab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarStyle: { backgroundColor: useThemeColor(colors.background) },
+        tabBarStyle: { backgroundColor: colors.background },
         tabBarIcon: ({ focused }) => {
           let activeIconName, inactiveIconName;
 
@@ -71,9 +72,9 @@ export default function MainNavigator() {
 
           return (
             <ThemedIcon
-              color={focused ? colors.primary : colors.gray}
               IconComponent={Ionicons}
               name={focused ? activeIconName : inactiveIconName}
+              color={focused ? colors.primary : colors.gray}
             />
           );
         },
@@ -88,8 +89,10 @@ export default function MainNavigator() {
 
           return (
             <ThemedText
-              color={focused ? colors.foreground : colors.gray}
-              size={textSizes.xs2}
+              style={{
+                color: focused ? colors.foreground : colors.gray,
+                fontSize: fontSizes.xs2,
+              }}
             >
               {label}
             </ThemedText>

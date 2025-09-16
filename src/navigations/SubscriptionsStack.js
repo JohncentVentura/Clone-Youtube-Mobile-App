@@ -1,15 +1,17 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { useThemeColor } from "../hooks/useThemeColor";
 import SubscriptionsScreen from "../screens/SubscriptionsScreen";
+import { useTheme } from "../styles/ThemeContext";
 
 const Stack = createStackNavigator();
 
 export default function SubscriptionsStack() {
+  const { colors } = useTheme();
+
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: useThemeColor("background") },
-        headerTintColor: useThemeColor("foreground"),
+        headerStyle: { backgroundColor: colors.background },
+        headerTintColor: colors.foreground,
       }}
     >
       <Stack.Screen name="Subscriptions" component={SubscriptionsScreen} />

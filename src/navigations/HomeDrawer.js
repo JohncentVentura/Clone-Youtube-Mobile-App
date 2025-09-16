@@ -4,18 +4,18 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
+  HeaderRightIconsContainer,
+  HeaderNotificationIcon,
+  HeaderScreenShareIcon,
+  HeaderSearchIcon,
   ThemedIcon,
   ThemedText,
   ThemedView,
-  HeaderRightIconsContainer,
-  HeaderScreenShareIcon,
-  HeaderNotificationIcon,
-  HeaderSearchIcon,
 } from "../components/ThemedComponents";
-import { useThemeColor } from "../hooks/useThemeColor";
-import HomeTopTabs from "./HomeTopTabs";
 import HomeScreen from "../screens/HomeScreen";
-import { styles, textSizes, colors } from "../styles/styles";
+import { styles } from "../styles/styles";
+import { useTheme } from "../styles/ThemeContext";
+import HomeTopTabs from "./HomeTopTabs";
 
 const Drawer = createDrawerNavigator();
 const drawerItems = [
@@ -24,76 +24,78 @@ const drawerItems = [
     iconComponent: Fontisto,
     iconName: "youtube-play",
     label: "Youtube",
-    component: "",
+    component: HomeTopTabs,
   },
   {
     route: "MusicScreen",
     iconComponent: Ionicons,
     iconName: "musical-note-outline",
     label: "Music",
-    component: "",
+    component: HomeScreen,
   },
   {
     route: "MoviesScreen",
     iconComponent: MaterialCommunityIcons,
     iconName: "movie-open-outline",
     label: "Movies",
-    component: "",
+    component: HomeScreen,
   },
   {
     route: "LiveScreen",
     iconComponent: MaterialIcons,
     iconName: "live-tv",
     label: "Live",
-    component: "",
+    component: HomeScreen,
   },
   {
     route: "GamingScreen",
     iconComponent: MaterialCommunityIcons,
     iconName: "youtube-gaming",
     label: "Gaming",
-    component: "",
+    component: HomeScreen,
   },
   {
     route: "NewsScreen",
     iconComponent: Ionicons,
     iconName: "newspaper-outline",
     label: "News",
-    component: "",
+    component: HomeScreen,
   },
   {
     route: "SportsScreen",
     iconComponent: Ionicons,
     iconName: "trophy-outline",
     label: "Sports",
-    component: "",
+    component: HomeScreen,
   },
   {
     route: "LearningScreen",
     iconComponent: MaterialIcons,
     iconName: "lightbulb-outline",
     label: "Learning",
-    component: "",
+    component: HomeScreen,
   },
   {
     route: "FashionAndBeautyScreen",
     iconComponent: Ionicons,
     iconName: "brush-outline",
     label: "Fashion & Beauty",
-    component: "",
+    component: HomeScreen,
   },
 ];
 
 export default function HomeDrawer() {
+  const { colors, fontSizes } = useTheme();
+
   return (
     <Drawer.Navigator
       id="HomeDrawer" //Used by HomeTopTab.js to navigate and open this drawer
       screenOptions={({ navigation, route }) => ({
-        drawerStyle: { backgroundColor: useThemeColor(colors.background) },
-        drawerActiveBackgroundColor: useThemeColor(colors.background),
+        drawerStyle: { backgroundColor: colors.background },
+        drawerActiveBackgroundColor: colors.background,
         drawerItemStyle: { borderRadius: 0 },
         headerStyle: {
-          backgroundColor: useThemeColor(colors.background),
+          backgroundColor: colors.background,
           elevation: 0, // removes drop shadow
         },
         drawerIcon: () => {
@@ -115,22 +117,22 @@ export default function HomeDrawer() {
 
           return (
             <ThemedIcon
-              color={iconColor}
               IconComponent={iconComponent}
               name={iconName}
+              color={iconColor}
             />
           );
         },
         drawerLabel: () => {
           let label,
-            fontWeight = "500",
-            size = textSizes.base;
+            fontSize = fontSizes.base,
+            fontWeight = "500";
 
           drawerItems.map((drawer) => {
             //drawerItems[0] is the Youtube item in the drawer
             if (route.name === drawerItems[0].route) {
               label = drawerItems[0].label;
-              size = textSizes.xl2;
+              fontSize = fontSizes.xl2;
               fontWeight = "bold";
             } else if (route.name === drawer.route) {
               label = drawer.label;
@@ -138,7 +140,7 @@ export default function HomeDrawer() {
           });
 
           return (
-            <ThemedText style={{ fontWeight: fontWeight }} size={size}>
+            <ThemedText style={{ fontSize: fontSize, fontWeight: fontWeight }}>
               {label}
             </ThemedText>
           );
@@ -177,36 +179,62 @@ export default function HomeDrawer() {
       })}
     >
       <Drawer.Screen
-        name="YoutubeScreen"
-        component={HomeTopTabs}
+        name={drawerItems[0].route}
+        component={drawerItems[0].component}
         options={{
           headerLeft: () => {
             return (
               <ThemedIcon
                 style={styles.headerLeftIcon}
-                color={colors.primary}
                 IconComponent={Fontisto}
                 name="youtube-play"
+                color={colors.primary}
               />
             );
           },
           headerTitle: () => {
             return (
-              <ThemedText size={textSizes.xl2} style={{ fontWeight: "bold" }}>
+              <ThemedText
+                style={{ fontSize: fontSizes.xl2, fontWeight: "bold" }}
+              >
                 Youtube
               </ThemedText>
             );
           },
         }}
       />
-      <Drawer.Screen name="MusicScreen" component={HomeScreen} />
-      <Drawer.Screen name="MoviesScreen" component={HomeScreen} />
-      <Drawer.Screen name="LiveScreen" component={HomeScreen} />
-      <Drawer.Screen name="GamingScreen" component={HomeScreen} />
-      <Drawer.Screen name="NewsScreen" component={HomeScreen} />
-      <Drawer.Screen name="SportsScreen" component={HomeScreen} />
-      <Drawer.Screen name="LearningScreen" component={HomeScreen} />
-      <Drawer.Screen name="FashionAndBeautyScreen" component={HomeScreen} />
+      <Drawer.Screen
+        name={drawerItems[1].route}
+        component={drawerItems[1].component}
+      />
+      <Drawer.Screen
+        name={drawerItems[2].route}
+        component={drawerItems[2].component}
+      />
+      <Drawer.Screen
+        name={drawerItems[3].route}
+        component={drawerItems[3].component}
+      />
+      <Drawer.Screen
+        name={drawerItems[4].route}
+        component={drawerItems[4].component}
+      />
+      <Drawer.Screen
+        name={drawerItems[5].route}
+        component={drawerItems[5].component}
+      />
+      <Drawer.Screen
+        name={drawerItems[6].route}
+        component={drawerItems[6].component}
+      />
+      <Drawer.Screen
+        name={drawerItems[7].route}
+        component={drawerItems[7].component}
+      />
+      <Drawer.Screen
+        name={drawerItems[8].route}
+        component={drawerItems[8].component}
+      />
     </Drawer.Navigator>
   );
 }
