@@ -8,20 +8,20 @@ export function ThemeProvider({ children }) {
   const colorScheme = useColorScheme() ?? "light";
   const colors = colorThemes[colorScheme];
 
-  const theme = {
+  const token = {
     colors,
     fontSizes,
     iconSizes,
   };
 
   return (
-    <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={token}>{children}</ThemeContext.Provider>
   );
 }
 
 export function useTheme() {
-  const ctx = useContext(ThemeContext);
-  if (!ctx)
+  const theme = useContext(ThemeContext);
+  if (!theme)
     throw new Error("useTheme must be used inside ThemeProvider component");
-  return ctx;
+  return theme;
 }

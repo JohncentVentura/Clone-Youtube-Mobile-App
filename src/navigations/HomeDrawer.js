@@ -24,7 +24,7 @@ const drawerItems = [
     iconComponent: Fontisto,
     iconName: "youtube-play",
     label: "Youtube",
-    component: HomeTopTabs,
+    component: HomeScreen,
   },
   {
     route: "MusicScreen",
@@ -91,17 +91,17 @@ export default function HomeDrawer() {
     <Drawer.Navigator
       id="HomeDrawer" //Used by HomeTopTab.js to navigate and open this drawer
       screenOptions={({ navigation, route }) => ({
-        drawerStyle: { backgroundColor: colors.background },
-        drawerActiveBackgroundColor: colors.background,
+        drawerStyle: { backgroundColor: colors.bg },
+        drawerActiveBackgroundColor: colors.bg,
         drawerItemStyle: { borderRadius: 0 },
         headerStyle: {
-          backgroundColor: colors.background,
+          backgroundColor: colors.bg,
           elevation: 0, // removes drop shadow
         },
         drawerIcon: () => {
           let iconComponent,
             iconName,
-            iconColor = colors.foreground;
+            iconColor = colors.icon;
 
           drawerItems.map((drawer) => {
             //drawerItems[0] is the Youtube item in the drawer

@@ -10,8 +10,8 @@ export default function UploadStack() {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: colors.background },
-        headerTintColor: colors.foreground,
+        headerStyle: { backgroundColor: colors.bg },
+        headerTintColor: colors.text,
       }}
     >
       <Stack.Screen name="Upload" component={UploadScreen} />

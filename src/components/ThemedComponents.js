@@ -13,36 +13,11 @@ import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 
 /******************************Basics******************************/
-export function ThemedButton({ style, children, ...rest }) {
-  const { colors } = useTheme();
-
-  return (
-    <Pressable
-      style={({ pressed }) => [
-        {
-          borderRadius: 50,
-          paddingHorizontal: 12,
-          paddingVertical: 8,
-          backgroundColor: colors.foreground,
-          opacity: pressed ? 0.5 : 1, //fade effect
-        },
-        style,
-      ]}
-      {...rest}
-    >
-      {children}
-    </Pressable>
-  );
-}
-
 export function ThemedFlatList({ style, children, ...otherProps }) {
   const { colors } = useTheme();
 
   return (
-    <FlatList
-      style={[{ backgroundColor: colors.background }, style]}
-      {...otherProps}
-    >
+    <FlatList style={[{ backgroundColor: colors.bg }, style]} {...otherProps}>
       {children}
     </FlatList>
   );
@@ -51,9 +26,7 @@ export function ThemedFlatList({ style, children, ...otherProps }) {
 export function ThemedIcon({ IconComponent, ...rest }) {
   const { colors, iconSizes } = useTheme();
 
-  return (
-    <IconComponent size={iconSizes.base} color={colors.foreground} {...rest} />
-  );
+  return <IconComponent size={iconSizes.base} color={colors.icon} {...rest} />;
 }
 
 export function ThemedPressable({ style, children, ...rest }) {
@@ -63,6 +36,7 @@ export function ThemedPressable({ style, children, ...rest }) {
     <Pressable
       style={({ pressed }) => [
         {
+          backgroundColor: colors.bg,
           opacity: pressed ? 0.5 : 1, //fade effect
         },
         style,
@@ -79,14 +53,14 @@ export function ThemedRowScrollView({ style, children, ...otherProps }) {
 
   return (
     <ScrollView
-      style={[{ backgroundColor: colors.background }, style]}
-      {...otherProps}
+      style={[{ backgroundColor: colors.bg }, style]}
       contentContainerStyle={StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
       })}
       horizontal={true}
       scrollEnabled={true}
+      {...otherProps}
     >
       {children}
     </ScrollView>
@@ -99,7 +73,7 @@ export function ThemedText({ style, children, ...rest }) {
   return (
     <Text
       style={[
-        { color: colors.foreground, fontSize: fontSizes.base },
+        { color: colors.text, fontSize: fontSizes.base },
         style, //Putting style last in [defaultStyle, style] lets user overrides take precedence.
       ]}
       {...rest}
@@ -113,12 +87,89 @@ export function ThemedView({ style, children, ...otherProps }) {
   const { colors } = useTheme();
 
   return (
-    <View
-      style={[{ backgroundColor: colors.background }, style]}
-      {...otherProps}
-    >
+    <View style={[{ backgroundColor: colors.bg }, style]} {...otherProps}>
       {children}
     </View>
+  );
+}
+
+/******************************Buttons******************************/
+export function ThemedButton({ style, children, ...rest }) {
+  const { colors } = useTheme();
+
+  return (
+    <Pressable
+      style={({ pressed }) => [
+        {
+          borderRadius: 50,
+          paddingHorizontal: 12,
+          paddingVertical: 8,
+          backgroundColor: colors.btnBg,
+          opacity: pressed ? 0.5 : 1, //fade effect
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      {children}
+    </Pressable>
+  );
+}
+
+export function ThemedTabButton({ style, selected, children, ...rest }) {
+  const { colors } = useTheme();
+
+  return (
+    <ThemedButton
+      style={[
+        {
+          backgroundColor: selected ? colors.primary : colors.bgGray,
+          opacity: 1,
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      <ThemedText style={{ color: selected ? colors.bg : colors.text }}>
+        {children}
+      </ThemedText>
+    </ThemedButton>
+  );
+}
+
+
+export function ThemedSmallIconButton({
+  style,
+  iconProps,
+  textProps = {},
+  children,
+  ...rest
+}) {
+  const { colors, fontSizes, iconSizes } = useTheme();
+  const { style: textStyle, ...otherTextProps } = textProps;
+
+  return (
+    <ThemedButton
+      style={[
+        {
+          flexDirection: "row",
+          alignItems: "center",
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      <ThemedIcon size={iconSizes.xs} {...iconProps} />
+      <ThemedText
+        style={[
+          { paddingLeft: 4, fontSize: fontSizes.xs, fontWeight: "500" },
+          textStyle,
+        ]}
+        {...otherTextProps}
+      >
+        {children}
+      </ThemedText>
+    </ThemedButton>
   );
 }
 
@@ -129,7 +180,7 @@ export function HeaderRightIconsContainer({ style, children, ...otherProps }) {
   return (
     <View
       style={[
-        { backgroundColor: colors.background },
+        { backgroundColor: colors.bg },
         styles.headerRightIconsContainer,
         style,
       ]}
@@ -147,7 +198,7 @@ export function HeaderCaptionIcon({ ...otherProps }) {
     <MaterialCommunityIcons
       name="closed-caption-outline" //closed-caption when pressed
       size={iconSizes.base}
-      color={colors.foreground}
+      color={colors.icon}
       {...otherProps}
     />
   );
@@ -160,7 +211,7 @@ export function HeaderNotificationIcon({ ...otherProps }) {
     <Ionicons
       name="notifications-outline"
       size={iconSizes.base}
-      color={colors.foreground}
+      color={colors.icon}
       {...otherProps}
     />
   );
@@ -173,7 +224,7 @@ export function HeaderScreenShareIcon({ ...otherProps }) {
     <MaterialIcons
       name="screen-share"
       size={iconSizes.base}
-      color={colors.foreground}
+      color={colors.icon}
       {...otherProps}
     />
   );
@@ -186,7 +237,7 @@ export function HeaderSearchIcon({ ...otherProps }) {
     <Ionicons
       name="search"
       size={iconSizes.base}
-      color={colors.foreground}
+      color={colors.icon}
       {...otherProps}
     />
   );
@@ -199,7 +250,7 @@ export function HeaderSettingIcon({ ...otherProps }) {
     <Ionicons
       name="settings-outline"
       size={iconSizes.base}
-      color={colors.foreground}
+      color={colors.icon}
       {...otherProps}
     />
   );
@@ -212,7 +263,7 @@ export function HeaderVerticalDotsIcon({ ...otherProps }) {
     <MaterialCommunityIcons
       name="dots-vertical"
       size={iconSizes.base}
-      color={colors.foreground}
+      color={colors.icon}
       {...otherProps}
     />
   );

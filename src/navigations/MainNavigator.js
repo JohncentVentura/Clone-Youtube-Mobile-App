@@ -1,5 +1,5 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { ThemedIcon, ThemedText } from "../components/ThemedComponents";
 import { useTheme } from "../styles/ThemeContext";
 import HomeDrawer from "./HomeDrawer";
@@ -59,7 +59,7 @@ export default function MainNavigator() {
     <BottomTab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarStyle: { backgroundColor: colors.background },
+        tabBarStyle: { backgroundColor: colors.bg },
         tabBarIcon: ({ focused }) => {
           let activeIconName, inactiveIconName;
 
@@ -74,7 +74,7 @@ export default function MainNavigator() {
             <ThemedIcon
               IconComponent={Ionicons}
               name={focused ? activeIconName : inactiveIconName}
-              color={focused ? colors.primary : colors.gray}
+              color={focused ? colors.primary : colors.iconGray}
             />
           );
         },
@@ -90,7 +90,7 @@ export default function MainNavigator() {
           return (
             <ThemedText
               style={{
-                color: focused ? colors.foreground : colors.gray,
+                color: focused ? colors.text : colors.textGray,
                 fontSize: fontSizes.xs2,
               }}
             >

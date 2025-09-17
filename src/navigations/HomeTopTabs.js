@@ -23,16 +23,17 @@ export default function HomeTopTabs() {
     <TopTab.Navigator
       tabBar={(props) => <HomeDrawerButtonTab {...props} />}
       screenOptions={{
+        lazy: true,
         tabBarItemStyle: { width: "auto" },
         tabBarScrollEnabled: true, // Enables horizontal scrolling
         tabBarStyle: {
-          backgroundColor: colors.background,
+          backgroundColor: colors.bg,
           elevation: 0, // removes drop shadow
         },
-        tabBarInactiveTintColor: colors.foreground,
-        tabBarActiveTintColor: colors.background,
+        tabBarInactiveTintColor: colors.text,
+        tabBarActiveTintColor: colors.bg,
         tabBarIndicatorStyle: {
-          backgroundColor: colors.foreground,
+          backgroundColor: colors.text,
           height: "100%",
         },
       }}

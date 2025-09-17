@@ -4,7 +4,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Octicons from "@expo/vector-icons/Octicons";
 import { useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { ActivityIndicator } from "react-native";
 import { pexelsAPIfetchVideos } from "../api/pexelsAPI";
 import { HomeChannelImage } from "../components/ImageComponents";
@@ -19,6 +19,8 @@ import {
   ThemedRowScrollView,
   ThemedText,
   ThemedView,
+  ThemedSmallIconButton,
+  ThemedTabButton,
 } from "../components/ThemedComponents";
 import {
   RNYIYoutubePlayer,
@@ -72,10 +74,10 @@ export default function HomeScreen() {
     <VideoStack.Navigator
       screenOptions={({ navigation }) => ({
         headerStyle: {
-          backgroundColor: colors.background,
+          backgroundColor: colors.bg,
           elevation: 0,
         },
-        headerTintColor: colors.foreground,
+        headerTintColor: colors.text,
         headerLeft: () => {
           return (
             <ThemedIcon
@@ -134,10 +136,11 @@ export function HomeFlatListScreen() {
       setVideos(data);
     }
     loadVideos();
-  }, []);
+  }, [query]);
 
   return (
     <ThemedView style={styles.homeContainer}>
+      <HomeTopTabs setQuery={setQuery} />
       <LargeVideoFlatList
         videos={videos}
         navigation={navigation}
@@ -152,13 +155,25 @@ export function HomeVideoScreen({ route }) {
   const { video } = route.params;
 
   const videoUrl = video.url;
-  //console.log("videoUrl: " + videoUrl);
   const splitUrl = videoUrl.split("/");
-  //console.log("splitUrl: " + splitUrl);
   const slug = splitUrl[splitUrl.length - 2];
-  //console.log("slug: " + slug);
   const videoTitle = slug.replace(/\d+/g, ""); //remove all digits
   //console.log(videoTitle);
+
+  const navigation = useNavigation();
+  useLayoutEffect(() => {
+  navigation.getParent('HomeDrawer')?.setOptions({
+    swipeEnabled: false,
+    headerShown: false,
+  });
+
+  return () => {
+    navigation.getParent('HomeDrawer')?.setOptions({
+      swipeEnabled: true,
+      headerShown: true,
+    });
+  };
+}, [navigation]);
 
   return (
     <ThemedView style={styles.homeContainer}>
@@ -176,12 +191,14 @@ export function HomeVideoScreen({ route }) {
 
         {/*ThemedView for total views, uploaded date, & ...more link*/}
         <ThemedView style={{ marginBottom: 8, flexDirection: "row" }}>
-          <ThemedText style={{ color: colors.gray, fontSize: fontSizes.sm }}>
+          <ThemedText
+            style={{ color: colors.textGray, fontSize: fontSizes.sm }}
+          >
             {video.id} views
           </ThemedText>
           <ThemedText
             style={{ fontSize: fontSizes.sm, marginHorizontal: 8 }}
-            color={colors.gray}
+            color={colors.textGray}
           >
             1y ago
           </ThemedText>
@@ -217,14 +234,16 @@ export function HomeVideoScreen({ route }) {
             <ThemedText style={{ marginHorizontal: 8, fontWeight: "500" }}>
               Channel Name
             </ThemedText>
-            <ThemedText style={{ color: colors.gray, fontSize: fontSizes.sm }}>
+            <ThemedText
+              style={{ color: colors.textGray, fontSize: fontSizes.sm }}
+            >
               {video.video_pictures[0].id}k
             </ThemedText>
           </ThemedView>
           <ThemedButton>
             <ThemedText
               style={{
-                color: colors.background,
+                color: colors.btnText,
                 fontSize: fontSizes.xs,
                 fontWeight: "500",
               }}
@@ -237,9 +256,16 @@ export function HomeVideoScreen({ route }) {
 
         {/*ThemedScrollView for likes, shares, & other buttons */}
         <ThemedRowScrollView style={{ marginBottom: 8 }}>
-          <ThemeGrayButton style={{ marginRight: 8 }}>
+          <ThemedButton
+            style={{
+              marginRight: 8,
+              backgroundColor: colors.bgGray,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
             <ThemedIcon
-              style={{ paddingRight: 10 }}
+              style={{ paddingRight: 12 }}
               IconComponent={Foundation}
               name="like"
               size={iconSizes.xs}
@@ -247,138 +273,93 @@ export function HomeVideoScreen({ route }) {
             />
             <ThemedText
               style={{
-                paddingRight: 10,
-                color: colors.foreground,
+                borderRightWidth: 1,
+                borderRightColor: colors.text,
+                paddingRight: 6,
                 fontSize: fontSizes.xs,
                 fontWeight: "500",
               }}
             >
-              {video.duration}
-            </ThemedText>
-            <ThemedText
-              style={{
-                paddingRight: 10,
-                colors: colors.foreground,
-                fontSize: fontSizes.xs,
-                fontWeight: "500",
-              }}
-            >
-              |
+              {video.duration} {/* likes */}
             </ThemedText>
             <ThemedIcon
+              style={{ paddingLeft: 12 }}
               IconComponent={Foundation}
               name="dislike"
               size={iconSizes.xs}
               onPress={() => console.log("Disliked Press")}
             />
-          </ThemeGrayButton>
-          <ThemeGrayButton
-            style={{ marginRight: 8 }}
+          </ThemedButton>
+          <ThemedSmallIconButton
+            style={{ marginRight: 8, backgroundColor: colors.bgGray }}
+            iconProps={{
+              IconComponent: MaterialCommunityIcons,
+              name: "share",
+            }}
             onPress={() => console.log("Share Press")}
           >
-            <ThemedIcon
-              IconComponent={MaterialCommunityIcons}
-              name="share"
-              size={iconSizes.xs}
-            />
-            <ThemedText
-              style={{
-                paddingLeft: 2,
-                color: colors.foreground,
-                fontSize: fontSizes.xs,
-                fontWeight: "500",
-              }}
-            >
-              Share
-            </ThemedText>
-          </ThemeGrayButton>
-          <ThemeGrayButton
-            style={{ marginRight: 8 }}
+            Share
+          </ThemedSmallIconButton>
+          <ThemedSmallIconButton
+            style={{ marginRight: 8, backgroundColor: colors.bgGray }}
+            iconProps={{
+              IconComponent: Ionicons,
+              name: "videocam-outline",
+            }}
             onPress={() => console.log("Remix Press")}
           >
-            <ThemedIcon
-              IconComponent={Ionicons}
-              name="videocam-outline"
-              size={iconSizes.xs}
-            />
-            <ThemedText
-              style={{
-                paddingLeft: 4,
-                color: colors.foreground,
-                fontSize: fontSizes.xs,
-                fontWeight: "500",
-              }}
-            >
-              Remix
-            </ThemedText>
-          </ThemeGrayButton>
-          <ThemeGrayButton
-            style={{ marginRight: 8 }}
+            Remix
+          </ThemedSmallIconButton>
+          <ThemedSmallIconButton
+            style={{ marginRight: 8, backgroundColor: colors.bgGray }}
+            iconProps={{
+              IconComponent: Octicons,
+              name: "download",
+            }}
             onPress={() => console.log("Download Press")}
           >
-            <ThemedIcon
-              IconComponent={Octicons}
-              name="download"
-              size={iconSizes.xs}
-            />
-            <ThemedText
-              style={{
-                paddingLeft: 4,
-                color: colors.foreground,
-                fontSize: fontSizes.xs,
-                fontWeight: "500",
-              }}
-            >
-              Download
-            </ThemedText>
-          </ThemeGrayButton>
-          <ThemeGrayButton
-            style={{ marginRight: 8 }}
+            Download
+          </ThemedSmallIconButton>
+          <ThemedSmallIconButton
+            style={{ marginRight: 8, backgroundColor: colors.bgGray }}
+            iconProps={{
+              IconComponent: Ionicons,
+              name: "flag-outline",
+            }}
+            onPress={() => console.log("Exp Press")}
+          >
+            Experimental
+          </ThemedSmallIconButton>
+          <ThemedSmallIconButton
+            style={{ marginRight: 8, backgroundColor: colors.bgGray }}
+            iconProps={{
+              IconComponent: Ionicons,
+              name: "bookmark-outline",
+            }}
             onPress={() => console.log("Save Press")}
           >
-            <ThemedIcon
-              IconComponent={Ionicons}
-              name="bookmark-outline"
-              size={iconSizes.xs}
-            />
-            <ThemedText
-              style={{
-                paddingLeft: 4,
-                color: colors.foreground,
-                fontSize: fontSizes.xs,
-                fontWeight: "500",
-              }}
-            >
-              Save
-            </ThemedText>
-          </ThemeGrayButton>
-          <ThemeGrayButton
-            style={{ marginRight: 8 }}
-            onPress={() => console.log("Report Press")}
+            Save
+          </ThemedSmallIconButton>
+          <ThemedSmallIconButton
+            style={{ marginRight: 8, backgroundColor: colors.bgGray }}
+            iconProps={{
+              IconComponent: Ionicons,
+              name: "flag-outline",
+            }}
+            textProps={{ style: { color: colors.primary } }}
+            onPress={() => console.log("Exp Press")}
           >
-            <ThemedIcon
-              IconComponent={Ionicons}
-              name="flag-outline"
-              size={iconSizes.xs}
-            />
-            <ThemedText
-              style={{
-                paddingLeft: 4,
-                color: colors.foreground,
-                fontSize: fontSizes.xs,
-                fontWeight: "500",
-              }}
-            >
-              Report
-            </ThemedText>
-          </ThemeGrayButton>
+            Experimental
+          </ThemedSmallIconButton>
         </ThemedRowScrollView>
 
         {/*ThemedView for comments*/}
-        <ThemedView style={{ marginBottom: 8, backgroundColor: colors.gray }}>
+        <ThemedView
+          style={{ marginBottom: 8, backgroundColor: colors.textGray }}
+        >
           <ThemedView
             style={{
-              backgroundColor: colors.gray,
+              backgroundColor: colors.bgGray,
               flexDirection: "row",
               alignItems: "center",
             }}
@@ -391,7 +372,7 @@ export function HomeVideoScreen({ route }) {
           <ThemedView
             style={{
               paddingHorizontal: 8,
-              backgroundColor: colors.gray,
+              backgroundColor: colors.bgGray,
               flexDirection: "row",
             }}
           >
@@ -407,22 +388,59 @@ export function HomeVideoScreen({ route }) {
   );
 }
 
-export function ThemeGrayButton({ style, children, ...rest }) {
-  const { colors } = useTheme();
+export function HomeTopTabs({ style, setQuery, children, ...rest }) {
+  const { colors, fontSizes, iconSizes } = useTheme();
+
+  const defaultKey = "All"; // id of your default button
+  const [selectedKey, setSelectedKey] = useState(defaultKey);
+  const navigation = useNavigation();
+
+  const handleSelect = (key) => {
+    // if the same button is pressed again
+    if (selectedKey === key) {
+      // revert to default if it’s not already the default
+      if (key !== defaultKey) {
+        setSelectedKey(defaultKey);
+        setQuery(defaultKey);
+      }
+      // else do nothing, stays default
+    } else {
+      // select new one
+      setSelectedKey(key);
+      setQuery(key);
+    }
+  };
 
   return (
-    <ThemedButton
-      style={[
-        {
-          backgroundColor: colors.gray,
-          flexDirection: "row",
-          alignItems: "center",
-        },
-        style,
-      ]}
-      {...rest}
-    >
-      {children}
-    </ThemedButton>
+    <ThemedRowScrollView style={{ marginBottom: 12 }}>
+      <ThemedPressable
+        style={[styles.headerLeftIcon, { marginRight: 8 }]}
+        onPress={() => navigation.getParent("HomeDrawer")?.openDrawer()}
+      >
+        <ThemedIcon IconComponent={Ionicons} name="compass-outline" />
+      </ThemedPressable>
+      <ThemedTabButton
+        style={{ marginRight: 8 }}
+        selected={selectedKey === "All"}
+        onPress={() => handleSelect("All")}
+      >
+        All
+      </ThemedTabButton>
+      <ThemedTabButton
+        style={{ marginRight: 8 }}
+        selected={selectedKey === "Music"}
+        onPress={() => handleSelect("Music")}
+      >
+        Music
+      </ThemedTabButton>
+      <ThemedTabButton
+        style={{ marginRight: 8 }}
+        selected={selectedKey === "Fantasy"}
+        onPress={() => handleSelect("Fantasy")}
+      >
+        Fantasy
+      </ThemedTabButton>
+    </ThemedRowScrollView>
   );
 }
+

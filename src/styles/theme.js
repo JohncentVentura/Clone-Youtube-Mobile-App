@@ -1,15 +1,25 @@
 export const colorThemes = {
   light: {
-    foreground: "#282828ff",
-    gray: "#8c8c8cff",
-    background: "#ffffffff",
-    primary: "#FF0000ff",
+    text: "#0f0f0f",
+    textGray: "#606060",
+    icon: "#0f0f0f",
+    iconGray: "#606060",
+    btnText: "#ffffffff",
+    btnBg: "#0f0f0f",
+    bg: "#ffffffff",
+    bgGray: "#f2f2f2",
+    primary: "#fe0032",
   },
   dark: {
-    foreground: "#ffffffff",
-    gray: "#848484ff",
-    background: "#282828ff",
-    primary: "#FF0000ff",
+    text: "#f1f1f1",
+    textGray: "#aaaaaa",
+    icon: "#f1f1f1",
+    iconGray: "#aaaaaa",
+    btnText: "#0f0f0f",
+    btnBg: "#f1f1f1",
+    bg: "#0f0f0f",
+    bgGray: "#272727",
+    primary: "#fe0032",
   },
 };
 

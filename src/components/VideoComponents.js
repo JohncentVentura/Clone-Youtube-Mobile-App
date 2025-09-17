@@ -69,7 +69,7 @@ export function LargeVideoView({ style, video }) {
         {
           width: screenWidth,
           height: screenHeight * 0.25,
-          backgroundColor: colors.background,
+          backgroundColor: colors.bg,
           alignSelf: "center",
         },
         style,
@@ -107,7 +107,7 @@ export function LargeVideoFlatList({ videos, navigation, homeScreens }) {
                 Video Title
               </ThemedText>
               <ThemedText
-                style={{ color: colors.gray, fontSize: fontSizes.xs }}
+                style={{ color: colors.textGray, fontSize: fontSizes.xs }}
               >
                 Channel Name * {item.id} Views * Uploaded Date
               </ThemedText>
