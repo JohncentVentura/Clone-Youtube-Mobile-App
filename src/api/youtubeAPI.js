@@ -1,18 +1,66 @@
-import axios from "axios";
+import { useEffect, useState } from "react";
 import Constants from "expo-constants";
-const { YOUTUBE_API_BASE_URL, YOUTUBE_API_KEY } = Constants.expoConfig.extra;
 
-//Axios is a promise-based JavaScript library for making HTTP requests from a browser or Node.js
-const youtubeAPIClient = axios.create({
-  baseURL: YOUTUBE_API_BASE_URL, //All requests will start with this URL (no need to write it every time)
-  timeout: 10000, //If the API takes more than 10 seconds, the request fails
-});
+const { YOUTUBE_API_URL, YOUTUBE_API_KEY } = Constants.expoConfig.extra;
 
-//An interceptor is like a middleman that runs before every request
-youtubeAPIClient.interceptors.request.use((config) => {
-  config.params = config.params || {}; //Makes sure config.params exists
-  config.params["key"] = YOUTUBE_API_KEY; //Adds your API key to the request query parameters automatically
-  return config;
-});
+export function autoFetchYoutubeData(query = "movies", results = 10) {
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-export default youtubeAPIClient;
+  useEffect(() => {
+    let cancelled = false;
+    async function fetchVideos() {
+      try {
+        setLoading(true);
+
+        const url = `${YOUTUBE_API_URL}/search?part=snippet&maxResults=${results}&q=${encodeURIComponent(
+          query
+        )}&key=${YOUTUBE_API_KEY}`;
+
+        const res = await fetch(url);
+        const json = await res.json();
+
+        if (!res.ok || json.error) {
+          const msg =
+            json?.error?.message ||
+            `Request failed with status ${res.status}`;
+          throw new Error(msg);
+        }
+
+        if (!cancelled) setVideos(json.items || []);
+      } catch (error) {
+        if (!cancelled) setError(error);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    fetchVideos();
+    return () => {
+      cancelled = true;
+    };
+  }, [query, results]);
+
+  return { videos, loading, error };
+}
+
+export async function manualFetchYoutubeData(query = "movies", results = 10) {
+  try {
+    const url = `${YOUTUBE_API_URL}/search?part=snippet&maxResults=${results}&q=${encodeURIComponent(
+      query
+    )}&key=${YOUTUBE_API_KEY}`;
+
+    const res = await fetch(url);
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(res.status, text);
+    }
+
+    const data = await res.json();
+    return data.items || [];
+  } catch (error) {
+    console.error("Youtube API error:", error);
+    return [];
+  }
+}

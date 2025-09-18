@@ -57,6 +57,7 @@ export default function MainNavigator() {
 
   return (
     <BottomTab.Navigator
+      id="MainNavigator"
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarStyle: { backgroundColor: colors.bg },

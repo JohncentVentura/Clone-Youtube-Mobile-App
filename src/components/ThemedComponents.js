@@ -32,12 +32,31 @@ export function ThemedIcon({ IconComponent, ...rest }) {
 export function ThemedPressable({ style, children, ...rest }) {
   const { colors } = useTheme();
 
+  /*To use ThemedPressable style as functions when used
+  const functionStyle =
+    typeof style === "function"
+      ? (state) => [
+          {
+            backgroundColor: colors.bg,
+            opacity: state.pressed ? 0.5 : 1,
+          },
+          style(state),
+        ]
+      : (state) => [
+          {
+            backgroundColor: colors.bg,
+            opacity: state.pressed ? 0.5 : 1,
+          },
+          style,
+        ];
+  */
+
   return (
     <Pressable
       style={({ pressed }) => [
         {
-          backgroundColor: colors.bg,
-          opacity: pressed ? 0.5 : 1, //fade effect
+          backgroundColor: colors.bgGray,
+          opacity: pressed ? 0.5 : 1,
         },
         style,
       ]}
@@ -59,7 +78,7 @@ export function ThemedRowScrollView({ style, children, ...otherProps }) {
         alignItems: "center",
       })}
       horizontal={true}
-      scrollEnabled={true}
+      showsHorizontalScrollIndicator={false}
       {...otherProps}
     >
       {children}
@@ -103,8 +122,8 @@ export function ThemedButton({ style, children, ...rest }) {
         {
           borderRadius: 50,
           paddingHorizontal: 12,
-          paddingVertical: 8,
-          backgroundColor: colors.btnBg,
+          paddingVertical: 6,
+          backgroundColor: colors.text,
           opacity: pressed ? 0.5 : 1, //fade effect
         },
         style,
@@ -116,29 +135,7 @@ export function ThemedButton({ style, children, ...rest }) {
   );
 }
 
-export function ThemedTabButton({ style, selected, children, ...rest }) {
-  const { colors } = useTheme();
-
-  return (
-    <ThemedButton
-      style={[
-        {
-          backgroundColor: selected ? colors.primary : colors.bgGray,
-          opacity: 1,
-        },
-        style,
-      ]}
-      {...rest}
-    >
-      <ThemedText style={{ color: selected ? colors.bg : colors.text }}>
-        {children}
-      </ThemedText>
-    </ThemedButton>
-  );
-}
-
-
-export function ThemedSmallIconButton({
+export function SmallIconButton({
   style,
   iconProps,
   textProps = {},
@@ -170,6 +167,29 @@ export function ThemedSmallIconButton({
         {children}
       </ThemedText>
     </ThemedButton>
+  );
+}
+
+export function TopTabButton({ style, selected, children, ...rest }) {
+  const { colors } = useTheme();
+
+  return (
+    <Pressable
+      style={[
+        {
+          borderRadius: 8,
+          paddingHorizontal: 14,
+          paddingVertical: 8,
+          backgroundColor: selected ? colors.text : colors.bgGray,
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      <ThemedText style={{ color: selected ? colors.bg : colors.text }}>
+        {children}
+      </ThemedText>
+    </Pressable>
   );
 }
 

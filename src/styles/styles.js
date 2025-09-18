@@ -3,19 +3,23 @@ import { Dimensions, StyleSheet } from "react-native";
 //Maybe use useWindowDimensions hook?
 export const screenWidth = Dimensions.get("window").width * 1; //Multiply by 1 to get 100%
 export const screenHeight = Dimensions.get("window").height * 1; //Multiply by 1 to get 100%
-const globalOffsetHorizontal = 16;
+const globalHorizontalSpacing = 16;
 
 export const styles = StyleSheet.create({
   headerLeftIcon: {
-    paddingLeft: globalOffsetHorizontal,
+    paddingLeft: globalHorizontalSpacing,
   },
   headerRightIconsContainer: {
-    paddingRight: globalOffsetHorizontal,
+    paddingRight: globalHorizontalSpacing,
     flexDirection: "row",
     alignItems: "center",
   },
   headerRightIcon: {
-    paddingLeft: 25,
+    paddingLeft: 24,
+  },
+  horizontalPaddedContainer: {
+    paddingHorizontal: globalHorizontalSpacing,
+    width: "100%",
   },
   homeContainer: {
     width: screenWidth,
@@ -29,7 +33,7 @@ export const styles = StyleSheet.create({
   },
   homeVideoInfoContainer: {
     paddingTop: screenHeight * 0.005,
-    paddingHorizontal: globalOffsetHorizontal,
+    paddingHorizontal: globalHorizontalSpacing,
     width: "100%",
     flexDirection: "row",
     alignItems: "center",

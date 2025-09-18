@@ -1,7 +1,7 @@
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useIsFocused } from "@react-navigation/native";
 import { useVideoPlayer, VideoView } from "expo-video";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { HomeChannelImage } from "../components/ImageComponents";
 import {
   ThemedFlatList,
@@ -12,33 +12,59 @@ import {
 } from "../components/ThemedComponents";
 import { styles, screenWidth, screenHeight } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
+import { urlToTitleExtractor } from "../utils/utils";
 
-//Deprecated: imports and function for using Youtube API
-import YoutubePlayer from "react-native-youtube-iframe";
-export function RNYIYoutubePlayer({ style, videoId }) {
-  const [playing, setPlaying] = useState(false);
-
-  const onStateChange = useCallback((state) => {
-    if (state === "ended") {
-      setPlaying(false);
-    }
-  }, []);
+export function VideoFlatList({ videos, navigation }) {
+  const { colors, fontSizes } = useTheme();
 
   return (
-    <ThemedView style={[styles.largeVideo, style]}>
-      <YoutubePlayer
-        width={"100%"}
-        height={"100%"}
-        resizeMode="stretch"
-        play={playing}
-        videoId={videoId}
-        onChangeState={onStateChange}
-      />
-    </ThemedView>
+    <ThemedFlatList
+      data={videos}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({ item }) => {
+        return (
+          <ThemedView style={styles.homeVideoContainer}>
+            <ThemedPressable
+              onPress={() =>
+                navigation.navigate("MainVideoScreen", { video: item })
+              }
+            >
+              <MainVideoView video={item} />
+            </ThemedPressable>
+
+            <ThemedView style={styles.homeVideoInfoContainer}>
+              <ThemedView style={{ flex: 1 }}>
+                <HomeChannelImage
+                  source={{ uri: item.video_pictures[0].picture }}
+                />
+              </ThemedView>
+              <ThemedView style={{ flex: 5 }}>
+                <ThemedText
+                  style={{ fontSize: fontSizes.xl, fontWeight: "600" }}
+                >
+                  {urlToTitleExtractor(item.url)}
+                </ThemedText>
+                <ThemedText
+                  style={{ color: colors.textGray, fontSize: fontSizes.xs }}
+                >
+                  Channel Name * {item.id} Views * Uploaded Date
+                </ThemedText>
+              </ThemedView>
+              <ThemedView style={{ flex: 1, alignItems: "flex-end" }}>
+                <ThemedIcon
+                  IconComponent={MaterialCommunityIcons}
+                  name="dots-vertical"
+                />
+              </ThemedView>
+            </ThemedView>
+          </ThemedView>
+        );
+      }}
+    />
   );
 }
 
-export function LargeVideoView({ style, video }) {
+export function MainVideoView({ style, video }) {
   const { colors } = useTheme();
   const isFocused = useIsFocused();
 
@@ -74,53 +100,6 @@ export function LargeVideoView({ style, video }) {
         },
         style,
       ]}
-    />
-  );
-}
-
-export function LargeVideoFlatList({ videos, navigation, homeScreens }) {
-  const { colors, fontSizes } = useTheme();
-  //console.log(homeScreens);
-
-  return (
-    <ThemedFlatList
-      data={videos}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
-        <ThemedView style={styles.homeVideoContainer}>
-          <ThemedPressable
-            onPress={() =>
-              navigation.navigate(homeScreens.homeVideoScreen, { video: item })
-            }
-          >
-            <LargeVideoView video={item} />
-          </ThemedPressable>
-
-          <ThemedView style={styles.homeVideoInfoContainer}>
-            <ThemedView style={{ flex: 1 }}>
-              <HomeChannelImage
-                source={{ uri: item.video_pictures[0].picture }}
-              />
-            </ThemedView>
-            <ThemedView style={{ flex: 5 }}>
-              <ThemedText style={{ fontSize: fontSizes.xl, fontWeight: "600" }}>
-                Video Title
-              </ThemedText>
-              <ThemedText
-                style={{ color: colors.textGray, fontSize: fontSizes.xs }}
-              >
-                Channel Name * {item.id} Views * Uploaded Date
-              </ThemedText>
-            </ThemedView>
-            <ThemedView style={{ flex: 1, alignItems: "flex-end" }}>
-              <ThemedIcon
-                IconComponent={MaterialCommunityIcons}
-                name="dots-vertical"
-              />
-            </ThemedView>
-          </ThemedView>
-        </ThemedView>
-      )}
     />
   );
 }

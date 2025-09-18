@@ -10,12 +10,10 @@ import {
   HeaderSearchIcon,
   ThemedIcon,
   ThemedText,
-  ThemedView,
 } from "../components/ThemedComponents";
-import HomeScreen from "../screens/HomeScreen";
+import HomeStack from "./HomeStack";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
-import HomeTopTabs from "./HomeTopTabs";
 
 const Drawer = createDrawerNavigator();
 const drawerItems = [
@@ -24,63 +22,63 @@ const drawerItems = [
     iconComponent: Fontisto,
     iconName: "youtube-play",
     label: "Youtube",
-    component: HomeScreen,
+    component: HomeStack,
   },
   {
     route: "MusicScreen",
     iconComponent: Ionicons,
     iconName: "musical-note-outline",
     label: "Music",
-    component: HomeScreen,
+    component: HomeStack,
   },
   {
     route: "MoviesScreen",
     iconComponent: MaterialCommunityIcons,
     iconName: "movie-open-outline",
     label: "Movies",
-    component: HomeScreen,
+    component: HomeStack,
   },
   {
     route: "LiveScreen",
     iconComponent: MaterialIcons,
     iconName: "live-tv",
     label: "Live",
-    component: HomeScreen,
+    component: HomeStack,
   },
   {
     route: "GamingScreen",
     iconComponent: MaterialCommunityIcons,
     iconName: "youtube-gaming",
     label: "Gaming",
-    component: HomeScreen,
+    component: HomeStack,
   },
   {
     route: "NewsScreen",
     iconComponent: Ionicons,
     iconName: "newspaper-outline",
     label: "News",
-    component: HomeScreen,
+    component: HomeStack,
   },
   {
     route: "SportsScreen",
     iconComponent: Ionicons,
     iconName: "trophy-outline",
     label: "Sports",
-    component: HomeScreen,
+    component: HomeStack,
   },
   {
     route: "LearningScreen",
     iconComponent: MaterialIcons,
     iconName: "lightbulb-outline",
     label: "Learning",
-    component: HomeScreen,
+    component: HomeStack,
   },
   {
     route: "FashionAndBeautyScreen",
     iconComponent: Ionicons,
     iconName: "brush-outline",
     label: "Fashion & Beauty",
-    component: HomeScreen,
+    component: HomeStack,
   },
 ];
 
@@ -89,7 +87,7 @@ export default function HomeDrawer() {
 
   return (
     <Drawer.Navigator
-      id="HomeDrawer" //Used by HomeTopTab.js to navigate and open this drawer
+      id="HomeDrawer"
       screenOptions={({ navigation, route }) => ({
         drawerStyle: { backgroundColor: colors.bg },
         drawerActiveBackgroundColor: colors.bg,
@@ -156,7 +154,17 @@ export default function HomeDrawer() {
           );
         },
         headerTitle: () => {
-          return null;
+          let label;
+
+          drawerItems.map((drawer) => {
+            if (route.name === drawer.route) label = drawer.label;
+          });
+
+          return (
+            <ThemedText style={{ fontSize: fontSizes.xl2, fontWeight: "bold" }}>
+              {label}
+            </ThemedText>
+          );
         },
         headerRight: () => {
           return (
@@ -190,15 +198,6 @@ export default function HomeDrawer() {
                 name="youtube-play"
                 color={colors.primary}
               />
-            );
-          },
-          headerTitle: () => {
-            return (
-              <ThemedText
-                style={{ fontSize: fontSizes.xl2, fontWeight: "bold" }}
-              >
-                Youtube
-              </ThemedText>
             );
           },
         }}

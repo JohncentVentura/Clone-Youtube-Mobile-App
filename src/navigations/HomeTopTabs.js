@@ -10,7 +10,7 @@ import {
   ThemedText,
   ThemedView,
 } from "../components/ThemedComponents";
-import HomeScreen from "../screens/HomeScreen";
+import HomeScreen2 from "../screens/HomeScreen2";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 
@@ -38,7 +38,7 @@ export default function HomeTopTabs() {
         },
       }}
     >
-      <TopTab.Screen name="All" component={HomeScreen} />
+      <TopTab.Screen name="All" component={HomeScreen2} />
       <TopTab.Screen name="New to you" component={TestScreen} />
       <TopTab.Screen name="Live" component={TestScreen} />
       <TopTab.Screen name="Music" component={TestScreen} />
