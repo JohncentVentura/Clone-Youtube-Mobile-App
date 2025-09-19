@@ -1,7 +1,7 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createStackNavigator } from "@react-navigation/stack";
-import YouTubeFlatListScreen from "../api/YoutubeFlatListScreen";
-import YouTubePlayerScreen from "../api/YoutubePlayerScreen";
+import YouTubeFlatListScreen from "../api/YouTubeFlatListScreen";
+import YouTubePlayerScreen from "../api/YouTubePlayerScreen";
 import { ThemedIcon } from "../components/ThemedComponents";
 import HomeScreen from "../screens/HomeScreen";
 import MainVideoScreen from "../screens/MainVideoScreen";

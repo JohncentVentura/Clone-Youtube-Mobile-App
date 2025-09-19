@@ -20,6 +20,7 @@ export const colorThemes = {
 };
 
 export const fontSizes = {
+  xs3: 8,
   xs2: 10,
   xs: 12,
   sm: 14,
@@ -28,8 +29,6 @@ export const fontSizes = {
   xl: 20,
   xl2: 22,
   xl3: 24,
-  xl4: 26,
-  xl5: 28,
 };
 
 export const iconSizes = {
@@ -41,4 +40,5 @@ export const iconSizes = {
   lg: 26,
   xl: 28,
   xl2: 30,
+  xl3: 32,
 };

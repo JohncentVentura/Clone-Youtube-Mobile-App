@@ -58,70 +58,51 @@ export default function MainNavigator() {
   return (
     <BottomTab.Navigator
       id="MainNavigator"
-      screenOptions={({ route }) => ({
-        headerShown: false,
-        tabBarStyle: { backgroundColor: colors.bg },
-        tabBarIcon: ({ focused }) => {
-          let activeIconName, inactiveIconName;
+      screenOptions={({ route }) => {
+        const currentItem = bottomTabItems.find(
+          (tabItem) => tabItem.route === route.name
+        );
 
-          bottomTabItems.map((item) => {
-            if (route.name === item.route) {
-              activeIconName = item.activeIconName;
-              inactiveIconName = item.inactiveIconName;
-            }
-          });
-
-          return (
+        return {
+          headerShown: false,
+          tabBarStyle: {
+            borderTopColor: colors.bgGray,
+            borderTopWidth: 1.4,
+            backgroundColor: colors.bg,
+            elevation: 0, //Android: removes drop shadow
+            shadowOpacity: 0, //iOS: removes drop shadow
+          },
+          tabBarIcon: ({ focused }) => (
             <ThemedIcon
               IconComponent={Ionicons}
-              name={focused ? activeIconName : inactiveIconName}
+              name={
+                focused
+                  ? currentItem.activeIconName
+                  : currentItem.inactiveIconName
+              }
               color={focused ? colors.primary : colors.iconGray}
             />
-          );
-        },
-        tabBarLabel: ({ focused }) => {
-          let label;
-
-          bottomTabItems.map((item) => {
-            if (route.name === item.route) {
-              label = focused ? item.activeLabel : item.inactiveLabel;
-            }
-          });
-
-          return (
+          ),
+          tabBarLabel: ({ focused }) => (
             <ThemedText
               style={{
                 color: focused ? colors.text : colors.textGray,
                 fontSize: fontSizes.xs2,
               }}
             >
-              {label}
+              {focused ? currentItem.activeLabel : currentItem.inactiveLabel}
             </ThemedText>
-          );
-        },
-      })}
+          ),
+        };
+      }}
     >
-      <BottomTab.Screen
-        name={bottomTabItems[0].route}
-        component={bottomTabItems[0].component}
-      />
-      <BottomTab.Screen
-        name={bottomTabItems[1].route}
-        component={bottomTabItems[1].component}
-      />
-      <BottomTab.Screen
-        name={bottomTabItems[2].route}
-        component={bottomTabItems[2].component}
-        //options={{tabBarLabel: () => null}} //To hide the label
-      />
-      <BottomTab.Screen
-        name={bottomTabItems[3].route}
-        component={bottomTabItems[3].component}
-      />
-      <BottomTab.Screen
-        name={bottomTabItems[4].route}
-        component={bottomTabItems[4].component}
-      />
+      {bottomTabItems.map((item) => (
+        <BottomTab.Screen
+          key={item.route}
+          name={item.route}
+          component={item.component}
+        />
+      ))}
     </BottomTab.Navigator>
   );
 }

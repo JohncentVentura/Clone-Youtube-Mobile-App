@@ -26,13 +26,13 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   homeVideoContainer: {
-    marginBottom: screenHeight * 0.025,
+    marginBottom: 8,
     width: "100%",
     justifyContent: "flex-start",
     alignItems: "center",
   },
   homeVideoInfoContainer: {
-    paddingTop: screenHeight * 0.005,
+    marginBottom: 16,
     paddingHorizontal: globalHorizontalSpacing,
     width: "100%",
     flexDirection: "row",

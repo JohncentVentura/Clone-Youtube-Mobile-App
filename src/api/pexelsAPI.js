@@ -1,7 +1,7 @@
 import Constants from "expo-constants";
 const { PEXELS_API_URL, PEXELS_API_KEY } = Constants.expoConfig.extra;
 
-export async function pexelsAPIfetchVideos(query = "nature", pages = 3) {
+export async function fetchPexelsData(query = "nature", pages = 3) {
   try {
     const url = `${PEXELS_API_URL}/search?query=${query}&per_page=${pages}`;
     //console.log("Fetching from:", url);

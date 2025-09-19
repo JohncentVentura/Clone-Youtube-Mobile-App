@@ -1,26 +1,27 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { pexelsAPIfetchVideos } from "../api/pexelsAPI";
+import { fetchPexelsData } from "../api/pexelsAPI";
 import {
   ThemedIcon,
   ThemedPressable,
   ThemedRowScrollView,
   ThemedView,
   TopTabButton,
+  ThemedFlatList,
 } from "../components/ThemedComponents";
-import { VideoFlatList } from "../components/VideoComponents";
+import { VideoFlatListRenderItem } from "../components/VideoComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 
 export default function HomeScreen({ navigation }) {
-  const [query, setQuery] = useState("All");
+  const [query, setQuery] = useState("Humans");
   const [pages, setPages] = useState(3);
   const [videos, setVideos] = useState([]);
 
   useEffect(() => {
     async function loadVideos() {
-      const data = await pexelsAPIfetchVideos(query, pages);
+      const data = await fetchPexelsData(query, pages);
       setVideos(data);
     }
     loadVideos();
@@ -29,14 +30,26 @@ export default function HomeScreen({ navigation }) {
   return (
     <ThemedView style={styles.homeContainer}>
       <HomeTopTabs setQuery={setQuery} />
-      <VideoFlatList videos={videos} navigation={navigation} />
+      <ThemedFlatList
+        data={videos}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => {
+          return (
+            <VideoFlatListRenderItem
+              navigation={navigation}
+              video={item}
+              query={query}
+            />
+          );
+        }}
+      />
     </ThemedView>
   );
 }
 
 function HomeTopTabs({ style, setQuery, children, ...rest }) {
   const { colors, fontSizes, iconSizes } = useTheme();
-  const defaultKey = "All"; // id of default button
+  const defaultKey = "Humans"; // id of default button
   const [selectedKey, setSelectedKey] = useState(defaultKey);
   const navigation = useNavigation();
 
@@ -73,8 +86,8 @@ function HomeTopTabs({ style, setQuery, children, ...rest }) {
       </ThemedPressable>
       <TopTabButton
         style={{ marginRight: 8 }}
-        selected={selectedKey === "All"}
-        onPress={() => handleSelect("All")}
+        selected={selectedKey === "Humans"}
+        onPress={() => handleSelect("Humans")}
       >
         All
       </TopTabButton>
