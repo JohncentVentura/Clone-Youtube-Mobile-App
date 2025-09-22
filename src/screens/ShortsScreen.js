@@ -1,9 +1,9 @@
-import { ThemedView, ThemedText } from "../components/ThemedComponents";
+import { ThView, ThText } from "../components/ThemedComponents";
 
 export default function ShortsScreen() {
   return (
-    <ThemedView style={{flex: 1}}>
-      <ThemedText>ShortsScreen Body</ThemedText>
-    </ThemedView>
+    <ThView style={{ flex: 1 }}>
+      <ThText>ShortsScreen Body</ThText>
+    </ThView>
   );
 }

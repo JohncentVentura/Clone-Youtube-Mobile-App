@@ -1,9 +1,9 @@
-import { ThemedView, ThemedText } from "../components/ThemedComponents";
+import { ThView, ThText } from "../components/ThemedComponents";
 
 export default function YouScreen() {
   return (
-    <ThemedView style={{flex: 1}}>
-      <ThemedText>YouScreen Body</ThemedText>
-    </ThemedView>
+    <ThView style={{ flex: 1 }}>
+      <ThText>YouScreen Body</ThText>
+    </ThView>
   );
 }

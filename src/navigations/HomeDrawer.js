@@ -12,12 +12,9 @@ import {
 import React from "react";
 import {
   HeaderRightIconsContainer,
-  HeaderNotificationIcon,
-  HeaderScreenShareIcon,
-  HeaderSearchIcon,
-  ThemedIcon,
-  ThemedText,
-  ThemedView,
+  ThIcon,
+  ThText,
+  ThView,
 } from "../components/ThemedComponents";
 import HomeStack from "./HomeStack";
 import { styles } from "../styles/styles";
@@ -117,7 +114,7 @@ export default function HomeDrawer() {
   return (
     <Drawer.Navigator
       id="HomeDrawer"
-      drawerContent={(props) => <DrawerContentView {...props} />}
+      drawerContent={(props) => <CustomDrawerContentView {...props} />}
       screenOptions={({ navigation, route }) => {
         const currentItem = drawerItems.find(
           (drawerItem) => drawerItem.route === route.name
@@ -132,14 +129,14 @@ export default function HomeDrawer() {
           },
           headerLeft: () =>
             isYoutubeCurrentItem ? (
-              <ThemedIcon
+              <ThIcon
                 style={styles.headerLeftIcon}
                 IconComponent={Fontisto}
                 name="youtube-play"
                 color={colors.primary}
               />
             ) : (
-              <ThemedIcon
+              <ThIcon
                 style={styles.headerLeftIcon}
                 IconComponent={Ionicons}
                 name="arrow-back"
@@ -147,23 +144,37 @@ export default function HomeDrawer() {
               />
             ),
           headerTitle: () => (
-            <ThemedText style={{ fontSize: fontSizes.xl, fontWeight: "bold" }}>
+            <ThText
+              style={[
+                styles.headerTitleIcon,
+                {
+                  fontSize: fontSizes.xl2,
+                  fontWeight: "bold",
+                },
+              ]}
+            >
               {currentItem.label}
-            </ThemedText>
+            </ThText>
           ),
           headerRight: () => (
             <HeaderRightIconsContainer>
-              <HeaderScreenShareIcon
+              <ThIcon
                 style={styles.headerRightIcon}
-                onPress={() => console.log("Screen Share Press")}
+                IconComponent={MaterialIcons}
+                name="screen-share"
+                onPress={() => console.log("Screen share pressed")}
               />
-              <HeaderNotificationIcon
+              <ThIcon
                 style={styles.headerRightIcon}
-                onPress={() => console.log("Notification Press")}
+                IconComponent={Ionicons}
+                name="notifications-outline"
+                onPress={() => console.log("Notification pressed")}
               />
-              <HeaderSearchIcon
+              <ThIcon
                 style={styles.headerRightIcon}
-                onPress={() => console.log("Search Press")}
+                IconComponent={Ionicons}
+                name="search"
+                onPress={() => console.log("Search pressed")}
               />
             </HeaderRightIconsContainer>
           ),
@@ -181,11 +192,11 @@ export default function HomeDrawer() {
   );
 }
 
-function DrawerContentView(props) {
+function CustomDrawerContentView(props) {
   const { colors, fontSizes, iconSizes } = useTheme();
 
   return (
-    <ThemedView style={{ flex: 1, justifyContent: "space-between" }}>
+    <ThView style={{ flex: 1, justifyContent: "space-between" }}>
       <DrawerContentScrollView
         {...props}
         style={{ backgroundColor: colors.bg }}
@@ -199,7 +210,7 @@ function DrawerContentView(props) {
             <React.Fragment key={item.route}>
               {index === drawerItems.length - 3 && (
                 //ONLY render divider if index is in the last 3 items
-                <ThemedView
+                <ThView
                   style={{
                     marginVertical: 12,
                     backgroundColor: colors.primary,
@@ -217,7 +228,7 @@ function DrawerContentView(props) {
                       : colors.bg,
                 }}
                 icon={() => (
-                  <ThemedIcon
+                  <ThIcon
                     IconComponent={item.iconComponent}
                     name={item.iconName}
                     size={isYoutubeCurrentItem ? iconSizes.xl3 : iconSizes.base}
@@ -238,7 +249,7 @@ function DrawerContentView(props) {
                   />
                 )}
                 label={() => (
-                  <ThemedText
+                  <ThText
                     style={{
                       fontSize: isYoutubeCurrentItem
                         ? fontSizes.xl2
@@ -255,7 +266,7 @@ function DrawerContentView(props) {
                     }}
                   >
                     {item.label}
-                  </ThemedText>
+                  </ThText>
                 )}
                 onPress={() => props.navigation.navigate(item.route)}
               />
@@ -264,14 +275,14 @@ function DrawerContentView(props) {
         })}
       </DrawerContentScrollView>
 
-      <ThemedView
+      <ThView
         style={{
-          marginVertical: 10,
+          marginBottom: 10,
           flexDirection: "row",
           justifyContent: "center",
         }}
       >
-        <ThemedText
+        <ThText
           style={{
             color: colors.textGray,
             fontSize: fontSizes.xs,
@@ -279,8 +290,8 @@ function DrawerContentView(props) {
           onPress={() => console.log("Privacy Policy Press")}
         >
           Privacy Policy
-        </ThemedText>
-        <ThemedText
+        </ThText>
+        <ThText
           style={{
             marginHorizontal: 8,
             color: colors.textGray,
@@ -288,8 +299,8 @@ function DrawerContentView(props) {
           }}
         >
           •
-        </ThemedText>
-        <ThemedText
+        </ThText>
+        <ThText
           style={{
             color: colors.textGray,
             fontSize: fontSizes.xs,
@@ -297,8 +308,8 @@ function DrawerContentView(props) {
           onPress={() => console.log("Terms of Service Press")}
         >
           Terms of Service
-        </ThemedText>
-      </ThemedView>
-    </ThemedView>
+        </ThText>
+      </ThView>
+    </ThView>
   );
 }

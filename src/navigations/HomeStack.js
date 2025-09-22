@@ -2,7 +2,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { createStackNavigator } from "@react-navigation/stack";
 import YouTubeFlatListScreen from "../api/YouTubeFlatListScreen";
 import YouTubePlayerScreen from "../api/YouTubePlayerScreen";
-import { ThemedIcon } from "../components/ThemedComponents";
+import { ThIcon } from "../components/ThemedComponents";
 import HomeScreen from "../screens/HomeScreen";
 import MainVideoScreen from "../screens/MainVideoScreen";
 import { styles } from "../styles/styles";
@@ -23,7 +23,7 @@ export default function HomeStack() {
         headerTintColor: colors.text,
         headerLeft: () => {
           return (
-            <ThemedIcon
+            <ThIcon
               style={styles.headerLeftIcon}
               IconComponent={Ionicons}
               name="arrow-back"

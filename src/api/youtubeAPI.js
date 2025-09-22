@@ -23,8 +23,7 @@ export function autoFetchYoutubeData(query = "movies", results = 10) {
 
         if (!res.ok || json.error) {
           const msg =
-            json?.error?.message ||
-            `Request failed with status ${res.status}`;
+            json?.error?.message || `Request failed with status ${res.status}`;
           throw new Error(msg);
         }
 
@@ -54,7 +53,7 @@ export async function manualFetchYoutubeData(query = "movies", results = 10) {
 
     if (!res.ok) {
       const text = await res.text();
-      throw new Error(res.status, text);
+      throw new Error(text);
     }
 
     const data = await res.json();

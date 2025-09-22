@@ -3,19 +3,22 @@ import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { fetchPexelsData } from "../api/pexelsAPI";
 import {
-  ThemedIcon,
-  ThemedPressable,
-  ThemedRowScrollView,
-  ThemedView,
+  ThIcon,
+  ThPressable,
+  ThRowScrollView,
+  ThView,
   TopTabButton,
-  ThemedFlatList,
+  ThFlatList,
 } from "../components/ThemedComponents";
-import { VideoFlatListRenderItem } from "../components/VideoComponents";
+import { VideoFlatListItem } from "../components/VideoComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 
+const defaultQuery = "Humans";
+
 export default function HomeScreen({ navigation }) {
-  const [query, setQuery] = useState("Humans");
+  const { colors, fontSizes, iconSizes } = useTheme();
+  const [query, setQuery] = useState(defaultQuery);
   const [pages, setPages] = useState(3);
   const [videos, setVideos] = useState([]);
 
@@ -28,14 +31,14 @@ export default function HomeScreen({ navigation }) {
   }, [query, pages]);
 
   return (
-    <ThemedView style={styles.homeContainer}>
-      <HomeTopTabs setQuery={setQuery} />
-      <ThemedFlatList
+    <ThView style={styles.screenContainer}>
+      <ThFlatList
         data={videos}
         keyExtractor={(item) => item.id.toString()}
+        ListHeaderComponent={<HomeTopTabs setQuery={setQuery} />}
         renderItem={({ item }) => {
           return (
-            <VideoFlatListRenderItem
+            <VideoFlatListItem
               navigation={navigation}
               video={item}
               query={query}
@@ -43,84 +46,78 @@ export default function HomeScreen({ navigation }) {
           );
         }}
       />
-    </ThemedView>
+    </ThView>
   );
 }
 
 function HomeTopTabs({ style, setQuery, children, ...rest }) {
   const { colors, fontSizes, iconSizes } = useTheme();
-  const defaultKey = "Humans"; // id of default button
-  const [selectedKey, setSelectedKey] = useState(defaultKey);
+  const [selectedQuery, setSelectedQuery] = useState(defaultQuery);
   const navigation = useNavigation();
 
-  const handleSelect = (key) => {
-    // if the same button is pressed again
-    if (selectedKey === key) {
-      // revert to default if it’s not already the default
-      if (key !== defaultKey) {
-        setSelectedKey(defaultKey);
-        setQuery(defaultKey);
+  const handleSelectedQuery = (query) => {
+    if (selectedQuery === query) {
+      if (query !== defaultQuery) {
+        setSelectedQuery(defaultQuery);
+        setQuery(defaultQuery);
       }
-      // else do nothing, stays default
     } else {
-      // select new one
-      setSelectedKey(key);
-      setQuery(key);
+      setSelectedQuery(query);
+      setQuery(query);
     }
   };
 
   return (
-    <ThemedRowScrollView
-      style={[styles.horizontalPaddedContainer, { marginBottom: 12 }]}
+    <ThRowScrollView
+      style={[styles.paddingHorizontalContainer, { marginBottom: 8 }]}
     >
-      <ThemedPressable
+      <ThPressable
         style={{
-          marginRight: 14,
           borderRadius: 8,
           paddingHorizontal: 12,
           paddingVertical: 6,
         }}
         onPress={() => navigation.getParent("HomeDrawer")?.openDrawer()}
       >
-        <ThemedIcon IconComponent={Ionicons} name="compass-outline" />
-      </ThemedPressable>
+        <ThIcon IconComponent={Ionicons} name="compass-outline" />
+      </ThPressable>
       <TopTabButton
-        style={{ marginRight: 8 }}
-        selected={selectedKey === "Humans"}
-        onPress={() => handleSelect("Humans")}
+        style={{ marginLeft: 16 }}
+        selected={selectedQuery === "Humans"}
+        onPress={() => handleSelectedQuery("Humans")}
       >
         All
       </TopTabButton>
       <TopTabButton
-        style={{ marginRight: 8 }}
-        selected={selectedKey === "Music"}
-        onPress={() => handleSelect("Music")}
+        style={{ marginLeft: 8 }}
+        selected={selectedQuery === "Music"}
+        onPress={() => handleSelectedQuery("Music")}
       >
         Music
       </TopTabButton>
       <TopTabButton
-        style={{ marginRight: 8 }}
-        selected={selectedKey === "Nature"}
-        onPress={() => handleSelect("Nature")}
+        style={{ marginLeft: 8 }}
+        selected={selectedQuery === "Nature"}
+        onPress={() => handleSelectedQuery("Nature")}
       >
         Nature
       </TopTabButton>
       <TopTabButton
-        style={{ marginRight: 8 }}
-        selected={selectedKey === "City"}
-        onPress={() => handleSelect("City")}
+        style={{ marginLeft: 8 }}
+        selected={selectedQuery === "City"}
+        onPress={() => handleSelectedQuery("City")}
       >
         City
       </TopTabButton>
       <TopTabButton
-        style={{ marginRight: 32 }}
-        selected={selectedKey === "Youtube"}
+        style={{ marginLeft: 8, marginRight: 32 }}
+        selected={selectedQuery === "Youtube"}
         onPress={() => {
           navigation.navigate("YouTubeFlatListScreen");
         }}
       >
         (Testing YouTube API)
       </TopTabButton>
-    </ThemedRowScrollView>
+    </ThRowScrollView>
   );
 }

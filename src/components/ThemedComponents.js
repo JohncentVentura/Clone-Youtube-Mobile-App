@@ -13,23 +13,21 @@ import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 
 /******************************Basics******************************/
-export function ThemedFlatList({ style, children, ...otherProps }) {
+export function ThFlatList({ style, ...otherProps }) {
   const { colors } = useTheme();
 
   return (
-    <FlatList style={[{ backgroundColor: colors.bg }, style]} {...otherProps}>
-      {children}
-    </FlatList>
+    <FlatList style={[{ backgroundColor: colors.bg }, style]} {...otherProps} />
   );
 }
 
-export function ThemedIcon({ IconComponent, ...rest }) {
+export function ThIcon({ IconComponent, ...rest }) {
   const { colors, iconSizes } = useTheme();
 
   return <IconComponent size={iconSizes.base} color={colors.icon} {...rest} />;
 }
 
-export function ThemedPressable({ style, children, ...rest }) {
+export function ThPressable({ style, children, ...rest }) {
   const { colors } = useTheme();
 
   /*To use ThemedPressable style as functions when used
@@ -67,7 +65,7 @@ export function ThemedPressable({ style, children, ...rest }) {
   );
 }
 
-export function ThemedRowScrollView({ style, children, ...otherProps }) {
+export function ThRowScrollView({ style, children, ...otherProps }) {
   const { colors } = useTheme();
 
   return (
@@ -86,7 +84,7 @@ export function ThemedRowScrollView({ style, children, ...otherProps }) {
   );
 }
 
-export function ThemedText({ style, children, ...rest }) {
+export function ThText({ style, children, ...rest }) {
   const { colors, fontSizes } = useTheme();
 
   return (
@@ -102,7 +100,7 @@ export function ThemedText({ style, children, ...rest }) {
   );
 }
 
-export function ThemedView({ style, children, ...otherProps }) {
+export function ThView({ style, children, ...otherProps }) {
   const { colors } = useTheme();
 
   return (
@@ -113,19 +111,17 @@ export function ThemedView({ style, children, ...otherProps }) {
 }
 
 /******************************Buttons******************************/
-export function ThemedButton({ style, children, ...rest }) {
+export function ThButton({ style, children, ...rest }) {
   const { colors } = useTheme();
 
   return (
     <Pressable
       style={({ pressed }) => [
         {
-          borderRadius: 50,
-          paddingHorizontal: 12,
-          paddingVertical: 6,
           backgroundColor: colors.text,
           opacity: pressed ? 0.5 : 1, //fade effect
         },
+        styles.baseButton,
         style,
       ]}
       {...rest}
@@ -135,7 +131,7 @@ export function ThemedButton({ style, children, ...rest }) {
   );
 }
 
-export function SmallIconButton({
+export function ThSmallIconButton({
   style,
   iconProps,
   textProps = {},
@@ -146,18 +142,21 @@ export function SmallIconButton({
   const { style: textStyle, ...otherTextProps } = textProps;
 
   return (
-    <ThemedButton
-      style={[
+    <Pressable
+      style={({ pressed }) => [
         {
+          backgroundColor: colors.text,
+          opacity: pressed ? 0.5 : 1, //fade effect
           flexDirection: "row",
           alignItems: "center",
         },
+        styles.baseButton,
         style,
       ]}
       {...rest}
     >
-      <ThemedIcon size={iconSizes.xs} {...iconProps} />
-      <ThemedText
+      <ThIcon size={iconSizes.xs} {...iconProps} />
+      <ThText
         style={[
           { paddingLeft: 4, fontSize: fontSizes.xs, fontWeight: "500" },
           textStyle,
@@ -165,8 +164,8 @@ export function SmallIconButton({
         {...otherTextProps}
       >
         {children}
-      </ThemedText>
-    </ThemedButton>
+      </ThText>
+    </Pressable>
   );
 }
 
@@ -186,9 +185,9 @@ export function TopTabButton({ style, selected, children, ...rest }) {
       ]}
       {...rest}
     >
-      <ThemedText style={{ color: selected ? colors.bg : colors.text }}>
+      <ThText style={{ color: selected ? colors.bg : colors.text }}>
         {children}
-      </ThemedText>
+      </ThText>
     </Pressable>
   );
 }
@@ -208,83 +207,5 @@ export function HeaderRightIconsContainer({ style, children, ...otherProps }) {
     >
       {children}
     </View>
-  );
-}
-
-export function HeaderCaptionIcon({ ...otherProps }) {
-  const { colors, iconSizes } = useTheme();
-
-  return (
-    <MaterialCommunityIcons
-      name="closed-caption-outline" //closed-caption when pressed
-      size={iconSizes.base}
-      color={colors.icon}
-      {...otherProps}
-    />
-  );
-}
-
-export function HeaderNotificationIcon({ ...otherProps }) {
-  const { colors, iconSizes } = useTheme();
-
-  return (
-    <Ionicons
-      name="notifications-outline"
-      size={iconSizes.base}
-      color={colors.icon}
-      {...otherProps}
-    />
-  );
-}
-
-export function HeaderScreenShareIcon({ ...otherProps }) {
-  const { colors, iconSizes } = useTheme();
-
-  return (
-    <MaterialIcons
-      name="screen-share"
-      size={iconSizes.base}
-      color={colors.icon}
-      {...otherProps}
-    />
-  );
-}
-
-export function HeaderSearchIcon({ ...otherProps }) {
-  const { colors, iconSizes } = useTheme();
-
-  return (
-    <Ionicons
-      name="search"
-      size={iconSizes.base}
-      color={colors.icon}
-      {...otherProps}
-    />
-  );
-}
-
-export function HeaderSettingIcon({ ...otherProps }) {
-  const { colors, iconSizes } = useTheme();
-
-  return (
-    <Ionicons
-      name="settings-outline"
-      size={iconSizes.base}
-      color={colors.icon}
-      {...otherProps}
-    />
-  );
-}
-
-export function HeaderVerticalDotsIcon({ ...otherProps }) {
-  const { colors, iconSizes } = useTheme();
-
-  return (
-    <MaterialCommunityIcons
-      name="dots-vertical"
-      size={iconSizes.base}
-      color={colors.icon}
-      {...otherProps}
-    />
   );
 }

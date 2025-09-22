@@ -1,6 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { ThemedIcon, ThemedText } from "../components/ThemedComponents";
+import { ThIcon, ThText } from "../components/ThemedComponents";
 import { useTheme } from "../styles/ThemeContext";
 import HomeDrawer from "./HomeDrawer";
 import ShortsStack from "./ShortsStack";
@@ -73,7 +73,7 @@ export default function MainNavigator() {
             shadowOpacity: 0, //iOS: removes drop shadow
           },
           tabBarIcon: ({ focused }) => (
-            <ThemedIcon
+            <ThIcon
               IconComponent={Ionicons}
               name={
                 focused
@@ -84,14 +84,14 @@ export default function MainNavigator() {
             />
           ),
           tabBarLabel: ({ focused }) => (
-            <ThemedText
+            <ThText
               style={{
                 color: focused ? colors.text : colors.textGray,
                 fontSize: fontSizes.xs2,
               }}
             >
               {focused ? currentItem.activeLabel : currentItem.inactiveLabel}
-            </ThemedText>
+            </ThText>
           ),
         };
       }}

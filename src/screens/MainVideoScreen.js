@@ -4,22 +4,21 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Octicons from "@expo/vector-icons/Octicons";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { fetchPexelsData } from "../api/pexelsAPI";
-import { HomeChannelImage } from "../components/ImageComponents";
+import { ChannelImage, CommentImage } from "../components/ImageComponents";
 import {
-  SmallIconButton,
-  ThemedButton,
-  ThemedFlatList,
-  ThemedIcon,
-  ThemedRowScrollView,
-  ThemedText,
-  ThemedView,
-  ThemedPressable,
+  ThSmallIconButton,
+  ThButton,
+  ThFlatList,
+  ThIcon,
+  ThRowScrollView,
+  ThText,
+  ThView,
 } from "../components/ThemedComponents";
 import {
   MainVideoView,
-  VideoFlatListRenderItem,
+  VideoFlatListItem,
 } from "../components/VideoComponents";
-import { styles, screenWidth } from "../styles/styles";
+import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 import { urlToTitleExtractor } from "../utils/utils";
 
@@ -65,15 +64,15 @@ export default function MainVideoScreen({ navigation, route }) {
   }, [navigation]);
 
   return (
-    <ThemedView style={styles.homeContainer}>
-      <ThemedFlatList
+    <ThView style={styles.screenContainer}>
+      <ThFlatList
         data={relatedVideos}
         keyExtractor={(item) => item.id.toString()}
         ListHeaderComponent={
-          <ThemedView style={{ width: "100%" }}>
+          <ThView style={{ width: "100%" }}>
             <MainVideoView style={{ marginBottom: 8 }} video={video} />
-            <ThemedView style={styles.horizontalPaddedContainer}>
-              <ThemedText
+            <ThView style={styles.paddingHorizontalContainer}>
+              <ThText
                 style={{
                   marginBottom: 8,
                   fontSize: fontSizes.xl,
@@ -81,63 +80,65 @@ export default function MainVideoScreen({ navigation, route }) {
                 }}
               >
                 {urlToTitleExtractor(video.url)}
-              </ThemedText>
+              </ThText>
 
               {/*ThemedView for total views, uploaded date, & ...more link*/}
-              <ThemedView style={{ marginBottom: 8, flexDirection: "row" }}>
-                <ThemedText
+              <ThView style={{ marginBottom: 10, flexDirection: "row" }}>
+                <ThText
                   style={{ color: colors.textGray, fontSize: fontSizes.sm }}
                 >
                   {video.id} views
-                </ThemedText>
-                <ThemedText
-                  style={{ fontSize: fontSizes.sm, marginHorizontal: 8 }}
+                </ThText>
+                <ThText
+                  style={{ marginLeft: 8, fontSize: fontSizes.sm }}
                   color={colors.textGray}
                 >
                   1y ago
-                </ThemedText>
-                <ThemedText
-                  style={{ fontSize: fontSizes.sm }}
+                </ThText>
+                <ThText
+                  style={{ marginLeft: 8, fontSize: fontSizes.sm }}
                   onPress={() => {
                     console.log("...more press");
                   }}
                 >
                   ...more
-                </ThemedText>
-              </ThemedView>
+                </ThText>
+              </ThView>
 
               {/*ThemedView for Channel image, channel name, subscribers, & subscribe button*/}
-              <ThemedView
+              <ThView
                 style={{
-                  marginBottom: 8,
+                  marginBottom: 12,
                   width: "100%",
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "space-between",
                 }}
               >
-                <ThemedView
+                <ThView
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
                   }}
                 >
-                  <HomeChannelImage
+                  <ChannelImage
                     source={{ uri: video.video_pictures[0].picture }}
                   />
-                  <ThemedText
-                    style={{ marginHorizontal: 8, fontWeight: "500" }}
-                  >
+                  <ThText style={{ marginLeft: 8, fontWeight: "500" }}>
                     Channel Name
-                  </ThemedText>
-                  <ThemedText
-                    style={{ color: colors.textGray, fontSize: fontSizes.sm }}
+                  </ThText>
+                  <ThText
+                    style={{
+                      marginLeft: 8,
+                      color: colors.textGray,
+                      fontSize: fontSizes.sm,
+                    }}
                   >
                     {video.video_pictures[0].id}k
-                  </ThemedText>
-                </ThemedView>
-                <ThemedButton>
-                  <ThemedText
+                  </ThText>
+                </ThView>
+                <ThButton>
+                  <ThText
                     style={{
                       color: colors.bg,
                       fontSize: fontSizes.xs,
@@ -146,28 +147,27 @@ export default function MainVideoScreen({ navigation, route }) {
                     onPress={() => console.log("Subscribe Press")}
                   >
                     Subscribe
-                  </ThemedText>
-                </ThemedButton>
-              </ThemedView>
+                  </ThText>
+                </ThButton>
+              </ThView>
 
               {/*ThemedScrollView for likes, shares, & other buttons */}
-              <ThemedRowScrollView style={{ marginBottom: 12 }}>
-                <ThemedButton
+              <ThRowScrollView style={{ marginBottom: 12 }}>
+                <ThButton
                   style={{
-                    marginRight: 8,
                     backgroundColor: colors.bgGray,
                     flexDirection: "row",
                     alignItems: "center",
                   }}
                 >
-                  <ThemedIcon
+                  <ThIcon
                     style={{ paddingRight: 12 }}
                     IconComponent={Foundation}
                     name="like"
                     size={iconSizes.xs}
                     onPress={() => console.log("Liked Press")}
                   />
-                  <ThemedText
+                  <ThText
                     style={{
                       borderRightWidth: 1,
                       borderRightColor: colors.text,
@@ -177,17 +177,17 @@ export default function MainVideoScreen({ navigation, route }) {
                     }}
                   >
                     {video.duration} {/* placeholder for count of likes */}
-                  </ThemedText>
-                  <ThemedIcon
+                  </ThText>
+                  <ThIcon
                     style={{ paddingLeft: 12 }}
                     IconComponent={Foundation}
                     name="dislike"
                     size={iconSizes.xs}
                     onPress={() => console.log("Disliked Press")}
                   />
-                </ThemedButton>
-                <SmallIconButton
-                  style={{ marginRight: 8, backgroundColor: colors.bgGray }}
+                </ThButton>
+                <ThSmallIconButton
+                  style={{ marginLeft: 8, backgroundColor: colors.bgGray }}
                   iconProps={{
                     IconComponent: MaterialCommunityIcons,
                     name: "share",
@@ -195,9 +195,9 @@ export default function MainVideoScreen({ navigation, route }) {
                   onPress={() => console.log("Share Press")}
                 >
                   Share
-                </SmallIconButton>
-                <SmallIconButton
-                  style={{ marginRight: 8, backgroundColor: colors.bgGray }}
+                </ThSmallIconButton>
+                <ThSmallIconButton
+                  style={{ marginLeft: 8, backgroundColor: colors.bgGray }}
                   iconProps={{
                     IconComponent: Ionicons,
                     name: "videocam-outline",
@@ -205,9 +205,9 @@ export default function MainVideoScreen({ navigation, route }) {
                   onPress={() => console.log("Remix Press")}
                 >
                   Remix
-                </SmallIconButton>
-                <SmallIconButton
-                  style={{ marginRight: 8, backgroundColor: colors.bgGray }}
+                </ThSmallIconButton>
+                <ThSmallIconButton
+                  style={{ marginLeft: 8, backgroundColor: colors.bgGray }}
                   iconProps={{
                     IconComponent: Octicons,
                     name: "download",
@@ -215,9 +215,9 @@ export default function MainVideoScreen({ navigation, route }) {
                   onPress={() => console.log("Download Press")}
                 >
                   Download
-                </SmallIconButton>
-                <SmallIconButton
-                  style={{ marginRight: 8, backgroundColor: colors.bgGray }}
+                </ThSmallIconButton>
+                <ThSmallIconButton
+                  style={{ marginLeft: 8, backgroundColor: colors.bgGray }}
                   iconProps={{
                     IconComponent: Ionicons,
                     name: "flag-outline",
@@ -225,9 +225,9 @@ export default function MainVideoScreen({ navigation, route }) {
                   onPress={() => console.log("Exp Press")}
                 >
                   Report
-                </SmallIconButton>
-                <SmallIconButton
-                  style={{ marginRight: 8, backgroundColor: colors.bgGray }}
+                </ThSmallIconButton>
+                <ThSmallIconButton
+                  style={{ marginLeft: 8, backgroundColor: colors.bgGray }}
                   iconProps={{
                     IconComponent: Ionicons,
                     name: "bookmark-outline",
@@ -235,9 +235,9 @@ export default function MainVideoScreen({ navigation, route }) {
                   onPress={() => console.log("Save Press")}
                 >
                   Save
-                </SmallIconButton>
-                <SmallIconButton
-                  style={{ marginRight: 8, backgroundColor: colors.bgGray }}
+                </ThSmallIconButton>
+                <ThSmallIconButton
+                  style={{ marginLeft: 8, backgroundColor: colors.bgGray }}
                   iconProps={{
                     IconComponent: Ionicons,
                     name: "flag-outline",
@@ -246,11 +246,11 @@ export default function MainVideoScreen({ navigation, route }) {
                   onPress={() => console.log("Exp Press")}
                 >
                   (Testing textProps)
-                </SmallIconButton>
-              </ThemedRowScrollView>
+                </ThSmallIconButton>
+              </ThRowScrollView>
 
               {/*ThemedView for comments*/}
-              <ThemedView
+              <ThView
                 style={{
                   marginBottom: 16,
                   borderRadius: 8,
@@ -259,22 +259,18 @@ export default function MainVideoScreen({ navigation, route }) {
                   backgroundColor: colors.bgGray,
                 }}
               >
-                <ThemedView
+                <ThView
                   style={{
                     backgroundColor: "transparent",
                     flexDirection: "row",
                   }}
                 >
-                  <ThemedText
-                    style={{ marginRight: 10, fontSize: fontSizes.base }}
-                  >
-                    Comments
-                  </ThemedText>
-                  <ThemedText style={{ color: colors.textGray }}>
+                  <ThText style={{ fontSize: fontSizes.base }}>Comments</ThText>
+                  <ThText style={{ marginLeft: 10, color: colors.textGray }}>
                     5.1k
-                  </ThemedText>
-                </ThemedView>
-                <ThemedView
+                  </ThText>
+                </ThView>
+                <ThView
                   style={{
                     paddingVertical: 14,
                     backgroundColor: "transparent",
@@ -282,26 +278,27 @@ export default function MainVideoScreen({ navigation, route }) {
                     alignItems: "center",
                   }}
                 >
-                  <HomeChannelImage
-                    style={{ marginRight: 10 }}
+                  <CommentImage
                     source={{ uri: video.video_pictures[0].picture }}
                   />
-                  <ThemedText style={{ flex: 1, fontSize: fontSizes.xs }}>
+                  <ThText
+                    style={{ marginLeft: 10, flex: 1, fontSize: fontSizes.xs }}
+                  >
                     {video.video_pictures[0].picture}
-                  </ThemedText>
-                </ThemedView>
-              </ThemedView>
-            </ThemedView>
-          </ThemedView>
+                  </ThText>
+                </ThView>
+              </ThView>
+            </ThView>
+          </ThView>
         }
         renderItem={({ item }) => (
-          <VideoFlatListRenderItem
+          <VideoFlatListItem
             navigation={navigation}
             video={item}
             query={query}
           />
         )}
       />
-    </ThemedView>
+    </ThView>
   );
 }

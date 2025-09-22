@@ -3,7 +3,9 @@ const { PEXELS_API_URL, PEXELS_API_KEY } = Constants.expoConfig.extra;
 
 export async function fetchPexelsData(query = "nature", pages = 3) {
   try {
-    const url = `${PEXELS_API_URL}/search?query=${query}&per_page=${pages}`;
+    const url = `${PEXELS_API_URL}/search?query=${encodeURIComponent(
+      query
+    )}&per_page=${pages}`;
     //console.log("Fetching from:", url);
 
     const res = await fetch(url, {
@@ -14,7 +16,7 @@ export async function fetchPexelsData(query = "nature", pages = 3) {
 
     if (!res.ok) {
       const text = await res.text();
-      throw new Error(res.status, text);
+      throw new Error(text);
     }
 
     //const text = await response.text();
@@ -23,7 +25,7 @@ export async function fetchPexelsData(query = "nature", pages = 3) {
 
     const data = await res.json();
     //console.log("Pexels API data.videos:", data.videos);
-    
+
     return data.videos || [];
   } catch (error) {
     console.error("Pexels API error:", error);

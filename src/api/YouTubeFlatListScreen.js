@@ -1,5 +1,3 @@
-
-import React from "react";
 import { FlatList, Text, TouchableOpacity } from "react-native";
 import { autoFetchYoutubeData } from "./youtubeAPI";
 

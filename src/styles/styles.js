@@ -1,51 +1,52 @@
 import { Dimensions, StyleSheet } from "react-native";
 
 //Maybe use useWindowDimensions hook?
-export const screenWidth = Dimensions.get("window").width * 1; //Multiply by 1 to get 100%
-export const screenHeight = Dimensions.get("window").height * 1; //Multiply by 1 to get 100%
+const screenWidth = Dimensions.get("window").width * 1; //Multiply by 1 to get 100%
+const screenHeight = Dimensions.get("window").height * 1; //Multiply by 1 to get 100%
 const globalHorizontalSpacing = 16;
 
 export const styles = StyleSheet.create({
+  /******************************Headers******************************/
   headerLeftIcon: {
-    paddingLeft: globalHorizontalSpacing,
+    marginLeft: globalHorizontalSpacing,
+  },
+  headerTitleIcon: {
+    marginLeft: 6,
   },
   headerRightIconsContainer: {
-    paddingRight: globalHorizontalSpacing,
+    marginRight: globalHorizontalSpacing,
     flexDirection: "row",
     alignItems: "center",
   },
   headerRightIcon: {
-    paddingLeft: 24,
+    marginLeft: 24,
   },
-  horizontalPaddedContainer: {
-    paddingHorizontal: globalHorizontalSpacing,
-    width: "100%",
-  },
-  homeContainer: {
+
+  /******************************Containers******************************/
+  screenContainer: {
     width: screenWidth,
     flex: 1,
   },
-  homeVideoContainer: {
-    marginBottom: 8,
+  paddingHorizontalContainer: {
+    paddingHorizontal: globalHorizontalSpacing,
     width: "100%",
-    justifyContent: "flex-start",
-    alignItems: "center",
   },
-  homeVideoInfoContainer: {
-    marginBottom: 16,
+  videoFlatListItemInfoContainer: {
     paddingHorizontal: globalHorizontalSpacing,
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
   },
-  homeChannelImage: {
-    borderRadius: 100,
-    width: 45,
-    height: 45,
+
+  /******************************Videos******************************/
+  mainVideoView: {
+    width: screenWidth,
+    height: screenHeight * 0.25,
   },
-  largeVideo: {
-    width: "100%",
-    height: screenHeight * 0.3,
-    overflow: "hidden",
+  /******************************Buttons******************************/
+  baseButton: {
+    borderRadius: 50,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
   },
 });
