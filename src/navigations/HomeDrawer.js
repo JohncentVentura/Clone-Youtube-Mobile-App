@@ -4,18 +4,14 @@ import Fontisto from "@expo/vector-icons/Fontisto";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
   DrawerItem,
 } from "@react-navigation/drawer";
 import React from "react";
-import {
-  HeaderRightIconsContainer,
-  ThIcon,
-  ThText,
-  ThView,
-} from "../components/ThemedComponents";
+import { ThIcon, ThText, ThView } from "../components/ThemedComponents";
 import HomeStack from "./HomeStack";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
@@ -72,10 +68,10 @@ const drawerItems = [
     component: HomeStack,
   },
   {
-    route: "LearningScreen",
-    iconComponent: MaterialIcons,
-    iconName: "lightbulb-outline",
-    label: "Learning",
+    route: "CoursesScreen",
+    iconComponent: SimpleLineIcons,
+    iconName: "graduation",
+    label: "Courses",
     component: HomeStack,
   },
   {
@@ -148,7 +144,7 @@ export default function HomeDrawer() {
               style={[
                 styles.headerTitleIcon,
                 {
-                  fontSize: fontSizes.xl2,
+                  fontSize: fontSizes.xl,
                   fontWeight: "bold",
                 },
               ]}
@@ -157,7 +153,7 @@ export default function HomeDrawer() {
             </ThText>
           ),
           headerRight: () => (
-            <HeaderRightIconsContainer>
+            <ThView style={styles.headerRightIconsContainer}>
               <ThIcon
                 style={styles.headerRightIcon}
                 IconComponent={MaterialIcons}
@@ -176,7 +172,7 @@ export default function HomeDrawer() {
                 name="search"
                 onPress={() => console.log("Search pressed")}
               />
-            </HeaderRightIconsContainer>
+            </ThView>
           ),
         };
       }}
@@ -222,6 +218,7 @@ function CustomDrawerContentView(props) {
 
               <DrawerItem
                 style={{
+                  marginBottom: 2,
                   backgroundColor:
                     focused && !isYoutubeCurrentItem
                       ? colors.primary
@@ -231,7 +228,6 @@ function CustomDrawerContentView(props) {
                   <ThIcon
                     IconComponent={item.iconComponent}
                     name={item.iconName}
-                    size={isYoutubeCurrentItem ? iconSizes.xl3 : iconSizes.base}
                     color={
                       isYoutubeCurrentItem ||
                       drawerItems[drawerItems.length - 3].route ===
@@ -251,8 +247,9 @@ function CustomDrawerContentView(props) {
                 label={() => (
                   <ThText
                     style={{
+                      marginLeft: isYoutubeCurrentItem ? -8 : 8,
                       fontSize: isYoutubeCurrentItem
-                        ? fontSizes.xl2
+                        ? fontSizes.xl
                         : fontSizes.base,
                       fontWeight: isYoutubeCurrentItem
                         ? "bold"
@@ -293,7 +290,7 @@ function CustomDrawerContentView(props) {
         </ThText>
         <ThText
           style={{
-            marginHorizontal: 8,
+            marginLeft: 8,
             color: colors.textGray,
             fontSize: fontSizes.xs,
           }}
@@ -302,6 +299,7 @@ function CustomDrawerContentView(props) {
         </ThText>
         <ThText
           style={{
+            marginLeft: 8,
             color: colors.textGray,
             fontSize: fontSizes.xs,
           }}

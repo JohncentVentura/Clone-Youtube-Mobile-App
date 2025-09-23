@@ -67,7 +67,7 @@ export default function MainNavigator() {
           headerShown: false,
           tabBarStyle: {
             borderTopColor: colors.bgGray,
-            borderTopWidth: 1.4,
+            borderTopWidth: 1,
             backgroundColor: colors.bg,
             elevation: 0, //Android: removes drop shadow
             shadowOpacity: 0, //iOS: removes drop shadow

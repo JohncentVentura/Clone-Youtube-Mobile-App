@@ -27,18 +27,18 @@ export const fontSizes = {
   base: 16,
   lg: 18,
   xl: 20,
-  xl2: 22,
-  xl3: 24,
+  xl2: 24,
+  xl3: 30,
 };
 
 export const iconSizes = {
-  xs3: 14,
-  xs2: 16,
+  xs3: 12,
+  xs2: 14,
   xs: 18,
   sm: 20,
   base: 24,
   lg: 26,
   xl: 28,
-  xl2: 30,
-  xl3: 32,
+  xl2: 32,
+  xl3: 38,
 };

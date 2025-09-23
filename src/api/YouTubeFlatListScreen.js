@@ -7,8 +7,6 @@ export default function YouTubeFlatListScreen({ navigation }) {
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error: {error.message}</Text>;
 
-  console.log("videos:", videos);
-
   return (
     <FlatList
       data={videos}

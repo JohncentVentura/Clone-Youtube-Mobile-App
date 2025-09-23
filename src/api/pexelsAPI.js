@@ -6,7 +6,6 @@ export async function fetchPexelsData(query = "nature", pages = 3) {
     const url = `${PEXELS_API_URL}/search?query=${encodeURIComponent(
       query
     )}&per_page=${pages}`;
-    //console.log("Fetching from:", url);
 
     const res = await fetch(url, {
       headers: {
@@ -19,12 +18,7 @@ export async function fetchPexelsData(query = "nature", pages = 3) {
       throw new Error(text);
     }
 
-    //const text = await response.text();
-    //console.log("Raw response:", text.slice(0, 200)); // show first 200 chars
-    //const data = JSON.parse(text);
-
     const data = await res.json();
-    //console.log("Pexels API data.videos:", data.videos);
 
     return data.videos || [];
   } catch (error) {

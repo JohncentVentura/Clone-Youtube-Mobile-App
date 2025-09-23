@@ -1,6 +1,3 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import {
   FlatList,
   Pressable,
@@ -53,7 +50,7 @@ export function ThPressable({ style, children, ...rest }) {
     <Pressable
       style={({ pressed }) => [
         {
-          backgroundColor: colors.bgGray,
+          backgroundColor: colors.bg,
           opacity: pressed ? 0.5 : 1,
         },
         style,
@@ -89,10 +86,7 @@ export function ThText({ style, children, ...rest }) {
 
   return (
     <Text
-      style={[
-        { color: colors.text, fontSize: fontSizes.base },
-        style, //Putting style last in [defaultStyle, style] lets user overrides take precedence.
-      ]}
+      style={[{ color: colors.text, fontSize: fontSizes.base }, style]}
       {...rest}
     >
       {children}
@@ -118,7 +112,7 @@ export function ThButton({ style, children, ...rest }) {
     <Pressable
       style={({ pressed }) => [
         {
-          backgroundColor: colors.text,
+          backgroundColor: colors.bgGray,
           opacity: pressed ? 0.5 : 1, //fade effect
         },
         styles.baseButton,
@@ -131,7 +125,7 @@ export function ThButton({ style, children, ...rest }) {
   );
 }
 
-export function ThSmallIconButton({
+export function ThIconTextButton({
   style,
   iconProps,
   textProps = {},
@@ -145,10 +139,10 @@ export function ThSmallIconButton({
     <Pressable
       style={({ pressed }) => [
         {
-          backgroundColor: colors.text,
-          opacity: pressed ? 0.5 : 1, //fade effect
+          backgroundColor: colors.bgGray,
           flexDirection: "row",
           alignItems: "center",
+          opacity: pressed ? 0.5 : 1, //fade effect
         },
         styles.baseButton,
         style,
@@ -169,16 +163,16 @@ export function ThSmallIconButton({
   );
 }
 
-export function TopTabButton({ style, selected, children, ...rest }) {
+export function ThTopTabButton({ style, selected, children, ...rest }) {
   const { colors } = useTheme();
 
   return (
     <Pressable
       style={[
         {
-          borderRadius: 8,
-          paddingHorizontal: 14,
-          paddingVertical: 8,
+          borderRadius: 4,
+          paddingHorizontal: 12,
+          paddingVertical: 6,
           backgroundColor: selected ? colors.text : colors.bgGray,
         },
         style,
@@ -189,23 +183,5 @@ export function TopTabButton({ style, selected, children, ...rest }) {
         {children}
       </ThText>
     </Pressable>
-  );
-}
-
-/******************************Headers******************************/
-export function HeaderRightIconsContainer({ style, children, ...otherProps }) {
-  const { colors } = useTheme();
-
-  return (
-    <View
-      style={[
-        { backgroundColor: colors.bg },
-        styles.headerRightIconsContainer,
-        style,
-      ]}
-      {...otherProps}
-    >
-      {children}
-    </View>
   );
 }

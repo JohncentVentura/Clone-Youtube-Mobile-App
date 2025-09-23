@@ -10,6 +10,7 @@ export function autoFetchYoutubeData(query = "movies", results = 10) {
 
   useEffect(() => {
     let cancelled = false;
+
     async function fetchVideos() {
       try {
         setLoading(true);
@@ -34,7 +35,9 @@ export function autoFetchYoutubeData(query = "movies", results = 10) {
         if (!cancelled) setLoading(false);
       }
     }
+
     fetchVideos();
+
     return () => {
       cancelled = true;
     };
@@ -57,6 +60,7 @@ export async function manualFetchYoutubeData(query = "movies", results = 10) {
     }
 
     const data = await res.json();
+
     return data.items || [];
   } catch (error) {
     console.error("Youtube API error:", error);

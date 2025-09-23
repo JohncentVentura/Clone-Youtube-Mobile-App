@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     marginLeft: globalHorizontalSpacing,
   },
   headerTitleIcon: {
-    marginLeft: 6,
+    marginLeft: 4,
   },
   headerRightIconsContainer: {
     marginRight: globalHorizontalSpacing,
@@ -21,23 +21,15 @@ export const styles = StyleSheet.create({
   headerRightIcon: {
     marginLeft: 24,
   },
-
   /******************************Containers******************************/
   screenContainer: {
     width: screenWidth,
     flex: 1,
   },
-  paddingHorizontalContainer: {
+  paddedHorizontalContainer: {
     paddingHorizontal: globalHorizontalSpacing,
     width: "100%",
   },
-  videoFlatListItemInfoContainer: {
-    paddingHorizontal: globalHorizontalSpacing,
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-
   /******************************Videos******************************/
   mainVideoView: {
     width: screenWidth,

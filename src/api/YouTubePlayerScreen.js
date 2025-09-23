@@ -4,11 +4,11 @@ import { ActivityIndicator, View } from "react-native";
 import YoutubePlayer from "react-native-youtube-iframe";
 
 export default function YouTubePlayerScreen({ route }) {
-  const { videoId } = route.params;
   const isFocused = useIsFocused();
   const playerRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [playing, setPlaying] = useState(true);
+  const { videoId } = route.params;
 
   // Pause when unfocused
   useEffect(() => {
@@ -26,12 +26,12 @@ export default function YouTubePlayerScreen({ route }) {
     <View style={{ flex: 1 }}>
       {loading && <ActivityIndicator size="large" />}
       <YoutubePlayer
-        ref={playerRef}
         height={250}
         play={playing}
+        ref={playerRef}
         videoId={videoId}
-        onReady={() => setLoading(false)}
         onChangeState={onChangeState}
+        onReady={() => setLoading(false)}
       />
     </View>
   );

@@ -19,7 +19,7 @@ export function VideoFlatListItem({ style, navigation, video, query }) {
   return (
     <ThView style={[{ marginBottom: 32 }, style]}>
       <ThPressable
-        style={{ backgroundColor: colors.bg, marginBottom: 8 }}
+        style={{ marginBottom: 8 }}
         onPress={() => {
           navigation.push("MainVideoScreen", {
             video: video,
@@ -30,19 +30,27 @@ export function VideoFlatListItem({ style, navigation, video, query }) {
         <MainVideoView video={video} />
       </ThPressable>
 
-      <ThView style={styles.videoFlatListItemInfoContainer}>
-        <ThView
+      <ThView
+        style={[
+          styles.paddedHorizontalContainer,
+          { flexDirection: "row", alignItems: "center" },
+        ]}
+      >
+        <ThPressable
           style={{
+            marginTop: 4,
             height: "100%",
             flex: 1,
-            paddingTop: 8,
             justifyContent: "flex-start",
             alignItems: "flex-start",
           }}
+          onPress={() => {
+            console.log("Channel Image Pressed");
+          }}
         >
           <ChannelImage source={{ uri: video.video_pictures[0].picture }} />
-        </ThView>
-        <ThView style={{ flex: 5, marginLeft: 12 }}>
+        </ThPressable>
+        <ThView style={{ flex: 5, marginLeft: 8 }}>
           <ThText
             style={{
               marginBottom: 4,
@@ -58,15 +66,20 @@ export function VideoFlatListItem({ style, navigation, video, query }) {
         </ThView>
         <ThView
           style={{
-            flex: 1,
+            marginTop: 4,
             height: "100%",
             flex: 1,
-            paddingTop: 8,
             justifyContent: "flex-start",
             alignItems: "flex-end",
           }}
         >
-          <ThIcon IconComponent={MaterialCommunityIcons} name="dots-vertical" />
+          <ThIcon
+            IconComponent={MaterialCommunityIcons}
+            name="dots-vertical"
+            onPress={() => {
+              console.log("Dots-vertical Pressed");
+            }}
+          />
         </ThView>
       </ThView>
     </ThView>
@@ -77,7 +90,7 @@ export function MainVideoView({ style, video, ...rest }) {
   const { colors } = useTheme();
   const isFocused = useIsFocused();
 
-  // pick first playable MP4
+  // pick first playable MP4 and hd quality if possible
   const file =
     video.video_files.find(
       (v) => v.file_type === "video/mp4" && v.quality === "hd"
@@ -100,10 +113,10 @@ export function MainVideoView({ style, video, ...rest }) {
 
   return (
     <VideoView
+      style={[styles.mainVideoView, style]}
+      resizeMode="stretch"
       nativeControls={false}
       player={player}
-      resizeMode="stretch"
-      style={[styles.mainVideoView, style]}
       {...rest}
     />
   );

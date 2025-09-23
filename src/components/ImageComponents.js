@@ -1,12 +1,11 @@
 import { Image } from "react-native";
-import { styles } from "../styles/styles";
 
 export function ChannelImage({ style, ...otherProps }) {
   return (
     <Image
-      alt="Youtube Channel Image"
+      style={[{ borderRadius: 100, width: 40, height: 40 }, style]}
       resizeMode={"stretch"}
-      style={[{ borderRadius: 100, width: 50, height: 50 }, style]}
+      alt="Channel Image"
       {...otherProps}
     />
   );
@@ -15,9 +14,9 @@ export function ChannelImage({ style, ...otherProps }) {
 export function CommentImage({ style, ...otherProps }) {
   return (
     <Image
-      alt="Youtube Channel Image"
+      style={[{ borderRadius: 100, width: 30, height: 30 }, style]}
       resizeMode={"stretch"}
-      style={[{ borderRadius: 100, width: 35, height: 35 }, style]}
+      alt="Comment Image"
       {...otherProps}
     />
   );
