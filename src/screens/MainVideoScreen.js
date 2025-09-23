@@ -112,12 +112,12 @@ export default function MainVideoScreen({ navigation, route }) {
         data={relatedVideos}
         keyExtractor={(item) => item.id.toString()}
         ListHeaderComponent={
-          <ThView>
+          <>
             <MainVideoView style={{ marginBottom: 8 }} video={video} />
             <ThView style={styles.paddedHorizontalContainer}>
               <ThText
                 style={{
-                  marginBottom: 10,
+                  marginBottom: 4,
                   fontSize: fontSizes.xl,
                   fontWeight: "bold",
                 }}
@@ -139,7 +139,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   1y ago
                 </ThText>
                 <ThText
-                  style={{ marginLeft: 8, fontSize: fontSizes.xs }}
+                  style={{ marginLeft: 8, fontWeight: "medium", fontSize: fontSizes.xs }}
                   onPress={() => {
                     console.log("...more press");
                   }}
@@ -177,7 +177,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     style={{
                       marginLeft: 8,
                       fontSize: fontSizes.sm,
-                      fontWeight: "500",
+                      fontWeight: "medium",
                     }}
                   >
                     Channel Name
@@ -198,7 +198,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     style={{
                       color: colors.bg,
                       fontSize: fontSizes.xs,
-                      fontWeight: "500",
+                      fontWeight: "medium",
                     }}
                     onPress={() => console.log("Subscribe Press")}
                   >
@@ -322,7 +322,12 @@ export default function MainVideoScreen({ navigation, route }) {
                     alignItems: "center",
                   }}
                 >
-                  <ThText style={{ fontSize: fontSizes.sm, fontWeight: "500" }}>
+                  <ThText
+                    style={{
+                      fontSize: fontSizes.sm,
+                      fontWeight: "medium",
+                    }}
+                  >
                     Comments
                   </ThText>
                   <ThText
@@ -345,7 +350,6 @@ export default function MainVideoScreen({ navigation, route }) {
                 >
                   <ThPressable
                     style={{
-                      marginTop: 4,
                       backgroundColor: "transparent",
                       height: "100%",
                     }}
@@ -366,7 +370,7 @@ export default function MainVideoScreen({ navigation, route }) {
                 </ThView>
               </ThView>
             </ThView>
-          </ThView>
+          </>
         }
         renderItem={({ item }) => (
           <VideoFlatListItem

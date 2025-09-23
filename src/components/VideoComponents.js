@@ -38,7 +38,7 @@ export function VideoFlatListItem({ style, navigation, video, query }) {
       >
         <ThPressable
           style={{
-            marginTop: 4,
+            marginTop: 8,
             height: "100%",
             flex: 1,
             justifyContent: "flex-start",
@@ -50,7 +50,9 @@ export function VideoFlatListItem({ style, navigation, video, query }) {
         >
           <ChannelImage source={{ uri: video.video_pictures[0].picture }} />
         </ThPressable>
-        <ThView style={{ flex: 5, marginLeft: 8 }}>
+        <ThView
+          style={{ flex: 6, justifyContent: "flex-start", marginLeft: 8 }}
+        >
           <ThText
             style={{
               marginBottom: 4,
@@ -61,12 +63,12 @@ export function VideoFlatListItem({ style, navigation, video, query }) {
             {urlToTitleExtractor(video.url)}
           </ThText>
           <ThText style={{ color: colors.textGray, fontSize: fontSizes.xs }}>
-            Channel Name * {video.id} Views * Uploaded Date
+            Channel Name • {video.id} Views • Uploaded Date 
           </ThText>
         </ThView>
         <ThView
           style={{
-            marginTop: 4,
+            marginTop: 8,
             height: "100%",
             flex: 1,
             justifyContent: "flex-start",

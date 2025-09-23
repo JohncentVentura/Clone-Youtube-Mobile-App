@@ -87,6 +87,7 @@ export default function MainNavigator() {
             <ThText
               style={{
                 color: focused ? colors.text : colors.textGray,
+                fontWeight: "medium",
                 fontSize: fontSizes.xs2,
               }}
             >

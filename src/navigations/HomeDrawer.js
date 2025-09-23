@@ -255,7 +255,7 @@ function CustomDrawerContentView(props) {
                         ? "bold"
                         : focused
                         ? "bold"
-                        : "normal",
+                        : "",
                       color:
                         focused && !isYoutubeCurrentItem
                           ? colors.bg

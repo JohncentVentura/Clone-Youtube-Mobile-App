@@ -6,11 +6,11 @@ export default {
     slug: "clone-youtube-mobile-app",
     version: "1.0.0",
     orientation: "portrait",
-    icon: "./assets/icon.png",
+    icon: "./src/assets/images/icon.png",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     splash: {
-      image: "./assets/splash-icon.png",
+      image: "./src/assets/images/icon.png",
       resizeMode: "contain",
       backgroundColor: "#ffffff"
     },
@@ -19,7 +19,7 @@ export default {
     },
     android: {
       adaptiveIcon: {
-        foregroundImage: "./assets/adaptive-icon.png",
+        foregroundImage: "./src/assets/images/adaptive-icon.png",
         backgroundColor: "#ffffff"
       },
       edgeToEdgeEnabled: true
@@ -28,7 +28,8 @@ export default {
       favicon: "./assets/favicon.png"
     },
     plugins: [
-      "expo-video"
+      "expo-video",
+      "expo-font"
     ],
     extra: {
       YOUTUBE_API_URL: process.env.YOUTUBE_API_URL,

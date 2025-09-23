@@ -51,7 +51,7 @@ export function ThPressable({ style, children, ...rest }) {
       style={({ pressed }) => [
         {
           backgroundColor: colors.bg,
-          opacity: pressed ? 0.5 : 1,
+          opacity: pressed ? 0.5 : 1, //fade effect
         },
         style,
       ]}
@@ -84,9 +84,27 @@ export function ThRowScrollView({ style, children, ...otherProps }) {
 export function ThText({ style, children, ...rest }) {
   const { colors, fontSizes } = useTheme();
 
+  const flattenedStyle = StyleSheet.flatten(style) || {};
+  const weight = flattenedStyle.fontWeight;
+  let fontFamily;
+
+  if (weight === "bold") fontFamily = "roboto-bold";
+  else if (weight === "medium") fontFamily = "roboto-medium";
+  else fontFamily = "roboto-regular";
+
+  // Remove fontWeight from the flattened style so it doesn't override your fontFamily
+  const { fontWeight, ...restStyle } = flattenedStyle;
+
   return (
     <Text
-      style={[{ color: colors.text, fontSize: fontSizes.base }, style]}
+      style={[
+        {
+          color: colors.text,
+          fontFamily,
+          fontSize: fontSizes.base,
+        },
+        restStyle, // all other style props except fontWeight
+      ]}
       {...rest}
     >
       {children}
@@ -151,10 +169,7 @@ export function ThIconTextButton({
     >
       <ThIcon size={iconSizes.xs} {...iconProps} />
       <ThText
-        style={[
-          { paddingLeft: 4, fontSize: fontSizes.xs, fontWeight: "500" },
-          textStyle,
-        ]}
+        style={[{ paddingLeft: 4, fontWeight: "medium", fontSize: fontSizes.xs }, textStyle]}
         {...otherTextProps}
       >
         {children}
