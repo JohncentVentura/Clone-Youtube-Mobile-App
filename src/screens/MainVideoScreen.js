@@ -3,7 +3,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Octicons from "@expo/vector-icons/Octicons";
 import { useFocusEffect } from "@react-navigation/native";
-import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { fetchPexelsData } from "../api/pexelsAPI";
 import { ChannelImage, CommentImage } from "../components/ImageComponents";
 import {
@@ -37,74 +37,17 @@ export default function MainVideoScreen({ navigation, route }) {
     loadRelated();
   }, [video]);
 
-  //*
-  useLayoutEffect(() => {
-    navigation.getParent("MainNavigator")?.setOptions({
-      tabBarStyle: { display: "none" },
-    });
-
-    navigation.getParent("HomeDrawer")?.setOptions({
-      swipeEnabled: false,
-      headerShown: false,
-    });
-
-    return () => {
-      navigation.getParent("MainNavigator")?.setOptions({
-        tabBarStyle: {
-          borderTopColor: colors.bgGray,
-          borderTopWidth: 1.4,
-          backgroundColor: colors.bg,
-          elevation: 0, //Android: removes drop shadow
-          shadowOpacity: 0, //iOS: removes drop shadow
-        },
-      });
-
-      navigation.getParent("HomeDrawer")?.setOptions({
-        swipeEnabled: true,
-        headerShown: true,
-      });
-    };
-  }, [navigation]);
-  //*/
-
-  /*
   useFocusEffect(
     useCallback(() => {
-      navigation.getParent("MainNavigator")?.setOptions({
+      const bottomTabNav = navigation.getParent();
+
+      bottomTabNav?.setOptions({
         tabBarStyle: { display: "none" },
-      });
-      navigation.getParent("HomeDrawer")?.setOptions({
         swipeEnabled: false,
         headerShown: false,
       });
-
-      return () => {
-        navigation.navigate('HomeScreen', { restoreHeaders: true });
-        // 🔹 Check that we're really back to the first route before restoring
-        const parentNav = navigation.getParent("MainNavigator");
-        const state = parentNav?.getState();
-        const currentRoute = state?.routes[state.index]?.name;
-
-        // replace 'HomeScreen' with your actual starting screen name
-        if (currentRoute === "HomeScreen") {
-          parentNav?.setOptions({
-            tabBarStyle: {
-              borderTopColor: colors.bgGray,
-              borderTopWidth: 1,
-              backgroundColor: colors.bg,
-              elevation: 0, //Android: removes drop shadow
-              shadowOpacity: 0, //iOS: removes drop shadow
-            },
-          });
-          navigation.getParent("HomeDrawer")?.setOptions({
-            swipeEnabled: true,
-            headerShown: true,
-          });
-        }
-      };
-    }, [navigation, colors])
+    }, [navigation])
   );
-  */
 
   return (
     <ThView style={[styles.screenContainer, { paddingBottom: 32 }]}>
@@ -139,7 +82,11 @@ export default function MainVideoScreen({ navigation, route }) {
                   1y ago
                 </ThText>
                 <ThText
-                  style={{ marginLeft: 8, fontWeight: "medium", fontSize: fontSizes.xs }}
+                  style={{
+                    marginLeft: 8,
+                    fontWeight: "medium",
+                    fontSize: fontSizes.xs,
+                  }}
                   onPress={() => {
                     console.log("...more press");
                   }}

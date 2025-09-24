@@ -10,7 +10,7 @@ export default {
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     splash: {
-      image: "./src/assets/images/icon.png",
+      image: "./src/assets/images/splash-icon.png",
       resizeMode: "contain",
       backgroundColor: "#ffffff"
     },
@@ -25,7 +25,7 @@ export default {
       edgeToEdgeEnabled: true
     },
     web: {
-      favicon: "./assets/favicon.png"
+      favicon: "./src/assets/images/favicon.png"
     },
     plugins: [
       "expo-video",

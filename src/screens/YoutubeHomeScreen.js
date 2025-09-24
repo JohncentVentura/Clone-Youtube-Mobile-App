@@ -1,6 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useCallback, useEffect, useState } from "react";
 import { fetchPexelsData } from "../api/pexelsAPI";
 import {
   ThFlatList,
@@ -16,7 +16,8 @@ import { useTheme } from "../styles/ThemeContext";
 
 const defaultQuery = "Humans";
 
-export default function HomeScreen({ navigation }) {
+export default function YoutubeHomeScreen({ navigation, route }) {
+  const { colors } = useTheme();
   const [query, setQuery] = useState(defaultQuery);
   const [pages, setPages] = useState(3);
   const [videos, setVideos] = useState([]);
@@ -28,6 +29,24 @@ export default function HomeScreen({ navigation }) {
     }
     loadVideos();
   }, [query, pages]);
+
+  useFocusEffect(
+    useCallback(() => {
+      const bottomTabNav = navigation.getParent();
+
+      bottomTabNav?.setOptions({
+        tabBarStyle: {
+          borderTopColor: colors.bgGray,
+          borderTopWidth: 1.4,
+          backgroundColor: colors.bg,
+          elevation: 0, //Android: removes drop shadow
+          shadowOpacity: 0, //iOS: removes drop shadow
+        },
+        swipeEnabled: true,
+        headerShown: true,
+      });
+    }, [navigation])
+  );
 
   return (
     <ThView style={styles.screenContainer}>
@@ -50,7 +69,7 @@ export default function HomeScreen({ navigation }) {
 }
 
 function HomeTopTabs({ setQuery }) {
-const {colors} = useTheme();  
+  const { colors } = useTheme();
   const [selectedQuery, setSelectedQuery] = useState(defaultQuery);
   const navigation = useNavigation();
 
@@ -75,9 +94,9 @@ const {colors} = useTheme();
           borderRadius: 4,
           paddingHorizontal: 10,
           paddingVertical: 4,
-          backgroundColor: colors.bgGray
+          backgroundColor: colors.bgGray,
         }}
-        onPress={() => navigation.getParent("HomeDrawer")?.openDrawer()}
+        onPress={() => navigation.getParent("MainNavigator")?.openDrawer()}
       >
         <ThIcon IconComponent={Ionicons} name="compass-outline" />
       </ThPressable>

@@ -3,18 +3,19 @@ import { createStackNavigator } from "@react-navigation/stack";
 import YouTubeFlatListScreen from "../api/YouTubeFlatListScreen";
 import YouTubePlayerScreen from "../api/YouTubePlayerScreen";
 import { ThIcon } from "../components/ThemedComponents";
-import HomeScreen from "../screens/HomeScreen";
+import YoutubeHomeScreen from "../screens/YoutubeHomeScreen";
 import MainVideoScreen from "../screens/MainVideoScreen";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 
 const Stack = createStackNavigator();
 
-export default function HomeStack() {
+export default function YoutubeHomeStack() {
   const { colors } = useTheme();
 
   return (
     <Stack.Navigator
+      id="YoutubeHomeStack"
       screenOptions={({ navigation }) => ({
         headerStyle: {
           backgroundColor: colors.bg,
@@ -37,8 +38,8 @@ export default function HomeStack() {
       })}
     >
       <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
+        name="YoutubeHomeScreen"
+        component={YoutubeHomeScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen

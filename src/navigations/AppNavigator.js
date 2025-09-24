@@ -2,7 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { useState } from "react";
 import { ActivityIndicator } from "react-native";
-import { ThText } from "../components/ThemedComponents";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ThemeProvider } from "../styles/ThemeContext";
 import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
@@ -18,15 +18,17 @@ export default function AppNavigator() {
 
   return (
     <ThemeProvider>
-      <NavigationContainer>
-        {!fontsLoaded ? (
-          <ActivityIndicator />
-        ) : isLoggedIn ? (
-          <MainNavigator />
-        ) : (
-          <AuthNavigator />
-        )}
-      </NavigationContainer>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          {!fontsLoaded ? (
+            <ActivityIndicator />
+          ) : isLoggedIn ? (
+            <MainNavigator />
+          ) : (
+            <AuthNavigator />
+          )}
+        </NavigationContainer>
+      </SafeAreaProvider>
     </ThemeProvider>
   );
 }
