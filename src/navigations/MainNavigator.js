@@ -25,7 +25,7 @@ import YouStack from "./YouStack";
 const Drawer = createDrawerNavigator();
 const BottomTab = createBottomTabNavigator();
 
-//TODO: Change drawerItems component into the actual component based on the route
+//TODO: Change drawerItems component props of objects into the actual component based on the same route name
 const drawerItems = [
   {
     route: "YoutubeHomeStack",
@@ -112,6 +112,8 @@ const drawerItems = [
     component: YoutubeHomeStack,
   },
 ];
+
+//HomeComponent parameter will change into the component of the currently selected Drawer route
 const bottomTabItems = (HomeComponent = YoutubeHomeStack) => [
   {
     route: "HomeStack",
@@ -166,20 +168,17 @@ export default function MainNavigator({ route }) {
       drawerContent={(props) => {
         return (
           <ThView style={{ flex: 1, justifyContent: "space-between" }}>
-            <DrawerContentScrollView
-              {...props}
-              style={{ backgroundColor: colors.bg }}
-            >
+            <DrawerContentScrollView style={{ backgroundColor: colors.bg }}>
               {drawerItems.map((item, index) => {
-                const focused =
-                  props.state.routeNames[props.state.index] === item.route;
+                const isCurrentItem =
+                  drawerItems[props.state.index].route === item.route;
                 const isYoutubeCurrentItem =
                   drawerItems[0].route === item.route;
 
                 return (
                   <React.Fragment key={item.route}>
+                    {/*Render divider if index is in the last 3 items of drawerItems*/}
                     {index === drawerItems.length - 3 && (
-                      //ONLY render divider if index is in the last 3 items
                       <ThView
                         style={{
                           marginVertical: 12,
@@ -194,7 +193,7 @@ export default function MainNavigator({ route }) {
                       style={{
                         marginBottom: 2,
                         backgroundColor:
-                          focused && !isYoutubeCurrentItem
+                          isCurrentItem && !isYoutubeCurrentItem
                             ? colors.primary
                             : colors.bg,
                       }}
@@ -210,10 +209,10 @@ export default function MainNavigator({ route }) {
                               item.route ||
                             drawerItems[drawerItems.length - 1].route ===
                               item.route
-                              ? focused && !isYoutubeCurrentItem
+                              ? isCurrentItem && !isYoutubeCurrentItem
                                 ? colors.bg
                                 : colors.primary
-                              : focused
+                              : isCurrentItem
                               ? colors.bg
                               : colors.icon
                           }
@@ -228,11 +227,11 @@ export default function MainNavigator({ route }) {
                               : fontSizes.base,
                             fontWeight: isYoutubeCurrentItem
                               ? "bold"
-                              : focused
+                              : isCurrentItem
                               ? "bold"
-                              : "",
+                              : "medium",
                             color:
-                              focused && !isYoutubeCurrentItem
+                              isCurrentItem && !isYoutubeCurrentItem
                                 ? colors.bg
                                 : colors.text,
                           }}
@@ -265,7 +264,7 @@ export default function MainNavigator({ route }) {
               </ThText>
               <ThText
                 style={{
-                  marginLeft: 8,
+                  marginLeft: 4,
                   color: colors.textGray,
                   fontSize: fontSizes.xs,
                 }}
@@ -274,7 +273,7 @@ export default function MainNavigator({ route }) {
               </ThText>
               <ThText
                 style={{
-                  marginLeft: 8,
+                  marginLeft: 4,
                   color: colors.textGray,
                   fontSize: fontSizes.xs,
                 }}
@@ -301,13 +300,13 @@ export default function MainNavigator({ route }) {
 function MainBottomTabs({ navigation, route }) {
   const { colors, fontSizes } = useTheme();
   const parentNav = navigation.getParent("MainNavigator");
-  // Updates bottomTabItems so the HomeStack tab uses the component of the currently selected Drawer route.
-  const [tabItems, setTabItems] = useState(
-    bottomTabItems(drawerItems[parentNav.getState().index].component)
-  );
+
+  // Updates bottomTabItems so the HomeStack route tab uses the component of the currently selected Drawer route.
+  const tabItems = bottomTabItems( drawerItems[parentNav.getState().index].component );
 
   return (
     <BottomTab.Navigator
+      key={colors.bg} // force remount on theme change
       id="MainBottomTabs"
       screenOptions={({ navigation, route }) => {
         const currentDrawerItem = drawerItems.find(
@@ -315,14 +314,12 @@ function MainBottomTabs({ navigation, route }) {
             drawerItem.route ===
             parentNav.getState().routes[parentNav.getState().index].name
         );
-
-        const isYoutubeCurrentDrawerItem =
-          drawerItems[0].route ===
-          parentNav.getState().routes[parentNav.getState().index].name;
-
         const currentTabItem = bottomTabItems().find(
           (bottomTabItem) => bottomTabItem.route === route.name
         );
+        const isYoutubeCurrentDrawerItem =
+          drawerItems[0].route ===
+          parentNav.getState().routes[parentNav.getState().index].name;
 
         return {
           headerShown: route.name === bottomTabItems()[0].route,

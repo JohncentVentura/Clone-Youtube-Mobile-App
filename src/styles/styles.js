@@ -30,6 +30,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: globalHorizontalSpacing,
     width: "100%",
   },
+  /******************************Images******************************/
+  coverImages: {
+    borderRadius: 8,
+    width: "100%",
+    height: screenHeight * 0.15,
+  },
   /******************************Videos******************************/
   mainVideoView: {
     width: screenWidth,
@@ -40,5 +46,13 @@ export const styles = StyleSheet.create({
     borderRadius: 50,
     paddingHorizontal: 12,
     paddingVertical: 6,
+  },
+  largeButton: {
+    borderRadius: 50,
+    paddingVertical: 8,
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

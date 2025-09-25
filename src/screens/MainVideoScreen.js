@@ -5,7 +5,10 @@ import Octicons from "@expo/vector-icons/Octicons";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
 import { fetchPexelsData } from "../api/pexelsAPI";
-import { ChannelImage, CommentImage } from "../components/ImageComponents";
+import {
+  MainVideoScreenChannelImage,
+  MainVideoScreenCommentImage,
+} from "../components/ImageComponents";
 import {
   ThButton,
   ThFlatList,
@@ -17,12 +20,15 @@ import {
   ThView,
 } from "../components/ThemedComponents";
 import {
+  FlatListVideoItem,
   MainVideoView,
-  VideoFlatListItem,
 } from "../components/VideoComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
-import { urlToTitleExtractor } from "../utils/utils";
+import {
+  urlToTitleExtractor,
+  hideMainHeaderAndBottomTabs,
+} from "../utils/utils";
 
 export default function MainVideoScreen({ navigation, route }) {
   const { colors, fontSizes, iconSizes } = useTheme();
@@ -30,27 +36,16 @@ export default function MainVideoScreen({ navigation, route }) {
 
   const [relatedVideos, setRelatedVideos] = useState([]);
   useEffect(() => {
-    async function loadRelated() {
+    (async function () {
       const data = await fetchPexelsData(query, 5);
       setRelatedVideos(data);
-    }
-    loadRelated();
+    })();
   }, [video]);
 
-  useFocusEffect(
-    useCallback(() => {
-      const bottomTabNav = navigation.getParent();
-
-      bottomTabNav?.setOptions({
-        tabBarStyle: { display: "none" },
-        swipeEnabled: false,
-        headerShown: false,
-      });
-    }, [navigation])
-  );
+  hideMainHeaderAndBottomTabs(navigation);
 
   return (
-    <ThView style={[styles.screenContainer, { paddingBottom: 32 }]}>
+    <ThView style={[styles.screenContainer]}>
       <ThFlatList
         data={relatedVideos}
         keyExtractor={(item) => item.id.toString()}
@@ -114,9 +109,13 @@ export default function MainVideoScreen({ navigation, route }) {
                   <ThPressable
                     onPress={() => {
                       console.log("Channel Image Pressed");
+                      navigation.push("ChannelScreen", {
+                        video: video,
+                        query: query,
+                      });
                     }}
                   >
-                    <ChannelImage
+                    <MainVideoScreenChannelImage
                       source={{ uri: video.video_pictures[0].picture }}
                     />
                   </ThPressable>
@@ -136,7 +135,7 @@ export default function MainVideoScreen({ navigation, route }) {
                       fontSize: fontSizes.xs,
                     }}
                   >
-                    {video.video_pictures[0].id}k{" "}
+                    {video.video_pictures[0].id}k
                     {/*placeholder for subscribers*/}
                   </ThText>
                 </ThView>
@@ -304,7 +303,7 @@ export default function MainVideoScreen({ navigation, route }) {
                       console.log("Comment Image Pressed");
                     }}
                   >
-                    <CommentImage
+                    <MainVideoScreenCommentImage
                       source={{ uri: video.video_pictures[0].picture }}
                     />
                   </ThPressable>
@@ -320,7 +319,7 @@ export default function MainVideoScreen({ navigation, route }) {
           </>
         }
         renderItem={({ item }) => (
-          <VideoFlatListItem
+          <FlatListVideoItem
             navigation={navigation}
             video={item}
             query={query}

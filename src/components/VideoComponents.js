@@ -1,8 +1,11 @@
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useIsFocused } from "@react-navigation/native";
 import { useVideoPlayer, VideoView } from "expo-video";
-import { useEffect } from "react";
-import { ChannelImage } from "../components/ImageComponents";
+import { useEffect, useState } from "react";
+import {
+  MainVideoScreenChannelImage,
+  VideoViewImage,
+} from "../components/ImageComponents";
 import {
   ThIcon,
   ThPressable,
@@ -13,7 +16,13 @@ import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 import { urlToTitleExtractor } from "../utils/utils";
 
-export function VideoFlatListItem({ style, navigation, video, query }) {
+export function FlatListVideoItem({
+  style,
+  navigation,
+  video,
+  query,
+  autoPlayVideoId,
+}) {
   const { colors, fontSizes } = useTheme();
 
   return (
@@ -27,9 +36,8 @@ export function VideoFlatListItem({ style, navigation, video, query }) {
           });
         }}
       >
-        <MainVideoView video={video} />
+        <FlatListVideoView video={video} autoPlayVideoId={autoPlayVideoId} />
       </ThPressable>
-
       <ThView
         style={[
           styles.paddedHorizontalContainer,
@@ -46,9 +54,12 @@ export function VideoFlatListItem({ style, navigation, video, query }) {
           }}
           onPress={() => {
             console.log("Channel Image Pressed");
+            navigation.push("ChannelScreen", { video: video, query: query });
           }}
         >
-          <ChannelImage source={{ uri: video.video_pictures[0].picture }} />
+          <MainVideoScreenChannelImage
+            source={{ uri: video.video_pictures[0].picture }}
+          />
         </ThPressable>
         <ThView
           style={{ flex: 6, justifyContent: "flex-start", marginLeft: 8 }}
@@ -63,7 +74,7 @@ export function VideoFlatListItem({ style, navigation, video, query }) {
             {urlToTitleExtractor(video.url)}
           </ThText>
           <ThText style={{ color: colors.textGray, fontSize: fontSizes.xs }}>
-            Channel Name • {video.id} Views • Uploaded Date 
+            Channel Name • {video.id} Views • Uploaded Date
           </ThText>
         </ThView>
         <ThView
@@ -88,11 +99,10 @@ export function VideoFlatListItem({ style, navigation, video, query }) {
   );
 }
 
-export function MainVideoView({ style, video, ...rest }) {
+export function FlatListVideoView({ style, video, autoPlayVideoId, ...rest }) {
   const { colors } = useTheme();
   const isFocused = useIsFocused();
 
-  // pick first playable MP4 and hd quality if possible
   const file =
     video.video_files.find(
       (v) => v.file_type === "video/mp4" && v.quality === "hd"
@@ -100,7 +110,42 @@ export function MainVideoView({ style, video, ...rest }) {
     video.video_files.find((v) => v.file_type === "video/mp4") ||
     video.video_files[0];
 
-  // create player bound to this URL
+  const player = useVideoPlayer(file.link, (player) => {
+    player.loop = true;
+  });
+
+  useEffect(() => {
+    if (!isFocused) {
+      player.pause();
+    } else if (autoPlayVideoId) {
+      player.play();
+    } else {
+      player.pause();
+    }
+  }, [isFocused, autoPlayVideoId]);
+
+  return (
+    <VideoView
+      style={[styles.mainVideoView, style]}
+      resizeMode="cover"
+      nativeControls={false}
+      player={player}
+      {...rest}
+    />
+  );
+}
+
+export function MainVideoView({ style, video, ...rest }) {
+  const { colors } = useTheme();
+  const isFocused = useIsFocused();
+
+  const file =
+    video.video_files.find(
+      (v) => v.file_type === "video/mp4" && v.quality === "hd"
+    ) ||
+    video.video_files.find((v) => v.file_type === "video/mp4") ||
+    video.video_files[0];
+
   const player = useVideoPlayer(file.link, (player) => {
     player.loop = false;
   });
@@ -117,7 +162,7 @@ export function MainVideoView({ style, video, ...rest }) {
     <VideoView
       style={[styles.mainVideoView, style]}
       resizeMode="stretch"
-      nativeControls={false}
+      nativeControls={true}
       player={player}
       {...rest}
     />

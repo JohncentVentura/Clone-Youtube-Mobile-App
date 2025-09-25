@@ -1,6 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { fetchPexelsData } from "../api/pexelsAPI";
 import {
   ThFlatList,
@@ -9,8 +9,9 @@ import {
   ThRowScrollView,
   ThView,
   ThTopTabButton,
+  ThText,
 } from "../components/ThemedComponents";
-import { VideoFlatListItem } from "../components/VideoComponents";
+import { FlatListVideoItem } from "../components/VideoComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 
@@ -19,22 +20,22 @@ const defaultQuery = "Humans";
 export default function YoutubeHomeScreen({ navigation, route }) {
   const { colors } = useTheme();
   const [query, setQuery] = useState(defaultQuery);
-  const [pages, setPages] = useState(3);
+  const [queryCount, setQueryCount] = useState(4);
   const [videos, setVideos] = useState([]);
+  const [autoPlayVideoId, setAutoPlayVideoId] = useState(null);
 
   useEffect(() => {
-    async function loadVideos() {
-      const data = await fetchPexelsData(query, pages);
+    (async function () {
+      const data = await fetchPexelsData(query, queryCount);
       setVideos(data);
-    }
-    loadVideos();
-  }, [query, pages]);
+    })();
+  }, [query, queryCount]);
 
   useFocusEffect(
     useCallback(() => {
-      const bottomTabNav = navigation.getParent();
+      const mainBottomTabs = navigation.getParent("MainBottomTabs");
 
-      bottomTabNav?.setOptions({
+      mainBottomTabs?.setOptions({
         tabBarStyle: {
           borderTopColor: colors.bgGray,
           borderTopWidth: 1.4,
@@ -53,22 +54,37 @@ export default function YoutubeHomeScreen({ navigation, route }) {
       <ThFlatList
         data={videos}
         keyExtractor={(item) => item.id.toString()}
-        ListHeaderComponent={<HomeTopTabs setQuery={setQuery} />}
+        ListHeaderComponent={<TopQueryTabs setQuery={setQuery} />}
         renderItem={({ item }) => {
           return (
-            <VideoFlatListItem
+            <FlatListVideoItem
               navigation={navigation}
               video={item}
               query={query}
+              autoPlayVideoId={item.id === autoPlayVideoId}
             />
           );
         }}
+        onViewableItemsChanged={
+          //useRef for same reference each render, called whenever visible items changes (scrolled) & get the first visible item
+          useRef(({ viewableItems }) => {
+            if (viewableItems.length > 0) {
+              setAutoPlayVideoId(viewableItems[0].item.id);
+            }
+          }).current
+        }
+        viewabilityConfig={
+          //useRef for same reference each render, threshold of item in the screen to be count as visible
+          useRef({
+            viewAreaCoveragePercentThreshold: 50,
+          }).current
+        }
       />
     </ThView>
   );
 }
 
-function HomeTopTabs({ setQuery }) {
+function TopQueryTabs({ setQuery }) {
   const { colors } = useTheme();
   const [selectedQuery, setSelectedQuery] = useState(defaultQuery);
   const navigation = useNavigation();

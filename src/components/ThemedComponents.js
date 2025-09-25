@@ -169,7 +169,10 @@ export function ThIconTextButton({
     >
       <ThIcon size={iconSizes.xs} {...iconProps} />
       <ThText
-        style={[{ paddingLeft: 4, fontWeight: "medium", fontSize: fontSizes.xs }, textStyle]}
+        style={[
+          { paddingLeft: 4, fontWeight: "medium", fontSize: fontSizes.xs },
+          textStyle,
+        ]}
         {...otherTextProps}
       >
         {children}
@@ -195,6 +198,33 @@ export function ThTopTabButton({ style, selected, children, ...rest }) {
       {...rest}
     >
       <ThText style={{ color: selected ? colors.bg : colors.text }}>
+        {children}
+      </ThText>
+    </Pressable>
+  );
+}
+
+export function ThWideTextButton({ style, children, ...rest }) {
+  const { colors } = useTheme();
+
+  return (
+    <Pressable
+      style={({ pressed }) => [
+        {
+          borderRadius: 50,
+          paddingVertical: 8,
+          width: "100%",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: colors.text,
+          opacity: pressed ? 0.5 : 1, //fade effect
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      <ThText style={{ color: colors.bg, fontWeight: "medium" }}>
         {children}
       </ThText>
     </Pressable>
