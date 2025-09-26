@@ -1,10 +1,7 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { createStackNavigator } from "@react-navigation/stack";
-import { useFocusEffect } from "@react-navigation/native";
-import { useCallback } from "react";
 import YouTubeFlatListScreen from "../api/YouTubeFlatListScreen";
 import YouTubePlayerScreen from "../api/YouTubePlayerScreen";
-import { ThIcon } from "../components/ThemedComponents";
+import { ArrowBackIcon } from "../components/IconComponents";
 import YoutubeHomeScreen from "../screens/YoutubeHomeScreen";
 import MainVideoScreen from "../screens/MainVideoScreen";
 import ChannelScreen from "../screens/ChannelScreen";
@@ -54,11 +51,9 @@ export default function YoutubeHomeStack({ navigation, route }) {
         headerTintColor: colors.text,
         headerLeft: () => {
           return (
-            <ThIcon
+            <ArrowBackIcon
               style={styles.headerLeftIcon}
-              IconComponent={Ionicons}
-              name="arrow-back"
-              onPress={() => navigation.goBack()}
+              navigation={navigation}
             />
           );
         },

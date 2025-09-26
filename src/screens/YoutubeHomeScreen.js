@@ -1,15 +1,13 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { fetchPexelsData } from "../api/pexelsAPI";
+import { CompassIcon } from "../components/IconComponents";
 import {
   ThFlatList,
-  ThIcon,
   ThPressable,
   ThRowScrollView,
   ThView,
   ThTopTabButton,
-  ThText,
 } from "../components/ThemedComponents";
 import { FlatListVideoItem } from "../components/VideoComponents";
 import { styles } from "../styles/styles";
@@ -52,6 +50,7 @@ export default function YoutubeHomeScreen({ navigation, route }) {
   return (
     <ThView style={styles.screenContainer}>
       <ThFlatList
+        style={{ width: "100%" }}
         data={videos}
         keyExtractor={(item) => item.id.toString()}
         ListHeaderComponent={<TopQueryTabs setQuery={setQuery} />}
@@ -114,7 +113,7 @@ function TopQueryTabs({ setQuery }) {
         }}
         onPress={() => navigation.getParent("MainNavigator")?.openDrawer()}
       >
-        <ThIcon IconComponent={Ionicons} name="compass-outline" />
+        <CompassIcon />
       </ThPressable>
       <ThTopTabButton
         style={{ marginLeft: 14 }}
@@ -124,28 +123,25 @@ function TopQueryTabs({ setQuery }) {
         All
       </ThTopTabButton>
       <ThTopTabButton
-        style={{ marginLeft: 8 }}
         selected={selectedQuery === "Music"}
         onPress={() => handleSelectedQuery("Music")}
       >
         Music
       </ThTopTabButton>
       <ThTopTabButton
-        style={{ marginLeft: 8 }}
         selected={selectedQuery === "Nature"}
         onPress={() => handleSelectedQuery("Nature")}
       >
         Nature
       </ThTopTabButton>
       <ThTopTabButton
-        style={{ marginLeft: 8 }}
         selected={selectedQuery === "City"}
         onPress={() => handleSelectedQuery("City")}
       >
         City
       </ThTopTabButton>
       <ThTopTabButton
-        style={{ marginLeft: 8, marginRight: 32 }}
+        style={{ marginRight: 32 }}
         selected={selectedQuery === "Youtube"}
         onPress={() => {
           navigation.navigate("YouTubeFlatListScreen");

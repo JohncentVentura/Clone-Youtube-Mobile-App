@@ -6,10 +6,10 @@ import {
   Text,
   View,
 } from "react-native";
-import { styles } from "../styles/styles";
+import { icons } from "../styles/icons";
 import { useTheme } from "../styles/ThemeContext";
 
-/******************************Basics******************************/
+/******************************Base Components******************************/
 export function ThFlatList({ style, ...otherProps }) {
   const { colors } = useTheme();
 
@@ -27,7 +27,7 @@ export function ThIcon({ IconComponent, ...rest }) {
 export function ThPressable({ style, children, ...rest }) {
   const { colors } = useTheme();
 
-  /*To use ThemedPressable style as functions when used
+  //Allows style to be static (normal) or functional (access props)
   const functionStyle =
     typeof style === "function"
       ? (state) => [
@@ -44,19 +44,9 @@ export function ThPressable({ style, children, ...rest }) {
           },
           style,
         ];
-  */
 
   return (
-    <Pressable
-      style={({ pressed }) => [
-        {
-          backgroundColor: colors.bg,
-          opacity: pressed ? 0.5 : 1, //fade effect
-        },
-        style,
-      ]}
-      {...rest}
-    >
+    <Pressable style={functionStyle} {...rest}>
       {children}
     </Pressable>
   );
@@ -92,7 +82,7 @@ export function ThText({ style, children, ...rest }) {
   else if (weight === "medium") fontFamily = "roboto-medium";
   else fontFamily = "roboto-regular";
 
-  // Remove fontWeight from the flattened style so it doesn't override your fontFamily
+  //Remove fontWeight from the flattened style so it doesn't override your fontFamily
   const { fontWeight, ...restStyle } = flattenedStyle;
 
   return (
@@ -103,7 +93,7 @@ export function ThText({ style, children, ...rest }) {
           fontFamily,
           fontSize: fontSizes.base,
         },
-        restStyle, // all other style props except fontWeight
+        restStyle, //All other style props except fontWeight
       ]}
       {...rest}
     >
@@ -122,76 +112,20 @@ export function ThView({ style, children, ...otherProps }) {
   );
 }
 
-/******************************Buttons******************************/
-export function ThButton({ style, children, ...rest }) {
-  const { colors } = useTheme();
-
-  return (
-    <Pressable
-      style={({ pressed }) => [
-        {
-          backgroundColor: colors.bgGray,
-          opacity: pressed ? 0.5 : 1, //fade effect
-        },
-        styles.baseButton,
-        style,
-      ]}
-      {...rest}
-    >
-      {children}
-    </Pressable>
-  );
-}
-
-export function ThIconTextButton({
-  style,
-  iconProps,
-  textProps = {},
-  children,
-  ...rest
-}) {
-  const { colors, fontSizes, iconSizes } = useTheme();
-  const { style: textStyle, ...otherTextProps } = textProps;
-
-  return (
-    <Pressable
-      style={({ pressed }) => [
-        {
-          backgroundColor: colors.bgGray,
-          flexDirection: "row",
-          alignItems: "center",
-          opacity: pressed ? 0.5 : 1, //fade effect
-        },
-        styles.baseButton,
-        style,
-      ]}
-      {...rest}
-    >
-      <ThIcon size={iconSizes.xs} {...iconProps} />
-      <ThText
-        style={[
-          { paddingLeft: 4, fontWeight: "medium", fontSize: fontSizes.xs },
-          textStyle,
-        ]}
-        {...otherTextProps}
-      >
-        {children}
-      </ThText>
-    </Pressable>
-  );
-}
-
+/******************************Extended Components******************************/
 export function ThTopTabButton({ style, selected, children, ...rest }) {
   const { colors } = useTheme();
 
   return (
-    <Pressable
+    <ThPressable
       style={[
         {
+          marginLeft: 8,
           borderRadius: 4,
           paddingHorizontal: 12,
           paddingVertical: 6,
           backgroundColor: selected ? colors.text : colors.bgGray,
+          opacity: 1,
         },
         style,
       ]}
@@ -200,33 +134,22 @@ export function ThTopTabButton({ style, selected, children, ...rest }) {
       <ThText style={{ color: selected ? colors.bg : colors.text }}>
         {children}
       </ThText>
-    </Pressable>
+    </ThPressable>
   );
 }
 
-export function ThWideTextButton({ style, children, ...rest }) {
-  const { colors } = useTheme();
+export function ThIconButtonText({ style, children, ...otherProps }) {
+  const { fontSizes } = useTheme();
 
   return (
-    <Pressable
-      style={({ pressed }) => [
-        {
-          borderRadius: 50,
-          paddingVertical: 8,
-          width: "100%",
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: colors.text,
-          opacity: pressed ? 0.5 : 1, //fade effect
-        },
+    <ThText
+      style={[
+        { paddingLeft: 4, fontWeight: "medium", fontSize: fontSizes.xs },
         style,
       ]}
-      {...rest}
+      {...otherProps}
     >
-      <ThText style={{ color: colors.bg, fontWeight: "medium" }}>
-        {children}
-      </ThText>
-    </Pressable>
+      {children}
+    </ThText>
   );
 }

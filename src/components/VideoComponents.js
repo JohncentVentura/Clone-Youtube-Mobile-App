@@ -1,20 +1,13 @@
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useIsFocused } from "@react-navigation/native";
 import { useVideoPlayer, VideoView } from "expo-video";
 import { useEffect, useState } from "react";
-import {
-  MainVideoScreenChannelImage,
-  VideoViewImage,
-} from "../components/ImageComponents";
-import {
-  ThIcon,
-  ThPressable,
-  ThText,
-  ThView,
-} from "../components/ThemedComponents";
+import { DotVerticalIcon } from "./IconComponents";
+import { MainVideoScreenChannelImage } from "../components/ImageComponents";
+import { FlatListVideoItemModal } from "./ModalComponents";
+import { ThPressable, ThText, ThView } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
-import { urlToTitleExtractor } from "../utils/utils";
+import { parseUrlTitle, randomTimeAgo, roundOffNumber } from "../utils/utils";
 
 export function FlatListVideoItem({
   style,
@@ -24,11 +17,12 @@ export function FlatListVideoItem({
   autoPlayVideoId,
 }) {
   const { colors, fontSizes } = useTheme();
+  const [visible, setVisible] = useState(false);
 
   return (
-    <ThView style={[{ marginBottom: 32 }, style]}>
+    <ThView style={[{ marginBottom: 28 }, { width: "100%" }, style]}>
       <ThPressable
-        style={{ marginBottom: 8 }}
+        style={{ marginBottom: 8, width: "100%" }}
         onPress={() => {
           navigation.push("MainVideoScreen", {
             video: video,
@@ -49,8 +43,7 @@ export function FlatListVideoItem({
             marginTop: 8,
             height: "100%",
             flex: 1,
-            justifyContent: "flex-start",
-            alignItems: "flex-start",
+            alignItems: "flex-end",
           }}
           onPress={() => {
             console.log("Channel Image Pressed");
@@ -61,9 +54,7 @@ export function FlatListVideoItem({
             source={{ uri: video.video_pictures[0].picture }}
           />
         </ThPressable>
-        <ThView
-          style={{ flex: 6, justifyContent: "flex-start", marginLeft: 8 }}
-        >
+        <ThView style={{ flex: 6, marginLeft: 12 }}>
           <ThText
             style={{
               marginBottom: 4,
@@ -71,10 +62,13 @@ export function FlatListVideoItem({
               fontWeight: "bold",
             }}
           >
-            {urlToTitleExtractor(video.url)}
+            {/*Video Title*/}
+            {parseUrlTitle(video.url)}
           </ThText>
           <ThText style={{ color: colors.textGray, fontSize: fontSizes.xs }}>
-            Channel Name • {video.id} Views • Uploaded Date
+            {/*Channel Name • Number of Views • Uploaded Date*/}
+            Channel Name • {roundOffNumber(video.id)} Views •{" "}
+            {randomTimeAgo(video.video_pictures[0].id)}
           </ThText>
         </ThView>
         <ThView
@@ -86,13 +80,13 @@ export function FlatListVideoItem({
             alignItems: "flex-end",
           }}
         >
-          <ThIcon
-            IconComponent={MaterialCommunityIcons}
-            name="dots-vertical"
+          <DotVerticalIcon
             onPress={() => {
               console.log("Dots-vertical Pressed");
+              setVisible(true);
             }}
           />
+          <FlatListVideoItemModal visible={visible} setVisible={setVisible} />
         </ThView>
       </ThView>
     </ThView>
@@ -126,7 +120,7 @@ export function FlatListVideoView({ style, video, autoPlayVideoId, ...rest }) {
 
   return (
     <VideoView
-      style={[styles.mainVideoView, style]}
+      style={[styles.mainVideoView, { backgroundColor: colors.bg }, style]}
       resizeMode="cover"
       nativeControls={false}
       player={player}
@@ -136,7 +130,6 @@ export function FlatListVideoView({ style, video, autoPlayVideoId, ...rest }) {
 }
 
 export function MainVideoView({ style, video, ...rest }) {
-  const { colors } = useTheme();
   const isFocused = useIsFocused();
 
   const file =

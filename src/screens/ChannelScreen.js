@@ -1,47 +1,16 @@
-import Foundation from "@expo/vector-icons/Foundation";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import Octicons from "@expo/vector-icons/Octicons";
-import { useFocusEffect } from "@react-navigation/native";
-import { useCallback, useEffect, useState } from "react";
-import { fetchPexelsData } from "../api/pexelsAPI";
-import {
-  MainVideoScreenChannelImage,
-  MainVideoScreenCommentImage,
-} from "../components/ImageComponents";
-import {
-  ThButton,
-  ThFlatList,
-  ThIcon,
-  ThIconTextButton,
-  ThPressable,
-  ThRowScrollView,
-  ThText,
-  ThView,
-  ThWideTextButton,
-} from "../components/ThemedComponents";
-import {
-  FlatListVideoItem,
-  MainVideoView,
-} from "../components/VideoComponents";
-import { styles } from "../styles/styles";
-import { useTheme } from "../styles/ThemeContext";
-
 import {
   ChannelScreenCoverImage,
   ChannelScreenProfileImage,
 } from "../components/ImageComponents";
-import { urlToTitleExtractor, hideMainHeader } from "../utils/utils";
-import { VideoView } from "expo-video";
-
-import { Modal, View, Text, Button, StyleSheet } from "react-native";
+import { ThPressable, ThText, ThView } from "../components/ThemedComponents";
+import { styles } from "../styles/styles";
+import { useTheme } from "../styles/ThemeContext";
+import { hideMainHeader, parseUrlTitle, roundOffNumber } from "../utils/utils";
 
 export default function ChannelScreen({ navigation, route }) {
   const { colors, fontSizes } = useTheme();
   const { video, query } = route.params;
   hideMainHeader(navigation);
-
-  const [visible, setVisible] = useState(false);
 
   return (
     <ThView style={styles.screenContainer}>
@@ -80,8 +49,8 @@ export default function ChannelScreen({ navigation, route }) {
                 fontWeight: "bold",
               }}
             >
-              {urlToTitleExtractor(video.url)}
-              {/*placeholder for channel name*/}
+              {/*Channel Name*/}
+              {parseUrlTitle(video.url)}
             </ThText>
             <ThText
               style={{
@@ -90,7 +59,7 @@ export default function ChannelScreen({ navigation, route }) {
                 fontWeight: "medium",
               }}
             >
-              @{urlToTitleExtractor(video.url)}
+              {/*Channel Name Tag*/}@{parseUrlTitle(video.url)}
             </ThText>
             <ThText
               style={{
@@ -98,8 +67,9 @@ export default function ChannelScreen({ navigation, route }) {
                 fontSize: fontSizes.xs,
               }}
             >
-              {video.video_pictures[0].id} subscribers • {video.duration} videos
-              {/*placeholder for subscribers and video counts*/}
+              {/*Number of subscribers • Number of uploaded videos*/}
+              {roundOffNumber(video.video_pictures[0].id)} subscribers •
+              {video.duration} videos
             </ThText>
           </ThView>
         </ThView>
@@ -110,10 +80,10 @@ export default function ChannelScreen({ navigation, route }) {
             fontSize: fontSizes.xs,
           }}
         >
-          {urlToTitleExtractor(video.url)}
-          {urlToTitleExtractor(video.url)}
-          {urlToTitleExtractor(video.url)}
-          {/*placeholder for comment */}
+          {/*Channel description*/}
+          {parseUrlTitle(video.url)}
+          {parseUrlTitle(video.url)}
+          {parseUrlTitle(video.url)}
           <ThText
             style={{
               fontWeight: "medium",
@@ -126,46 +96,14 @@ export default function ChannelScreen({ navigation, route }) {
             ...more
           </ThText>
         </ThText>
-        <ThWideTextButton>Subscribe</ThWideTextButton>
-      </ThView>
-
-      {/* Testing Generic Modal */}
-      <View style={styles2.container}>
-        <Button title="Open Modal" onPress={() => setVisible(true)} />
-        <Modal
-          animationType="slide" // 'slide' | 'fade' | 'none'
-          transparent={true} // background see-through
-          visible={visible} // show/hide
-          onRequestClose={() => setVisible(false)} // Android back button
+        <ThPressable
+          style={[styles.largeButton, { backgroundColor: colors.text }]}
         >
-          <View style={styles2.modalBackground}>
-            <View style={styles2.modalContent}>
-              <Text>This is a modal!</Text>
-              <Button title="Close" onPress={() => setVisible(false)} />
-            </View>
-          </View>
-        </Modal>
-      </View>
+          <ThText style={{ color: colors.bg, fontWeight: "medium" }}>
+            Subscribe
+          </ThText>
+        </ThPressable>
+      </ThView>
     </ThView>
   );
 }
-
-const styles2 = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalBackground: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)", // semi-transparent overlay
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalContent: {
-    width: 300,
-    padding: 20,
-    backgroundColor: "#fff",
-    borderRadius: 10,
-  },
-});

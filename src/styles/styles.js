@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
   },
   /******************************Videos******************************/
   mainVideoView: {
-    width: screenWidth,
+    width: "100%`",
     height: screenHeight * 0.25,
   },
   /******************************Buttons******************************/
@@ -53,6 +53,13 @@ export const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center",
+  },
+  iconTextButton: {
+    borderRadius: 50,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    flexDirection: "row",
     alignItems: "center",
   },
 });
