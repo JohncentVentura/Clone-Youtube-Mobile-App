@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import "dotenv/config";
 
 export default {
   expo: {
@@ -12,30 +12,38 @@ export default {
     splash: {
       image: "./src/assets/images/splash-icon.png",
       resizeMode: "contain",
-      backgroundColor: "#ffffff"
+      backgroundColor: "#ffffff",
     },
     ios: {
-      supportsTablet: true
+      supportsTablet: true,
     },
     android: {
       adaptiveIcon: {
         foregroundImage: "./src/assets/images/adaptive-icon.png",
-        backgroundColor: "#ffffff"
+        backgroundColor: "#ffffff",
       },
-      edgeToEdgeEnabled: true
+      edgeToEdgeEnabled: true,
     },
     web: {
-      favicon: "./src/assets/images/favicon.png"
+      favicon: "./src/assets/images/favicon.png",
     },
-    plugins: [
-      "expo-video",
-      "expo-font"
-    ],
+    plugins: ["expo-video", "expo-font"],
     extra: {
       YOUTUBE_API_URL: process.env.YOUTUBE_API_URL,
       YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
       PEXELS_API_URL: process.env.PEXELS_API_URL,
       PEXELS_API_KEY: process.env.PEXELS_API_KEY,
-    }
-  }
+    },
+    compilerOptions: {
+      target: "es6",
+      module: "commonjs",
+      jsx: "react",
+      allowSyntheticDefaultImports: true,
+      baseUrl: ".",
+      paths: {
+        "*": ["src/*"],
+      },
+    },
+    include: ["src/**/*"],
+  },
 };

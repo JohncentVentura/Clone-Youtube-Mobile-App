@@ -28,7 +28,7 @@ import {
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 import {
-  hideMainHeaderAndBottomTabs,
+  hideMainBottomTabs,
   parseUrlTitle,
   randomTimeAgo,
   roundOffNumber,
@@ -37,8 +37,8 @@ import {
 export default function MainVideoScreen({ navigation, route }) {
   const { colors, fontSizes, iconSizes } = useTheme();
   const { video, query } = route.params;
-
   const [relatedVideos, setRelatedVideos] = useState([]);
+  
   useEffect(() => {
     (async function () {
       const data = await fetchPexelsData(query, 5);
@@ -46,7 +46,7 @@ export default function MainVideoScreen({ navigation, route }) {
     })();
   }, [video]);
 
-  hideMainHeaderAndBottomTabs(navigation);
+  hideMainBottomTabs(navigation);
 
   return (
     <ThView style={[styles.screenContainer]}>
@@ -186,7 +186,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   <ThText
                     style={{
                       borderRightWidth: 1,
-                      borderRightColor: colors.text,
+                      borderRightColor: colors.border,
                       paddingRight: 8,
                       fontSize: fontSizes.xs,
                       fontWeight: "medium",

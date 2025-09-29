@@ -1,10 +1,53 @@
-import { ThIcon, ThPressable, ThText, ThView } from "./ThemedComponents";
 import Modal from "react-native-modal";
-import { styles } from "../styles/styles";
+import { ThIcon, ThPressable, ThText, ThView } from "./ThemedComponents";
 import { icons } from "../styles/icons";
 import { useTheme } from "../styles/ThemeContext";
+import { fontSizes } from "../styles/theme";
 
-export function FlatListVideoItemModal({ style, visible, setVisible }) {
+function SwipeDownModal({ visible, setVisible, children }) {
+  const { colors } = useTheme();
+
+  return (
+    <Modal
+      isVisible={visible}
+      onBackdropPress={() => setVisible(false)} //Modal backdrop area
+      onRequestClose={() => setVisible(false)} //Android back button
+      onSwipeComplete={() => setVisible(false)} //When swiped down
+      swipeDirection="down"
+      animationIn="slideInUp"
+      animationOut="slideOutDown"
+      style={{
+        flex: 1,
+        justifyContent: "flex-end",
+        alignItems: "center",
+      }}
+    >
+      <ThView
+        style={{
+          paddingTop: 8,
+          borderRadius: 12,
+          width: "100%",
+          backgroundColor: colors.bg,
+        }}
+      >
+        {/*Swipe Bar*/}
+        <ThView
+          style={{
+            marginBottom: 4,
+            borderRadius: 12,
+            width: 42,
+            height: 4,
+            backgroundColor: colors.borderGray,
+            alignSelf: "center",
+          }}
+        ></ThView>
+        {children}
+      </ThView>
+    </Modal>
+  );
+}
+
+export function FlatListVideoItemModal({ visible, setVisible }) {
   const { colors } = useTheme();
 
   const modalItems = [
@@ -46,60 +89,70 @@ export function FlatListVideoItemModal({ style, visible, setVisible }) {
   ];
 
   return (
-    <Modal
-      isVisible={visible}
-      onBackdropPress={() => setVisible(false)} //Modal backdrop area
-      onRequestClose={() => setVisible(false)} //Android back button
-      animationIn="slideInUp"
-      animationOut="slideOutDown"
-      swipeDirection="down"
-      onSwipeComplete={() => setVisible(false)}
-      backdropTransitionOutTiming={0}
-      style={[
-        {
-          flex: 1,
-          justifyContent: "flex-end",
-          alignItems: "center",
-        },
-        style,
-      ]}
-    >
-      <ThView
-        style={{
-          paddingTop: 18,
-          borderRadius: 12,
-          width: "100%",
-          backgroundColor: colors.bg,
-        }}
+    <SwipeDownModal visible={visible} setVisible={setVisible}>
+      {modalItems.map((item) => {
+        return (
+          <ThPressable
+            key={item.modalName}
+            style={({ pressed }) => ({
+              paddingLeft: 20,
+              paddingVertical: 10,
+              flexDirection: "row",
+              alignItems: "center",
+              backgroundColor: pressed ? colors.textGray : "transparent",
+            })}
+            onPress={() => console.log(item.modalName + " pressed")}
+          >
+            <ThIcon IconComponent={item.iconComponent} name={item.iconName} />
+            <ThText style={{ marginLeft: 28 }}>{item.modalName}</ThText>
+          </ThPressable>
+        );
+      })}
+    </SwipeDownModal>
+  );
+}
+
+export function ScreenShareModal({ visible, setVisible }) {
+  const { colors, fontSizes } = useTheme();
+
+  const modalItems = [
+    {
+      iconComponent: icons.screenShare.iconComponent,
+      iconName: icons.screenShare.iconName,
+      modalName: "Link with TV code",
+    },
+    {
+      iconComponent: icons.information.iconComponent,
+      iconName: icons.information.iconName,
+      modalName: "Learn More",
+    },
+  ];
+
+  return (
+    <SwipeDownModal visible={visible} setVisible={setVisible}>
+      <ThText
+        style={{ marginLeft: 10, paddingBottom: 4, fontSize: fontSizes.sm }}
       >
-        <ThView
-          style={{
-            marginBottom: 8,
-            backgroundColor: colors.textGray,
-            width: "20%",
-            height: 2,
-            alignSelf: "center",
-          }}
-        ></ThView>
-        {modalItems.map((item) => {
-          return (
-            <ThPressable
-              key={item.modalName}
-              style={({ pressed }) => ({
-                paddingLeft: 20,
-                paddingVertical: 10,
-                flexDirection: "row",
-                alignItems: "center",
-                backgroundColor: pressed ? colors.textGray : "transparent",
-              })}
-              onPress={() => console.log(item.label + " pressed")}
-            >
-              <ThIcon IconComponent={item.iconComponent} name={item.iconName} />
-              <ThText style={{ marginLeft: 28 }}>{item.modalName}</ThText>
-            </ThPressable>
-          );
-        })}
-      </ThView>
-    </Modal>
+        Select a device
+      </ThText>
+      {modalItems.map((item) => {
+        return (
+          <ThPressable
+            key={item.modalName}
+            style={({ pressed }) => ({
+              paddingLeft: 20,
+              paddingVertical: 10,
+              flexDirection: "row",
+              alignItems: "center",
+              backgroundColor: pressed ? colors.textGray : "transparent",
+            })}
+            onPress={() => console.log(item.modalName + " pressed")}
+          >
+            <ThIcon IconComponent={item.iconComponent} name={item.iconName} />
+            <ThText style={{ marginLeft: 28 }}>{item.modalName}</ThText>
+          </ThPressable>
+        );
+      })}
+    </SwipeDownModal>
   );
 }

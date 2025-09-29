@@ -6,16 +6,13 @@ import {
   Text,
   View,
 } from "react-native";
-import { icons } from "../styles/icons";
 import { useTheme } from "../styles/ThemeContext";
 
 /******************************Base Components******************************/
-export function ThFlatList({ style, ...otherProps }) {
+export function ThFlatList({ style, ...rest }) {
   const { colors } = useTheme();
 
-  return (
-    <FlatList style={[{ backgroundColor: colors.bg }, style]} {...otherProps} />
-  );
+  return <FlatList style={[{ backgroundColor: colors.bg }, style]} {...rest} />;
 }
 
 export function ThIcon({ IconComponent, ...rest }) {
@@ -52,7 +49,7 @@ export function ThPressable({ style, children, ...rest }) {
   );
 }
 
-export function ThRowScrollView({ style, children, ...otherProps }) {
+export function ThRowScrollView({ style, children, ...rest }) {
   const { colors } = useTheme();
 
   return (
@@ -64,7 +61,7 @@ export function ThRowScrollView({ style, children, ...otherProps }) {
       })}
       horizontal={true}
       showsHorizontalScrollIndicator={false}
-      {...otherProps}
+      {...rest}
     >
       {children}
     </ScrollView>
@@ -102,11 +99,11 @@ export function ThText({ style, children, ...rest }) {
   );
 }
 
-export function ThView({ style, children, ...otherProps }) {
+export function ThView({ style, children, ...rest }) {
   const { colors } = useTheme();
 
   return (
-    <View style={[{ backgroundColor: colors.bg }, style]} {...otherProps}>
+    <View style={[{ backgroundColor: colors.bg }, style]} {...rest}>
       {children}
     </View>
   );
@@ -138,7 +135,7 @@ export function ThTopTabButton({ style, selected, children, ...rest }) {
   );
 }
 
-export function ThIconButtonText({ style, children, ...otherProps }) {
+export function ThIconButtonText({ style, children, ...rest }) {
   const { fontSizes } = useTheme();
 
   return (
@@ -147,7 +144,7 @@ export function ThIconButtonText({ style, children, ...otherProps }) {
         { paddingLeft: 4, fontWeight: "medium", fontSize: fontSizes.xs },
         style,
       ]}
-      {...otherProps}
+      {...rest}
     >
       {children}
     </ThText>

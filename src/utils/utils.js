@@ -1,28 +1,13 @@
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
 
-export function hideMainHeader(navigation) {
-  useFocusEffect(
-    useCallback(() => {
-      const mainBottomTab = navigation.getParent("MainBottomTabs");
-
-      mainBottomTab?.setOptions({
-        swipeEnabled: false,
-        headerShown: false,
-      });
-    }, [navigation])
-  );
-}
-
-export function hideMainHeaderAndBottomTabs(navigation) {
+export function hideMainBottomTabs(navigation) {
   useFocusEffect(
     useCallback(() => {
       const mainBottomTab = navigation.getParent("MainBottomTabs");
 
       mainBottomTab?.setOptions({
         tabBarStyle: { display: "none" },
-        swipeEnabled: false,
-        headerShown: false,
       });
     }, [navigation])
   );

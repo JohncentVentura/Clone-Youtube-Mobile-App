@@ -1,4 +1,3 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   createDrawerNavigator,
@@ -7,16 +6,8 @@ import {
 } from "@react-navigation/drawer";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import {
-  ArrowBackIcon,
-  Notificationcon,
-  SearchIcon,
-  ShareScreenIcon,
-  YoutubeIcon,
-} from "../components/IconComponents";
 import { ThIcon, ThText, ThView } from "../components/ThemedComponents";
 import { icons } from "../styles/icons";
-import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 import YoutubeHomeStack from "./YoutubeHomeStack";
 import ShortsStack from "./ShortsStack";
@@ -31,8 +22,8 @@ const BottomTab = createBottomTabNavigator();
 const drawerItems = [
   {
     route: "YoutubeHomeStack",
-    iconComponent: icons.youtube.iconComponent,
-    iconName: icons.youtube.iconName,
+    iconComponent: icons.youtubeMain.iconComponent,
+    iconName: icons.youtubeMain.iconName,
     label: "Youtube",
     component: YoutubeHomeStack,
   },
@@ -48,21 +39,21 @@ const drawerItems = [
     iconComponent: icons.movie.iconComponent,
     iconName: icons.movie.iconName,
     label: "Movies",
-    component: YoutubeHomeStack,
+    component: UploadStack,
   },
   {
     route: "LiveStack",
     iconComponent: icons.live.iconComponent,
     iconName: icons.live.iconName,
     label: "Live",
-    component: YoutubeHomeStack,
+    component: SubscriptionsStack,
   },
   {
     route: "GamingStack",
     iconComponent: icons.gaming.iconComponent,
     iconName: icons.gaming.iconName,
     label: "Gaming",
-    component: YoutubeHomeStack,
+    component: YouStack,
   },
   {
     route: "NewsStack",
@@ -119,48 +110,58 @@ const drawerItems = [
 const bottomTabItems = (HomeComponent = YoutubeHomeStack) => [
   {
     route: "HomeStack",
-    activeIconName: "home-sharp",
-    inactiveIconName: "home-outline",
+    activeIconComponent: icons.activeHome.iconComponent,
+    inactiveIconComponent: icons.inactiveHome.iconComponent,
+    activeIconName: icons.activeHome.iconName,
+    inactiveIconName: icons.inactiveHome.iconName,
     activeLabel: "Welcome",
     inactiveLabel: "Home",
     component: HomeComponent,
   },
   {
     route: "ShortsStack",
-    activeIconName: "videocam",
-    inactiveIconName: "videocam-outline",
+    activeIconComponent: icons.activeShorts.iconComponent,
+    inactiveIconComponent: icons.inactiveShorts.iconComponent,
+    activeIconName: icons.activeShorts.iconName,
+    inactiveIconName: icons.inactiveShorts.iconName,
     activeLabel: "Shorter",
     inactiveLabel: "Shorts",
     component: ShortsStack,
   },
   {
     route: "UploadStack",
-    activeIconName: "add-circle",
-    inactiveIconName: "add-circle-outline",
+    activeIconComponent: icons.activeUpload.iconComponent,
+    inactiveIconComponent: icons.inactiveUpload.iconComponent,
+    activeIconName: icons.activeUpload.iconName,
+    inactiveIconName: icons.inactiveUpload.iconName,
     activeLabel: "But I'm shy",
     inactiveLabel: "Upload",
     component: UploadStack,
   },
   {
     route: "SubscriptionsStack",
-    activeIconName: "albums",
-    inactiveIconName: "albums-outline",
+    activeIconComponent: icons.activeSubscription.iconComponent,
+    inactiveIconComponent: icons.inactiveSubscription.iconComponent,
+    activeIconName: icons.activeSubscription.iconName,
+    inactiveIconName: icons.inactiveSubscription.iconName,
     activeLabel: "Please like &",
     inactiveLabel: "Subscriptions",
     component: SubscriptionsStack,
   },
   {
     route: "YouStack",
-    activeIconName: "person-circle",
-    inactiveIconName: "person-circle-outline",
+    activeIconComponent: icons.activeYou.iconComponent,
+    inactiveIconComponent: icons.inactiveYou.iconComponent,
+    activeIconName: icons.activeYou.iconName,
+    inactiveIconName: icons.inactiveYou.iconName,
     activeLabel: "Who? Me?",
     inactiveLabel: "You",
     component: YouStack,
   },
 ];
 
-export default function MainNavigator({ route }) {
-  const { colors, fontSizes, iconSizes } = useTheme();
+export default function MainNavigator() {
+  const { colors, fontSizes } = useTheme();
   const insets = useSafeAreaInsets();
 
   return (
@@ -172,9 +173,9 @@ export default function MainNavigator({ route }) {
           <ThView style={{ flex: 1, justifyContent: "space-between" }}>
             <DrawerContentScrollView style={{ backgroundColor: colors.bg }}>
               {drawerItems.map((item, index) => {
-                const isCurrentItem =
+                const isCurrentItemThisRoute =
                   drawerItems[props.state.index].route === item.route;
-                const isYoutubeCurrentItem =
+                const isCurrentItemYoutubeHomeStack =
                   drawerItems[0].route === item.route;
 
                 return (
@@ -195,7 +196,8 @@ export default function MainNavigator({ route }) {
                       style={{
                         marginBottom: 2,
                         backgroundColor:
-                          isCurrentItem && !isYoutubeCurrentItem
+                          isCurrentItemThisRoute &&
+                          !isCurrentItemYoutubeHomeStack
                             ? colors.primary
                             : colors.bg,
                       }}
@@ -204,17 +206,18 @@ export default function MainNavigator({ route }) {
                           IconComponent={item.iconComponent}
                           name={item.iconName}
                           color={
-                            isYoutubeCurrentItem ||
+                            isCurrentItemYoutubeHomeStack ||
                             drawerItems[drawerItems.length - 3].route ===
                               item.route ||
                             drawerItems[drawerItems.length - 2].route ===
                               item.route ||
                             drawerItems[drawerItems.length - 1].route ===
                               item.route
-                              ? isCurrentItem && !isYoutubeCurrentItem
+                              ? isCurrentItemThisRoute &&
+                                !isCurrentItemYoutubeHomeStack
                                 ? colors.bg
                                 : colors.primary
-                              : isCurrentItem
+                              : isCurrentItemThisRoute
                               ? colors.bg
                               : colors.icon
                           }
@@ -223,17 +226,18 @@ export default function MainNavigator({ route }) {
                       label={() => (
                         <ThText
                           style={{
-                            marginLeft: isYoutubeCurrentItem ? -8 : 8,
-                            fontSize: isYoutubeCurrentItem
+                            marginLeft: isCurrentItemYoutubeHomeStack ? -8 : 8,
+                            fontSize: isCurrentItemYoutubeHomeStack
                               ? fontSizes.xl
                               : fontSizes.base,
-                            fontWeight: isYoutubeCurrentItem
+                            fontWeight: isCurrentItemYoutubeHomeStack
                               ? "bold"
-                              : isCurrentItem
+                              : isCurrentItemThisRoute
                               ? "bold"
                               : "medium",
                             color:
-                              isCurrentItem && !isYoutubeCurrentItem
+                              isCurrentItemThisRoute &&
+                              !isCurrentItemYoutubeHomeStack
                                 ? colors.bg
                                 : colors.text,
                           }}
@@ -255,34 +259,23 @@ export default function MainNavigator({ route }) {
                 justifyContent: "center",
               }}
             >
-              <ThText
-                style={{
-                  color: colors.textGray,
-                  fontSize: fontSizes.xs,
-                }}
+              <DrawerFooterText
                 onPress={() => console.log("Privacy Policy Press")}
               >
                 Privacy Policy
-              </ThText>
-              <ThText
+              </DrawerFooterText>
+              <DrawerFooterText
                 style={{
-                  marginLeft: 4,
-                  color: colors.textGray,
-                  fontSize: fontSizes.xs,
+                  marginHorizontal: 6,
                 }}
               >
                 •
-              </ThText>
-              <ThText
-                style={{
-                  marginLeft: 4,
-                  color: colors.textGray,
-                  fontSize: fontSizes.xs,
-                }}
+              </DrawerFooterText>
+              <DrawerFooterText
                 onPress={() => console.log("Terms of Service Press")}
               >
                 Terms of Service
-              </ThText>
+              </DrawerFooterText>
             </ThView>
           </ThView>
         );
@@ -299,71 +292,26 @@ export default function MainNavigator({ route }) {
   );
 }
 
-function MainBottomTabs({ navigation, route }) {
+function MainBottomTabs({ navigation }) {
   const { colors, fontSizes } = useTheme();
-  const parentNav = navigation.getParent("MainNavigator");
-
-  // Updates bottomTabItems so the HomeStack route tab uses the component of the currently selected Drawer route.
-  const tabItems = bottomTabItems(
-    drawerItems[parentNav.getState().index].component
+  const mainNavigator = navigation.getParent("MainNavigator");
+  //Update bottomTabItems so the HomeStack route uses the component of the currently selected Drawer route
+  const updatedTabItems = bottomTabItems(
+    drawerItems[mainNavigator.getState().index].component
   );
 
   return (
     <BottomTab.Navigator
-      key={colors.bg} // force remount on theme change
+      key={colors.bg} //Force remount on theme change
       id="MainBottomTabs"
-      screenOptions={({ navigation, route }) => {
-        const currentDrawerItem = drawerItems.find(
-          (drawerItem) =>
-            drawerItem.route ===
-            parentNav.getState().routes[parentNav.getState().index].name
-        );
+      screenOptions={({ route }) => {
         const currentTabItem = bottomTabItems().find(
           (bottomTabItem) => bottomTabItem.route === route.name
         );
-        const isYoutubeCurrentDrawerItem =
-          drawerItems[0].route ===
-          parentNav.getState().routes[parentNav.getState().index].name;
 
         return {
-          headerShown: route.name === bottomTabItems()[0].route,
-          headerStyle: {
-            backgroundColor: colors.bg,
-            elevation: 0, //Android: removes drop shadow
-            shadowOpacity: 0, //iOS: removes drop shadow
-          },
-          headerLeft: () =>
-            isYoutubeCurrentDrawerItem ? (
-              <YoutubeIcon
-                style={styles.headerLeftIcon}
-                color={colors.primary}
-              />
-            ) : (
-              <ArrowBackIcon
-                style={styles.headerLeftIcon}
-                navigation={navigation}
-              />
-            ),
-          headerTitle: () => (
-            <ThText
-              style={[
-                styles.headerTitleIcon,
-                {
-                  fontSize: fontSizes.xl,
-                  fontWeight: "bold",
-                },
-              ]}
-            >
-              {currentDrawerItem.label}
-            </ThText>
-          ),
-          headerRight: () => (
-            <ThView style={styles.headerRightIconsContainer}>
-              <ShareScreenIcon style={styles.headerRightIcon} />
-              <Notificationcon style={styles.headerRightIcon} />
-              <SearchIcon style={styles.headerRightIcon} />
-            </ThView>
-          ),
+          headerShown: false,
+          swipeEnabled: false,
           tabBarStyle: {
             borderTopColor: colors.bgGray,
             borderTopWidth: 1,
@@ -373,7 +321,11 @@ function MainBottomTabs({ navigation, route }) {
           },
           tabBarIcon: ({ focused }) => (
             <ThIcon
-              IconComponent={Ionicons}
+              IconComponent={
+                focused
+                  ? currentTabItem.activeIconComponent
+                  : currentTabItem.inactiveIconComponent
+              }
               name={
                 focused
                   ? currentTabItem.activeIconName
@@ -398,7 +350,7 @@ function MainBottomTabs({ navigation, route }) {
         };
       }}
     >
-      {tabItems.map((item) => (
+      {updatedTabItems.map((item) => (
         <BottomTab.Screen
           key={item.route}
           name={item.route}
@@ -406,5 +358,24 @@ function MainBottomTabs({ navigation, route }) {
         />
       ))}
     </BottomTab.Navigator>
+  );
+}
+
+function DrawerFooterText({ style, children, ...rest }) {
+  const { colors, fontSizes } = useTheme();
+
+  return (
+    <ThText
+      style={[
+        {
+          color: colors.textGray,
+          fontSize: fontSizes.xs,
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      {children}
+    </ThText>
   );
 }

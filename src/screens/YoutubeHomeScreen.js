@@ -41,8 +41,6 @@ export default function YoutubeHomeScreen({ navigation, route }) {
           elevation: 0, //Android: removes drop shadow
           shadowOpacity: 0, //iOS: removes drop shadow
         },
-        swipeEnabled: true,
-        headerShown: true,
       });
     }, [navigation])
   );

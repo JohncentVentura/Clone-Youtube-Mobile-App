@@ -10,124 +10,166 @@ import Octicons from "@expo/vector-icons/Octicons";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 
 export const icons = {
-  youtube: {
-    iconComponent: Fontisto,
-    iconName: "youtube-play",
-  },
-  /******************************Drawers******************************/
-  music: {
+  /******************************MainBottomTab Icons******************************/
+  activeHome: {
     iconComponent: Ionicons,
-    iconName: "musical-note-outline",
+    iconName: "home-sharp",
   },
-  movie: {
-    iconComponent: MaterialCommunityIcons,
-    iconName: "movie-open-outline",
-  },
-  live: {
-    iconComponent: MaterialIcons,
-    iconName: "live-tv",
-  },
-  gaming: {
-    iconComponent: MaterialCommunityIcons,
-    iconName: "youtube-gaming",
-  },
-  news: {
+  inactiveHome: {
     iconComponent: Ionicons,
-    iconName: "newspaper-outline",
+    iconName: "home-outline",
   },
-  sports: {
+  activeShorts: {
     iconComponent: Ionicons,
-    iconName: "trophy-outline",
+    iconName: "videocam",
+  },
+  inactiveShorts: {
+    iconComponent: Ionicons,
+    iconName: "videocam-outline",
+  },
+  activeUpload: {
+    iconComponent: Ionicons,
+    iconName: "add-circle",
+  },
+  inactiveUpload: {
+    iconComponent: Ionicons,
+    iconName: "add-circle-outline",
+  },
+  activeSubscription: {
+    iconComponent: Ionicons,
+    iconName: "albums",
+  },
+  inactiveSubscription: {
+    iconComponent: Ionicons,
+    iconName: "albums-outline",
+  },
+  activeYou: {
+    iconComponent: Ionicons,
+    iconName: "person-circle",
+  },
+  inactiveYou: {
+    iconComponent: Ionicons,
+    iconName: "person-circle-outline",
+  },
+  /******************************Menu Icons******************************/
+  arrowBack: {
+    iconComponent: Ionicons,
+    iconName: "arrow-back",
+  },
+  compass: {
+    iconComponent: Ionicons,
+    iconName: "compass-outline",
   },
   course: {
     iconComponent: SimpleLineIcons,
     iconName: "graduation",
   },
-  fashionAndBeauty: {
-    iconComponent: Ionicons,
-    iconName: "brush-outline",
-  },
-  youtubePremium: {
-    iconComponent: MaterialCommunityIcons,
-    iconName: "youtube-tv",
-  },
-  youtubeMusic: {
-    iconComponent: Entypo,
-    iconName: "youtube-with-circle",
-  },
-  youtubeKids: {
-    iconComponent: Feather,
-    iconName: "youtube",
-  },
-  /******************************Headers******************************/
-  arrowBack: {
-    iconComponent: Ionicons,
-    iconName: "arrow-back",
-  },
-  screenShare: {
-    iconComponent: MaterialIcons,
-    iconName: "screen-share",
-  },
-  notification: {
-    iconComponent: Ionicons,
-    iconName: "notifications-outline",
-  },
-  search: {
-    iconComponent: Fontisto,
-    iconName: "search",
-  },
-  /******************************Menus******************************/
-  compass: {
-    iconComponent: Ionicons,
-    iconName: "compass-outline",
-  },
-  dotVertical: {
-    iconComponent: MaterialCommunityIcons,
-    iconName: "dots-vertical",
-  },
-  /******************************Buttons & Modals******************************/
-  playNextInQueue: {
-    iconComponent: MaterialIcons,
-    iconName: "queue",
-  },
-  saveToWatchLater: {
-    iconComponent: FontAwesome5,
-    iconName: "clock",
-  },
-  save: {
-    iconComponent: Ionicons,
-    iconName: "bookmark-outline",
-  },
-  share: {
-    iconComponent: MaterialCommunityIcons,
-    iconName: "share",
-  },
-  notInterested: {
-    iconComponent: MaterialIcons,
-    iconName: "block",
+  dislike: {
+    iconComponent: Foundation,
+    iconName: "dislike",
   },
   dontRecommendChannel: {
     iconComponent: MaterialIcons,
     iconName: "person-off",
   },
+  dotVertical: {
+    iconComponent: MaterialCommunityIcons,
+    iconName: "dots-vertical",
+  },
+  download: {
+    iconComponent: Octicons,
+    iconName: "download",
+  },
+  fashionAndBeauty: {
+    iconComponent: Ionicons,
+    iconName: "brush-outline",
+  },
+  gaming: {
+    iconComponent: MaterialCommunityIcons,
+    iconName: "youtube-gaming",
+  },
+  information: {
+    iconComponent: MaterialCommunityIcons,
+    iconName: "information-outline",
+  },
   like: {
     iconComponent: Foundation,
     iconName: "like",
   },
-  dislike: {
-    iconComponent: Foundation,
-    iconName: "dislike",
+  live: {
+    iconComponent: MaterialIcons,
+    iconName: "live-tv",
   },
-  report: {
+  movie: {
+    iconComponent: MaterialCommunityIcons,
+    iconName: "movie-open-outline",
+  },
+  music: {
     iconComponent: Ionicons,
-    iconName: "flag-outline",
+    iconName: "musical-note-outline",
+  },
+  news: {
+    iconComponent: Ionicons,
+    iconName: "newspaper-outline",
+  },
+  notification: {
+    iconComponent: Ionicons,
+    iconName: "notifications-outline",
+  },
+  notInterested: {
+    iconComponent: MaterialIcons,
+    iconName: "block",
+  },
+  playNextInQueue: {
+    iconComponent: MaterialIcons,
+    iconName: "queue",
   },
   remix: {
     iconComponent: Ionicons,
     iconName: "videocam-outline",
   },
-  download: {
-    iconComponent: Octicons,
-    iconName: "download",
+  report: {
+    iconComponent: Ionicons,
+    iconName: "flag-outline",
+  },
+  save: {
+    iconComponent: Ionicons,
+    iconName: "bookmark-outline",
+  },
+  saveToWatchLater: {
+    iconComponent: FontAwesome5,
+    iconName: "clock",
+  },
+  screenShare: {
+    iconComponent: MaterialIcons,
+    iconName: "connected-tv",
+  },
+  search: {
+    iconComponent: Fontisto,
+    iconName: "search",
+  },
+  share: {
+    iconComponent: MaterialCommunityIcons,
+    iconName: "share",
+  },
+  sports: {
+    iconComponent: Ionicons,
+    iconName: "trophy-outline",
+  },
+  youtubeMain: {
+    iconComponent: Fontisto,
+    iconName: "youtube-play",
+  },
+  youtubeKids: {
+    iconComponent: Feather,
+    iconName: "youtube",
+  },
+  youtubeMusic: {
+    iconComponent: Entypo,
+    iconName: "youtube-with-circle",
+  },
+  youtubePremium: {
+    iconComponent: MaterialCommunityIcons,
+    iconName: "youtube-tv",
   },
 };

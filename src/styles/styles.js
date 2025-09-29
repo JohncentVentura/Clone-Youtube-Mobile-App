@@ -47,19 +47,19 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
   },
-  largeButton: {
-    borderRadius: 50,
-    paddingVertical: 8,
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
   iconTextButton: {
     borderRadius: 50,
     paddingHorizontal: 12,
     paddingVertical: 6,
     flexDirection: "row",
+    alignItems: "center",
+  },
+  wideButton: {
+    borderRadius: 50,
+    paddingVertical: 8,
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
   },
 });

@@ -10,10 +10,10 @@ import ShortsScreen from "../screens/ShortsScreen";
 import { useTheme } from "../styles/ThemeContext";
 import { ThIcon, ThText, ThView } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
-
+import { ArrowBackIcon } from "../components/IconComponents";
 const Stack = createStackNavigator();
 
-export default function ShortsStack() {
+export default function ShortsStack({ navigation }) {
   const { colors, fontSizes, iconSizes } = useTheme();
 
   return (
@@ -21,26 +21,31 @@ export default function ShortsStack() {
       screenOptions={{
         headerStyle: { backgroundColor: colors.bg },
         headerTintColor: colors.text,
-        headerRight: () => {
-          return (
-            <ThView style={styles.headerRightIconsContainer}>
-              <ThIcon
-                style={styles.headerRightIcon}
-                IconComponent={Ionicons}
-                name="search"
-                onPress={() => console.log("Search pressed")}
-              />
-              <ThIcon
-                style={styles.headerRightIcon}
-                IconComponent={MaterialCommunityIcons}
-                name="dots-vertical"
-                onPress={() => {
-                  console.log("Dots-vertical Pressed");
-                }}
-              />
-            </ThView>
-          );
-        },
+        headerLeft: () => (
+          //TODO: ArrowBackIcon is for testing if it can return back
+          <ArrowBackIcon
+            style={styles.headerLeftIcon}
+            navigation={navigation}
+          />
+        ),
+        headerRight: () => (
+          <ThView style={styles.headerRightIconsContainer}>
+            <ThIcon
+              style={styles.headerRightIcon}
+              IconComponent={Ionicons}
+              name="search"
+              onPress={() => console.log("Search pressed")}
+            />
+            <ThIcon
+              style={styles.headerRightIcon}
+              IconComponent={MaterialCommunityIcons}
+              name="dots-vertical"
+              onPress={() => {
+                console.log("Dots-vertical Pressed");
+              }}
+            />
+          </ThView>
+        ),
         headerTitle: () => (
           <ThText
             style={[

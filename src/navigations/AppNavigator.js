@@ -13,7 +13,6 @@ export default function AppNavigator() {
     "roboto-medium": require("../assets/fonts/Roboto-Medium.ttf"),
     "roboto-regular": require("../assets/fonts/Roboto-Regular.ttf"),
   });
-
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   return (
@@ -21,7 +20,7 @@ export default function AppNavigator() {
       <SafeAreaProvider>
         <NavigationContainer>
           {!fontsLoaded ? (
-            <ActivityIndicator />
+            <ActivityIndicator style={{ flex: 1 }} size={"large"} />
           ) : isLoggedIn ? (
             <MainNavigator />
           ) : (

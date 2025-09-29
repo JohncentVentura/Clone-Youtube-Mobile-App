@@ -5,12 +5,11 @@ import {
 import { ThPressable, ThText, ThView } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
-import { hideMainHeader, parseUrlTitle, roundOffNumber } from "../utils/utils";
+import { parseUrlTitle, roundOffNumber } from "../utils/utils";
 
 export default function ChannelScreen({ navigation, route }) {
   const { colors, fontSizes } = useTheme();
   const { video, query } = route.params;
-  hideMainHeader(navigation);
 
   return (
     <ThView style={styles.screenContainer}>
@@ -97,7 +96,8 @@ export default function ChannelScreen({ navigation, route }) {
           </ThText>
         </ThText>
         <ThPressable
-          style={[styles.largeButton, { backgroundColor: colors.text }]}
+          style={[styles.wideButton, { backgroundColor: colors.text }]}
+          onPress={() => console.log("Subscribe pressed")}
         >
           <ThText style={{ color: colors.bg, fontWeight: "medium" }}>
             Subscribe
