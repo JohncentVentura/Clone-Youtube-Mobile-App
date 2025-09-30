@@ -66,7 +66,7 @@ export default function ChannelScreen({ route }) {
             </ThText>
             <ThText
               style={{
-                color: colors.textGray,
+                color: colors.textMuted,
                 fontSize: fontSizes.xs,
               }}
             >
@@ -79,7 +79,7 @@ export default function ChannelScreen({ route }) {
         <ThText
           style={{
             marginBottom: 12,
-            color: colors.textGray,
+            color: colors.textMuted,
             fontSize: fontSizes.xs,
           }}
         >
@@ -100,10 +100,10 @@ export default function ChannelScreen({ route }) {
           </ThText>
         </ThText>
         <ThPressable
-          style={[styles.wideButton, { backgroundColor: colors.text }]}
+          style={[styles.wideButton, { backgroundColor: colors.bgAccent }]}
           onPress={() => console.log("Subscribe pressed")}
         >
-          <ThText style={{ color: colors.bg, fontWeight: "medium" }}>
+          <ThText style={{ color: colors.textAccent, fontWeight: "medium" }}>
             Subscribe
           </ThText>
         </ThPressable>

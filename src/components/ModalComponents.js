@@ -23,7 +23,6 @@ function SwipeDownModal({ visible, setVisible, children }) {
     >
       <ThView
         style={{
-          paddingTop: 8,
           borderRadius: 12,
           width: "100%",
           backgroundColor: colors.bg,
@@ -32,11 +31,11 @@ function SwipeDownModal({ visible, setVisible, children }) {
         {/*Swipe Bar*/}
         <ThView
           style={{
-            marginBottom: 4,
+            marginVertical: 8,
             borderRadius: 12,
             width: 42,
             height: 4,
-            backgroundColor: colors.borderGray,
+            backgroundColor: colors.borderMuted,
             alignSelf: "center",
           }}
         ></ThView>
@@ -46,7 +45,7 @@ function SwipeDownModal({ visible, setVisible, children }) {
   );
 }
 
-function SwipeDownModalItem({ item, onPress }) {
+function SwipeDownModalItem({ item, ...rest }) {
   const { colors } = useTheme();
 
   return (
@@ -54,13 +53,16 @@ function SwipeDownModalItem({ item, onPress }) {
       style={({ pressed }) => ({
         paddingLeft: 20,
         paddingVertical: 10,
+        backgroundColor: pressed ? colors.bgMuted : "transparent",
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: pressed ? colors.textGray : "transparent",
       })}
+      {...rest}
     >
       <ThIcon IconComponent={item.iconComponent} name={item.iconName} />
-      <ThText style={{ marginLeft: 28, flexShrink: 1 }}>{item.modalItemName}</ThText>
+      <ThText style={{ marginLeft: 28, flexShrink: 1 }}>
+        {item.modalItemName}
+      </ThText>
     </ThPressable>
   );
 }

@@ -9,12 +9,12 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ThIcon, ThText, ThView } from "../components/ThemedComponents";
 import { icons } from "../styles/icons";
 import { useTheme } from "../styles/ThemeContext";
+import { getMainBottomTabBarStyle } from "../utils/utils";
 import ShortsStack from "./ShortsStack";
 import SubscriptionsStack from "./SubscriptionsStack";
 import UploadStack from "./UploadStack";
 import YouStack from "./YouStack";
 import YoutubeHomeStack from "./YoutubeHomeStack";
-import { getMainBottomTabBarStyle } from "../utils/utils";
 
 const Drawer = createDrawerNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -217,10 +217,10 @@ export default function MainNavigator() {
                               item.route
                               ? isCurrentItemThisRoute &&
                                 !isCurrentItemYoutubeHomeStack
-                                ? colors.bg
+                                ? colors.iconAccent
                                 : colors.primary
                               : isCurrentItemThisRoute
-                              ? colors.bg
+                              ? colors.iconAccent
                               : colors.icon
                           }
                         />
@@ -240,7 +240,7 @@ export default function MainNavigator() {
                             color:
                               isCurrentItemThisRoute &&
                               !isCurrentItemYoutubeHomeStack
-                                ? colors.bg
+                                ? colors.textAccent
                                 : colors.text,
                           }}
                         >
@@ -324,13 +324,13 @@ function MainBottomTabBar({ navigation }) {
                   ? currentTabItem.activeIconName
                   : currentTabItem.inactiveIconName
               }
-              color={focused ? colors.primary : colors.iconGray}
+              color={focused ? colors.primary : colors.iconMuted}
             />
           ),
           tabBarLabel: ({ focused }) => (
             <ThText
               style={{
-                color: focused ? colors.text : colors.textGray,
+                color: focused ? colors.text : colors.textMuted,
                 fontWeight: "medium",
                 fontSize: fontSizes.xs2,
               }}
@@ -361,7 +361,7 @@ function DrawerFooterText({ style, children, ...rest }) {
     <ThText
       style={[
         {
-          color: colors.textGray,
+          color: colors.textMuted,
           fontSize: fontSizes.xs,
         },
         style,

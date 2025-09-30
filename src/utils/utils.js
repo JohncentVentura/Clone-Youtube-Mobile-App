@@ -68,7 +68,7 @@ export function hideMainBottomTabBar(navigation) {
 
 export function getMainBottomTabBarStyle(colors) {
   return {
-    borderTopColor: colors.borderGray,
+    borderTopColor: colors.borderMuted,
     borderTopWidth: 1,
     backgroundColor: colors.bg,
     elevation: 0, //Android: removes drop shadow

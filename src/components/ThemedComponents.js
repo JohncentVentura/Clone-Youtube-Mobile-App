@@ -30,14 +30,12 @@ export function ThPressable({ style, children, ...rest }) {
       ? (state) => [
           {
             backgroundColor: colors.bg,
-            opacity: state.pressed ? 0.5 : 1,
           },
           style(state),
         ]
       : (state) => [
           {
             backgroundColor: colors.bg,
-            opacity: state.pressed ? 0.5 : 1,
           },
           style,
         ];
@@ -58,6 +56,7 @@ export function ThScrollViewColumn({ style, children, ...rest }) {
       contentContainerStyle={StyleSheet.create({
         alignItems: "center",
       })}
+      showsVerticalScrollIndicator={false}
       {...rest}
     >
       {children}
@@ -75,8 +74,8 @@ export function ThScrollViewRow({ style, children, ...rest }) {
         flexDirection: "row",
         alignItems: "center",
       })}
-      horizontal={true}
       showsHorizontalScrollIndicator={false}
+      horizontal={true}
       {...rest}
     >
       {children}
@@ -95,7 +94,7 @@ export function ThText({ style, children, ...rest }) {
   else if (weight === "medium") fontFamily = "roboto-medium";
   else fontFamily = "roboto-regular";
 
-  //Remove fontWeight from the flattened style so it doesn't override your fontFamily
+  //Remove fontWeight from the flattened style so it doesn't override fontFamily
   const { fontWeight, ...restStyle } = flattenedStyle;
 
   return (
@@ -137,14 +136,13 @@ export function ThTopQueryTab({ style, selected, children, ...rest }) {
           borderRadius: 4,
           paddingHorizontal: 12,
           paddingVertical: 6,
-          backgroundColor: selected ? colors.text : colors.bgGray,
-          opacity: 1,
+          backgroundColor: selected ? colors.bgAccent : colors.bgMuted,
         },
         style,
       ]}
       {...rest}
     >
-      <ThText style={{ color: selected ? colors.bg : colors.text }}>
+      <ThText style={{ color: selected ? colors.textAccent : colors.text }}>
         {children}
       </ThText>
     </ThPressable>
@@ -164,5 +162,25 @@ export function ThIconButtonText({ style, children, ...rest }) {
     >
       {children}
     </ThText>
+  );
+}
+
+export function ThRoundIconButton({ style, children, ...rest }) {
+  const { colors } = useTheme();
+
+  return (
+    <ThPressable
+      style={({ pressed }) => [
+        {
+          borderRadius: 50,
+          padding: 10,
+          backgroundColor: pressed ? colors.bgMuted : "transparent",
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      {children}
+    </ThPressable>
   );
 }

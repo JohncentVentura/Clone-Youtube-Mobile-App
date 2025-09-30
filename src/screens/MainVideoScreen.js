@@ -72,7 +72,7 @@ export default function MainVideoScreen({ navigation, route }) {
               {/*Total views, Uploaded Date, & ...more link section*/}
               <ThView style={{ marginBottom: 14, flexDirection: "row" }}>
                 <ThText
-                  style={{ color: colors.textGray, fontSize: fontSizes.xs }}
+                  style={{ color: colors.textMuted, fontSize: fontSizes.xs }}
                 >
                   {/*Total Views*/}
                   {roundOffNumber(video.id)} views
@@ -80,10 +80,9 @@ export default function MainVideoScreen({ navigation, route }) {
                 <ThText
                   style={{
                     marginLeft: 8,
-                    color: colors.textGray,
+                    color: colors.textMuted,
                     fontSize: fontSizes.xs,
                   }}
-                  color={colors.textGray}
                 >
                   {/*Uploaded Date*/}
                   {randomTimeAgo(video.video_pictures[0].id)}
@@ -144,7 +143,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   <ThText
                     style={{
                       marginLeft: 8,
-                      color: colors.textGray,
+                      color: colors.textMuted,
                       fontSize: fontSizes.xs,
                     }}
                   >
@@ -153,11 +152,11 @@ export default function MainVideoScreen({ navigation, route }) {
                   </ThText>
                 </ThView>
                 <ThPressable
-                  style={[styles.baseButton, { backgroundColor: colors.text }]}
+                  style={[styles.baseButton, { backgroundColor: colors.bgAccent }]}
                 >
                   <ThText
                     style={{
-                      color: colors.bg,
+                      color: colors.textAccent,
                       fontSize: fontSizes.xs,
                       fontWeight: "medium",
                     }}
@@ -174,7 +173,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   style={[
                     styles.baseButton,
                     {
-                      backgroundColor: colors.bgGray,
+                      backgroundColor: colors.bgMuted,
                       flexDirection: "row",
                       alignItems: "center",
                     },
@@ -207,7 +206,7 @@ export default function MainVideoScreen({ navigation, route }) {
                 <ThPressable
                   style={[
                     styles.iconTextButton,
-                    { marginLeft: 8, backgroundColor: colors.bgGray },
+                    { marginLeft: 8, backgroundColor: colors.bgMuted },
                   ]}
                   onPress={() => console.log("Share Press")}
                 >
@@ -217,7 +216,7 @@ export default function MainVideoScreen({ navigation, route }) {
                 <ThPressable
                   style={[
                     styles.iconTextButton,
-                    { marginLeft: 8, backgroundColor: colors.bgGray },
+                    { marginLeft: 8, backgroundColor: colors.bgMuted },
                   ]}
                   onPress={() => console.log("Remix Press")}
                 >
@@ -227,7 +226,7 @@ export default function MainVideoScreen({ navigation, route }) {
                 <ThPressable
                   style={[
                     styles.iconTextButton,
-                    { marginLeft: 8, backgroundColor: colors.bgGray },
+                    { marginLeft: 8, backgroundColor: colors.bgMuted },
                   ]}
                   onPress={() => console.log("Download Press")}
                 >
@@ -237,7 +236,7 @@ export default function MainVideoScreen({ navigation, route }) {
                 <ThPressable
                   style={[
                     styles.iconTextButton,
-                    { marginLeft: 8, backgroundColor: colors.bgGray },
+                    { marginLeft: 8, backgroundColor: colors.bgMuted },
                   ]}
                   onPress={() => console.log("Report Press")}
                 >
@@ -247,7 +246,7 @@ export default function MainVideoScreen({ navigation, route }) {
                 <ThPressable
                   style={[
                     styles.iconTextButton,
-                    { marginLeft: 8, backgroundColor: colors.bgGray },
+                    { marginLeft: 8, backgroundColor: colors.bgMuted },
                   ]}
                   onPress={() => console.log("Save Press")}
                 >
@@ -263,7 +262,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   borderRadius: 8,
                   paddingHorizontal: 12,
                   paddingTop: 8,
-                  backgroundColor: colors.bgGray,
+                  backgroundColor: colors.bgMuted,
                 }}
               >
                 <ThView
@@ -284,7 +283,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   <ThText
                     style={{
                       marginLeft: 10,
-                      color: colors.textGray,
+                      color: colors.textMuted,
                       fontSize: fontSizes.xs,
                     }}
                   >

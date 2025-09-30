@@ -9,7 +9,6 @@ import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 import {
   getPexelsUrlToTitle,
-  getShortenText,
   randomTimeAgo,
   roundOffNumber,
 } from "../utils/utils";
@@ -51,9 +50,7 @@ export function FlatListVideoItem({
           ]}
         >
           <ThPressable
-            style={{
-              marginTop: 4,
-            }}
+            style={{ marginTop: 4 }}
             onPress={() => {
               navigation.push("ChannelScreen", { video: video, query: query });
             }}
@@ -73,7 +70,7 @@ export function FlatListVideoItem({
               {/*Video Title*/}
               {getPexelsUrlToTitle(video.url)}
             </ThText>
-            <ThText style={{ color: colors.textGray, fontSize: fontSizes.xs }}>
+            <ThText style={{ color: colors.textMuted, fontSize: fontSizes.xs }}>
               {/*Channel Name • Number of Views • Uploaded Date*/}
               {video.user.name} • {roundOffNumber(video.id)} Views •{" "}
               {randomTimeAgo(video.video_pictures[0].id)}
@@ -116,7 +113,7 @@ export function FlatListVideoView({ style, video, autoPlayVideoId, ...rest }) {
 
   return (
     <VideoView
-      style={[styles.videoView, { backgroundColor: colors.bg }, style]}
+      style={[styles.videoView, style]}
       resizeMode="cover"
       nativeControls={false}
       player={player}

@@ -11,7 +11,11 @@ import {
   YoutubeIcon,
 } from "../components/IconComponents";
 import { ScreenShareModal } from "../components/ModalComponents";
-import { ThText, ThView } from "../components/ThemedComponents";
+import {
+  ThText,
+  ThView,
+  ThRoundIconButton,
+} from "../components/ThemedComponents";
 import ChannelScreen from "../screens/ChannelScreen";
 import MainVideoScreen from "../screens/MainVideoScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
@@ -76,17 +80,23 @@ export default function YoutubeHomeStack() {
               ),
               headerRight: () => (
                 <ThView style={styles.headerRightIconsContainer}>
-                  <ShareScreenIcon
+                  <ThRoundIconButton
                     style={styles.headerRightIcon}
                     onPress={() => setVisible(true)}
-                  />
-                  <NotificationIcon
+                  >
+                    <ShareScreenIcon />
+                  </ThRoundIconButton>
+                  <ThRoundIconButton
                     style={styles.headerRightIcon}
                     onPress={() => {
                       navigation.navigate("NotificationsScreen");
                     }}
-                  />
-                  <SearchIcon style={styles.headerRightIcon} />
+                  >
+                    <NotificationIcon />
+                  </ThRoundIconButton>
+                  <ThRoundIconButton style={styles.headerRightIcon}>
+                    <SearchIcon />
+                  </ThRoundIconButton>
                 </ThView>
               ),
             };

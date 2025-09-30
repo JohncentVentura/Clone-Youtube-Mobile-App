@@ -94,7 +94,7 @@ function TopQueryTabBar({ setQuery }) {
           borderRadius: 4,
           paddingHorizontal: 10,
           paddingVertical: 4,
-          backgroundColor: colors.bgGray,
+          backgroundColor: colors.bgMuted,
         }}
         onPress={() => navigation.getParent("MainNavigator")?.openDrawer()}
       >

@@ -54,7 +54,7 @@ export default function NotificationsScreen({ navigation }) {
             {
               marginBottom: 6,
               fontSize: fontSizes.sm,
-              color: colors.textGray,
+              color: colors.textMuted,
             },
           ]}
         >
@@ -75,7 +75,7 @@ export default function NotificationsScreen({ navigation }) {
             {
               marginBottom: 6,
               fontSize: fontSizes.sm,
-              color: colors.textGray,
+              color: colors.textMuted,
             },
           ]}
         >
@@ -104,8 +104,7 @@ function NotificationItem({ navigation, video, query, setVisible }) {
       style={({ pressed }) => {
         return {
           paddingVertical: 10,
-          backgroundColor: pressed ? colors.bgGray : colors.bg,
-          opacity: 1,
+          backgroundColor: pressed ? colors.bgMuted : colors.bg,
         };
       }}
       onPress={() => {
@@ -145,7 +144,7 @@ function NotificationItem({ navigation, video, query, setVisible }) {
             {/*Description*/}
             {getShortenText(video.url, 40)}
           </ThText>
-          <ThText style={{ fontSize: fontSizes.xs, color: colors.textGray }}>
+          <ThText style={{ fontSize: fontSizes.xs, color: colors.textMuted }}>
             {/*Uploaded Date*/}
             {randomTimeAgo(video.video_pictures[0].id)}
           </ThText>
