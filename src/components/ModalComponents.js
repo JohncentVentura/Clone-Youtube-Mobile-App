@@ -2,7 +2,6 @@ import Modal from "react-native-modal";
 import { ThIcon, ThPressable, ThText, ThView } from "./ThemedComponents";
 import { icons } from "../styles/icons";
 import { useTheme } from "../styles/ThemeContext";
-import { fontSizes } from "../styles/theme";
 
 function SwipeDownModal({ visible, setVisible, children }) {
   const { colors } = useTheme();
@@ -47,44 +46,61 @@ function SwipeDownModal({ visible, setVisible, children }) {
   );
 }
 
-export function FlatListVideoItemModal({ visible, setVisible }) {
+function SwipeDownModalItem({ item, onPress }) {
   const { colors } = useTheme();
 
+  return (
+    <ThPressable
+      style={({ pressed }) => ({
+        paddingLeft: 20,
+        paddingVertical: 10,
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: pressed ? colors.textGray : "transparent",
+      })}
+    >
+      <ThIcon IconComponent={item.iconComponent} name={item.iconName} />
+      <ThText style={{ marginLeft: 28, flexShrink: 1 }}>{item.modalItemName}</ThText>
+    </ThPressable>
+  );
+}
+
+export function FlatListVideoItemModal({ visible, setVisible }) {
   const modalItems = [
     {
       iconComponent: icons.playNextInQueue.iconComponent,
       iconName: icons.playNextInQueue.iconName,
-      modalName: "Play Next In Queue",
+      modalItemName: "Play Next In Queue",
     },
     {
       iconComponent: icons.saveToWatchLater.iconComponent,
       iconName: icons.saveToWatchLater.iconName,
-      modalName: "Save to Watch later",
+      modalItemName: "Save to Watch later",
     },
     {
       iconComponent: icons.save.iconComponent,
       iconName: icons.save.iconName,
-      modalName: "Save to playlist",
+      modalItemName: "Save to playlist",
     },
     {
       iconComponent: icons.share.iconComponent,
       iconName: icons.share.iconName,
-      modalName: "Share",
+      modalItemName: "Share",
     },
     {
       iconComponent: icons.notInterested.iconComponent,
       iconName: icons.notInterested.iconName,
-      modalName: "Not Interested",
+      modalItemName: "Not Interested",
     },
     {
       iconComponent: icons.dontRecommendChannel.iconComponent,
       iconName: icons.dontRecommendChannel.iconName,
-      modalName: "Don't recommend channel",
+      modalItemName: "Don't recommend channel",
     },
     {
       iconComponent: icons.report.iconComponent,
       iconName: icons.report.iconName,
-      modalName: "Report",
+      modalItemName: "Report",
     },
   ];
 
@@ -92,20 +108,11 @@ export function FlatListVideoItemModal({ visible, setVisible }) {
     <SwipeDownModal visible={visible} setVisible={setVisible}>
       {modalItems.map((item) => {
         return (
-          <ThPressable
-            key={item.modalName}
-            style={({ pressed }) => ({
-              paddingLeft: 20,
-              paddingVertical: 10,
-              flexDirection: "row",
-              alignItems: "center",
-              backgroundColor: pressed ? colors.textGray : "transparent",
-            })}
-            onPress={() => console.log(item.modalName + " pressed")}
-          >
-            <ThIcon IconComponent={item.iconComponent} name={item.iconName} />
-            <ThText style={{ marginLeft: 28 }}>{item.modalName}</ThText>
-          </ThPressable>
+          <SwipeDownModalItem
+            key={item.modalItemName}
+            item={item}
+            onPress={() => console.log(item.modalItemName + " pressed")}
+          />
         );
       })}
     </SwipeDownModal>
@@ -113,18 +120,18 @@ export function FlatListVideoItemModal({ visible, setVisible }) {
 }
 
 export function ScreenShareModal({ visible, setVisible }) {
-  const { colors, fontSizes } = useTheme();
+  const { fontSizes } = useTheme();
 
   const modalItems = [
     {
       iconComponent: icons.screenShare.iconComponent,
       iconName: icons.screenShare.iconName,
-      modalName: "Link with TV code",
+      modalItemName: "Link with TV code",
     },
     {
       iconComponent: icons.information.iconComponent,
       iconName: icons.information.iconName,
-      modalName: "Learn More",
+      modalItemName: "Learn More",
     },
   ];
 
@@ -137,20 +144,50 @@ export function ScreenShareModal({ visible, setVisible }) {
       </ThText>
       {modalItems.map((item) => {
         return (
-          <ThPressable
-            key={item.modalName}
-            style={({ pressed }) => ({
-              paddingLeft: 20,
-              paddingVertical: 10,
-              flexDirection: "row",
-              alignItems: "center",
-              backgroundColor: pressed ? colors.textGray : "transparent",
-            })}
-            onPress={() => console.log(item.modalName + " pressed")}
-          >
-            <ThIcon IconComponent={item.iconComponent} name={item.iconName} />
-            <ThText style={{ marginLeft: 28 }}>{item.modalName}</ThText>
-          </ThPressable>
+          <SwipeDownModalItem
+            key={item.modalItemName}
+            item={item}
+            onPress={() => console.log(item.modalItemName + " pressed")}
+          />
+        );
+      })}
+    </SwipeDownModal>
+  );
+}
+
+export function NotificationsScreenDotVerticalModal({ visible, setVisible }) {
+  const modalItems = [
+    {
+      iconComponent: icons.saveToWatchLater.iconComponent,
+      iconName: icons.saveToWatchLater.iconName,
+      modalItemName: "Save to Watch later",
+    },
+    {
+      iconComponent: icons.eyeInvisble.iconComponent,
+      iconName: icons.eyeInvisble.iconName,
+      modalItemName: "Hide this notification",
+    },
+    {
+      iconComponent: icons.notificationsOff.iconComponent,
+      iconName: icons.notificationsOff.iconName,
+      modalItemName: "Turn off all from this channel",
+    },
+    {
+      iconComponent: icons.notificationsOff.iconComponent,
+      iconName: icons.notificationsOff.iconName,
+      modalItemName: "Turn off all recommendation notifications",
+    },
+  ];
+
+  return (
+    <SwipeDownModal visible={visible} setVisible={setVisible}>
+      {modalItems.map((item) => {
+        return (
+          <SwipeDownModalItem
+            key={item.modalItemName}
+            item={item}
+            onPress={() => console.log(item.modalItemName + " pressed")}
+          />
         );
       })}
     </SwipeDownModal>

@@ -1,46 +1,69 @@
 import { Image } from "react-native";
 import { styles } from "../styles/styles";
 
-export function MainVideoScreenChannelImage({ style, ...otherProps }) {
+export function MainVideoScreenChannelImage({ style, ...rest }) {
   return (
     <Image
       style={[{ borderRadius: 100, width: 40, height: 40 }, style]}
       resizeMode={"stretch"}
       alt="Channel Image"
-      {...otherProps}
+      {...rest}
     />
   );
 }
 
-export function MainVideoScreenCommentImage({ style, ...otherProps }) {
+export function MainVideoScreenCommentImage({ style, ...rest }) {
   return (
     <Image
       style={[{ borderRadius: 100, width: 30, height: 30 }, style]}
       resizeMode={"stretch"}
       alt="Comment Image"
-      {...otherProps}
+      {...rest}
     />
   );
 }
 
-export function ChannelScreenCoverImage({ style, ...otherProps }) {
+export function ChannelScreenCoverImage({ style, ...rest }) {
   return (
     <Image
       style={[styles.coverImages, style]}
       resizeMode={"cover"}
       alt="Channel Image"
-      {...otherProps}
+      {...rest}
     />
   );
 }
 
-export function ChannelScreenProfileImage({ style, ...otherProps }) {
+export function ChannelScreenProfileImage({ style, ...rest }) {
   return (
     <Image
       style={[{ borderRadius: 100, width: 60, height: 60 }, style]}
       resizeMode={"stretch"}
       alt="Channel Image"
-      {...otherProps}
+      {...rest}
+    />
+  );
+}
+
+//MainVideoScreenCommentImage same style
+export function NotificationsScreenProfileImage({ style, ...rest }) {
+  return (
+    <Image
+      style={[{ borderRadius: 100, width: 32, height: 32 }, style]}
+      resizeMode={"stretch"}
+      alt="Channel Image"
+      {...rest}
+    />
+  );
+}
+
+export function NotificationsScreenPreviewImage({ style, ...rest }) {
+  return (
+    <Image
+      style={[{ borderRadius: 8, width: 120, height: 70 }, style]}
+      resizeMode={"cover"}
+      alt="Channel Image"
+      {...rest}
     />
   );
 }

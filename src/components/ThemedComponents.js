@@ -49,7 +49,23 @@ export function ThPressable({ style, children, ...rest }) {
   );
 }
 
-export function ThRowScrollView({ style, children, ...rest }) {
+export function ThScrollViewColumn({ style, children, ...rest }) {
+  const { colors } = useTheme();
+
+  return (
+    <ScrollView
+      style={[{ backgroundColor: colors.bg }, style]}
+      contentContainerStyle={StyleSheet.create({
+        alignItems: "center",
+      })}
+      {...rest}
+    >
+      {children}
+    </ScrollView>
+  );
+}
+
+export function ThScrollViewRow({ style, children, ...rest }) {
   const { colors } = useTheme();
 
   return (
@@ -110,7 +126,7 @@ export function ThView({ style, children, ...rest }) {
 }
 
 /******************************Extended Components******************************/
-export function ThTopTabButton({ style, selected, children, ...rest }) {
+export function ThTopQueryTab({ style, selected, children, ...rest }) {
   const { colors } = useTheme();
 
   return (

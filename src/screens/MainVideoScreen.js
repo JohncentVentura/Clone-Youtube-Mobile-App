@@ -16,7 +16,7 @@ import {
 import {
   ThFlatList,
   ThPressable,
-  ThRowScrollView,
+  ThScrollViewRow,
   ThText,
   ThView,
   ThIconButtonText,
@@ -28,8 +28,9 @@ import {
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 import {
-  hideMainBottomTabs,
-  parseUrlTitle,
+  hideMainBottomTabBar,
+  getPexelsUrlToTitle,
+  getShortenText,
   randomTimeAgo,
   roundOffNumber,
 } from "../utils/utils";
@@ -38,7 +39,7 @@ export default function MainVideoScreen({ navigation, route }) {
   const { colors, fontSizes, iconSizes } = useTheme();
   const { video, query } = route.params;
   const [relatedVideos, setRelatedVideos] = useState([]);
-  
+
   useEffect(() => {
     (async function () {
       const data = await fetchPexelsData(query, 5);
@@ -46,7 +47,7 @@ export default function MainVideoScreen({ navigation, route }) {
     })();
   }, [video]);
 
-  hideMainBottomTabs(navigation);
+  hideMainBottomTabBar(navigation);
 
   return (
     <ThView style={[styles.screenContainer]}>
@@ -65,7 +66,7 @@ export default function MainVideoScreen({ navigation, route }) {
                 }}
               >
                 {/*Title*/}
-                {parseUrlTitle(video.url)}
+                {getPexelsUrlToTitle(video.url)}
               </ThText>
 
               {/*Total views, Uploaded Date, & ...more link section*/}
@@ -74,7 +75,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   style={{ color: colors.textGray, fontSize: fontSizes.xs }}
                 >
                   {/*Total Views*/}
-                  {video.id} views
+                  {roundOffNumber(video.id)} views
                 </ThText>
                 <ThText
                   style={{
@@ -85,7 +86,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   color={colors.textGray}
                 >
                   {/*Uploaded Date*/}
-                  {randomTimeAgo(video.id)}
+                  {randomTimeAgo(video.video_pictures[0].id)}
                 </ThText>
                 <ThText
                   style={{
@@ -137,7 +138,8 @@ export default function MainVideoScreen({ navigation, route }) {
                       fontWeight: "medium",
                     }}
                   >
-                    Channel Name
+                    {/*Channel name*/}
+                    {getShortenText(video.user.name, 15)}
                   </ThText>
                   <ThText
                     style={{
@@ -147,7 +149,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     }}
                   >
                     {/*Number of subscribers*/}
-                    {roundOffNumber(video.video_pictures[0].id)} subscribers
+                    {roundOffNumber(video.user.id)} subscribers
                   </ThText>
                 </ThView>
                 <ThPressable
@@ -167,7 +169,7 @@ export default function MainVideoScreen({ navigation, route }) {
               </ThView>
 
               {/*Likes/Dislikes, share, & other buttons section*/}
-              <ThRowScrollView style={{ marginBottom: 16 }}>
+              <ThScrollViewRow style={{ marginBottom: 16 }}>
                 <ThPressable
                   style={[
                     styles.baseButton,
@@ -252,7 +254,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   <SaveIcon size={iconSizes.xs} />
                   <ThIconButtonText>Save</ThIconButtonText>
                 </ThPressable>
-              </ThRowScrollView>
+              </ThScrollViewRow>
 
               {/*Comments section*/}
               <ThView
@@ -287,7 +289,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     }}
                   >
                     {/*Number of comments*/}
-                    {roundOffNumber(video.video_pictures[0].id)}
+                    {video.duration}
                   </ThText>
                 </ThView>
                 <ThView
@@ -315,7 +317,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     style={{ marginLeft: 10, flex: 1, fontSize: fontSizes.xs }}
                   >
                     {/*Comment*/}
-                    {video.video_pictures[0].picture}
+                    {video.url}
                   </ThText>
                 </ThView>
               </ThView>

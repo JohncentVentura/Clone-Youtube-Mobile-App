@@ -9,16 +9,17 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ThIcon, ThText, ThView } from "../components/ThemedComponents";
 import { icons } from "../styles/icons";
 import { useTheme } from "../styles/ThemeContext";
-import YoutubeHomeStack from "./YoutubeHomeStack";
 import ShortsStack from "./ShortsStack";
-import UploadStack from "./UploadStack";
 import SubscriptionsStack from "./SubscriptionsStack";
+import UploadStack from "./UploadStack";
 import YouStack from "./YouStack";
+import YoutubeHomeStack from "./YoutubeHomeStack";
+import { getMainBottomTabBarStyle } from "../utils/utils";
 
 const Drawer = createDrawerNavigator();
 const BottomTab = createBottomTabNavigator();
 
-//TODO: Change drawerItems component props of objects into the actual component based on the same route name
+//TODO: Change drawerItems component into the actual component based on the same route name
 const drawerItems = [
   {
     route: "YoutubeHomeStack",
@@ -106,7 +107,7 @@ const drawerItems = [
   },
 ];
 
-//HomeComponent parameter will change into the component of the currently selected Drawer route
+//HomeComponent in the parameter will change into the component of the currently selected Drawer route
 const bottomTabItems = (HomeComponent = YoutubeHomeStack) => [
   {
     route: "HomeStack",
@@ -124,7 +125,7 @@ const bottomTabItems = (HomeComponent = YoutubeHomeStack) => [
     inactiveIconComponent: icons.inactiveShorts.iconComponent,
     activeIconName: icons.activeShorts.iconName,
     inactiveIconName: icons.inactiveShorts.iconName,
-    activeLabel: "Shorter",
+    activeLabel: "or Trunks?",
     inactiveLabel: "Shorts",
     component: ShortsStack,
   },
@@ -134,7 +135,7 @@ const bottomTabItems = (HomeComponent = YoutubeHomeStack) => [
     inactiveIconComponent: icons.inactiveUpload.iconComponent,
     activeIconName: icons.activeUpload.iconName,
     inactiveIconName: icons.inactiveUpload.iconName,
-    activeLabel: "But I'm shy",
+    activeLabel: "B-But I'm shy...",
     inactiveLabel: "Upload",
     component: UploadStack,
   },
@@ -154,7 +155,7 @@ const bottomTabItems = (HomeComponent = YoutubeHomeStack) => [
     inactiveIconComponent: icons.inactiveYou.iconComponent,
     activeIconName: icons.activeYou.iconName,
     inactiveIconName: icons.inactiveYou.iconName,
-    activeLabel: "Who? Me?",
+    activeLabel: "Who? M-Me?",
     inactiveLabel: "You",
     component: YouStack,
   },
@@ -201,6 +202,7 @@ export default function MainNavigator() {
                             ? colors.primary
                             : colors.bg,
                       }}
+                      onPress={() => props.navigation.navigate(item.route)}
                       icon={() => (
                         <ThIcon
                           IconComponent={item.iconComponent}
@@ -245,7 +247,6 @@ export default function MainNavigator() {
                           {item.label}
                         </ThText>
                       )}
-                      onPress={() => props.navigation.navigate(item.route)}
                     />
                   </React.Fragment>
                 );
@@ -285,40 +286,32 @@ export default function MainNavigator() {
         <Drawer.Screen
           key={item.route}
           name={item.route}
-          component={MainBottomTabs}
+          component={MainBottomTabBar}
         />
       ))}
     </Drawer.Navigator>
   );
 }
 
-function MainBottomTabs({ navigation }) {
+function MainBottomTabBar({ navigation }) {
   const { colors, fontSizes } = useTheme();
   const mainNavigator = navigation.getParent("MainNavigator");
-  //Update bottomTabItems so the HomeStack route uses the component of the currently selected Drawer route
+  //Assign updated bottomTabItems so the HomeStack route of this tab uses the component of the currently selected Drawer route
   const updatedTabItems = bottomTabItems(
     drawerItems[mainNavigator.getState().index].component
   );
 
   return (
     <BottomTab.Navigator
+      id="MainBottomTabBar"
       key={colors.bg} //Force remount on theme change
-      id="MainBottomTabs"
       screenOptions={({ route }) => {
         const currentTabItem = bottomTabItems().find(
           (bottomTabItem) => bottomTabItem.route === route.name
         );
-
         return {
           headerShown: false,
-          swipeEnabled: false,
-          tabBarStyle: {
-            borderTopColor: colors.bgGray,
-            borderTopWidth: 1,
-            backgroundColor: colors.bg,
-            elevation: 0, //Android: removes drop shadow
-            shadowOpacity: 0, //iOS: removes drop shadow
-          },
+          tabBarStyle: getMainBottomTabBarStyle(colors),
           tabBarIcon: ({ focused }) => (
             <ThIcon
               IconComponent={

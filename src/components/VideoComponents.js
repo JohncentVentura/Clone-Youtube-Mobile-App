@@ -7,7 +7,12 @@ import { FlatListVideoItemModal } from "./ModalComponents";
 import { ThPressable, ThText, ThView } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
-import { parseUrlTitle, randomTimeAgo, roundOffNumber } from "../utils/utils";
+import {
+  getPexelsUrlToTitle,
+  getShortenText,
+  randomTimeAgo,
+  roundOffNumber,
+} from "../utils/utils";
 
 export function FlatListVideoItem({
   style,
@@ -20,76 +25,67 @@ export function FlatListVideoItem({
   const [visible, setVisible] = useState(false);
 
   return (
-    <ThView style={[{ marginBottom: 28 }, { width: "100%" }, style]}>
-      <ThPressable
-        style={{ marginBottom: 8, width: "100%" }}
-        onPress={() => {
-          navigation.push("MainVideoScreen", {
-            video: video,
-            query: query,
-          });
-        }}
-      >
-        <FlatListVideoView video={video} autoPlayVideoId={autoPlayVideoId} />
-      </ThPressable>
-      <ThView
-        style={[
-          styles.paddedHorizontalContainer,
-          { flexDirection: "row", alignItems: "center" },
-        ]}
-      >
+    <>
+      <FlatListVideoItemModal visible={visible} setVisible={setVisible} />
+
+      <ThView style={[{ marginBottom: 28 }, { width: "100%" }, style]}>
         <ThPressable
-          style={{
-            marginTop: 8,
-            height: "100%",
-            flex: 1,
-            alignItems: "flex-end",
-          }}
+          style={{ marginBottom: 8, width: "100%" }}
           onPress={() => {
-            console.log("Channel Image Pressed");
-            navigation.push("ChannelScreen", { video: video, query: query });
+            navigation.push("MainVideoScreen", {
+              video: video,
+              query: query,
+            });
           }}
         >
-          <MainVideoScreenChannelImage
-            source={{ uri: video.video_pictures[0].picture }}
-          />
+          <FlatListVideoView video={video} autoPlayVideoId={autoPlayVideoId} />
         </ThPressable>
-        <ThView style={{ flex: 6, marginLeft: 12 }}>
-          <ThText
+        <ThView
+          style={[
+            styles.paddedHorizontalContainer,
+            {
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
+            },
+          ]}
+        >
+          <ThPressable
             style={{
-              marginBottom: 4,
-              fontSize: fontSizes.xl,
-              fontWeight: "bold",
+              marginTop: 4,
+            }}
+            onPress={() => {
+              navigation.push("ChannelScreen", { video: video, query: query });
             }}
           >
-            {/*Video Title*/}
-            {parseUrlTitle(video.url)}
-          </ThText>
-          <ThText style={{ color: colors.textGray, fontSize: fontSizes.xs }}>
-            {/*Channel Name • Number of Views • Uploaded Date*/}
-            Channel Name • {roundOffNumber(video.id)} Views •{" "}
-            {randomTimeAgo(video.video_pictures[0].id)}
-          </ThText>
-        </ThView>
-        <ThView
-          style={{
-            marginTop: 8,
-            height: "100%",
-            flex: 1,
-            justifyContent: "flex-start",
-            alignItems: "flex-end",
-          }}
-        >
+            <MainVideoScreenChannelImage
+              source={{ uri: video.video_pictures[0].picture }}
+            />
+          </ThPressable>
+          <ThView style={{ flexShrink: 1, marginLeft: 12 }}>
+            <ThText
+              style={{
+                marginBottom: 4,
+                fontSize: fontSizes.lg,
+                fontWeight: "bold",
+              }}
+            >
+              {/*Video Title*/}
+              {getPexelsUrlToTitle(video.url)}
+            </ThText>
+            <ThText style={{ color: colors.textGray, fontSize: fontSizes.xs }}>
+              {/*Channel Name • Number of Views • Uploaded Date*/}
+              {video.user.name} • {roundOffNumber(video.id)} Views •{" "}
+              {randomTimeAgo(video.video_pictures[0].id)}
+            </ThText>
+          </ThView>
           <DotVerticalIcon
-            onPress={() => {
-              console.log("Dots-vertical Pressed");
-              setVisible(true);
-            }}
+            style={{ marginTop: 4, marginLeft: "auto" }}
+            onPress={() => setVisible(true)}
           />
-          <FlatListVideoItemModal visible={visible} setVisible={setVisible} />
         </ThView>
       </ThView>
-    </ThView>
+    </>
   );
 }
 
@@ -120,7 +116,7 @@ export function FlatListVideoView({ style, video, autoPlayVideoId, ...rest }) {
 
   return (
     <VideoView
-      style={[styles.mainVideoView, { backgroundColor: colors.bg }, style]}
+      style={[styles.videoView, { backgroundColor: colors.bg }, style]}
       resizeMode="cover"
       nativeControls={false}
       player={player}
@@ -153,7 +149,7 @@ export function MainVideoView({ style, video, ...rest }) {
 
   return (
     <VideoView
-      style={[styles.mainVideoView, style]}
+      style={[styles.videoView, style]}
       resizeMode="stretch"
       nativeControls={true}
       player={player}

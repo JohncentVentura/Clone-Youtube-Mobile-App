@@ -68,8 +68,8 @@ export function LikeIcon({ ...rest }) {
 export function NotificationIcon({ ...rest }) {
   return (
     <ThIcon
-      IconComponent={icons.notification.iconComponent}
-      name={icons.notification.iconName}
+      IconComponent={icons.notifications.iconComponent}
+      name={icons.notifications.iconName}
       {...rest}
     />
   );

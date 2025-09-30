@@ -1,3 +1,4 @@
+import AntDesign from '@expo/vector-icons/AntDesign';
 import Entypo from "@expo/vector-icons/Entypo";
 import Feather from "@expo/vector-icons/Feather";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
@@ -80,6 +81,10 @@ export const icons = {
     iconComponent: Octicons,
     iconName: "download",
   },
+  eyeInvisble: {
+    iconComponent: AntDesign,
+    iconName: "eye-invisible",
+  },
   fashionAndBeauty: {
     iconComponent: Ionicons,
     iconName: "brush-outline",
@@ -112,9 +117,13 @@ export const icons = {
     iconComponent: Ionicons,
     iconName: "newspaper-outline",
   },
-  notification: {
+  notifications: {
     iconComponent: Ionicons,
     iconName: "notifications-outline",
+  },
+  notificationsOff: {
+    iconComponent: Ionicons,
+    iconName: "notifications-off-outline",
   },
   notInterested: {
     iconComponent: MaterialIcons,

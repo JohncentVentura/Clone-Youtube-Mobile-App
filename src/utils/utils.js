@@ -1,25 +1,27 @@
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
 
-export function hideMainBottomTabs(navigation) {
-  useFocusEffect(
-    useCallback(() => {
-      const mainBottomTab = navigation.getParent("MainBottomTabs");
-
-      mainBottomTab?.setOptions({
-        tabBarStyle: { display: "none" },
-      });
-    }, [navigation])
-  );
+export function getPexelsAtUserName(url) {
+  // Remove trailing slash if it exists
+  const cleanUrl = url.endsWith("/") ? url.slice(0, -1) : url;
+  // Split the URL into parts
+  const parts = cleanUrl.split("@");
+  // Return the part after "@"
+  return parts.length > 1 ? parts[1] : null;
 }
 
-export function parseUrlTitle(url) {
+export function getPexelsUrlToTitle(url) {
   const videoUrl = url;
   const splitUrl = videoUrl.split("/");
   const slug = splitUrl[splitUrl.length - 2];
   const videoTitle = slug.replace(/\d+/g, "").replace(/-+$/, ""); //remove all digits & last hyphen
-  //console.log(videoTitle);
   return videoTitle;
+}
+
+export function getShortenText(text, maxLength = 50) {
+  return text.length > maxLength 
+    ? text.slice(0, maxLength).trim() + "..." 
+    : text;
 }
 
 export function randomTimeAgo(num) {
@@ -49,4 +51,39 @@ export function roundOffNumber(num) {
   } else if (num < 1_000_000_000_000) {
     return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "B";
   }
+}
+
+/******************************MainBottomTabs Utils******************************/
+export function hideMainBottomTabBar(navigation) {
+  useFocusEffect(
+    useCallback(() => {
+      const mainBottomTab = navigation.getParent("MainBottomTabBar");
+
+      mainBottomTab?.setOptions({
+        tabBarStyle: { display: "none" },
+      });
+    }, [navigation])
+  );
+}
+
+export function getMainBottomTabBarStyle(colors) {
+  return {
+    borderTopColor: colors.borderGray,
+    borderTopWidth: 1,
+    backgroundColor: colors.bg,
+    elevation: 0, //Android: removes drop shadow
+    shadowOpacity: 0, //iOS: removes drop shadow
+  };
+}
+
+export function showMainBottomTabBar(navigation, colors) {
+  useFocusEffect(
+    useCallback(() => {
+      const mainBottomTabs = navigation.getParent("MainBottomTabBar");
+
+      mainBottomTabs?.setOptions({
+        tabBarStyle: getMainBottomTabBarStyle(colors),
+      });
+    }, [navigation])
+  );
 }

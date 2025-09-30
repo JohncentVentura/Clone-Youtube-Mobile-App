@@ -1,21 +1,22 @@
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useEffect, useRef, useState } from "react";
 import { fetchPexelsData } from "../api/pexelsAPI";
 import { CompassIcon } from "../components/IconComponents";
 import {
   ThFlatList,
   ThPressable,
-  ThRowScrollView,
+  ThScrollViewRow,
   ThView,
-  ThTopTabButton,
+  ThTopQueryTab,
 } from "../components/ThemedComponents";
 import { FlatListVideoItem } from "../components/VideoComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
+import { showMainBottomTabBar } from "../utils/utils";
 
 const defaultQuery = "Humans";
 
-export default function YoutubeHomeScreen({ navigation, route }) {
+export default function YoutubeHomeScreen({ navigation }) {
   const { colors } = useTheme();
   const [query, setQuery] = useState(defaultQuery);
   const [queryCount, setQueryCount] = useState(4);
@@ -29,21 +30,7 @@ export default function YoutubeHomeScreen({ navigation, route }) {
     })();
   }, [query, queryCount]);
 
-  useFocusEffect(
-    useCallback(() => {
-      const mainBottomTabs = navigation.getParent("MainBottomTabs");
-
-      mainBottomTabs?.setOptions({
-        tabBarStyle: {
-          borderTopColor: colors.bgGray,
-          borderTopWidth: 1.4,
-          backgroundColor: colors.bg,
-          elevation: 0, //Android: removes drop shadow
-          shadowOpacity: 0, //iOS: removes drop shadow
-        },
-      });
-    }, [navigation])
-  );
+  showMainBottomTabBar(navigation, colors);
 
   return (
     <ThView style={styles.screenContainer}>
@@ -51,7 +38,7 @@ export default function YoutubeHomeScreen({ navigation, route }) {
         style={{ width: "100%" }}
         data={videos}
         keyExtractor={(item) => item.id.toString()}
-        ListHeaderComponent={<TopQueryTabs setQuery={setQuery} />}
+        ListHeaderComponent={<TopQueryTabBar setQuery={setQuery} />}
         renderItem={({ item }) => {
           return (
             <FlatListVideoItem
@@ -81,10 +68,10 @@ export default function YoutubeHomeScreen({ navigation, route }) {
   );
 }
 
-function TopQueryTabs({ setQuery }) {
+function TopQueryTabBar({ setQuery }) {
   const { colors } = useTheme();
-  const [selectedQuery, setSelectedQuery] = useState(defaultQuery);
   const navigation = useNavigation();
+  const [selectedQuery, setSelectedQuery] = useState(defaultQuery);
 
   const handleSelectedQuery = (query) => {
     if (selectedQuery === query) {
@@ -99,7 +86,7 @@ function TopQueryTabs({ setQuery }) {
   };
 
   return (
-    <ThRowScrollView
+    <ThScrollViewRow
       style={[styles.paddedHorizontalContainer, { marginBottom: 10 }]}
     >
       <ThPressable
@@ -113,32 +100,32 @@ function TopQueryTabs({ setQuery }) {
       >
         <CompassIcon />
       </ThPressable>
-      <ThTopTabButton
+      <ThTopQueryTab
         style={{ marginLeft: 14 }}
         selected={selectedQuery === "Humans"}
         onPress={() => handleSelectedQuery("Humans")}
       >
         All
-      </ThTopTabButton>
-      <ThTopTabButton
+      </ThTopQueryTab>
+      <ThTopQueryTab
         selected={selectedQuery === "Music"}
         onPress={() => handleSelectedQuery("Music")}
       >
         Music
-      </ThTopTabButton>
-      <ThTopTabButton
+      </ThTopQueryTab>
+      <ThTopQueryTab
         selected={selectedQuery === "Nature"}
         onPress={() => handleSelectedQuery("Nature")}
       >
         Nature
-      </ThTopTabButton>
-      <ThTopTabButton
+      </ThTopQueryTab>
+      <ThTopQueryTab
         selected={selectedQuery === "City"}
         onPress={() => handleSelectedQuery("City")}
       >
         City
-      </ThTopTabButton>
-      <ThTopTabButton
+      </ThTopQueryTab>
+      <ThTopQueryTab
         style={{ marginRight: 32 }}
         selected={selectedQuery === "Youtube"}
         onPress={() => {
@@ -146,7 +133,7 @@ function TopQueryTabs({ setQuery }) {
         }}
       >
         (Testing YouTube API)
-      </ThTopTabButton>
-    </ThRowScrollView>
+      </ThTopQueryTab>
+    </ThScrollViewRow>
   );
 }

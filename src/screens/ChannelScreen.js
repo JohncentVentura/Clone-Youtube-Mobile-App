@@ -5,9 +5,13 @@ import {
 import { ThPressable, ThText, ThView } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
-import { parseUrlTitle, roundOffNumber } from "../utils/utils";
+import {
+  getPexelsAtUserName,
+  getPexelsUrlToTitle,
+  roundOffNumber,
+} from "../utils/utils";
 
-export default function ChannelScreen({ navigation, route }) {
+export default function ChannelScreen({ route }) {
   const { colors, fontSizes } = useTheme();
   const { video, query } = route.params;
 
@@ -49,7 +53,7 @@ export default function ChannelScreen({ navigation, route }) {
               }}
             >
               {/*Channel Name*/}
-              {parseUrlTitle(video.url)}
+              {video.user.name}
             </ThText>
             <ThText
               style={{
@@ -58,7 +62,7 @@ export default function ChannelScreen({ navigation, route }) {
                 fontWeight: "medium",
               }}
             >
-              {/*Channel Name Tag*/}@{parseUrlTitle(video.url)}
+              {/*Channel Name Tag*/}@{getPexelsAtUserName(video.user.url)}
             </ThText>
             <ThText
               style={{
@@ -67,8 +71,8 @@ export default function ChannelScreen({ navigation, route }) {
               }}
             >
               {/*Number of subscribers • Number of uploaded videos*/}
-              {roundOffNumber(video.video_pictures[0].id)} subscribers •
-              {video.duration} videos
+              {roundOffNumber(video.user.id)} subscribers • {video.duration}{" "}
+              videos
             </ThText>
           </ThView>
         </ThView>
@@ -80,9 +84,9 @@ export default function ChannelScreen({ navigation, route }) {
           }}
         >
           {/*Channel description*/}
-          {parseUrlTitle(video.url)}
-          {parseUrlTitle(video.url)}
-          {parseUrlTitle(video.url)}
+          {getPexelsUrlToTitle(video.url)}
+          {getPexelsUrlToTitle(video.url)}
+          {getPexelsUrlToTitle(video.url)}
           <ThText
             style={{
               fontWeight: "medium",

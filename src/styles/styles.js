@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
     height: screenHeight * 0.15,
   },
   /******************************Videos******************************/
-  mainVideoView: {
+  videoView: {
     width: "100%`",
     height: screenHeight * 0.25,
   },

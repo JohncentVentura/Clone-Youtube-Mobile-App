@@ -12,10 +12,10 @@ import {
 } from "../components/IconComponents";
 import { ScreenShareModal } from "../components/ModalComponents";
 import { ThText, ThView } from "../components/ThemedComponents";
-import YoutubeHomeScreen from "../screens/YoutubeHomeScreen";
-import MainVideoScreen from "../screens/MainVideoScreen";
 import ChannelScreen from "../screens/ChannelScreen";
+import MainVideoScreen from "../screens/MainVideoScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
+import YoutubeHomeScreen from "../screens/YoutubeHomeScreen";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 
@@ -47,77 +47,100 @@ export default function YoutubeHomeStack() {
             headerTitle: () => {
               return null;
             },
-            headerRight: () => (
-              <ThView style={styles.headerRightIconsContainer}>
-                <ShareScreenIcon
-                  style={styles.headerRightIcon}
-                  onPress={() => setVisible(true)}
-                />
-                <NotificationIcon
-                  style={styles.headerRightIcon}
-                  onPress={() => {
-                    navigation.navigate("NotificationsScreen");
-                  }}
-                />
-                <SearchIcon style={styles.headerRightIcon} />
-              </ThView>
-            ),
           };
         }}
       >
         <Stack.Screen
           name="YoutubeHomeScreen"
           component={YoutubeHomeScreen}
-          options={{
-            headerLeft: () => (
-              <YoutubeIcon
-                style={styles.headerLeftIcon}
-                color={colors.primary}
-              />
-            ),
-            headerTitle: () => (
-              <ThText
-                style={[
-                  styles.headerTitleIcon,
-                  {
-                    fontSize: fontSizes.xl,
-                    fontWeight: "bold",
-                  },
-                ]}
-              >
-                Youtube
-              </ThText>
-            ),
+          options={({ navigation }) => {
+            return {
+              headerLeft: () => (
+                <YoutubeIcon
+                  style={styles.headerLeftIcon}
+                  color={colors.primary}
+                />
+              ),
+              headerTitle: () => (
+                <ThText
+                  style={[
+                    styles.headerTitleIcon,
+                    {
+                      fontSize: fontSizes.xl,
+                      fontWeight: "bold",
+                    },
+                  ]}
+                >
+                  Youtube
+                </ThText>
+              ),
+              headerRight: () => (
+                <ThView style={styles.headerRightIconsContainer}>
+                  <ShareScreenIcon
+                    style={styles.headerRightIcon}
+                    onPress={() => setVisible(true)}
+                  />
+                  <NotificationIcon
+                    style={styles.headerRightIcon}
+                    onPress={() => {
+                      navigation.navigate("NotificationsScreen");
+                    }}
+                  />
+                  <SearchIcon style={styles.headerRightIcon} />
+                </ThView>
+              ),
+            };
           }}
         />
-        <Stack.Screen
-          name="MainVideoScreen"
-          component={MainVideoScreen}
-          options={{
-            headerRight: () => {
-              return null;
-            },
-          }}
-        />
+        <Stack.Screen name="MainVideoScreen" component={MainVideoScreen} />
         <Stack.Screen
           name="ChannelScreen"
           component={ChannelScreen}
-          options={{
-            headerRight: () => (
-              <ThView style={styles.headerRightIconsContainer}>
-                <ShareScreenIcon
-                  style={styles.headerRightIcon}
-                  onPress={() => setVisible(true)}
-                />
-                <SearchIcon style={styles.headerRightIcon} />
-                <DotVerticalIcon style={styles.headerRightIcon} />
-              </ThView>
-            ),
+          options={({}) => {
+            return {
+              headerRight: () => (
+                <ThView style={styles.headerRightIconsContainer}>
+                  <ShareScreenIcon
+                    style={styles.headerRightIcon}
+                    onPress={() => setVisible(true)}
+                  />
+                  <SearchIcon style={styles.headerRightIcon} />
+                  <DotVerticalIcon style={styles.headerRightIcon} />
+                </ThView>
+              ),
+            };
           }}
         />
         <Stack.Screen
           name="NotificationsScreen"
           component={NotificationsScreen}
+          options={({}) => {
+            return {
+              headerTitle: () => (
+                <ThText
+                  style={[
+                    styles.headerTitleIcon,
+                    {
+                      fontSize: fontSizes.xl,
+                      fontWeight: "bold",
+                    },
+                  ]}
+                >
+                  Notifications
+                </ThText>
+              ),
+              headerRight: () => (
+                <ThView style={styles.headerRightIconsContainer}>
+                  <ShareScreenIcon
+                    style={styles.headerRightIcon}
+                    onPress={() => setVisible(true)}
+                  />
+                  <SearchIcon style={styles.headerRightIcon} />
+                  <DotVerticalIcon style={styles.headerRightIcon} />
+                </ThView>
+              ),
+            };
+          }}
         />
         {/*Experimental*/}
         <Stack.Screen
