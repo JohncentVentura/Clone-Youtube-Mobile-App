@@ -4,9 +4,17 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  interpolateColor,
+} from "react-native-reanimated";
 import { useTheme } from "../styles/ThemeContext";
+import { styles } from "../styles/styles";
 
 /******************************Base Components******************************/
 export function ThFlatList({ style, ...rest }) {
@@ -114,6 +122,35 @@ export function ThText({ style, children, ...rest }) {
   );
 }
 
+export function ThTextInput({
+  style,
+  placeholder = "Search Youtube",
+  returnKeyType = "search",
+  ...rest
+}) {
+  const { colors, fontSizes } = useTheme();
+
+  return (
+    <TextInput
+      style={[
+        {
+          borderRadius: 9999,
+          paddingHorizontal: 16,
+          paddingVertical: 8,
+          fontSize: fontSizes.base,
+          fontWeight: "medium",
+          backgroundColor: colors.bgMuted,
+        },
+        style,
+      ]}
+      placeholder={placeholder}
+      placeholderTextColor={colors.textMuted}
+      returnKeyType={returnKeyType}
+      {...rest}
+    />
+  );
+}
+
 export function ThView({ style, children, ...rest }) {
   const { colors } = useTheme();
 
@@ -165,22 +202,49 @@ export function ThIconButtonText({ style, children, ...rest }) {
   );
 }
 
-export function ThRoundIconButton({ style, children, ...rest }) {
+/******************************Animated Components******************************/
+export function AnimFadeRoundButton({
+  style,
+  roundSize = 10,
+  children,
+  ...rest
+}) {
   const { colors } = useTheme();
+  const pressed = useSharedValue(0);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(
+      pressed.value,
+      [0, 1],
+      ["transparent", colors.borderMuted]
+    ),
+    transform: [
+      //{ scale: withTiming(pressed.value ? 1 : 0, { duration: 150 }) },
+    ],
+  }));
 
   return (
-    <ThPressable
-      style={({ pressed }) => [
-        {
-          borderRadius: 50,
-          padding: 10,
-          backgroundColor: pressed ? colors.bgMuted : "transparent",
-        },
-        style,
-      ]}
+    <Pressable
+      style={style}
+      onPressIn={() => (pressed.value = withTiming(1, { duration: 150 }))}
+      onPressOut={() => (pressed.value = withTiming(0, { duration: 450 }))}
       {...rest}
     >
+      <Animated.View
+        style={[
+          StyleSheet.absoluteFillObject,
+          {
+            //Expand background outward
+            top: -roundSize,
+            bottom: -roundSize,
+            left: -roundSize,
+            right: -roundSize,
+            borderRadius: 9999,
+          },
+          animatedStyle,
+        ]}
+      />
       {children}
-    </ThPressable>
+    </Pressable>
   );
 }

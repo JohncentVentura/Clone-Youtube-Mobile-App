@@ -90,20 +90,21 @@ function TopQueryTabBar({ setQuery }) {
       style={[styles.paddedHorizontalContainer, { marginBottom: 10 }]}
     >
       <ThPressable
-        style={{
+        style={({ pressed }) => ({
           borderRadius: 4,
           paddingHorizontal: 10,
           paddingVertical: 4,
           backgroundColor: colors.bgMuted,
-        }}
+          opacity: pressed ? 0.2 : 1,
+        })}
         onPress={() => navigation.getParent("MainNavigator")?.openDrawer()}
       >
         <CompassIcon />
       </ThPressable>
       <ThTopQueryTab
         style={{ marginLeft: 14 }}
-        selected={selectedQuery === "Humans"}
-        onPress={() => handleSelectedQuery("Humans")}
+        selected={selectedQuery === defaultQuery}
+        onPress={() => handleSelectedQuery(defaultQuery)}
       >
         All
       </ThTopQueryTab>

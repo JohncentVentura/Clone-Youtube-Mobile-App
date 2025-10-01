@@ -5,6 +5,7 @@ import YouTubePlayerScreen from "../api/YouTubePlayerScreen";
 import {
   ArrowBackIcon,
   DotVerticalIcon,
+  MicIcon,
   NotificationIcon,
   SearchIcon,
   ShareScreenIcon,
@@ -13,12 +14,15 @@ import {
 import { ScreenShareModal } from "../components/ModalComponents";
 import {
   ThText,
+  ThTextInput,
   ThView,
-  ThRoundIconButton,
+  AnimFadeRoundButton,
 } from "../components/ThemedComponents";
 import ChannelScreen from "../screens/ChannelScreen";
 import MainVideoScreen from "../screens/MainVideoScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
+import SearchScreen from "../screens/SearchScreen";
+import SearchVideoScreen from "../screens/SearchVideoScreen";
 import YoutubeHomeScreen from "../screens/YoutubeHomeScreen";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
@@ -28,6 +32,7 @@ const Stack = createStackNavigator();
 export default function YoutubeHomeStack() {
   const { colors, fontSizes } = useTheme();
   const [visible, setVisible] = useState(false);
+  const [search, setSearch] = useState("");
 
   return (
     <>
@@ -42,12 +47,7 @@ export default function YoutubeHomeStack() {
               elevation: 0, //Android: removes drop shadow
               shadowOpacity: 0, //iOS: removes drop shadow
             },
-            headerLeft: () => (
-              <ArrowBackIcon
-                style={styles.headerLeftIcon}
-                navigation={navigation}
-              />
-            ),
+            headerLeft: () => <HeaderArrowBack navigation={navigation} />,
             headerTitle: () => {
               return null;
             },
@@ -68,7 +68,7 @@ export default function YoutubeHomeStack() {
               headerTitle: () => (
                 <ThText
                   style={[
-                    styles.headerTitleIcon,
+                    styles.headerTitle,
                     {
                       fontSize: fontSizes.xl,
                       fontWeight: "bold",
@@ -80,23 +80,9 @@ export default function YoutubeHomeStack() {
               ),
               headerRight: () => (
                 <ThView style={styles.headerRightIconsContainer}>
-                  <ThRoundIconButton
-                    style={styles.headerRightIcon}
-                    onPress={() => setVisible(true)}
-                  >
-                    <ShareScreenIcon />
-                  </ThRoundIconButton>
-                  <ThRoundIconButton
-                    style={styles.headerRightIcon}
-                    onPress={() => {
-                      navigation.navigate("NotificationsScreen");
-                    }}
-                  >
-                    <NotificationIcon />
-                  </ThRoundIconButton>
-                  <ThRoundIconButton style={styles.headerRightIcon}>
-                    <SearchIcon />
-                  </ThRoundIconButton>
+                  <HeaderShareScreen setVisible={setVisible} />
+                  <HeaderNotifications navigation={navigation} />
+                  <HeaderSearch navigation={navigation} search={search} />
                 </ThView>
               ),
             };
@@ -106,16 +92,13 @@ export default function YoutubeHomeStack() {
         <Stack.Screen
           name="ChannelScreen"
           component={ChannelScreen}
-          options={({}) => {
+          options={({ navigation }) => {
             return {
               headerRight: () => (
                 <ThView style={styles.headerRightIconsContainer}>
-                  <ShareScreenIcon
-                    style={styles.headerRightIcon}
-                    onPress={() => setVisible(true)}
-                  />
-                  <SearchIcon style={styles.headerRightIcon} />
-                  <DotVerticalIcon style={styles.headerRightIcon} />
+                  <HeaderShareScreen setVisible={setVisible} />
+                  <HeaderSearch navigation={navigation} search={search} />
+                  <HeaderDotVertical navigation={navigation} />
                 </ThView>
               ),
             };
@@ -124,12 +107,12 @@ export default function YoutubeHomeStack() {
         <Stack.Screen
           name="NotificationsScreen"
           component={NotificationsScreen}
-          options={({}) => {
+          options={({ navigation }) => {
             return {
               headerTitle: () => (
                 <ThText
                   style={[
-                    styles.headerTitleIcon,
+                    styles.headerTitle,
                     {
                       fontSize: fontSizes.xl,
                       fontWeight: "bold",
@@ -141,16 +124,23 @@ export default function YoutubeHomeStack() {
               ),
               headerRight: () => (
                 <ThView style={styles.headerRightIconsContainer}>
-                  <ShareScreenIcon
-                    style={styles.headerRightIcon}
-                    onPress={() => setVisible(true)}
-                  />
-                  <SearchIcon style={styles.headerRightIcon} />
-                  <DotVerticalIcon style={styles.headerRightIcon} />
+                  <HeaderShareScreen setVisible={setVisible} />
+                  <HeaderSearch navigation={navigation} search={search} />
+                  <HeaderDotVertical navigation={navigation} />
                 </ThView>
               ),
             };
           }}
+        />
+        <Stack.Screen
+          name="SearchScreen"
+          component={SearchScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SearchVideoScreen"
+          component={SearchVideoScreen}
+          options={{ headerShown: false }}
         />
         {/*Experimental*/}
         <Stack.Screen
@@ -163,5 +153,61 @@ export default function YoutubeHomeStack() {
         />
       </Stack.Navigator>
     </>
+  );
+}
+
+function HeaderArrowBack({navigation}) {
+  return (
+    <AnimFadeRoundButton
+      style={styles.headerLeftIcon}
+      onPress={() => navigation.goBack()}
+    >
+      <ArrowBackIcon />
+    </AnimFadeRoundButton>
+  );
+}
+
+function HeaderDotVertical() {
+  return (
+    <AnimFadeRoundButton style={styles.headerRightIcon}>
+      <DotVerticalIcon />
+    </AnimFadeRoundButton>
+  );
+}
+
+function HeaderNotifications({navigation}) {
+  return (
+    <AnimFadeRoundButton
+      style={styles.headerRightIcon}
+      onPress={() => {
+        navigation.push("NotificationsScreen");
+      }}
+    >
+      <NotificationIcon />
+    </AnimFadeRoundButton>
+  );
+}
+
+function HeaderSearch({navigation, search}) {
+  return (
+    <AnimFadeRoundButton
+      style={styles.headerRightIcon}
+      onPress={() => {
+        navigation.push("SearchScreen", { search: search });
+      }}
+    >
+      <SearchIcon />
+    </AnimFadeRoundButton>
+  );
+}
+
+function HeaderShareScreen({setVisible}) {
+  return (
+    <AnimFadeRoundButton
+      style={styles.headerRightIcon}
+      onPress={() => setVisible(true)}
+    >
+      <ShareScreenIcon />
+    </AnimFadeRoundButton>
   );
 }

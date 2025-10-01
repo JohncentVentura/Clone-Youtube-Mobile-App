@@ -10,8 +10,8 @@ export const styles = StyleSheet.create({
   headerLeftIcon: {
     marginLeft: globalHorizontalSpacing,
   },
-  headerTitleIcon: {
-    marginLeft: 4,
+  headerTitle: {
+    marginLeft: 8,
   },
   headerRightIconsContainer: {
     marginRight: globalHorizontalSpacing,
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   headerRightIcon: {
-    marginLeft: 10,
+    marginLeft: 20,
   },
   /******************************Containers******************************/
   screenContainer: {
@@ -44,20 +44,20 @@ export const styles = StyleSheet.create({
   },
   /******************************Buttons******************************/
   baseButton: {
-    borderRadius: 50,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    borderRadius: 9999,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
   },
   iconTextButton: {
-    borderRadius: 50,
+    borderRadius: 9999,
     paddingHorizontal: 12,
     paddingVertical: 6,
     flexDirection: "row",
     alignItems: "center",
   },
   wideButton: {
-    borderRadius: 50,
-    paddingVertical: 8,
+    borderRadius: 9999,
+    paddingVertical: 10,
     width: "100%",
     flexDirection: "row",
     justifyContent: "center",

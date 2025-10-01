@@ -11,7 +11,7 @@ import Octicons from "@expo/vector-icons/Octicons";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 
 export const icons = {
-  /******************************MainBottomTab Icons******************************/
+  /******************************MainBottomTabBar Icons******************************/
   activeHome: {
     iconComponent: Ionicons,
     iconName: "home-sharp",
@@ -105,6 +105,10 @@ export const icons = {
     iconComponent: MaterialIcons,
     iconName: "live-tv",
   },
+  mic:{
+    iconComponent: MaterialIcons,
+    iconName: "mic",
+  },
   movie: {
     iconComponent: MaterialCommunityIcons,
     iconName: "movie-open-outline",
@@ -154,7 +158,7 @@ export const icons = {
     iconName: "connected-tv",
   },
   search: {
-    iconComponent: Fontisto,
+    iconComponent: Ionicons,
     iconName: "search",
   },
   share: {

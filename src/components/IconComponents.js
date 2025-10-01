@@ -1,15 +1,11 @@
 import { ThIcon } from "./ThemedComponents";
 import { icons } from "../styles/icons";
 
-export function ArrowBackIcon({ navigation, ...rest }) {
+export function ArrowBackIcon({ ...rest }) {
   return (
     <ThIcon
       IconComponent={icons.arrowBack.iconComponent}
       name={icons.arrowBack.iconName}
-      onPress={() => {
-        navigation.goBack();
-        console.log(icons.arrowBack.iconName + " icon pressed");
-      }}
       {...rest}
     />
   );
@@ -60,6 +56,16 @@ export function LikeIcon({ ...rest }) {
     <ThIcon
       IconComponent={icons.like.iconComponent}
       name={icons.like.iconName}
+      {...rest}
+    />
+  );
+}
+
+export function MicIcon({ ...rest }) {
+  return (
+    <ThIcon
+      IconComponent={icons.mic.iconComponent}
+      name={icons.mic.iconName}
       {...rest}
     />
   );

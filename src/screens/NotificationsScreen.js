@@ -11,6 +11,7 @@ import {
   ThScrollViewColumn,
   ThText,
   ThView,
+  AnimFadeRoundButton,
 } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
@@ -58,7 +59,7 @@ export default function NotificationsScreen({ navigation }) {
             },
           ]}
         >
-          This week
+          Foods
         </ThText>
         {newVideos.map((video) => (
           <NotificationItem
@@ -73,13 +74,13 @@ export default function NotificationsScreen({ navigation }) {
           style={[
             styles.paddedHorizontalContainer,
             {
-              marginBottom: 6,
+              marginVertical: 6,
               fontSize: fontSizes.sm,
               color: colors.textMuted,
             },
           ]}
         >
-          Old
+          Desserts
         </ThText>
         {oldVideos.map((video) => (
           <NotificationItem
@@ -120,15 +121,29 @@ function NotificationItem({ navigation, video, query, setVisible }) {
           {
             backgroundColor: "transparent",
             flexDirection: "row",
+            alignItems: "flex-start",
           },
         ]}
       >
-        <NotificationsScreenProfileImage
-          style={{ marginTop: 4, marginLeft: 4 }}
-          source={{
-            uri: video.video_pictures[0].picture,
+        <ThPressable
+          style={{
+            marginLeft: 4,
+            backgroundColor: "transparent",
           }}
-        />
+          onPress={() => {
+            navigation.navigate("ChannelScreen", {
+              video: video,
+              query: query,
+            });
+          }}
+        >
+          <NotificationsScreenProfileImage
+            source={{
+              uri: video.video_pictures[0].picture,
+            }}
+          />
+        </ThPressable>
+
         <ThView
           style={{
             marginLeft: 16,
@@ -149,20 +164,23 @@ function NotificationItem({ navigation, video, query, setVisible }) {
             {randomTimeAgo(video.video_pictures[0].id)}
           </ThText>
         </ThView>
+
         <NotificationsScreenPreviewImage
           style={{ marginLeft: 12 }}
           source={{
             uri: video.video_pictures[0].picture,
           }}
         />
-        <ThPressable
-          style={{ backgroundColor: "transparent" }}
+
+        <AnimFadeRoundButton
+          style={{ marginLeft: 4, backgroundColor: "transparent" }}
+          roundSize={2}
           onPress={() => {
             setVisible(true);
           }}
         >
-          <DotVerticalIcon style={{ marginLeft: 4 }} size={iconSizes.sm} />
-        </ThPressable>
+          <DotVerticalIcon size={iconSizes.sm} />
+        </AnimFadeRoundButton>
       </ThView>
     </ThPressable>
   );

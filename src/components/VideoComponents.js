@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import { DotVerticalIcon } from "./IconComponents";
 import { MainVideoScreenChannelImage } from "../components/ImageComponents";
 import { FlatListVideoItemModal } from "./ModalComponents";
-import { ThPressable, ThText, ThView } from "../components/ThemedComponents";
+import {
+  ThPressable,
+  ThText,
+  ThView,
+  AnimFadeRoundButton,
+} from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 import {
@@ -12,7 +17,6 @@ import {
   randomTimeAgo,
   roundOffNumber,
 } from "../utils/utils";
-
 export function FlatListVideoItem({
   style,
   navigation,
@@ -29,7 +33,7 @@ export function FlatListVideoItem({
 
       <ThView style={[{ marginBottom: 28 }, { width: "100%" }, style]}>
         <ThPressable
-          style={{ marginBottom: 8, width: "100%" }}
+          style={{ marginBottom: 10, width: "100%" }}
           onPress={() => {
             navigation.push("MainVideoScreen", {
               video: video,
@@ -50,7 +54,6 @@ export function FlatListVideoItem({
           ]}
         >
           <ThPressable
-            style={{ marginTop: 4 }}
             onPress={() => {
               navigation.push("ChannelScreen", { video: video, query: query });
             }}
@@ -76,10 +79,13 @@ export function FlatListVideoItem({
               {randomTimeAgo(video.video_pictures[0].id)}
             </ThText>
           </ThView>
-          <DotVerticalIcon
-            style={{ marginTop: 4, marginLeft: "auto" }}
+          <AnimFadeRoundButton
+            style={{ marginLeft: "auto" }}
+            roundSize={4}
             onPress={() => setVisible(true)}
-          />
+          >
+            <DotVerticalIcon />
+          </AnimFadeRoundButton>
         </ThView>
       </ThView>
     </>
