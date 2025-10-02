@@ -12,11 +12,7 @@ import {
 } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
-import {
-  getPexelsUrlToTitle,
-  randomTimeAgo,
-  roundOffNumber,
-} from "../utils/utils";
+
 export function FlatListVideoItem({
   style,
   navigation,
@@ -55,12 +51,13 @@ export function FlatListVideoItem({
         >
           <ThPressable
             onPress={() => {
-              navigation.push("ChannelScreen", { video: video, query: query });
+              navigation.navigate("ChannelScreen", {
+                video: video,
+                query: query,
+              });
             }}
           >
-            <MainVideoScreenChannelImage
-              source={{ uri: video.video_pictures[0].picture }}
-            />
+            <MainVideoScreenChannelImage source={{ uri: video.picture }} />
           </ThPressable>
           <ThView style={{ flexShrink: 1, marginLeft: 12 }}>
             <ThText
@@ -70,13 +67,10 @@ export function FlatListVideoItem({
                 fontWeight: "bold",
               }}
             >
-              {/*Video Title*/}
-              {getPexelsUrlToTitle(video.url)}
+              {video.title}
             </ThText>
             <ThText style={{ color: colors.textMuted, fontSize: fontSizes.xs }}>
-              {/*Channel Name • Number of Views • Uploaded Date*/}
-              {video.user.name} • {roundOffNumber(video.id)} Views •{" "}
-              {randomTimeAgo(video.video_pictures[0].id)}
+              {video.channelName} • {video.views} Views • {video.uploadedDate}
             </ThText>
           </ThView>
           <AnimFadeRoundButton
@@ -93,17 +87,9 @@ export function FlatListVideoItem({
 }
 
 export function FlatListVideoView({ style, video, autoPlayVideoId, ...rest }) {
-  const { colors } = useTheme();
   const isFocused = useIsFocused();
 
-  const file =
-    video.video_files.find(
-      (v) => v.file_type === "video/mp4" && v.quality === "hd"
-    ) ||
-    video.video_files.find((v) => v.file_type === "video/mp4") ||
-    video.video_files[0];
-
-  const player = useVideoPlayer(file.link, (player) => {
+  const player = useVideoPlayer(video.video, (player) => {
     player.loop = true;
   });
 
@@ -115,6 +101,14 @@ export function FlatListVideoView({ style, video, autoPlayVideoId, ...rest }) {
     } else {
       player.pause();
     }
+
+    return () => {
+      try {
+        player.dispose?.();
+      } catch (e) {
+        console.log("Player already released:", e.message);
+      }
+    };
   }, [isFocused, autoPlayVideoId]);
 
   return (
@@ -131,14 +125,7 @@ export function FlatListVideoView({ style, video, autoPlayVideoId, ...rest }) {
 export function MainVideoView({ style, video, ...rest }) {
   const isFocused = useIsFocused();
 
-  const file =
-    video.video_files.find(
-      (v) => v.file_type === "video/mp4" && v.quality === "hd"
-    ) ||
-    video.video_files.find((v) => v.file_type === "video/mp4") ||
-    video.video_files[0];
-
-  const player = useVideoPlayer(file.link, (player) => {
+  const player = useVideoPlayer(video.video, (player) => {
     player.loop = false;
   });
 
@@ -148,6 +135,14 @@ export function MainVideoView({ style, video, ...rest }) {
     } else {
       player.pause();
     }
+
+    return () => {
+      try {
+        player.dispose?.();
+      } catch (e) {
+        console.log("Player already released:", e.message);
+      }
+    };
   }, [isFocused]);
 
   return (

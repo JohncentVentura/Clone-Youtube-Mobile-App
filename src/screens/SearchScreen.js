@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ArrowBackIcon, MicIcon } from "../components/IconComponents";
-import {
-  ThTextInput,
-  ThView,
-  AnimFadeRoundButton,
-} from "../components/ThemedComponents";
+import { HeaderArrowBack, HeaderMic } from "../components/HeaderComponents";
+import { ThTextInput, ThView } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
 import { hideMainBottomTabBar } from "../utils/utils";
 
@@ -33,25 +29,18 @@ function SearchScreenHeader({ navigation, search }) {
         alignItems: "center",
       }}
     >
-      <AnimFadeRoundButton
-        style={styles.headerLeftIcon}
-        onPress={() => navigation.goBack()}
-      >
-        <ArrowBackIcon />
-      </AnimFadeRoundButton>
+      <HeaderArrowBack navigation={navigation} />
       <ThTextInput
         style={{ marginLeft: 12, flex: 1 }}
         value={newSearch}
         onChangeText={setNewSearch}
         autoFocus={true}
         onSubmitEditing={() =>
-          navigation.push("SearchVideoScreen", { search: newSearch })
+          navigation.push("SearchResultScreen", { search: newSearch })
         }
       />
       <ThView style={styles.headerRightIconsContainer}>
-        <AnimFadeRoundButton style={{ marginLeft: 12 }}>
-          <MicIcon />
-        </AnimFadeRoundButton>
+        <HeaderMic style={{ marginLeft: 12 }} />
       </ThView>
     </ThView>
   );

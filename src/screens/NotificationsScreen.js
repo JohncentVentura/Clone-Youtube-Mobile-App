@@ -15,11 +15,6 @@ import {
 } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
-import {
-  getPexelsUrlToTitle,
-  getShortenText,
-  randomTimeAgo,
-} from "../utils/utils";
 
 export default function NotificationsScreen({ navigation }) {
   const { colors, fontSizes } = useTheme();
@@ -30,15 +25,31 @@ export default function NotificationsScreen({ navigation }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    const abortController = new AbortController();
+    let isMounted = true;
+
     (async function () {
-      const data = await fetchPexelsData(newVideoQuery, 4);
-      setNewVideos(data);
+      const data = await fetchPexelsData(
+        newVideoQuery,
+        4,
+        abortController.signal
+      );
+      if (isMounted) {
+        setNewVideos(data);
+      }
     })();
 
     (async function () {
       const data = await fetchPexelsData(oldVideoQuery, 4);
-      setOldVideos(data);
+      if (isMounted) {
+        setOldVideos(data);
+      }
     })();
+
+    return () => {
+      isMounted = false;
+      abortController.abort();
+    };
   }, []);
 
   return (
@@ -139,7 +150,7 @@ function NotificationItem({ navigation, video, query, setVisible }) {
         >
           <NotificationsScreenProfileImage
             source={{
-              uri: video.video_pictures[0].picture,
+              uri: video.picture,
             }}
           />
         </ThPressable>
@@ -152,23 +163,20 @@ function NotificationItem({ navigation, video, query, setVisible }) {
           }}
         >
           <ThText style={{ fontSize: fontSizes.sm, fontWeight: "bold" }}>
-            {/*Channel Name*/}
-            {getPexelsUrlToTitle(video.url)}
+            {video.channelName}
           </ThText>
           <ThText style={{ fontSize: fontSizes.sm }}>
-            {/*Description*/}
-            {getShortenText(video.url, 40)}
+            {video.description}
           </ThText>
           <ThText style={{ fontSize: fontSizes.xs, color: colors.textMuted }}>
-            {/*Uploaded Date*/}
-            {randomTimeAgo(video.video_pictures[0].id)}
+            {video.uploadedDate}
           </ThText>
         </ThView>
 
         <NotificationsScreenPreviewImage
           style={{ marginLeft: 12 }}
           source={{
-            uri: video.video_pictures[0].picture,
+            uri: video.picture,
           }}
         />
 

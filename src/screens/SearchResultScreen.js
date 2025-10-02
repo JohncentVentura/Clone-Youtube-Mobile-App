@@ -2,16 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { fetchPexelsData } from "../api/pexelsAPI";
 import {
-  ArrowBackIcon,
-  DotVerticalIcon,
-  MicIcon,
-  ShareScreenIcon,
-} from "../components/IconComponents";
+  HeaderArrowBack,
+  HeaderDotVertical,
+  HeaderMic,
+  HeaderShareScreen,
+} from "../components/HeaderComponents";
 import {
   ThFlatList,
   ThTextInput,
   ThView,
-  AnimFadeRoundButton,
 } from "../components/ThemedComponents";
 import { FlatListVideoItem } from "../components/VideoComponents";
 import { styles } from "../styles/styles";
@@ -19,17 +18,27 @@ import { useTheme } from "../styles/ThemeContext";
 import { showMainBottomTabBar } from "../utils/utils";
 import { ScreenShareModal } from "../components/ModalComponents";
 
-export default function SearchVideoScreen({ navigation, route }) {
+export default function SearchResultScreen({ navigation, route }) {
   const { colors } = useTheme();
   const { search } = route.params;
   const [searchVideos, setSearchVideos] = useState([]);
   const [autoPlayVideoId, setAutoPlayVideoId] = useState(null);
 
   useEffect(() => {
-    (async function () {
-      const data = await fetchPexelsData(search, 4);
-      setSearchVideos(data);
+    const abortController = new AbortController();
+    let isMounted = true;
+
+    (async () => {
+      const data = await fetchPexelsData(search, 6, abortController.signal);
+      if (isMounted) {
+        setSearchVideos(data);
+      }
     })();
+
+    return () => {
+      isMounted = false;
+      abortController.abort();
+    };
   }, [search]);
 
   showMainBottomTabBar(navigation, colors);
@@ -94,35 +103,21 @@ function SearchVideoScreenHeader({ style, navigation, search }) {
           style,
         ]}
       >
-        <AnimFadeRoundButton
-          style={styles.headerLeftIcon}
-          onPress={() => navigation.pop(2)}
-        >
-          <ArrowBackIcon />
-        </AnimFadeRoundButton>
+        <HeaderArrowBack onPress={() => navigation.pop(2)} />
 
         <ThTextInput
           style={{ marginLeft: 12, flex: 1 }}
           value={newSearch}
           onChangeText={setNewSearch}
           onPress={() => {
-            navigation.push("SearchScreen", { search: newSearch });
+            navigation.navigate("SearchScreen", { search: newSearch });
           }}
         />
-        
+
         <ThView style={styles.headerRightIconsContainer}>
-          <AnimFadeRoundButton style={styles.headerRightIcon}>
-            <MicIcon />
-          </AnimFadeRoundButton>
-          <AnimFadeRoundButton
-            style={styles.headerRightIcon}
-            onPress={() => setVisible(true)}
-          >
-            <ShareScreenIcon />
-          </AnimFadeRoundButton>
-          <AnimFadeRoundButton style={styles.headerRightIcon}>
-            <DotVerticalIcon />
-          </AnimFadeRoundButton>
+          <HeaderMic />
+          <HeaderShareScreen setVisible={setVisible} />
+          <HeaderDotVertical />
         </ThView>
       </ThView>
     </>

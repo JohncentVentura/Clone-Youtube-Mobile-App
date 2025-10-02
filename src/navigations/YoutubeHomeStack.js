@@ -3,26 +3,21 @@ import { useState } from "react";
 import YouTubeFlatListScreen from "../api/YouTubeFlatListScreen";
 import YouTubePlayerScreen from "../api/YouTubePlayerScreen";
 import {
-  ArrowBackIcon,
-  DotVerticalIcon,
-  MicIcon,
-  NotificationIcon,
-  SearchIcon,
-  ShareScreenIcon,
-  YoutubeIcon,
-} from "../components/IconComponents";
+  HeaderArrowBack,
+  HeaderDotVertical,
+  HeaderNotifications,
+  HeaderSearch,
+  HeaderShareScreen,
+  HeaderText,
+} from "../components/HeaderComponents";
+import { YoutubeIcon } from "../components/IconComponents";
 import { ScreenShareModal } from "../components/ModalComponents";
-import {
-  ThText,
-  ThTextInput,
-  ThView,
-  AnimFadeRoundButton,
-} from "../components/ThemedComponents";
+import { ThView } from "../components/ThemedComponents";
 import ChannelScreen from "../screens/ChannelScreen";
 import MainVideoScreen from "../screens/MainVideoScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import SearchScreen from "../screens/SearchScreen";
-import SearchVideoScreen from "../screens/SearchVideoScreen";
+import SearchResultScreen from "../screens/SearchResultScreen";
 import YoutubeHomeScreen from "../screens/YoutubeHomeScreen";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
@@ -48,9 +43,8 @@ export default function YoutubeHomeStack() {
               shadowOpacity: 0, //iOS: removes drop shadow
             },
             headerLeft: () => <HeaderArrowBack navigation={navigation} />,
-            headerTitle: () => {
-              return null;
-            },
+            headerTitle: () => null,
+            headerRight: () => null,
           };
         }}
       >
@@ -65,19 +59,7 @@ export default function YoutubeHomeStack() {
                   color={colors.primary}
                 />
               ),
-              headerTitle: () => (
-                <ThText
-                  style={[
-                    styles.headerTitle,
-                    {
-                      fontSize: fontSizes.xl,
-                      fontWeight: "bold",
-                    },
-                  ]}
-                >
-                  Youtube
-                </ThText>
-              ),
+              headerTitle: () => <HeaderText>YouTube</HeaderText>,
               headerRight: () => (
                 <ThView style={styles.headerRightIconsContainer}>
                   <HeaderShareScreen setVisible={setVisible} />
@@ -88,7 +70,17 @@ export default function YoutubeHomeStack() {
             };
           }}
         />
-        <Stack.Screen name="MainVideoScreen" component={MainVideoScreen} />
+        <Stack.Screen
+          name="MainVideoScreen"
+          component={MainVideoScreen}
+          options={({ navigation }) => {
+            return {
+              headerLeft: () => (
+                <HeaderArrowBack onPress={() => navigation.pop()} />
+              ),
+            };
+          }}
+        />
         <Stack.Screen
           name="ChannelScreen"
           component={ChannelScreen}
@@ -98,7 +90,7 @@ export default function YoutubeHomeStack() {
                 <ThView style={styles.headerRightIconsContainer}>
                   <HeaderShareScreen setVisible={setVisible} />
                   <HeaderSearch navigation={navigation} search={search} />
-                  <HeaderDotVertical navigation={navigation} />
+                  <HeaderDotVertical />
                 </ThView>
               ),
             };
@@ -109,24 +101,12 @@ export default function YoutubeHomeStack() {
           component={NotificationsScreen}
           options={({ navigation }) => {
             return {
-              headerTitle: () => (
-                <ThText
-                  style={[
-                    styles.headerTitle,
-                    {
-                      fontSize: fontSizes.xl,
-                      fontWeight: "bold",
-                    },
-                  ]}
-                >
-                  Notifications
-                </ThText>
-              ),
+              headerTitle: () => <HeaderText>Notifications</HeaderText>,
               headerRight: () => (
                 <ThView style={styles.headerRightIconsContainer}>
                   <HeaderShareScreen setVisible={setVisible} />
                   <HeaderSearch navigation={navigation} search={search} />
-                  <HeaderDotVertical navigation={navigation} />
+                  <HeaderDotVertical />
                 </ThView>
               ),
             };
@@ -138,8 +118,8 @@ export default function YoutubeHomeStack() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="SearchVideoScreen"
-          component={SearchVideoScreen}
+          name="SearchResultScreen"
+          component={SearchResultScreen}
           options={{ headerShown: false }}
         />
         {/*Experimental*/}
@@ -153,61 +133,5 @@ export default function YoutubeHomeStack() {
         />
       </Stack.Navigator>
     </>
-  );
-}
-
-function HeaderArrowBack({navigation}) {
-  return (
-    <AnimFadeRoundButton
-      style={styles.headerLeftIcon}
-      onPress={() => navigation.goBack()}
-    >
-      <ArrowBackIcon />
-    </AnimFadeRoundButton>
-  );
-}
-
-function HeaderDotVertical() {
-  return (
-    <AnimFadeRoundButton style={styles.headerRightIcon}>
-      <DotVerticalIcon />
-    </AnimFadeRoundButton>
-  );
-}
-
-function HeaderNotifications({navigation}) {
-  return (
-    <AnimFadeRoundButton
-      style={styles.headerRightIcon}
-      onPress={() => {
-        navigation.push("NotificationsScreen");
-      }}
-    >
-      <NotificationIcon />
-    </AnimFadeRoundButton>
-  );
-}
-
-function HeaderSearch({navigation, search}) {
-  return (
-    <AnimFadeRoundButton
-      style={styles.headerRightIcon}
-      onPress={() => {
-        navigation.push("SearchScreen", { search: search });
-      }}
-    >
-      <SearchIcon />
-    </AnimFadeRoundButton>
-  );
-}
-
-function HeaderShareScreen({setVisible}) {
-  return (
-    <AnimFadeRoundButton
-      style={styles.headerRightIcon}
-      onPress={() => setVisible(true)}
-    >
-      <ShareScreenIcon />
-    </AnimFadeRoundButton>
   );
 }

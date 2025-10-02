@@ -27,13 +27,7 @@ import {
 } from "../components/VideoComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
-import {
-  hideMainBottomTabBar,
-  getPexelsUrlToTitle,
-  getShortenText,
-  randomTimeAgo,
-  roundOffNumber,
-} from "../utils/utils";
+import { hideMainBottomTabBar } from "../utils/utils";
 
 export default function MainVideoScreen({ navigation, route }) {
   const { colors, fontSizes, iconSizes } = useTheme();
@@ -41,10 +35,20 @@ export default function MainVideoScreen({ navigation, route }) {
   const [relatedVideos, setRelatedVideos] = useState([]);
 
   useEffect(() => {
+    const abortController = new AbortController();
+    let isMounted = true;
+
     (async function () {
-      const data = await fetchPexelsData(query, 5);
-      setRelatedVideos(data);
+      const data = await fetchPexelsData(query, 5, abortController.signal);
+      if (isMounted) {
+        setRelatedVideos(data);
+      }
     })();
+
+    return () => {
+      isMounted = false;
+      abortController.abort();
+    };
   }, [video]);
 
   hideMainBottomTabBar(navigation);
@@ -65,8 +69,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   fontWeight: "bold",
                 }}
               >
-                {/*Title*/}
-                {getPexelsUrlToTitle(video.url)}
+                {video.title}
               </ThText>
 
               {/*Total views, Uploaded Date, & ...more link section*/}
@@ -74,8 +77,7 @@ export default function MainVideoScreen({ navigation, route }) {
                 <ThText
                   style={{ color: colors.textMuted, fontSize: fontSizes.xs }}
                 >
-                  {/*Total Views*/}
-                  {roundOffNumber(video.id)} views
+                  {video.views} views
                 </ThText>
                 <ThText
                   style={{
@@ -84,8 +86,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     fontSize: fontSizes.xs,
                   }}
                 >
-                  {/*Uploaded Date*/}
-                  {randomTimeAgo(video.video_pictures[0].id)}
+                  {video.uploadedDate}
                 </ThText>
                 <ThText
                   style={{
@@ -120,14 +121,14 @@ export default function MainVideoScreen({ navigation, route }) {
                   <ThPressable
                     onPress={() => {
                       console.log("Channel Image Pressed");
-                      navigation.push("ChannelScreen", {
+                      navigation.navigate("ChannelScreen", {
                         video: video,
                         query: query,
                       });
                     }}
                   >
                     <MainVideoScreenChannelImage
-                      source={{ uri: video.video_pictures[0].picture }}
+                      source={{ uri: video.picture }}
                     />
                   </ThPressable>
                   <ThText
@@ -137,8 +138,7 @@ export default function MainVideoScreen({ navigation, route }) {
                       fontWeight: "medium",
                     }}
                   >
-                    {/*Channel name*/}
-                    {getShortenText(video.user.name, 15)}
+                    {video.channelName}
                   </ThText>
                   <ThText
                     style={{
@@ -147,12 +147,14 @@ export default function MainVideoScreen({ navigation, route }) {
                       fontSize: fontSizes.xs,
                     }}
                   >
-                    {/*Number of subscribers*/}
-                    {roundOffNumber(video.user.id)} subscribers
+                    {video.channelSubscribers}
                   </ThText>
                 </ThView>
                 <ThPressable
-                  style={[styles.baseButton, { backgroundColor: colors.bgAccent }]}
+                  style={[
+                    styles.baseButton,
+                    { backgroundColor: colors.bgAccent },
+                  ]}
                 >
                   <ThText
                     style={{
@@ -193,8 +195,7 @@ export default function MainVideoScreen({ navigation, route }) {
                       fontWeight: "medium",
                     }}
                   >
-                    {/*Placeholder for count of likes */}
-                    {video.duration}
+                    {video.likes}
                   </ThText>
                   <DislikeIcon
                     style={{ paddingLeft: 12 }}
@@ -287,8 +288,7 @@ export default function MainVideoScreen({ navigation, route }) {
                       fontSize: fontSizes.xs,
                     }}
                   >
-                    {/*Number of comments*/}
-                    {video.duration}
+                    {video.commentsCount}
                   </ThText>
                 </ThView>
                 <ThView
@@ -309,14 +309,13 @@ export default function MainVideoScreen({ navigation, route }) {
                     }}
                   >
                     <MainVideoScreenCommentImage
-                      source={{ uri: video.video_pictures[0].picture }}
+                      source={{ uri: video.picture }}
                     />
                   </ThPressable>
                   <ThText
                     style={{ marginLeft: 10, flex: 1, fontSize: fontSizes.xs }}
                   >
-                    {/*Comment*/}
-                    {video.url}
+                    {video.commentsDescription}
                   </ThText>
                 </ThView>
               </ThView>

@@ -137,9 +137,10 @@ export function ThTextInput({
           borderRadius: 9999,
           paddingHorizontal: 16,
           paddingVertical: 8,
+          backgroundColor: colors.bgMuted,
+          color: colors.textMuted,
           fontSize: fontSizes.base,
           fontWeight: "medium",
-          backgroundColor: colors.bgMuted,
         },
         style,
       ]}

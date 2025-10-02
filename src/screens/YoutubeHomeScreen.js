@@ -24,10 +24,24 @@ export default function YoutubeHomeScreen({ navigation }) {
   const [autoPlayVideoId, setAutoPlayVideoId] = useState(null);
 
   useEffect(() => {
-    (async function () {
-      const data = await fetchPexelsData(query, queryCount);
-      setVideos(data);
+    const abortController = new AbortController();
+    let isMounted = true;
+
+    (async () => {
+      const data = await fetchPexelsData(
+        query,
+        queryCount,
+        abortController.signal
+      );
+      if (isMounted) {
+        setVideos(data);
+      }
     })();
+
+    return () => {
+      isMounted = false;
+      abortController.abort();
+    };
   }, [query, queryCount]);
 
   showMainBottomTabBar(navigation, colors);

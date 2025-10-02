@@ -5,11 +5,6 @@ import {
 import { ThPressable, ThText, ThView } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
-import {
-  getPexelsAtUserName,
-  getPexelsUrlToTitle,
-  roundOffNumber,
-} from "../utils/utils";
 
 export default function ChannelScreen({ route }) {
   const { colors, fontSizes } = useTheme();
@@ -20,7 +15,7 @@ export default function ChannelScreen({ route }) {
       <ThView style={styles.paddedHorizontalContainer}>
         <ChannelScreenCoverImage
           style={{ marginBottom: 16 }}
-          source={{ uri: video.video_pictures[0].picture }}
+          source={{ uri: video.picture }}
         />
         <ThView
           style={{
@@ -40,9 +35,7 @@ export default function ChannelScreen({ route }) {
               console.log("ChannelScreenProfileImage pressed");
             }}
           >
-            <ChannelScreenProfileImage
-              source={{ uri: video.video_pictures[0].picture }}
-            />
+            <ChannelScreenProfileImage source={{ uri: video.picture }} />
           </ThPressable>
           <ThView style={{ flex: 4, marginLeft: 8, marginBottom: 6 }}>
             <ThText
@@ -52,8 +45,7 @@ export default function ChannelScreen({ route }) {
                 fontWeight: "bold",
               }}
             >
-              {/*Channel Name*/}
-              {video.user.name}
+              {video.channelName}
             </ThText>
             <ThText
               style={{
@@ -62,7 +54,7 @@ export default function ChannelScreen({ route }) {
                 fontWeight: "medium",
               }}
             >
-              {/*Channel Name Tag*/}@{getPexelsAtUserName(video.user.url)}
+              {video.channelTag}
             </ThText>
             <ThText
               style={{
@@ -70,8 +62,7 @@ export default function ChannelScreen({ route }) {
                 fontSize: fontSizes.xs,
               }}
             >
-              {/*Number of subscribers • Number of uploaded videos*/}
-              {roundOffNumber(video.user.id)} subscribers • {video.duration}{" "}
+              {video.channelSubscribers} subscribers • {video.channelVideos}{" "}
               videos
             </ThText>
           </ThView>
@@ -83,10 +74,9 @@ export default function ChannelScreen({ route }) {
             fontSize: fontSizes.xs,
           }}
         >
-          {/*Channel description*/}
-          {getPexelsUrlToTitle(video.url)}
-          {getPexelsUrlToTitle(video.url)}
-          {getPexelsUrlToTitle(video.url)}
+          {video.channelDescription}
+          {video.channelDescription}
+          {video.channelDescription}
           <ThText
             style={{
               fontWeight: "medium",
