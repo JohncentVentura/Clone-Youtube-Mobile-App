@@ -67,6 +67,33 @@ function SwipeDownModalItem({ item, ...rest }) {
   );
 }
 
+function QuestionModal({ visible, setVisible, children }) {
+  const { colors } = useTheme();
+
+  return (
+    <Modal
+      isVisible={visible}
+      onBackdropPress={() => setVisible(false)} //Modal backdrop area
+      onRequestClose={() => setVisible(false)} //Android back button
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <ThView
+        style={{
+          padding: 24,
+          width: "80%",
+          backgroundColor: colors.bg,
+        }}
+      >
+        {children}
+      </ThView>
+    </Modal>
+  );
+}
+
 export function FlatListVideoItemModal({ visible, setVisible }) {
   const modalItems = [
     {
@@ -193,5 +220,89 @@ export function NotificationsScreenDotVerticalModal({ visible, setVisible }) {
         );
       })}
     </SwipeDownModal>
+  );
+}
+
+export function RemoveSearchHistoryModal({
+  visible,
+  setVisible,
+  removingItem,
+  removeSearchHistoryItem,
+}) {
+  const { colors, fontSizes } = useTheme();
+
+  if (!removingItem) return null;
+
+  return (
+    <QuestionModal visible={visible} setVisible={setVisible}>
+      <ThText
+        style={{ marginBottom: 4, fontSize: fontSizes.xl, fontWeight: "bold" }}
+      >
+        {removingItem.text}
+      </ThText>
+      <ThText style={{ marginBottom: 40 }}>Remove from search history?</ThText>
+      <ThView
+        style={{
+          flexDirection: "row",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
+      >
+        <ThPressable onPress={() => setVisible(false)}>
+          <ThText style={{ color: colors.primary }}>Cancel</ThText>
+        </ThPressable>
+        <ThPressable
+          style={{ marginLeft: 20, color: colors.primary }}
+          onPress={() => {
+            removeSearchHistoryItem(removingItem.text);
+            setVisible(false);
+          }}
+        >
+          <ThText style={{ marginLeft: 12, color: colors.primary }}>
+            Remove
+          </ThText>
+        </ThPressable>
+      </ThView>
+    </QuestionModal>
+  );
+}
+
+export function ClearSearchHistoryModal({
+  visible,
+  setVisible,
+  clearSearchHistory,
+}) {
+  const { colors, fontSizes } = useTheme();
+
+  return (
+    <QuestionModal visible={visible} setVisible={setVisible}>
+      <ThText
+        style={{ marginBottom: 40, fontSize: fontSizes.xl, fontWeight: "bold" }}
+      >
+        Clear History?
+      </ThText>
+      <ThView
+        style={{
+          flexDirection: "row",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
+      >
+        <ThPressable onPress={() => setVisible(false)}>
+          <ThText style={{ color: colors.primary }}>Cancel</ThText>
+        </ThPressable>
+        <ThPressable
+          style={{ marginLeft: 20, color: colors.primary }}
+          onPress={() => {
+            clearSearchHistory();
+            setVisible(false);
+          }}
+        >
+          <ThText style={{ marginLeft: 12, color: colors.primary }}>
+            Clear
+          </ThText>
+        </ThPressable>
+      </ThView>
+    </QuestionModal>
   );
 }

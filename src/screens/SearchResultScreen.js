@@ -45,16 +45,14 @@ export default function SearchResultScreen({ navigation, route }) {
 
   return (
     <ThView style={styles.screenContainer}>
+      <SearchVideoScreenHeader
+        style={{ marginBottom: 16 }}
+        navigation={navigation}
+        search={search}
+      />
       <ThFlatList
         data={searchVideos}
         keyExtractor={(item) => item.id.toString()}
-        ListHeaderComponent={
-          <SearchVideoScreenHeader
-            style={{ marginBottom: 16 }}
-            navigation={navigation}
-            search={search}
-          />
-        }
         renderItem={({ item }) => {
           return (
             <FlatListVideoItem
@@ -103,7 +101,10 @@ function SearchVideoScreenHeader({ style, navigation, search }) {
           style,
         ]}
       >
-        <HeaderArrowBack onPress={() => navigation.pop(2)} />
+        <HeaderArrowBack
+          style={styles.headerLeftIcon}
+          onPress={() => navigation.pop(2)}
+        />
 
         <ThTextInput
           style={{ marginLeft: 12, flex: 1 }}

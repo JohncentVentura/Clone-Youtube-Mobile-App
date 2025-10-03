@@ -2,6 +2,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Entypo from "@expo/vector-icons/Entypo";
 import Feather from "@expo/vector-icons/Feather";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Fontisto from "@expo/vector-icons/Fontisto";
 import Foundation from "@expo/vector-icons/Foundation";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -56,6 +57,14 @@ export const icons = {
   arrowBack: {
     iconComponent: Ionicons,
     iconName: "arrow-back",
+  },
+  arrowUpLeft: {
+    iconComponent: Feather,
+    iconName: "arrow-up-left",
+  },
+  clockRotateLeft: {
+    iconComponent: FontAwesome6,
+    iconName: "clock-rotate-left",
   },
   compass: {
     iconComponent: Ionicons,

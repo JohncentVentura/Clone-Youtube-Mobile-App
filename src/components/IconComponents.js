@@ -11,6 +11,26 @@ export function ArrowBackIcon({ ...rest }) {
   );
 }
 
+export function ArrowUpLeftIcon({ ...rest }) {
+  return (
+    <ThIcon
+      IconComponent={icons.arrowUpLeft.iconComponent}
+      name={icons.arrowUpLeft.iconName}
+      {...rest}
+    />
+  );
+}
+
+export function ClockRotateLeftIcon({ ...rest }) {
+  return (
+    <ThIcon
+      IconComponent={icons.clockRotateLeft.iconComponent}
+      name={icons.clockRotateLeft.iconName}
+      {...rest}
+    />
+  );
+}
+
 export function CompassIcon({ ...rest }) {
   return (
     <ThIcon

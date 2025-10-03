@@ -67,3 +67,14 @@ export function NotificationsScreenPreviewImage({ style, ...rest }) {
     />
   );
 }
+
+export function SearchScreenHistoryImage({ style, ...rest }) {
+  return (
+    <Image
+      style={[{ width: 65, height: 40 }, style]}
+      resizeMode={"cover"}
+      alt="Channel Image"
+      {...rest}
+    />
+  );
+}
