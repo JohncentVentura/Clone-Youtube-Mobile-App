@@ -1,3 +1,4 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   FlatList,
   Pressable,
@@ -13,8 +14,8 @@ import Animated, {
   withTiming,
   interpolateColor,
 } from "react-native-reanimated";
+
 import { useTheme } from "../styles/ThemeContext";
-import { styles } from "../styles/styles";
 
 /******************************Base Components******************************/
 export function ThFlatList({ style, ...rest }) {
@@ -135,7 +136,8 @@ export function ThTextInput({
       style={[
         {
           borderRadius: 9999,
-          paddingHorizontal: 16,
+          paddingLeft: 16,
+          paddingRight: 8,
           paddingVertical: 8,
           backgroundColor: colors.bgMuted,
           color: colors.textMuted,
@@ -144,8 +146,8 @@ export function ThTextInput({
         },
         style,
       ]}
-      placeholder={placeholder}
       placeholderTextColor={colors.textMuted}
+      placeholder={placeholder}
       returnKeyType={returnKeyType}
       {...rest}
     />
@@ -187,7 +189,7 @@ export function ThTopQueryTab({ style, selected, children, ...rest }) {
   );
 }
 
-export function ThIconButtonText({ style, children, ...rest }) {
+export function ThSmallIconButtonText({ style, children, ...rest }) {
   const { fontSizes } = useTheme();
 
   return (
@@ -200,6 +202,28 @@ export function ThIconButtonText({ style, children, ...rest }) {
     >
       {children}
     </ThText>
+  );
+}
+
+export function ThTextInputCloseButton({ style, ...rest }) {
+  const { colors } = useTheme();
+
+  return (
+    <ThPressable
+      style={[
+        {
+          position: "absolute",
+          top: 0,
+          right: 0,
+          padding: 6,
+          backgroundColor: "transparent",
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      <ThIcon IconComponent={Ionicons} name="close" color={colors.iconMuted} />
+    </ThPressable>
   );
 }
 
@@ -220,26 +244,26 @@ export function AnimFadeRoundButton({
       ["transparent", colors.borderMuted]
     ),
     transform: [
-      //{ scale: withTiming(pressed.value ? 1 : 0, { duration: 150 }) },
+      { scale: withTiming(pressed.value ? 1 : 0, { duration: 150 }) },
     ],
   }));
 
   return (
     <Pressable
       style={style}
-      onPressIn={() => (pressed.value = withTiming(1, { duration: 150 }))}
-      onPressOut={() => (pressed.value = withTiming(0, { duration: 450 }))}
+      onPressIn={() => (pressed.value = withTiming(1, { duration: 200 }))}
+      onPressOut={() => (pressed.value = withTiming(0, { duration: 400 }))}
       {...rest}
     >
       <Animated.View
         style={[
-          StyleSheet.absoluteFillObject,
           {
             //Expand background outward
-            top: -roundSize,
-            bottom: -roundSize,
+            position: "absolute",
             left: -roundSize,
             right: -roundSize,
+            top: -roundSize,
+            bottom: -roundSize,
             borderRadius: 9999,
           },
           animatedStyle,

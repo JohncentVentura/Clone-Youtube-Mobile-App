@@ -6,8 +6,31 @@ import {
 } from "@react-navigation/drawer";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ThIcon, ThText, ThView } from "../components/ThemedComponents";
-import { icons } from "../styles/icons";
+import {
+  ActiveHomeIcon,
+  ActiveShortsIcon,
+  ActiveSubscriptionIcon,
+  ActiveUploadIcon,
+  ActiveYouIcon,
+  CourseIcon,
+  InactiveHomeIcon,
+  InactiveShortsIcon,
+  InactiveSubscriptionIcon,
+  InactiveUploadIcon,
+  InactiveYouIcon,
+  FashionAndBeautyIcon,
+  GamingIcon,
+  LiveIcon,
+  MovieIcon,
+  MusicIcon,
+  NewsIcon,
+  SportsIcon,
+  YoutubeKidsIcon,
+  YoutubeMainIcon,
+  YoutubeMusicIcon,
+  YoutubePremiumIcon,
+} from "../components/IconComponents";
+import { ThText, ThView } from "../components/ThemedComponents";
 import { useTheme } from "../styles/ThemeContext";
 import { getMainBottomTabBarStyle } from "../utils/utils";
 import ShortsStack from "./ShortsStack";
@@ -19,89 +42,77 @@ import YoutubeHomeStack from "./YoutubeHomeStack";
 const Drawer = createDrawerNavigator();
 const BottomTab = createBottomTabNavigator();
 
-//TODO: Change drawerItems component into the actual component based on the same route name
+//TODO: Change drawerItems components into the actual component based on the same route name
 const drawerItems = [
   {
     route: "YoutubeHomeStack",
-    iconComponent: icons.youtubeMain.iconComponent,
-    iconName: icons.youtubeMain.iconName,
+    icon: YoutubeMainIcon,
     label: "Youtube",
     component: YoutubeHomeStack,
   },
   {
     route: "MusicStack",
-    iconComponent: icons.music.iconComponent,
-    iconName: icons.music.iconName,
+    icon: MusicIcon,
     label: "Music",
     component: ShortsStack,
   },
   {
     route: "MoviesStack",
-    iconComponent: icons.movie.iconComponent,
-    iconName: icons.movie.iconName,
+    icon: MovieIcon,
     label: "Movies",
     component: UploadStack,
   },
   {
     route: "LiveStack",
-    iconComponent: icons.live.iconComponent,
-    iconName: icons.live.iconName,
+    icon: LiveIcon,
     label: "Live",
     component: SubscriptionsStack,
   },
   {
     route: "GamingStack",
-    iconComponent: icons.gaming.iconComponent,
-    iconName: icons.gaming.iconName,
+    icon: GamingIcon,
     label: "Gaming",
     component: YouStack,
   },
   {
     route: "NewsStack",
-    iconComponent: icons.news.iconComponent,
-    iconName: icons.news.iconName,
+    icon: NewsIcon,
     label: "News",
     component: YoutubeHomeStack,
   },
   {
     route: "SportsStack",
-    iconComponent: icons.sports.iconComponent,
-    iconName: icons.sports.iconName,
+    icon: SportsIcon,
     label: "Sports",
     component: YoutubeHomeStack,
   },
   {
     route: "CoursesStack",
-    iconComponent: icons.course.iconComponent,
-    iconName: icons.course.iconName,
+    icon: CourseIcon,
     label: "Courses",
     component: YoutubeHomeStack,
   },
   {
     route: "FashionAndBeautyStack",
-    iconComponent: icons.fashionAndBeauty.iconComponent,
-    iconName: icons.fashionAndBeauty.iconName,
+    icon: FashionAndBeautyIcon,
     label: "Fashion & Beauty",
     component: YoutubeHomeStack,
   },
   {
     route: "YoutubePremiumStack",
-    iconComponent: icons.youtubePremium.iconComponent,
-    iconName: icons.youtubePremium.iconName,
+    icon: YoutubePremiumIcon,
     label: "Youtube Premium",
     component: YoutubeHomeStack,
   },
   {
     route: "YoutubeMusicStack",
-    iconComponent: icons.youtubeMusic.iconComponent,
-    iconName: icons.youtubeMusic.iconName,
+    icon: YoutubeMusicIcon,
     label: "Youtube Music",
     component: YoutubeHomeStack,
   },
   {
     route: "YoutubeKidsStack",
-    iconComponent: icons.youtubeKids.iconComponent,
-    iconName: icons.youtubeKids.iconName,
+    icon: YoutubeKidsIcon,
     label: "Youtube Kids",
     component: YoutubeHomeStack,
   },
@@ -111,50 +122,40 @@ const drawerItems = [
 const bottomTabItems = (HomeComponent = YoutubeHomeStack) => [
   {
     route: "HomeStack",
-    activeIconComponent: icons.activeHome.iconComponent,
-    inactiveIconComponent: icons.inactiveHome.iconComponent,
-    activeIconName: icons.activeHome.iconName,
-    inactiveIconName: icons.inactiveHome.iconName,
+    activeIcon: ActiveHomeIcon,
+    inactiveIcon: InactiveHomeIcon,
     activeLabel: "Welcome",
     inactiveLabel: "Home",
     component: HomeComponent,
   },
   {
     route: "ShortsStack",
-    activeIconComponent: icons.activeShorts.iconComponent,
-    inactiveIconComponent: icons.inactiveShorts.iconComponent,
-    activeIconName: icons.activeShorts.iconName,
-    inactiveIconName: icons.inactiveShorts.iconName,
+    activeIcon: ActiveShortsIcon,
+    inactiveIcon: InactiveShortsIcon,
     activeLabel: "or Trunks?",
     inactiveLabel: "Shorts",
     component: ShortsStack,
   },
   {
     route: "UploadStack",
-    activeIconComponent: icons.activeUpload.iconComponent,
-    inactiveIconComponent: icons.inactiveUpload.iconComponent,
-    activeIconName: icons.activeUpload.iconName,
-    inactiveIconName: icons.inactiveUpload.iconName,
+    activeIcon: ActiveUploadIcon,
+    inactiveIcon: InactiveUploadIcon,
     activeLabel: "B-But I'm shy...",
     inactiveLabel: "Upload",
     component: UploadStack,
   },
   {
     route: "SubscriptionsStack",
-    activeIconComponent: icons.activeSubscription.iconComponent,
-    inactiveIconComponent: icons.inactiveSubscription.iconComponent,
-    activeIconName: icons.activeSubscription.iconName,
-    inactiveIconName: icons.inactiveSubscription.iconName,
+    activeIcon: ActiveSubscriptionIcon,
+    inactiveIcon: InactiveSubscriptionIcon,
     activeLabel: "Please like &",
     inactiveLabel: "Subscriptions",
     component: SubscriptionsStack,
   },
   {
     route: "YouStack",
-    activeIconComponent: icons.activeYou.iconComponent,
-    inactiveIconComponent: icons.inactiveYou.iconComponent,
-    activeIconName: icons.activeYou.iconName,
-    inactiveIconName: icons.inactiveYou.iconName,
+    activeIcon: ActiveYouIcon,
+    inactiveIcon: InactiveYouIcon,
     activeLabel: "Who? M-Me?",
     inactiveLabel: "You",
     component: YouStack,
@@ -204,9 +205,7 @@ export default function MainNavigator() {
                       }}
                       onPress={() => props.navigation.navigate(item.route)}
                       icon={() => (
-                        <ThIcon
-                          IconComponent={item.iconComponent}
-                          name={item.iconName}
+                        <item.icon
                           color={
                             isCurrentItemYoutubeHomeStack ||
                             drawerItems[drawerItems.length - 3].route ===
@@ -228,7 +227,9 @@ export default function MainNavigator() {
                       label={() => (
                         <ThText
                           style={{
-                            marginLeft: isCurrentItemYoutubeHomeStack ? -8 : 8,
+                            marginLeft: isCurrentItemYoutubeHomeStack
+                              ? -10
+                              : 10,
                             fontSize: isCurrentItemYoutubeHomeStack
                               ? fontSizes.xl
                               : fontSizes.base,
@@ -253,6 +254,7 @@ export default function MainNavigator() {
               })}
             </DrawerContentScrollView>
 
+            {/*Drawer Footer*/}
             <ThView
               style={{
                 marginBottom: insets.bottom + 6,
@@ -296,6 +298,7 @@ export default function MainNavigator() {
 function MainBottomTabBar({ navigation }) {
   const { colors, fontSizes } = useTheme();
   const mainNavigator = navigation.getParent("MainNavigator");
+  
   //Assign updated bottomTabItems so the HomeStack route of this tab uses the component of the currently selected Drawer route
   const updatedTabItems = bottomTabItems(
     drawerItems[mainNavigator.getState().index].component
@@ -312,21 +315,12 @@ function MainBottomTabBar({ navigation }) {
         return {
           headerShown: false,
           tabBarStyle: getMainBottomTabBarStyle(colors),
-          tabBarIcon: ({ focused }) => (
-            <ThIcon
-              IconComponent={
-                focused
-                  ? currentTabItem.activeIconComponent
-                  : currentTabItem.inactiveIconComponent
-              }
-              name={
-                focused
-                  ? currentTabItem.activeIconName
-                  : currentTabItem.inactiveIconName
-              }
-              color={focused ? colors.primary : colors.iconMuted}
-            />
-          ),
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <currentTabItem.activeIcon color={colors.primary} />
+            ) : (
+              <currentTabItem.inactiveIcon color={colors.iconMuted} />
+            ),
           tabBarLabel: ({ focused }) => (
             <ThText
               style={{

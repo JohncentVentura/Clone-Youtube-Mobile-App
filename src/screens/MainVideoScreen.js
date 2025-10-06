@@ -19,7 +19,7 @@ import {
   ThScrollViewRow,
   ThText,
   ThView,
-  ThIconButtonText,
+  ThSmallIconButtonText,
 } from "../components/ThemedComponents";
 import {
   FlatListVideoItem,
@@ -212,7 +212,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   onPress={() => console.log("Share Press")}
                 >
                   <ShareIcon size={iconSizes.xs} />
-                  <ThIconButtonText>Share</ThIconButtonText>
+                  <ThSmallIconButtonText>Share</ThSmallIconButtonText>
                 </ThPressable>
                 <ThPressable
                   style={[
@@ -222,7 +222,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   onPress={() => console.log("Remix Press")}
                 >
                   <RemixIcon size={iconSizes.xs} />
-                  <ThIconButtonText>Remix</ThIconButtonText>
+                  <ThSmallIconButtonText>Remix</ThSmallIconButtonText>
                 </ThPressable>
                 <ThPressable
                   style={[
@@ -232,7 +232,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   onPress={() => console.log("Download Press")}
                 >
                   <DownloadIcon size={iconSizes.xs} />
-                  <ThIconButtonText>Download</ThIconButtonText>
+                  <ThSmallIconButtonText>Download</ThSmallIconButtonText>
                 </ThPressable>
                 <ThPressable
                   style={[
@@ -242,7 +242,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   onPress={() => console.log("Report Press")}
                 >
                   <ReportIcon size={iconSizes.xs} />
-                  <ThIconButtonText>Report</ThIconButtonText>
+                  <ThSmallIconButtonText>Report</ThSmallIconButtonText>
                 </ThPressable>
                 <ThPressable
                   style={[
@@ -252,7 +252,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   onPress={() => console.log("Save Press")}
                 >
                   <SaveIcon size={iconSizes.xs} />
-                  <ThIconButtonText>Save</ThIconButtonText>
+                  <ThSmallIconButtonText>Save</ThSmallIconButtonText>
                 </ThPressable>
               </ThScrollViewRow>
 

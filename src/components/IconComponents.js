@@ -1,171 +1,242 @@
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Entypo from "@expo/vector-icons/Entypo";
+import Feather from "@expo/vector-icons/Feather";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import Fontisto from "@expo/vector-icons/Fontisto";
+import Foundation from "@expo/vector-icons/Foundation";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Octicons from "@expo/vector-icons/Octicons";
+import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import { ThIcon } from "./ThemedComponents";
-import { icons } from "../styles/icons";
 
-export function ArrowBackIcon({ ...rest }) {
+/******************************MainBottomTabBar Icons******************************/
+export function ActiveHomeIcon({ ...rest }) {
+  return <ThIcon IconComponent={Ionicons} name="home-sharp" {...rest} />;
+}
+
+export function InactiveHomeIcon({ ...rest }) {
+  return <ThIcon IconComponent={Ionicons} name="home-outline" {...rest} />;
+}
+
+export function ActiveShortsIcon({ ...rest }) {
+  return <ThIcon IconComponent={Ionicons} name="videocam" {...rest} />;
+}
+
+export function InactiveShortsIcon({ ...rest }) {
+  return <ThIcon IconComponent={Ionicons} name="videocam-outline" {...rest} />;
+}
+
+export function ActiveUploadIcon({ ...rest }) {
+  return <ThIcon IconComponent={Ionicons} name="add-circle" {...rest} />;
+}
+
+export function InactiveUploadIcon({ ...rest }) {
   return (
-    <ThIcon
-      IconComponent={icons.arrowBack.iconComponent}
-      name={icons.arrowBack.iconName}
-      {...rest}
-    />
+    <ThIcon IconComponent={Ionicons} name="add-circle-outline" {...rest} />
   );
 }
 
-export function ArrowUpLeftIcon({ ...rest }) {
+export function ActiveSubscriptionIcon({ ...rest }) {
+  return <ThIcon IconComponent={Ionicons} name="albums" {...rest} />;
+}
+
+export function InactiveSubscriptionIcon({ ...rest }) {
+  return <ThIcon IconComponent={Ionicons} name="albums-outline" {...rest} />;
+}
+
+export function ActiveYouIcon({ ...rest }) {
+  return <ThIcon IconComponent={Ionicons} name="person-circle" {...rest} />;
+}
+
+export function InactiveYouIcon({ ...rest }) {
   return (
-    <ThIcon
-      IconComponent={icons.arrowUpLeft.iconComponent}
-      name={icons.arrowUpLeft.iconName}
-      {...rest}
-    />
+    <ThIcon IconComponent={Ionicons} name="person-circle-outline" {...rest} />
   );
+}
+
+/******************************Menu Icons******************************/
+export function ArrowBackIcon({ ...rest }) {
+  return <ThIcon IconComponent={Ionicons} name="arrow-back" {...rest} />;
+}
+
+export function ArrowUpLeftIcon({ ...rest }) {
+  return <ThIcon IconComponent={Feather} name="arrow-up-left" {...rest} />;
 }
 
 export function ClockRotateLeftIcon({ ...rest }) {
   return (
-    <ThIcon
-      IconComponent={icons.clockRotateLeft.iconComponent}
-      name={icons.clockRotateLeft.iconName}
-      {...rest}
-    />
+    <ThIcon IconComponent={FontAwesome6} name="clock-rotate-left" {...rest} />
   );
 }
 
 export function CompassIcon({ ...rest }) {
-  return (
-    <ThIcon
-      IconComponent={icons.compass.iconComponent}
-      name={icons.compass.iconName}
-      {...rest}
-    />
-  );
+  return <ThIcon IconComponent={Ionicons} name="compass-outline" {...rest} />;
+}
+
+export function CourseIcon({ ...rest }) {
+  return <ThIcon IconComponent={SimpleLineIcons} name="graduation" {...rest} />;
 }
 
 export function DislikeIcon({ ...rest }) {
-  return (
-    <ThIcon
-      IconComponent={icons.dislike.iconComponent}
-      name={icons.dislike.iconName}
-      {...rest}
-    />
-  );
+  return <ThIcon IconComponent={Foundation} name="dislike" {...rest} />;
+}
+
+export function DontRecommendChannelIcon({ ...rest }) {
+  return <ThIcon IconComponent={MaterialIcons} name="person-off" {...rest} />;
 }
 
 export function DotVerticalIcon({ ...rest }) {
   return (
     <ThIcon
-      IconComponent={icons.dotVertical.iconComponent}
-      name={icons.dotVertical.iconName}
+      IconComponent={MaterialCommunityIcons}
+      name="dots-vertical"
       {...rest}
     />
   );
 }
 
 export function DownloadIcon({ ...rest }) {
+  return <ThIcon IconComponent={Octicons} name="download" {...rest} />;
+}
+
+export function EyeInvisbleIcon({ ...rest }) {
+  return <ThIcon IconComponent={AntDesign} name="eye-invisible" {...rest} />;
+}
+
+export function FashionAndBeautyIcon({ ...rest }) {
+  return <ThIcon IconComponent={Ionicons} name="brush-outline" {...rest} />;
+}
+
+export function GamingIcon({ ...rest }) {
   return (
     <ThIcon
-      IconComponent={icons.download.iconComponent}
-      name={icons.download.iconName}
+      IconComponent={MaterialCommunityIcons}
+      name="youtube-gaming"
+      {...rest}
+    />
+  );
+}
+
+export function InformationIcon({ ...rest }) {
+  return (
+    <ThIcon
+      IconComponent={MaterialCommunityIcons}
+      name="information-outline"
       {...rest}
     />
   );
 }
 
 export function LikeIcon({ ...rest }) {
+  return <ThIcon IconComponent={Foundation} name="like" {...rest} />;
+}
+
+export function LiveIcon({ ...rest }) {
+  return <ThIcon IconComponent={MaterialIcons} name="live-tv" {...rest} />;
+}
+
+export function MicIcon({ ...rest }) {
+  return <ThIcon IconComponent={MaterialIcons} name="mic" {...rest} />;
+}
+
+export function MovieIcon({ ...rest }) {
   return (
     <ThIcon
-      IconComponent={icons.like.iconComponent}
-      name={icons.like.iconName}
+      IconComponent={MaterialCommunityIcons}
+      name="movie-open-outline"
       {...rest}
     />
   );
 }
 
-export function MicIcon({ ...rest }) {
+export function MusicIcon({ ...rest }) {
   return (
-    <ThIcon
-      IconComponent={icons.mic.iconComponent}
-      name={icons.mic.iconName}
-      {...rest}
-    />
+    <ThIcon IconComponent={Ionicons} name="musical-note-outline" {...rest} />
   );
+}
+
+export function NewsIcon({ ...rest }) {
+  return <ThIcon IconComponent={Ionicons} name="newspaper-outline" {...rest} />;
 }
 
 export function NotificationIcon({ ...rest }) {
   return (
+    <ThIcon IconComponent={Ionicons} name="notifications-outline" {...rest} />
+  );
+}
+
+export function NotificationOffIcon({ ...rest }) {
+  return (
     <ThIcon
-      IconComponent={icons.notifications.iconComponent}
-      name={icons.notifications.iconName}
+      IconComponent={Ionicons}
+      name="notifications-off-outline"
       {...rest}
     />
   );
+}
+
+export function NotInterestedIcon({ ...rest }) {
+  return <ThIcon IconComponent={MaterialIcons} name="block" {...rest} />;
+}
+
+export function PlayNextInQueueIcon({ ...rest }) {
+  return <ThIcon IconComponent={MaterialIcons} name="queue" {...rest} />;
 }
 
 export function RemixIcon({ ...rest }) {
-  return (
-    <ThIcon
-      IconComponent={icons.remix.iconComponent}
-      name={icons.remix.iconName}
-      {...rest}
-    />
-  );
+  return <ThIcon IconComponent={Ionicons} name="videocam-outline" {...rest} />;
 }
 
 export function ReportIcon({ ...rest }) {
-  return (
-    <ThIcon
-      IconComponent={icons.report.iconComponent}
-      name={icons.report.iconName}
-      {...rest}
-    />
-  );
-}
-
-export function SearchIcon({ ...rest }) {
-  return (
-    <ThIcon
-      IconComponent={icons.search.iconComponent}
-      name={icons.search.iconName}
-      {...rest}
-    />
-  );
+  return <ThIcon IconComponent={Ionicons} name="flag-outline" {...rest} />;
 }
 
 export function SaveIcon({ ...rest }) {
-  return (
-    <ThIcon
-      IconComponent={icons.save.iconComponent}
-      name={icons.save.iconName}
-      {...rest}
-    />
-  );
+  return <ThIcon IconComponent={Ionicons} name="bookmark-outline" {...rest} />;
+}
+
+export function SaveToWatchLaterIcon({ ...rest }) {
+  return <ThIcon IconComponent={FontAwesome5} name="clock" {...rest} />;
+}
+
+export function SearchIcon({ ...rest }) {
+  return <ThIcon IconComponent={Ionicons} name="search" {...rest} />;
 }
 
 export function ShareIcon({ ...rest }) {
   return (
-    <ThIcon
-      IconComponent={icons.share.iconComponent}
-      name={icons.share.iconName}
-      {...rest}
-    />
+    <ThIcon IconComponent={MaterialCommunityIcons} name="share" {...rest} />
   );
 }
 
 export function ShareScreenIcon({ ...rest }) {
-  return (
-    <ThIcon
-      IconComponent={icons.screenShare.iconComponent}
-      name={icons.screenShare.iconName}
-      {...rest}
-    />
-  );
+  return <ThIcon IconComponent={MaterialIcons} name="connected-tv" {...rest} />;
 }
 
-export function YoutubeIcon({ ...rest }) {
+export function SportsIcon({ ...rest }) {
+  return <ThIcon IconComponent={Ionicons} name="trophy-outline" {...rest} />;
+}
+
+export function YoutubeKidsIcon({ ...rest }) {
+  return <ThIcon IconComponent={Feather} name="youtube" {...rest} />;
+}
+
+export function YoutubeMainIcon({ ...rest }) {
+  return <ThIcon IconComponent={Fontisto} name="youtube-play" {...rest} />;
+}
+
+export function YoutubeMusicIcon({ ...rest }) {
+  return <ThIcon IconComponent={Entypo} name="youtube-with-circle" {...rest} />;
+}
+
+export function YoutubePremiumIcon({ ...rest }) {
   return (
     <ThIcon
-      IconComponent={icons.youtubeMain.iconComponent}
-      name={icons.youtubeMain.iconName}
+      IconComponent={MaterialCommunityIcons}
+      name="youtube-tv"
       {...rest}
     />
   );

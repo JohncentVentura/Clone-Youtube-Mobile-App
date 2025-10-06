@@ -35,15 +35,12 @@ export default {
       PEXELS_API_KEY: process.env.PEXELS_API_KEY,
     },
     compilerOptions: {
-      target: "es6",
-      module: "commonjs",
-      jsx: "react",
-      allowSyntheticDefaultImports: true,
+      checkJs: true,
       baseUrl: ".",
       paths: {
-        "*": ["src/*"],
+        "*": ["*"],
       },
     },
-    include: ["src/**/*"],
+    include: ["**/*"],
   },
 };

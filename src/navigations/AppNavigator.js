@@ -8,24 +8,28 @@ import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
 
 export default function AppNavigator() {
-  const [fontsLoaded] = useFonts({
+  const [isFontsLoaded] = useFonts({
     "roboto-bold": require("../assets/fonts/Roboto-Bold.ttf"),
     "roboto-medium": require("../assets/fonts/Roboto-Medium.ttf"),
     "roboto-regular": require("../assets/fonts/Roboto-Regular.ttf"),
   });
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
+  if (!isFontsLoaded) {
+    return (
+      <ThemeProvider>
+        <SafeAreaProvider>
+          <ActivityIndicator style={{ flex: 1 }} size="large" />
+        </SafeAreaProvider>
+      </ThemeProvider>
+    );
+  }
+
   return (
     <ThemeProvider>
       <SafeAreaProvider>
         <NavigationContainer>
-          {!fontsLoaded ? (
-            <ActivityIndicator style={{ flex: 1 }} size={"large"} />
-          ) : isLoggedIn ? (
-            <MainNavigator />
-          ) : (
-            <AuthNavigator />
-          )}
+          {isLoggedIn ? <MainNavigator /> : <AuthNavigator />}
         </NavigationContainer>
       </SafeAreaProvider>
     </ThemeProvider>

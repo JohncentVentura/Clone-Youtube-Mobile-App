@@ -1,6 +1,6 @@
 import Constants from "expo-constants";
 import {
-  getPexelsAtUserName,
+  getPexelsTagUserName,
   getPexelsUrlToTitle,
   randomTimeAgo,
   roundOffNumber,
@@ -40,7 +40,7 @@ export async function fetchPexelsData(
       views: roundOffNumber(video.id),
       uploadedDate: randomTimeAgo(video.video_pictures[0].id),
       channelName: video.user.name,
-      channelTag: "@" + getPexelsAtUserName(video.user.url),
+      channelTag: "@" + getPexelsTagUserName(video.user.url),
       channelSubscribers: roundOffNumber(video.user.id),
       channelVideos: video.duration,
       channelDescription: video.url,

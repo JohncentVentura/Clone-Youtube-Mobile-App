@@ -1,9 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import { Modal } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { fetchPexelsData } from "../api/pexelsAPI";
-import { HeaderArrowBack, HeaderMic } from "../components/HeaderComponents";
+import {
+  HeaderArrowBackIcon,
+  HeaderMicIcon,
+} from "../components/HeaderComponents";
 import {
   ArrowUpLeftIcon,
   ClockRotateLeftIcon,
@@ -19,6 +21,7 @@ import {
   ThText,
   ThTextInput,
   ThView,
+  ThTextInputCloseButton,
 } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
@@ -27,36 +30,18 @@ import { hideMainBottomTabBar } from "../utils/utils";
 const SEARCH_HISTORY_KEY = "searchHistory";
 
 export default function SearchScreen({ navigation, route }) {
-  const insets = useSafeAreaInsets();
   const { colors, fontSizes, iconSizes } = useTheme();
+  const insets = useSafeAreaInsets();
   const { search } = route.params;
-  const [newSearch, setNewSearch] = useState(search);
+  const [searchInput, setSearchInput] = useState(search);
   const [searchHistory, setSearchHistory] = useState([]); //Contains search text & search image
-
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalVisible2, setModalVisible2] = useState(false);
   const [removingItem, setRemovingItem] = useState(null);
+  const [isRemoveSearchModalVisible, setIsRemoveSearchModalVisible] =
+    useState(false);
+  const [isClearHistoryModalVisible, setIsClearHistoryModalVisible] =
+    useState(false);
 
   hideMainBottomTabBar(navigation);
-
-  const clearSearchHistory = async () => {
-    try {
-      await AsyncStorage.removeItem(SEARCH_HISTORY_KEY);
-      setSearchHistory([]);
-    } catch (e) {
-      console.log("Failed to clear history: ", e);
-    }
-  };
-
-  const removeSearchHistoryItem = async (itemText) => {
-    try {
-      const updated = searchHistory.filter((item) => item.text !== itemText);
-      setSearchHistory(updated);
-      await AsyncStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(updated));
-    } catch (e) {
-      console.log("Failed to delete item: ", e);
-    }
-  };
 
   //Save history every time it changes
   useEffect(() => {
@@ -86,53 +71,72 @@ export default function SearchScreen({ navigation, route }) {
       } catch (e) {
         console.log("Failed to load history: ", e);
       }
-      console.log(searchHistory);
     })();
   }, []);
 
-  const handleSearch = async (navigation, searchTextInput) => {
-    if (!searchTextInput) return; //Ignores empty search input
+  const handleSearch = async (navigation, searchText) => {
+    if (!searchText) return; //Ignores empty search input
 
     let searchPicture = "";
     try {
       //fetch data for the searched picture only after searching it
-      const data = await fetchPexelsData(searchTextInput, 1);
+      const data = await fetchPexelsData(searchText, 1);
       searchPicture = data[0].picture;
     } catch (e) {
       console.log("Failed to fetch on handleSearch: ", e);
       return;
     }
 
-    const newItem = {
-      text: searchTextInput,
+    const searchedItem = {
+      text: searchText,
       picture: searchPicture,
     };
 
-    setSearchHistory((prevSearch) => {
-      if (prevSearch.some((item) => item.text === searchTextInput))
-        return prevSearch; //Prevents duplicate searches
-      return [newItem, ...prevSearch]; //Add new searches
+    setSearchHistory((prevSearchHistory) => {
+      if (prevSearchHistory.some((item) => item.text === searchText))
+        return prevSearchHistory; //Prevents duplicate searches
+      return [searchedItem, ...prevSearchHistory]; //Add new searched item
     });
 
-    navigation.push("SearchResultScreen", { search: searchTextInput });
+    navigation.push("SearchResultScreen", { search: searchedItem.text });
+  };
+
+  const clearSearchHistory = async () => {
+    try {
+      await AsyncStorage.removeItem(SEARCH_HISTORY_KEY);
+      setSearchHistory([]);
+    } catch (e) {
+      console.log("Failed to clear history: ", e);
+    }
+  };
+
+  const removeSearchHistoryItem = async (itemText) => {
+    try {
+      const updated = searchHistory.filter((item) => item.text !== itemText);
+      setSearchHistory(updated);
+      await AsyncStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(updated));
+    } catch (e) {
+      console.log("Failed to remove item: ", e);
+    }
   };
 
   return (
     <>
       <RemoveSearchHistoryModal
-        visible={modalVisible}
-        setVisible={setModalVisible}
+        isModalVisible={isRemoveSearchModalVisible}
+        setIsModalVisible={setIsRemoveSearchModalVisible}
         removingItem={removingItem}
         removeSearchHistoryItem={removeSearchHistoryItem}
       />
 
       <ClearSearchHistoryModal
-        visible={modalVisible2}
-        setVisible={setModalVisible2}
+        isModalVisible={isClearHistoryModalVisible}
+        setIsModalVisible={setIsClearHistoryModalVisible}
         clearSearchHistory={clearSearchHistory}
       />
 
       <ThView style={styles.screenContainer}>
+        {/*Header*/}
         <ThView
           style={{
             marginTop: insets.top + 12,
@@ -141,21 +145,22 @@ export default function SearchScreen({ navigation, route }) {
             alignItems: "center",
           }}
         >
-          <HeaderArrowBack
-            style={styles.headerLeftIcon}
-            navigation={navigation}
-          />
-          <ThTextInput
-            style={{ marginLeft: 12, flex: 1 }}
-            value={newSearch}
-            onChangeText={setNewSearch}
-            autoFocus={true}
-            onSubmitEditing={() => handleSearch(navigation, newSearch)}
-          />
+          <HeaderArrowBackIcon navigation={navigation} />
+          <ThView style={{ marginLeft: 14, flex: 1 }}>
+            <ThTextInput
+              value={searchInput}
+              onChangeText={setSearchInput}
+              autoFocus={true}
+              onSubmitEditing={() => handleSearch(navigation, searchInput)}
+            />
+            <ThTextInputCloseButton onPress={() => setSearchInput("")} />
+          </ThView>
           <ThView style={styles.headerRightIconsContainer}>
-            <HeaderMic style={{ marginLeft: 14 }} />
+            <HeaderMicIcon style={{ marginLeft: 14 }} />
           </ThView>
         </ThView>
+
+        {/*Search History*/}
         <ThFlatList
           data={searchHistory}
           keyExtractor={(item, index) => item.text + index}
@@ -168,7 +173,7 @@ export default function SearchScreen({ navigation, route }) {
               onPress={() => handleSearch(navigation, item.text)}
               onLongPress={() => {
                 setRemovingItem(item);
-                setModalVisible(true);
+                setIsRemoveSearchModalVisible(true);
               }}
               delayLongPress={100}
             >
@@ -200,7 +205,7 @@ export default function SearchScreen({ navigation, route }) {
             searchHistory.length > 0 ? (
               <ThPressable
                 style={styles.baseButton}
-                onPress={() => setModalVisible2(true)}
+                onPress={() => setIsClearHistoryModalVisible(true)}
               >
                 <ThText
                   style={{

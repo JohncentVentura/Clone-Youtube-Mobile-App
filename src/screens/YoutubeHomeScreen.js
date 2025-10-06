@@ -49,7 +49,6 @@ export default function YoutubeHomeScreen({ navigation }) {
   return (
     <ThView style={styles.screenContainer}>
       <ThFlatList
-        style={{ width: "100%" }}
         data={videos}
         keyExtractor={(item) => item.id.toString()}
         ListHeaderComponent={<TopQueryTabBar setQuery={setQuery} />}

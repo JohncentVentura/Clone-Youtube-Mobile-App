@@ -1,17 +1,35 @@
 import Modal from "react-native-modal";
-import { ThIcon, ThPressable, ThText, ThView } from "./ThemedComponents";
-import { icons } from "../styles/icons";
+import { ThPressable, ThText, ThView } from "./ThemedComponents";
+import {
+  DontRecommendChannelIcon,
+  EyeInvisbleIcon,
+  InformationIcon,
+  NotificationOffIcon,
+  NotInterestedIcon,
+  PlayNextInQueueIcon,
+  ReportIcon,
+  SaveIcon,
+  SaveToWatchLaterIcon,
+  ShareIcon,
+  ShareScreenIcon,
+} from "./IconComponents";
 import { useTheme } from "../styles/ThemeContext";
 
-function SwipeDownModal({ visible, setVisible, children }) {
+/******************************Base Components******************************/
+function SwipeDownModal({
+  isModalVisible,
+  setIsModalVisible,
+  items = [],
+  children,
+}) {
   const { colors } = useTheme();
 
   return (
     <Modal
-      isVisible={visible}
-      onBackdropPress={() => setVisible(false)} //Modal backdrop area
-      onRequestClose={() => setVisible(false)} //Android back button
-      onSwipeComplete={() => setVisible(false)} //When swiped down
+      isVisible={isModalVisible}
+      onBackdropPress={() => setIsModalVisible(false)} //Modal backdrop area
+      onRequestClose={() => setIsModalVisible(false)} //Android back button
+      onSwipeComplete={() => setIsModalVisible(false)} //When swiped down
       swipeDirection="down"
       animationIn="slideInUp"
       animationOut="slideOutDown"
@@ -38,43 +56,45 @@ function SwipeDownModal({ visible, setVisible, children }) {
             backgroundColor: colors.borderMuted,
             alignSelf: "center",
           }}
-        ></ThView>
+        />
         {children}
+        {items.map((item, index) => {
+          const isLastItem = index === items.length - 1;
+
+          return (
+            <ThPressable
+              key={index + item.name}
+              style={({ pressed }) => ({
+                borderBottomLeftRadius: isLastItem ? 12 : 0,
+                borderBottomRightRadius: isLastItem ? 12 : 0,
+                paddingLeft: 20,
+                paddingVertical: 10,
+                backgroundColor: pressed ? colors.bgMuted : "transparent",
+                flexDirection: "row",
+                alignItems: "center",
+              })}
+              onPress={item.onPress}
+            >
+              {item.icon ? <item.icon /> : null}
+              <ThText style={{ marginLeft: 28, flexShrink: 1 }}>
+                {item.name}
+              </ThText>
+            </ThPressable>
+          );
+        })}
       </ThView>
     </Modal>
   );
 }
 
-function SwipeDownModalItem({ item, ...rest }) {
-  const { colors } = useTheme();
-
-  return (
-    <ThPressable
-      style={({ pressed }) => ({
-        paddingLeft: 20,
-        paddingVertical: 10,
-        backgroundColor: pressed ? colors.bgMuted : "transparent",
-        flexDirection: "row",
-        alignItems: "center",
-      })}
-      {...rest}
-    >
-      <ThIcon IconComponent={item.iconComponent} name={item.iconName} />
-      <ThText style={{ marginLeft: 28, flexShrink: 1 }}>
-        {item.modalItemName}
-      </ThText>
-    </ThPressable>
-  );
-}
-
-function QuestionModal({ visible, setVisible, children }) {
+function QuestionModal({ isModalVisible, setIsModalVisible, children }) {
   const { colors } = useTheme();
 
   return (
     <Modal
-      isVisible={visible}
-      onBackdropPress={() => setVisible(false)} //Modal backdrop area
-      onRequestClose={() => setVisible(false)} //Android back button
+      isVisible={isModalVisible}
+      onBackdropPress={() => setIsModalVisible(false)} //Modal backdrop area
+      onRequestClose={() => setIsModalVisible(false)} //Android back button
       style={{
         flex: 1,
         justifyContent: "center",
@@ -94,138 +114,199 @@ function QuestionModal({ visible, setVisible, children }) {
   );
 }
 
-export function FlatListVideoItemModal({ visible, setVisible }) {
+function TopRightModal({ isModalVisible, setIsModalVisible, items = [] }) {
+  const { colors } = useTheme();
+
+  return (
+    <Modal
+      isVisible={isModalVisible}
+      onBackdropPress={() => setIsModalVisible(false)} //Modal backdrop area
+      onRequestClose={() => setIsModalVisible(false)} //Android back button
+      style={{
+        flex: 1,
+        justifyContent: "flex-start",
+        alignItems: "flex-end",
+      }}
+    >
+      <ThView
+        style={{
+          width: "40%",
+          backgroundColor: colors.bg,
+        }}
+      >
+        {items.map((item, index) => {
+          return (
+            <ThPressable
+              key={index + item.name}
+              style={({ pressed }) => ({
+                paddingHorizontal: 20,
+                paddingVertical: 10,
+                backgroundColor: pressed ? colors.bgMuted : "transparent",
+              })}
+              onPress={item.onPress}
+            >
+              <ThText style={{ flexShrink: 1 }}>{item.name}</ThText>
+            </ThPressable>
+          );
+        })}
+      </ThView>
+    </Modal>
+  );
+}
+
+/******************************Extended Components******************************/
+export function FlatListVideoItemModal({ isModalVisible, setIsModalVisible }) {
   const modalItems = [
     {
-      iconComponent: icons.playNextInQueue.iconComponent,
-      iconName: icons.playNextInQueue.iconName,
-      modalItemName: "Play Next In Queue",
+      name: "Play Next In Queue",
+      icon: PlayNextInQueueIcon,
+      onPress: () => console.log("Play Next In Queue pressed"),
     },
     {
-      iconComponent: icons.saveToWatchLater.iconComponent,
-      iconName: icons.saveToWatchLater.iconName,
-      modalItemName: "Save to Watch later",
+      name: "Save to Watch later",
+      icon: SaveToWatchLaterIcon,
+      onPress: () => console.log(this.name + " pressed"),
+      onPress: () => console.log("Save to Watch later pressed"),
     },
     {
-      iconComponent: icons.save.iconComponent,
-      iconName: icons.save.iconName,
-      modalItemName: "Save to playlist",
+      name: "Save to playlist",
+      icon: SaveIcon,
+      onPress: () => console.log("Save to playlist pressed"),
     },
     {
-      iconComponent: icons.share.iconComponent,
-      iconName: icons.share.iconName,
-      modalItemName: "Share",
+      name: "Share",
+      icon: ShareIcon,
+      onPress: () => console.log("Share pressed"),
     },
     {
-      iconComponent: icons.notInterested.iconComponent,
-      iconName: icons.notInterested.iconName,
-      modalItemName: "Not Interested",
+      name: "Not Interested",
+      icon: NotInterestedIcon,
+      onPress: () => console.log("Not Interested pressed"),
     },
     {
-      iconComponent: icons.dontRecommendChannel.iconComponent,
-      iconName: icons.dontRecommendChannel.iconName,
-      modalItemName: "Don't recommend channel",
+      name: "Don't recommend channel",
+      icon: DontRecommendChannelIcon,
+      onPress: () => console.log("Don't recommend pressed"),
     },
     {
-      iconComponent: icons.report.iconComponent,
-      iconName: icons.report.iconName,
-      modalItemName: "Report",
+      name: "Report",
+      icon: ReportIcon,
+      onPress: () => console.log("Report pressed"),
     },
   ];
 
   return (
-    <SwipeDownModal visible={visible} setVisible={setVisible}>
-      {modalItems.map((item) => {
-        return (
-          <SwipeDownModalItem
-            key={item.modalItemName}
-            item={item}
-            onPress={() => console.log(item.modalItemName + " pressed")}
-          />
-        );
-      })}
-    </SwipeDownModal>
+    <SwipeDownModal
+      isModalVisible={isModalVisible}
+      setIsModalVisible={setIsModalVisible}
+      items={modalItems}
+    />
   );
 }
 
-export function ScreenShareModal({ visible, setVisible }) {
+export function ShareScreenModal({ isModalVisible, setIsModalVisible }) {
   const { fontSizes } = useTheme();
 
   const modalItems = [
     {
-      iconComponent: icons.screenShare.iconComponent,
-      iconName: icons.screenShare.iconName,
-      modalItemName: "Link with TV code",
+      name: "Link with TV code",
+      icon: ShareScreenIcon,
+      onPress: () => console.log("Link with TV code pressed"),
     },
     {
-      iconComponent: icons.information.iconComponent,
-      iconName: icons.information.iconName,
-      modalItemName: "Learn More",
+      name: "Learn More",
+      icon: InformationIcon,
+      onPress: () => console.log("Learn More pressed"),
     },
   ];
 
   return (
-    <SwipeDownModal visible={visible} setVisible={setVisible}>
+    <SwipeDownModal
+      isModalVisible={isModalVisible}
+      setIsModalVisible={setIsModalVisible}
+      items={modalItems}
+    >
       <ThText
-        style={{ marginLeft: 10, paddingBottom: 4, fontSize: fontSizes.sm }}
+        style={{ marginLeft: 20, paddingBottom: 4, fontSize: fontSizes.sm }}
       >
         Select a device
       </ThText>
-      {modalItems.map((item) => {
-        return (
-          <SwipeDownModalItem
-            key={item.modalItemName}
-            item={item}
-            onPress={() => console.log(item.modalItemName + " pressed")}
-          />
-        );
-      })}
     </SwipeDownModal>
   );
 }
 
-export function NotificationsScreenDotVerticalModal({ visible, setVisible }) {
+export function NotificationsScreenHeaderDotVerticalModal({
+  isModalVisible,
+  setIsModalVisible,
+}) {
   const modalItems = [
     {
-      iconComponent: icons.saveToWatchLater.iconComponent,
-      iconName: icons.saveToWatchLater.iconName,
-      modalItemName: "Save to Watch later",
+      name: "Settings",
+      onPress: () => console.log("Settings pressed"),
     },
     {
-      iconComponent: icons.eyeInvisble.iconComponent,
-      iconName: icons.eyeInvisble.iconName,
-      modalItemName: "Hide this notification",
+      name: "Watch on TV",
+      onPress: () => console.log("Watch on TV pressed"),
     },
     {
-      iconComponent: icons.notificationsOff.iconComponent,
-      iconName: icons.notificationsOff.iconName,
-      modalItemName: "Turn off all from this channel",
+      name: "Terms & privacy policy",
+      onPress: () => console.log("Terms & privacy policy pressed"),
     },
     {
-      iconComponent: icons.notificationsOff.iconComponent,
-      iconName: icons.notificationsOff.iconName,
-      modalItemName: "Turn off all recommendation notifications",
+      name: "Help & feedback",
+      onPress: () => console.log("Help & feedback pressed"),
     },
   ];
 
   return (
-    <SwipeDownModal visible={visible} setVisible={setVisible}>
-      {modalItems.map((item) => {
-        return (
-          <SwipeDownModalItem
-            key={item.modalItemName}
-            item={item}
-            onPress={() => console.log(item.modalItemName + " pressed")}
-          />
-        );
-      })}
-    </SwipeDownModal>
+    <TopRightModal
+      isModalVisible={isModalVisible}
+      setIsModalVisible={setIsModalVisible}
+      items={modalItems}
+    />
+  );
+}
+
+export function NotificationsScreenItemDotVerticalModal({
+  isModalVisible,
+  setIsModalVisible,
+}) {
+  const modalItems = [
+    {
+      name: "Save to Watch later",
+      icon: SaveToWatchLaterIcon,
+      onPress: () => console.log("Save to Watch later pressed"),
+    },
+    {
+      name: "Hide this notification",
+      icon: EyeInvisbleIcon,
+      onPress: () => console.log("Hide this notification pressed"),
+    },
+    {
+      name: "Turn off all from this channel",
+      icon: NotificationOffIcon,
+      onPress: () => console.log("Turn off all from this channel pressed"),
+    },
+    {
+      name: "Turn off all recommendation notifications",
+      icon: NotificationOffIcon,
+      onPress: () =>
+        console.log("Turn off all recommendation notifications pressed"),
+    },
+  ];
+
+  return (
+    <SwipeDownModal
+      isModalVisible={isModalVisible}
+      setIsModalVisible={setIsModalVisible}
+      items={modalItems}
+    />
   );
 }
 
 export function RemoveSearchHistoryModal({
-  visible,
-  setVisible,
+  isModalVisible,
+  setIsModalVisible,
   removingItem,
   removeSearchHistoryItem,
 }) {
@@ -234,13 +315,20 @@ export function RemoveSearchHistoryModal({
   if (!removingItem) return null;
 
   return (
-    <QuestionModal visible={visible} setVisible={setVisible}>
+    <QuestionModal
+      isModalVisible={isModalVisible}
+      setIsModalVisible={setIsModalVisible}
+    >
       <ThText
-        style={{ marginBottom: 4, fontSize: fontSizes.xl, fontWeight: "bold" }}
+        style={{
+          marginBottom: 6,
+          fontSize: fontSizes.xl,
+          fontWeight: "medium",
+        }}
       >
         {removingItem.text}
       </ThText>
-      <ThText style={{ marginBottom: 40 }}>Remove from search history?</ThText>
+      <ThText style={{ marginBottom: 46 }}>Remove from search history?</ThText>
       <ThView
         style={{
           flexDirection: "row",
@@ -248,17 +336,17 @@ export function RemoveSearchHistoryModal({
           alignItems: "center",
         }}
       >
-        <ThPressable onPress={() => setVisible(false)}>
+        <ThPressable onPress={() => setIsModalVisible(false)}>
           <ThText style={{ color: colors.primary }}>Cancel</ThText>
         </ThPressable>
         <ThPressable
           style={{ marginLeft: 20, color: colors.primary }}
           onPress={() => {
             removeSearchHistoryItem(removingItem.text);
-            setVisible(false);
+            setIsModalVisible(false);
           }}
         >
-          <ThText style={{ marginLeft: 12, color: colors.primary }}>
+          <ThText style={{ marginLeft: 22, color: colors.primary }}>
             Remove
           </ThText>
         </ThPressable>
@@ -268,19 +356,18 @@ export function RemoveSearchHistoryModal({
 }
 
 export function ClearSearchHistoryModal({
-  visible,
-  setVisible,
+  isModalVisible,
+  setIsModalVisible,
   clearSearchHistory,
 }) {
-  const { colors, fontSizes } = useTheme();
+  const { colors } = useTheme();
 
   return (
-    <QuestionModal visible={visible} setVisible={setVisible}>
-      <ThText
-        style={{ marginBottom: 40, fontSize: fontSizes.xl, fontWeight: "bold" }}
-      >
-        Clear History?
-      </ThText>
+    <QuestionModal
+      isModalVisible={isModalVisible}
+      setIsModalVisible={setIsModalVisible}
+    >
+      <ThText style={{ marginBottom: 46 }}>Clear all search history?</ThText>
       <ThView
         style={{
           flexDirection: "row",
@@ -288,17 +375,17 @@ export function ClearSearchHistoryModal({
           alignItems: "center",
         }}
       >
-        <ThPressable onPress={() => setVisible(false)}>
+        <ThPressable onPress={() => setIsModalVisible(false)}>
           <ThText style={{ color: colors.primary }}>Cancel</ThText>
         </ThPressable>
         <ThPressable
           style={{ marginLeft: 20, color: colors.primary }}
           onPress={() => {
             clearSearchHistory();
-            setVisible(false);
+            setIsModalVisible(false);
           }}
         >
-          <ThText style={{ marginLeft: 12, color: colors.primary }}>
+          <ThText style={{ marginLeft: 22, color: colors.primary }}>
             Clear
           </ThText>
         </ThPressable>

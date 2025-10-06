@@ -21,11 +21,14 @@ export function FlatListVideoItem({
   autoPlayVideoId,
 }) {
   const { colors, fontSizes } = useTheme();
-  const [visible, setVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   return (
     <>
-      <FlatListVideoItemModal visible={visible} setVisible={setVisible} />
+      <FlatListVideoItemModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+      />
 
       <ThView style={[{ marginBottom: 28 }, { width: "100%" }, style]}>
         <ThPressable
@@ -70,13 +73,13 @@ export function FlatListVideoItem({
               {video.title}
             </ThText>
             <ThText style={{ color: colors.textMuted, fontSize: fontSizes.xs }}>
-              {video.channelName} • {video.views} Views • {video.uploadedDate}
+              {video.channelName} • {video.views} views • {video.uploadedDate}
             </ThText>
           </ThView>
           <AnimFadeRoundButton
             style={{ marginLeft: "auto" }}
             roundSize={4}
-            onPress={() => setVisible(true)}
+            onPress={() => setIsModalVisible(true)}
           >
             <DotVerticalIcon />
           </AnimFadeRoundButton>

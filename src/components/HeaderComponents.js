@@ -5,12 +5,13 @@ import {
   NotificationIcon,
   SearchIcon,
   ShareScreenIcon,
+  YoutubeMainIcon,
 } from "./IconComponents";
 import { ThText, AnimFadeRoundButton } from "./ThemedComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 
-export function HeaderArrowBack({ style, navigation, ...rest }) {
+export function HeaderArrowBackIcon({ style, navigation, ...rest }) {
   return (
     <AnimFadeRoundButton
       style={[styles.headerLeftIcon, style]}
@@ -22,15 +23,15 @@ export function HeaderArrowBack({ style, navigation, ...rest }) {
   );
 }
 
-export function HeaderDotVertical({ style, ...rest }) {
+export function HeaderDotVerticalIcon({ style, setIsModalVisible, ...rest }) {
   return (
     <AnimFadeRoundButton style={[styles.headerRightIcon, style]} {...rest}>
-      <DotVerticalIcon />
+      <DotVerticalIcon onPress={() => setIsModalVisible(true)}/>
     </AnimFadeRoundButton>
   );
 }
 
-export function HeaderMic({ style, ...rest }) {
+export function HeaderMicIcon({ style, ...rest }) {
   return (
     <AnimFadeRoundButton style={[styles.headerRightIcon, style]} {...rest}>
       <MicIcon />
@@ -38,7 +39,7 @@ export function HeaderMic({ style, ...rest }) {
   );
 }
 
-export function HeaderNotifications({ style, navigation, ...rest }) {
+export function HeaderNotificationsIcon({ style, navigation, ...rest }) {
   return (
     <AnimFadeRoundButton
       style={[styles.headerRightIcon, style]}
@@ -52,7 +53,7 @@ export function HeaderNotifications({ style, navigation, ...rest }) {
   );
 }
 
-export function HeaderSearch({ style, navigation, search, ...rest }) {
+export function HeaderSearchIcon({ style, navigation, search, ...rest }) {
   return (
     <AnimFadeRoundButton
       style={[styles.headerRightIcon, style]}
@@ -66,11 +67,11 @@ export function HeaderSearch({ style, navigation, search, ...rest }) {
   );
 }
 
-export function HeaderShareScreen({ style, setVisible, ...rest }) {
+export function HeaderShareScreenIcon({ style, setIsModalVisible, ...rest }) {
   return (
     <AnimFadeRoundButton
       style={[styles.headerRightIcon, style]}
-      onPress={() => setVisible(true)}
+      onPress={() => setIsModalVisible(true)}
       {...rest}
     >
       <ShareScreenIcon />
@@ -78,7 +79,7 @@ export function HeaderShareScreen({ style, setVisible, ...rest }) {
   );
 }
 
-export function HeaderText({ style, children, ...rest }) {
+export function HeaderTitleText({ style, children, ...rest }) {
   const { fontSizes } = useTheme();
 
   return (
@@ -90,8 +91,19 @@ export function HeaderText({ style, children, ...rest }) {
           fontWeight: "bold",
         },
       ]}
+      {...rest}
     >
       {children}
     </ThText>
+  );
+}
+
+export function HeaderYoutubeIcon({ style, ...rest }) {
+  const { colors } = useTheme();
+
+  return (
+    <AnimFadeRoundButton style={[styles.headerLeftIcon, style]} {...rest}>
+      <YoutubeMainIcon color={colors.primary} />
+    </AnimFadeRoundButton>
   );
 }

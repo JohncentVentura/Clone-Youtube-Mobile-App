@@ -1,7 +1,7 @@
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
 
-export function getPexelsAtUserName(url) {
+export function getPexelsTagUserName(url) {
   // Remove trailing slash if it exists
   const cleanUrl = url.endsWith("/") ? url.slice(0, -1) : url;
   // Split the URL into parts
