@@ -7,6 +7,7 @@ import {
   HeaderMicIcon,
   HeaderShareScreenIcon,
 } from "../components/HeaderComponents";
+import { SearchResultScreenHeaderDotVerticalModal } from "../components/ModalComponents";
 import {
   ThFlatList,
   ThTextInput,
@@ -26,7 +27,12 @@ export default function SearchResultScreen({ navigation, route }) {
   const [searchInput, setSearchInput] = useState(search);
   const [searchVideos, setSearchVideos] = useState([]);
   const [autoPlayVideoId, setAutoPlayVideoId] = useState(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isShareScreenModalVisible, setIsShareScreenModalVisible] =
+    useState(false);
+  const [
+    isSearchResultScreenHeaderDotVerticalModalVisible,
+    setIsSearchResultScreenHeaderDotVerticalModalVisible,
+  ] = useState(false);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -54,8 +60,13 @@ export default function SearchResultScreen({ navigation, route }) {
   return (
     <>
       <ShareScreenModal
-        isModalVisible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
+        isModalVisible={isShareScreenModalVisible}
+        setIsModalVisible={setIsShareScreenModalVisible}
+      />
+
+      <SearchResultScreenHeaderDotVerticalModal
+        isModalVisible={isSearchResultScreenHeaderDotVerticalModalVisible}
+        setIsModalVisible={setIsSearchResultScreenHeaderDotVerticalModalVisible}
       />
 
       <ThView style={styles.screenContainer}>
@@ -83,10 +94,16 @@ export default function SearchResultScreen({ navigation, route }) {
               }
             />
           </ThView>
-          <ThView style={styles.headerRightIconsContainer}>
+          <ThView style={styles.headerRightContainer}>
             <HeaderMicIcon />
-            <HeaderShareScreenIcon setIsModalVisible={setIsModalVisible} />
-            <HeaderDotVerticalIcon />
+            <HeaderShareScreenIcon
+              setIsModalVisible={setIsShareScreenModalVisible}
+            />
+            <HeaderDotVerticalIcon
+              setIsModalVisible={
+                setIsSearchResultScreenHeaderDotVerticalModalVisible
+              }
+            />
           </ThView>
         </ThView>
 

@@ -1,25 +1,26 @@
 import { Dimensions, StyleSheet } from "react-native";
 
-//Maybe use useWindowDimensions hook?
-const screenWidth = Dimensions.get("window").width * 1; //Multiply by 1 to get 100%
-const screenHeight = Dimensions.get("window").height * 1; //Multiply by 1 to get 100%
-const globalHorizontalSpacing = 16;
+//TODO: export and use screenWidth and screenHeight to other components
+//TODO: maybe use useWindowDimensions hook?
+export const screenWidth = Dimensions.get("window").width * 1; //Multiply by 1 to get 100%
+export const screenHeight = Dimensions.get("window").height * 1; //Multiply by 1 to get 100%
+export const globalHorizontalSpacing = 16;
 
 export const styles = StyleSheet.create({
   /******************************Headers******************************/
-  headerLeftIcon: {
+  headerLeft: {
     marginLeft: globalHorizontalSpacing,
   },
   headerTitle: {
-    marginLeft: 8,
+    marginLeft: 12,
   },
-  headerRightIconsContainer: {
+  headerRightContainer: {
     marginRight: globalHorizontalSpacing,
     height: "100%",
     flexDirection: "row",
     alignItems: "center",
   },
-  headerRightIcon: {
+  headerRight: {
     marginLeft: 20,
   },
   /******************************Containers******************************/

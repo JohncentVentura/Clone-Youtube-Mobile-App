@@ -15,7 +15,7 @@ import {
 } from "./IconComponents";
 import { useTheme } from "../styles/ThemeContext";
 
-/******************************Base Components******************************/
+/******************************SwipeDownModal Components******************************/
 function SwipeDownModal({
   isModalVisible,
   setIsModalVisible,
@@ -34,6 +34,7 @@ function SwipeDownModal({
       animationIn="slideInUp"
       animationOut="slideOutDown"
       style={{
+        margin: 10,
         flex: 1,
         justifyContent: "flex-end",
         alignItems: "center",
@@ -59,24 +60,25 @@ function SwipeDownModal({
         />
         {children}
         {items.map((item, index) => {
-          const isLastItem = index === items.length - 1;
-
           return (
             <ThPressable
               key={index + item.name}
-              style={({ pressed }) => ({
-                borderBottomLeftRadius: isLastItem ? 12 : 0,
-                borderBottomRightRadius: isLastItem ? 12 : 0,
-                paddingLeft: 20,
-                paddingVertical: 10,
-                backgroundColor: pressed ? colors.bgMuted : "transparent",
-                flexDirection: "row",
-                alignItems: "center",
-              })}
+              style={({ pressed }) => [
+                {
+                  borderBottomLeftRadius: index === items.length - 1 ? 12 : 0,
+                  borderBottomRightRadius: index === items.length - 1 ? 12 : 0,
+                  //children means this modal has a header
+                  paddingLeft: children ? 30 : 20,
+                  paddingVertical: 12,
+                  backgroundColor: pressed ? colors.bgMuted : "transparent",
+                  flexDirection: "row",
+                  alignItems: "center",
+                },
+              ]}
               onPress={item.onPress}
             >
               {item.icon ? <item.icon /> : null}
-              <ThText style={{ marginLeft: 28, flexShrink: 1 }}>
+              <ThText style={{ marginLeft: 24, flexShrink: 1 }}>
                 {item.name}
               </ThText>
             </ThPressable>
@@ -87,74 +89,6 @@ function SwipeDownModal({
   );
 }
 
-function QuestionModal({ isModalVisible, setIsModalVisible, children }) {
-  const { colors } = useTheme();
-
-  return (
-    <Modal
-      isVisible={isModalVisible}
-      onBackdropPress={() => setIsModalVisible(false)} //Modal backdrop area
-      onRequestClose={() => setIsModalVisible(false)} //Android back button
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <ThView
-        style={{
-          padding: 24,
-          width: "80%",
-          backgroundColor: colors.bg,
-        }}
-      >
-        {children}
-      </ThView>
-    </Modal>
-  );
-}
-
-function TopRightModal({ isModalVisible, setIsModalVisible, items = [] }) {
-  const { colors } = useTheme();
-
-  return (
-    <Modal
-      isVisible={isModalVisible}
-      onBackdropPress={() => setIsModalVisible(false)} //Modal backdrop area
-      onRequestClose={() => setIsModalVisible(false)} //Android back button
-      style={{
-        flex: 1,
-        justifyContent: "flex-start",
-        alignItems: "flex-end",
-      }}
-    >
-      <ThView
-        style={{
-          width: "40%",
-          backgroundColor: colors.bg,
-        }}
-      >
-        {items.map((item, index) => {
-          return (
-            <ThPressable
-              key={index + item.name}
-              style={({ pressed }) => ({
-                paddingHorizontal: 20,
-                paddingVertical: 10,
-                backgroundColor: pressed ? colors.bgMuted : "transparent",
-              })}
-              onPress={item.onPress}
-            >
-              <ThText style={{ flexShrink: 1 }}>{item.name}</ThText>
-            </ThPressable>
-          );
-        })}
-      </ThView>
-    </Modal>
-  );
-}
-
-/******************************Extended Components******************************/
 export function FlatListVideoItemModal({ isModalVisible, setIsModalVisible }) {
   const modalItems = [
     {
@@ -206,7 +140,6 @@ export function FlatListVideoItemModal({ isModalVisible, setIsModalVisible }) {
 
 export function ShareScreenModal({ isModalVisible, setIsModalVisible }) {
   const { fontSizes } = useTheme();
-
   const modalItems = [
     {
       name: "Link with TV code",
@@ -227,43 +160,16 @@ export function ShareScreenModal({ isModalVisible, setIsModalVisible }) {
       items={modalItems}
     >
       <ThText
-        style={{ marginLeft: 20, paddingBottom: 4, fontSize: fontSizes.sm }}
+        style={{
+          marginLeft: 12,
+          marginTop: 6,
+          marginBottom: 10,
+          fontSize: fontSizes.sm,
+        }}
       >
         Select a device
       </ThText>
     </SwipeDownModal>
-  );
-}
-
-export function NotificationsScreenHeaderDotVerticalModal({
-  isModalVisible,
-  setIsModalVisible,
-}) {
-  const modalItems = [
-    {
-      name: "Settings",
-      onPress: () => console.log("Settings pressed"),
-    },
-    {
-      name: "Watch on TV",
-      onPress: () => console.log("Watch on TV pressed"),
-    },
-    {
-      name: "Terms & privacy policy",
-      onPress: () => console.log("Terms & privacy policy pressed"),
-    },
-    {
-      name: "Help & feedback",
-      onPress: () => console.log("Help & feedback pressed"),
-    },
-  ];
-
-  return (
-    <TopRightModal
-      isModalVisible={isModalVisible}
-      setIsModalVisible={setIsModalVisible}
-      items={modalItems}
-    />
   );
 }
 
@@ -304,6 +210,172 @@ export function NotificationsScreenItemDotVerticalModal({
   );
 }
 
+/******************************TopRightModal Components******************************/
+function TopRightModal({ isModalVisible, setIsModalVisible, items = [] }) {
+  const { colors } = useTheme();
+
+  return (
+    <Modal
+      isVisible={isModalVisible}
+      onBackdropPress={() => setIsModalVisible(false)} //Modal backdrop area
+      onRequestClose={() => setIsModalVisible(false)} //Android back button
+      animationIn="fadeInDown"
+      animationOut="fadeOutUp"
+      style={{
+        margin: 10,
+        flex: 1,
+        justifyContent: "flex-start",
+        alignItems: "flex-end",
+      }}
+    >
+      <ThView style={{ backgroundColor: colors.bg }}>
+        {items.map((item, index) => {
+          return (
+            <ThPressable
+              key={index + item.name}
+              style={({ pressed }) => ({
+                paddingHorizontal: 14,
+                paddingVertical: 12,
+                backgroundColor: pressed ? colors.bgMuted : "transparent",
+              })}
+              onPress={item.onPress}
+            >
+              <ThText style={{ flexShrink: 1 }}>{item.name}</ThText>
+            </ThPressable>
+          );
+        })}
+      </ThView>
+    </Modal>
+  );
+}
+
+export function NotificationsScreenHeaderDotVerticalModal({
+  isModalVisible,
+  setIsModalVisible,
+}) {
+  const modalItems = [
+    {
+      name: "Settings",
+      onPress: () => console.log("Settings pressed"),
+    },
+    {
+      name: "Watch on TV",
+      onPress: () => console.log("Watch on TV pressed"),
+    },
+    {
+      name: "Terms & privacy policy",
+      onPress: () => console.log("Terms & privacy policy pressed"),
+    },
+    {
+      name: "Help & feedback",
+      onPress: () => console.log("Help & feedback pressed"),
+    },
+  ];
+
+  return (
+    <TopRightModal
+      isModalVisible={isModalVisible}
+      setIsModalVisible={setIsModalVisible}
+      items={modalItems}
+    />
+  );
+}
+
+export function ChannelScreenHeaderDotVerticalModal({
+  isModalVisible,
+  setIsModalVisible,
+}) {
+  const modalItems = [
+    {
+      name: "Share",
+      onPress: () => console.log("Share pressed"),
+    },
+    {
+      name: "Report user",
+      onPress: () => console.log("Report user pressed"),
+    },
+    {
+      name: "Settings",
+      onPress: () => console.log("Settings pressed"),
+    },
+    {
+      name: "Watch on TV",
+      onPress: () => console.log("Watch on TV pressed"),
+    },
+    {
+      name: "Terms & privacy policy",
+      onPress: () => console.log("Terms & privacy policy pressed"),
+    },
+    {
+      name: "Help & feedback",
+      onPress: () => console.log("Help & feedback pressed"),
+    },
+  ];
+
+  return (
+    <TopRightModal
+      isModalVisible={isModalVisible}
+      setIsModalVisible={setIsModalVisible}
+      items={modalItems}
+    />
+  );
+}
+
+export function SearchResultScreenHeaderDotVerticalModal({
+  isModalVisible,
+  setIsModalVisible,
+}) {
+  const modalItems = [
+    {
+      name: "Search filters",
+      onPress: () => console.log("Search filters pressed"),
+    },
+    {
+      name: "Help & feedback",
+      onPress: () => console.log("Help & feedback pressed"),
+    },
+  ];
+
+  return (
+    <TopRightModal
+      isModalVisible={isModalVisible}
+      setIsModalVisible={setIsModalVisible}
+      items={modalItems}
+    />
+  );
+}
+
+/******************************QuestionModal Components******************************/
+function QuestionModal({ isModalVisible, setIsModalVisible, children }) {
+  const { colors } = useTheme();
+
+  return (
+    <Modal
+      isVisible={isModalVisible}
+      onBackdropPress={() => setIsModalVisible(false)} //Modal backdrop area
+      onRequestClose={() => setIsModalVisible(false)} //Android back button
+      animationIn="fadeIn"
+      animationOut="fadeOut"
+      style={{
+        margin: 10,
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <ThView
+        style={{
+          padding: 24,
+          width: "80%",
+          backgroundColor: colors.bg,
+        }}
+      >
+        {children}
+      </ThView>
+    </Modal>
+  );
+}
+
 export function RemoveSearchHistoryModal({
   isModalVisible,
   setIsModalVisible,
@@ -331,16 +403,20 @@ export function RemoveSearchHistoryModal({
       <ThText style={{ marginBottom: 46 }}>Remove from search history?</ThText>
       <ThView
         style={{
+          backgroundColor: "transparent",
           flexDirection: "row",
           justifyContent: "flex-end",
           alignItems: "center",
         }}
       >
-        <ThPressable onPress={() => setIsModalVisible(false)}>
+        <ThPressable
+          style={{ backgroundColor: "transparent" }}
+          onPress={() => setIsModalVisible(false)}
+        >
           <ThText style={{ color: colors.primary }}>Cancel</ThText>
         </ThPressable>
         <ThPressable
-          style={{ marginLeft: 20, color: colors.primary }}
+          style={{ marginLeft: 20, backgroundColor: "transparent" }}
           onPress={() => {
             removeSearchHistoryItem(removingItem.text);
             setIsModalVisible(false);

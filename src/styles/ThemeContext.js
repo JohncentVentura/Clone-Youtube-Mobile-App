@@ -9,6 +9,7 @@ export function ThemeProvider({ children }) {
   const colors = colorThemes[colorScheme];
 
   const themeTokens = {
+    colorScheme,
     colors,
     fontSizes,
     iconSizes,

@@ -1,3 +1,4 @@
+import { Image } from "react-native";
 import {
   ArrowBackIcon,
   DotVerticalIcon,
@@ -5,7 +6,6 @@ import {
   NotificationIcon,
   SearchIcon,
   ShareScreenIcon,
-  YoutubeMainIcon,
 } from "./IconComponents";
 import { ThText, AnimFadeRoundButton } from "./ThemedComponents";
 import { styles } from "../styles/styles";
@@ -14,7 +14,7 @@ import { useTheme } from "../styles/ThemeContext";
 export function HeaderArrowBackIcon({ style, navigation, ...rest }) {
   return (
     <AnimFadeRoundButton
-      style={[styles.headerLeftIcon, style]}
+      style={[styles.headerLeft, style]}
       onPress={() => navigation.goBack()}
       {...rest}
     >
@@ -25,15 +25,19 @@ export function HeaderArrowBackIcon({ style, navigation, ...rest }) {
 
 export function HeaderDotVerticalIcon({ style, setIsModalVisible, ...rest }) {
   return (
-    <AnimFadeRoundButton style={[styles.headerRightIcon, style]} {...rest}>
-      <DotVerticalIcon onPress={() => setIsModalVisible(true)}/>
+    <AnimFadeRoundButton
+      style={[styles.headerRight, style]}
+      onPress={() => setIsModalVisible(true)}
+      {...rest}
+    >
+      <DotVerticalIcon />
     </AnimFadeRoundButton>
   );
 }
 
 export function HeaderMicIcon({ style, ...rest }) {
   return (
-    <AnimFadeRoundButton style={[styles.headerRightIcon, style]} {...rest}>
+    <AnimFadeRoundButton style={[styles.headerRight, style]} {...rest}>
       <MicIcon />
     </AnimFadeRoundButton>
   );
@@ -42,7 +46,7 @@ export function HeaderMicIcon({ style, ...rest }) {
 export function HeaderNotificationsIcon({ style, navigation, ...rest }) {
   return (
     <AnimFadeRoundButton
-      style={[styles.headerRightIcon, style]}
+      style={[styles.headerRight, style]}
       onPress={() => {
         navigation.navigate("NotificationsScreen");
       }}
@@ -56,7 +60,7 @@ export function HeaderNotificationsIcon({ style, navigation, ...rest }) {
 export function HeaderSearchIcon({ style, navigation, search, ...rest }) {
   return (
     <AnimFadeRoundButton
-      style={[styles.headerRightIcon, style]}
+      style={[styles.headerRight, style]}
       onPress={() => {
         navigation.navigate("SearchScreen", { search: search });
       }}
@@ -70,7 +74,7 @@ export function HeaderSearchIcon({ style, navigation, search, ...rest }) {
 export function HeaderShareScreenIcon({ style, setIsModalVisible, ...rest }) {
   return (
     <AnimFadeRoundButton
-      style={[styles.headerRightIcon, style]}
+      style={[styles.headerRight, style]}
       onPress={() => setIsModalVisible(true)}
       {...rest}
     >
@@ -88,8 +92,9 @@ export function HeaderTitleText({ style, children, ...rest }) {
         styles.headerTitle,
         {
           fontSize: fontSizes.xl,
-          fontWeight: "bold",
+          fontWeight: "medium",
         },
+        style,
       ]}
       {...rest}
     >
@@ -98,12 +103,20 @@ export function HeaderTitleText({ style, children, ...rest }) {
   );
 }
 
-export function HeaderYoutubeIcon({ style, ...rest }) {
-  const { colors } = useTheme();
+export function HeaderYouTubeLogoImage({ style, ...rest }) {
+  const { colorScheme } = useTheme();
 
   return (
-    <AnimFadeRoundButton style={[styles.headerLeftIcon, style]} {...rest}>
-      <YoutubeMainIcon color={colors.primary} />
-    </AnimFadeRoundButton>
+    <Image
+      style={[styles.headerLeft, { width: 95, height: 95 }, style]}
+      resizeMode={"contain"}
+      source={
+        colorScheme === "light"
+          ? require("../assets/images/youtube-logo-light-mode.png")
+          : require("../assets/images/youtube-logo-dark-mode.png")
+      }
+      alt="Channel Image"
+      {...rest}
+    />
   );
 }

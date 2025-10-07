@@ -1,6 +1,8 @@
 import { Image } from "react-native";
 import { styles } from "../styles/styles";
 
+//TODO: Maybe wrap images with pressable
+
 export function MainVideoScreenChannelImage({ style, ...rest }) {
   return (
     <Image

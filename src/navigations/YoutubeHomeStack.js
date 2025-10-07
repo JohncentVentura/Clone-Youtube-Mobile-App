@@ -1,5 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { useState } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import YouTubeFlatListScreen from "../api/YouTubeFlatListScreen";
 import YouTubePlayerScreen from "../api/YouTubePlayerScreen";
 import {
@@ -9,9 +10,10 @@ import {
   HeaderSearchIcon,
   HeaderShareScreenIcon,
   HeaderTitleText,
-  HeaderYoutubeIcon,
+  HeaderYouTubeLogoImage,
 } from "../components/HeaderComponents";
 import {
+  ChannelScreenHeaderDotVerticalModal,
   NotificationsScreenHeaderDotVerticalModal,
   ShareScreenModal,
 } from "../components/ModalComponents";
@@ -29,12 +31,17 @@ const Stack = createStackNavigator();
 
 export default function YoutubeHomeStack() {
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
   const [startingSearch, setStartingSearch] = useState("");
   const [isShareScreenModalVisible, setIsShareScreenModalVisible] =
     useState(false);
   const [
     isNotificationsScreenHeaderDotVerticalModalVisible,
     setIsNotificationsScreenHeaderDotVerticalModalVisible,
+  ] = useState(false);
+  const [
+    isChannelScreenHeaderDotVerticalModalVisible,
+    setIsChannelScreenHeaderDotVerticalModalVisible,
   ] = useState(false);
 
   return (
@@ -51,10 +58,16 @@ export default function YoutubeHomeStack() {
         }
       />
 
+      <ChannelScreenHeaderDotVerticalModal
+        isModalVisible={isChannelScreenHeaderDotVerticalModalVisible}
+        setIsModalVisible={setIsChannelScreenHeaderDotVerticalModalVisible}
+      />
+
       <Stack.Navigator
         id="YoutubeHomeStack"
         screenOptions={({ navigation }) => {
           return {
+            headerStatusBarHeight: insets.top - 8,
             headerStyle: {
               backgroundColor: colors.bg,
               elevation: 0, //Android: removes drop shadow
@@ -71,10 +84,9 @@ export default function YoutubeHomeStack() {
           component={YoutubeHomeScreen}
           options={({ navigation }) => {
             return {
-              headerLeft: () => <HeaderYoutubeIcon />,
-              headerTitle: () => <HeaderTitleText>YouTube</HeaderTitleText>,
+              headerLeft: () => <HeaderYouTubeLogoImage />,
               headerRight: () => (
-                <ThView style={styles.headerRightIconsContainer}>
+                <ThView style={styles.headerRightContainer}>
                   <HeaderShareScreenIcon
                     setIsModalVisible={setIsShareScreenModalVisible}
                   />
@@ -105,7 +117,7 @@ export default function YoutubeHomeStack() {
           options={({ navigation }) => {
             return {
               headerRight: () => (
-                <ThView style={styles.headerRightIconsContainer}>
+                <ThView style={styles.headerRightContainer}>
                   <HeaderShareScreenIcon
                     setIsModalVisible={setIsShareScreenModalVisible}
                   />
@@ -113,7 +125,11 @@ export default function YoutubeHomeStack() {
                     navigation={navigation}
                     search={startingSearch}
                   />
-                  <HeaderDotVerticalIcon />
+                  <HeaderDotVerticalIcon
+                    setIsModalVisible={
+                      setIsChannelScreenHeaderDotVerticalModalVisible
+                    }
+                  />
                 </ThView>
               ),
             };
@@ -128,7 +144,7 @@ export default function YoutubeHomeStack() {
                 <HeaderTitleText>Notifications</HeaderTitleText>
               ),
               headerRight: () => (
-                <ThView style={styles.headerRightIconsContainer}>
+                <ThView style={styles.headerRightContainer}>
                   <HeaderShareScreenIcon
                     setIsModalVisible={setIsShareScreenModalVisible}
                   />

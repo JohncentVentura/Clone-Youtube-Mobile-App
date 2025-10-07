@@ -155,7 +155,7 @@ export default function SearchScreen({ navigation, route }) {
             />
             <ThTextInputCloseButton onPress={() => setSearchInput("")} />
           </ThView>
-          <ThView style={styles.headerRightIconsContainer}>
+          <ThView style={styles.headerRightContainer}>
             <HeaderMicIcon style={{ marginLeft: 14 }} />
           </ThView>
         </ThView>
@@ -171,11 +171,11 @@ export default function SearchScreen({ navigation, route }) {
                 backgroundColor: pressed ? colors.bgMuted : colors.bg,
               })}
               onPress={() => handleSearch(navigation, item.text)}
+              delayLongPress={200}
               onLongPress={() => {
                 setRemovingItem(item);
                 setIsRemoveSearchModalVisible(true);
               }}
-              delayLongPress={100}
             >
               <ThView
                 style={[
@@ -187,7 +187,7 @@ export default function SearchScreen({ navigation, route }) {
                   },
                 ]}
               >
-                <ClockRotateLeftIcon size={iconSizes.sm} />
+                <ClockRotateLeftIcon size={iconSizes.xs} />
                 <ThText style={{ marginLeft: 12, flexShrink: 1 }}>
                   {item.text}
                 </ThText>
@@ -197,16 +197,18 @@ export default function SearchScreen({ navigation, route }) {
                     uri: item.picture,
                   }}
                 />
-                <ArrowUpLeftIcon style={{ marginLeft: 12 }} />
+                <ArrowUpLeftIcon
+                  style={{ marginLeft: 12 }}
+                  onPress={() => {
+                    setSearchInput(item.text);
+                  }}
+                />
               </ThView>
             </ThPressable>
           )}
           ListFooterComponent={
             searchHistory.length > 0 ? (
-              <ThPressable
-                style={styles.baseButton}
-                onPress={() => setIsClearHistoryModalVisible(true)}
-              >
+              <ThPressable onPress={() => setIsClearHistoryModalVisible(true)}>
                 <ThText
                   style={{
                     color: colors.textMuted,

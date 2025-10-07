@@ -9,12 +9,12 @@ import {
   View,
 } from "react-native";
 import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
   interpolateColor,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
-
+import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 
 /******************************Base Components******************************/
@@ -33,7 +33,7 @@ export function ThIcon({ IconComponent, ...rest }) {
 export function ThPressable({ style, children, ...rest }) {
   const { colors } = useTheme();
 
-  //Allows style to be static (normal) or functional (access props)
+  //Allows style to be static (normal) or functional (access props, like pressed)
   const functionStyle =
     typeof style === "function"
       ? (state) => [
@@ -154,6 +154,7 @@ export function ThTextInput({
   );
 }
 
+//TODO: Maybe change backgroundColor to transparent
 export function ThView({ style, children, ...rest }) {
   const { colors } = useTheme();
 
@@ -173,7 +174,7 @@ export function ThTopQueryTab({ style, selected, children, ...rest }) {
       style={[
         {
           marginLeft: 8,
-          borderRadius: 4,
+          borderRadius: 8,
           paddingHorizontal: 12,
           paddingVertical: 6,
           backgroundColor: selected ? colors.bgAccent : colors.bgMuted,
@@ -185,6 +186,26 @@ export function ThTopQueryTab({ style, selected, children, ...rest }) {
       <ThText style={{ color: selected ? colors.textAccent : colors.text }}>
         {children}
       </ThText>
+    </ThPressable>
+  );
+}
+
+export function ThSmallIconButton({ style, children, ...rest }) {
+  const { colors } = useTheme();
+
+  return (
+    <ThPressable
+      style={({ pressed }) => [
+        styles.iconTextButton,
+        {
+          backgroundColor: colors.bgMuted,
+          transform: [{ scale: pressed ? 0.94 : 1 }],
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      {children}
     </ThPressable>
   );
 }
