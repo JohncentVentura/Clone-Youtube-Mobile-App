@@ -1,17 +1,21 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";import {
+  HeaderArrowBackIcon,
+  HeaderTitleText,
+} from "../components/HeaderComponents";
 import UploadScreen from "../screens/UploadScreen";
 import { useTheme } from "../styles/ThemeContext";
 
 const Stack = createStackNavigator();
 
-export default function UploadStack() {
+export default function UploadStack({ navigation }) {
   const { colors } = useTheme();
 
   return (
     <Stack.Navigator
       screenOptions={{
         headerStyle: { backgroundColor: colors.bg },
-        headerTintColor: colors.text,
+        headerLeft: () => <HeaderArrowBackIcon navigation={navigation} />,
+        headerTitle: () => <HeaderTitleText>Upload</HeaderTitleText>,
       }}
     >
       <Stack.Screen name="Upload" component={UploadScreen} />

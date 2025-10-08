@@ -17,7 +17,12 @@ import {
   NotificationsScreenHeaderDotVerticalModal,
   ShareScreenModal,
 } from "../components/ModalComponents";
-import { ThView } from "../components/ThemedComponents";
+import {
+  ThView,
+  ThTextInput,
+  ThHeaderContainer,
+  ThTextInputCloseButton,
+} from "../components/ThemedComponents";
 import ChannelScreen from "../screens/ChannelScreen";
 import MainVideoScreen from "../screens/MainVideoScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
@@ -32,23 +37,23 @@ const Stack = createStackNavigator();
 export default function YoutubeHomeStack() {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
-  const [startingSearch, setStartingSearch] = useState("");
-  const [isShareScreenModalVisible, setIsShareScreenModalVisible] =
-    useState(false);
-  const [
-    isNotificationsScreenHeaderDotVerticalModalVisible,
-    setIsNotificationsScreenHeaderDotVerticalModalVisible,
-  ] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
   const [
     isChannelScreenHeaderDotVerticalModalVisible,
     setIsChannelScreenHeaderDotVerticalModalVisible,
   ] = useState(false);
+  const [
+    isNotificationsScreenHeaderDotVerticalModalVisible,
+    setIsNotificationsScreenHeaderDotVerticalModalVisible,
+  ] = useState(false);
+  const [isShareScreenModalVisible, setIsShareScreenModalVisible] =
+    useState(false);
 
   return (
     <>
-      <ShareScreenModal
-        isModalVisible={isShareScreenModalVisible}
-        setIsModalVisible={setIsShareScreenModalVisible}
+      <ChannelScreenHeaderDotVerticalModal
+        isModalVisible={isChannelScreenHeaderDotVerticalModalVisible}
+        setIsModalVisible={setIsChannelScreenHeaderDotVerticalModalVisible}
       />
 
       <NotificationsScreenHeaderDotVerticalModal
@@ -58,44 +63,31 @@ export default function YoutubeHomeStack() {
         }
       />
 
-      <ChannelScreenHeaderDotVerticalModal
-        isModalVisible={isChannelScreenHeaderDotVerticalModalVisible}
-        setIsModalVisible={setIsChannelScreenHeaderDotVerticalModalVisible}
+      <ShareScreenModal
+        isModalVisible={isShareScreenModalVisible}
+        setIsModalVisible={setIsShareScreenModalVisible}
       />
 
-      <Stack.Navigator
-        id="YoutubeHomeStack"
-        screenOptions={({ navigation }) => {
-          return {
-            headerStatusBarHeight: insets.top - 8,
-            headerStyle: {
-              backgroundColor: colors.bg,
-              elevation: 0, //Android: removes drop shadow
-              shadowOpacity: 0, //iOS: removes drop shadow
-            },
-            headerLeft: () => <HeaderArrowBackIcon navigation={navigation} />,
-            headerTitle: () => null,
-            headerRight: () => null,
-          };
-        }}
-      >
+      <Stack.Navigator id="YoutubeHomeStack">
         <Stack.Screen
           name="YoutubeHomeScreen"
           component={YoutubeHomeScreen}
-          options={({ navigation }) => {
+          options={({ navigation, route }) => {
             return {
-              headerLeft: () => <HeaderYouTubeLogoImage />,
-              headerRight: () => (
-                <ThView style={styles.headerRightContainer}>
-                  <HeaderShareScreenIcon
-                    setIsModalVisible={setIsShareScreenModalVisible}
-                  />
-                  <HeaderNotificationsIcon navigation={navigation} />
-                  <HeaderSearchIcon
-                    navigation={navigation}
-                    search={startingSearch}
-                  />
-                </ThView>
+              header: () => (
+                <ThHeaderContainer>
+                  <HeaderYouTubeLogoImage />
+                  <ThView style={styles.headerRightContainer}>
+                    <HeaderShareScreenIcon
+                      onPress={() => setIsShareScreenModalVisible(true)}
+                    />
+                    <HeaderNotificationsIcon navigation={navigation} />
+                    <HeaderSearchIcon
+                      navigation={navigation}
+                      search={searchInput}
+                    />
+                  </ThView>
+                </ThHeaderContainer>
               ),
             };
           }}
@@ -105,8 +97,10 @@ export default function YoutubeHomeStack() {
           component={MainVideoScreen}
           options={({ navigation }) => {
             return {
-              headerLeft: () => (
-                <HeaderArrowBackIcon onPress={() => navigation.pop()} />
+              header: () => (
+                <ThHeaderContainer>
+                  <HeaderArrowBackIcon onPress={() => navigation.pop()} />
+                </ThHeaderContainer>
               ),
             };
           }}
@@ -116,21 +110,24 @@ export default function YoutubeHomeStack() {
           component={ChannelScreen}
           options={({ navigation }) => {
             return {
-              headerRight: () => (
-                <ThView style={styles.headerRightContainer}>
-                  <HeaderShareScreenIcon
-                    setIsModalVisible={setIsShareScreenModalVisible}
-                  />
-                  <HeaderSearchIcon
-                    navigation={navigation}
-                    search={startingSearch}
-                  />
-                  <HeaderDotVerticalIcon
-                    setIsModalVisible={
-                      setIsChannelScreenHeaderDotVerticalModalVisible
-                    }
-                  />
-                </ThView>
+              header: () => (
+                <ThHeaderContainer>
+                  <HeaderArrowBackIcon navigation={navigation} />
+                  <ThView style={styles.headerRightContainer}>
+                    <HeaderShareScreenIcon
+                      onPress={() => setIsShareScreenModalVisible(true)}
+                    />
+                    <HeaderSearchIcon
+                      navigation={navigation}
+                      search={searchInput}
+                    />
+                    <HeaderDotVerticalIcon
+                      onPress={() =>
+                        setIsChannelScreenHeaderDotVerticalModalVisible(true)
+                      }
+                    />
+                  </ThView>
+                </ThHeaderContainer>
               ),
             };
           }}
@@ -140,24 +137,27 @@ export default function YoutubeHomeStack() {
           component={NotificationsScreen}
           options={({ navigation }) => {
             return {
-              headerTitle: () => (
-                <HeaderTitleText>Notifications</HeaderTitleText>
-              ),
-              headerRight: () => (
-                <ThView style={styles.headerRightContainer}>
-                  <HeaderShareScreenIcon
-                    setIsModalVisible={setIsShareScreenModalVisible}
-                  />
-                  <HeaderSearchIcon
-                    navigation={navigation}
-                    search={startingSearch}
-                  />
-                  <HeaderDotVerticalIcon
-                    setIsModalVisible={
-                      setIsNotificationsScreenHeaderDotVerticalModalVisible
-                    }
-                  />
-                </ThView>
+              header: () => (
+                <ThHeaderContainer>
+                  <HeaderArrowBackIcon navigation={navigation} />
+                  <HeaderTitleText>Notifications</HeaderTitleText>
+                  <ThView style={styles.headerRightContainer}>
+                    <HeaderShareScreenIcon
+                      onPress={() => setIsShareScreenModalVisible(true)}
+                    />
+                    <HeaderSearchIcon
+                      navigation={navigation}
+                      search={searchInput}
+                    />
+                    <HeaderDotVerticalIcon
+                      onPress={() =>
+                        setIsNotificationsScreenHeaderDotVerticalModalVisible(
+                          true
+                        )
+                      }
+                    />
+                  </ThView>
+                </ThHeaderContainer>
               ),
             };
           }}
@@ -178,10 +178,28 @@ export default function YoutubeHomeStack() {
         <Stack.Screen
           name="YouTubeFlatListScreen"
           component={YouTubeFlatListScreen}
+          options={({ navigation }) => {
+            return {
+              header: () => (
+                <ThHeaderContainer>
+                  <HeaderArrowBackIcon navigation={navigation} />
+                </ThHeaderContainer>
+              ),
+            };
+          }}
         />
         <Stack.Screen
           name="YouTubePlayerScreen"
           component={YouTubePlayerScreen}
+          options={({ navigation }) => {
+            return {
+              header: () => (
+                <ThHeaderContainer>
+                  <HeaderArrowBackIcon navigation={navigation} />
+                </ThHeaderContainer>
+              ),
+            };
+          }}
         />
       </Stack.Navigator>
     </>

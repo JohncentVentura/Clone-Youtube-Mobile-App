@@ -19,8 +19,8 @@ export function getPexelsUrlToTitle(url) {
 }
 
 export function getShortenText(text, maxLength = 50) {
-  return text.length > maxLength 
-    ? text.slice(0, maxLength).trim() + "..." 
+  return text.length > maxLength
+    ? text.slice(0, maxLength).trim() + "..."
     : text;
 }
 
@@ -54,6 +54,16 @@ export function roundOffNumber(num) {
 }
 
 /******************************MainBottomTabs Utils******************************/
+export function getMainBottomTabBarStyle(colors) {
+  return {
+    borderTopColor: colors.borderSecondary,
+    borderTopWidth: 2,
+    backgroundColor: colors.bg,
+    elevation: 0, //Android: removes drop shadow
+    shadowOpacity: 0, //iOS: removes drop shadow
+  };
+}
+
 export function hideMainBottomTabBar(navigation) {
   useFocusEffect(
     useCallback(() => {
@@ -64,16 +74,6 @@ export function hideMainBottomTabBar(navigation) {
       });
     }, [navigation])
   );
-}
-
-export function getMainBottomTabBarStyle(colors) {
-  return {
-    borderTopColor: colors.borderMuted,
-    borderTopWidth: 1,
-    backgroundColor: colors.bg,
-    elevation: 0, //Android: removes drop shadow
-    shadowOpacity: 0, //iOS: removes drop shadow
-  };
 }
 
 export function showMainBottomTabBar(navigation, colors) {

@@ -7,7 +7,7 @@ import Animated, {
   runOnJS,
 } from "react-native-reanimated";
 import { ThPressable, ThText, ThView } from "./ThemedComponents";
-import { screenHeight } from "../styles/styles";
+import { screenHeight, styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 
 export default function CommentsModal({ setShowComments }) {
@@ -110,13 +110,15 @@ export default function CommentsModal({ setShowComments }) {
             width: 50,
             height: 5,
             borderRadius: 2.5,
-            backgroundColor: colors.textMuted,
+            backgroundColor: colors.textSecondary,
             marginBottom: 10,
           }}
         />
 
         {/* Title */}
-        <ThText style={{ fontSize: 18, fontWeight: "medium", marginBottom: 8 }}>
+        <ThText
+          style={[styles.fontMedium, styles.fontSizeLG, { marginBottom: 8 }]}
+        >
           Comments Section
         </ThText>
 
@@ -128,7 +130,7 @@ export default function CommentsModal({ setShowComments }) {
             alignItems: "center",
           }}
         >
-          <ThText style={{ color: colors.textMuted }}>
+          <ThText style={{ color: colors.textSecondary }}>
             No comments yet... Be the first one!
           </ThText>
         </ThView>

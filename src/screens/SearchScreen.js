@@ -21,7 +21,7 @@ import {
   ThText,
   ThTextInput,
   ThView,
-  ThTextInputCloseButton,
+  ThHeaderContainer,
 } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
@@ -135,30 +135,20 @@ export default function SearchScreen({ navigation, route }) {
         clearSearchHistory={clearSearchHistory}
       />
 
-      <ThView style={styles.screenContainer}>
+      <ThView style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
         {/*Header*/}
-        <ThView
-          style={{
-            marginTop: insets.top + 12,
-            marginBottom: 12,
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
+        <ThHeaderContainer>
           <HeaderArrowBackIcon navigation={navigation} />
-          <ThView style={{ marginLeft: 14, flex: 1 }}>
-            <ThTextInput
-              value={searchInput}
-              onChangeText={setSearchInput}
-              autoFocus={true}
-              onSubmitEditing={() => handleSearch(navigation, searchInput)}
-            />
-            <ThTextInputCloseButton onPress={() => setSearchInput("")} />
-          </ThView>
-          <ThView style={styles.headerRightContainer}>
-            <HeaderMicIcon style={{ marginLeft: 14 }} />
-          </ThView>
-        </ThView>
+          <ThTextInput
+            style={{ marginHorizontal: 12 }}
+            value={searchInput}
+            onChangeText={setSearchInput}
+            autoFocus={true}
+            onSubmitEditing={() => handleSearch(navigation, searchInput)}
+            setClearButton={() => setSearchInput("")}
+          />
+          <HeaderMicIcon style={styles.headerRightContainer} />
+        </ThHeaderContainer>
 
         {/*Search History*/}
         <ThFlatList
@@ -168,7 +158,7 @@ export default function SearchScreen({ navigation, route }) {
             <ThPressable
               style={({ pressed }) => ({
                 paddingVertical: 12,
-                backgroundColor: pressed ? colors.bgMuted : colors.bg,
+                backgroundColor: pressed ? colors.bgInteractive : colors.bg,
               })}
               onPress={() => handleSearch(navigation, item.text)}
               delayLongPress={200}
@@ -211,7 +201,7 @@ export default function SearchScreen({ navigation, route }) {
               <ThPressable onPress={() => setIsClearHistoryModalVisible(true)}>
                 <ThText
                   style={{
-                    color: colors.textMuted,
+                    color: colors.textSecondary,
                     fontSize: fontSizes.sm,
                     textAlign: "center",
                   }}

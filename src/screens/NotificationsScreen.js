@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchPexelsData } from "../api/pexelsAPI";
+import { AnimFadeRoundButton } from "../components/AnimatedComponents";
 import { DotVerticalIcon } from "../components/IconComponents";
 import {
   NotificationsScreenPreviewImage,
@@ -11,7 +12,6 @@ import {
   ThScrollViewColumn,
   ThText,
   ThView,
-  AnimFadeRoundButton,
 } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
@@ -59,14 +59,16 @@ export default function NotificationsScreen({ navigation }) {
         setIsModalVisible={setIsModalVisible}
       />
 
-      <ThScrollViewColumn style={styles.screenContainer}>
+      <ThScrollViewColumn
+        style={[styles.screenContainer, { backgroundColor: colors.bg }]}
+      >
         <ThText
           style={[
             styles.paddedHorizontalContainer,
             {
               marginBottom: 6,
               fontSize: fontSizes.sm,
-              color: colors.textMuted,
+              color: colors.textSecondary,
             },
           ]}
         >
@@ -87,7 +89,7 @@ export default function NotificationsScreen({ navigation }) {
             {
               marginVertical: 6,
               fontSize: fontSizes.sm,
-              color: colors.textMuted,
+              color: colors.textSecondary,
             },
           ]}
         >
@@ -116,7 +118,7 @@ function NotificationItem({ navigation, video, query, setVisible }) {
       style={({ pressed }) => {
         return {
           paddingVertical: 10,
-          backgroundColor: pressed ? colors.bgMuted : colors.bg,
+          backgroundColor: pressed ? colors.bgInteractive : colors.bg,
         };
       }}
       onPress={() => {
@@ -168,7 +170,9 @@ function NotificationItem({ navigation, video, query, setVisible }) {
           <ThText style={{ fontSize: fontSizes.sm }}>
             {video.description}
           </ThText>
-          <ThText style={{ fontSize: fontSizes.xs, color: colors.textMuted }}>
+          <ThText
+            style={{ fontSize: fontSizes.xs, color: colors.textSecondary }}
+          >
             {video.uploadedDate}
           </ThText>
         </ThView>
@@ -181,7 +185,7 @@ function NotificationItem({ navigation, video, query, setVisible }) {
         />
 
         <AnimFadeRoundButton
-          style={{ marginLeft: 4, backgroundColor: "transparent" }}
+          style={{ marginLeft: 4 }}
           roundSize={2}
           onPress={() => {
             setVisible(true);

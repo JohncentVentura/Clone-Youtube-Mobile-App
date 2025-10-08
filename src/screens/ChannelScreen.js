@@ -11,7 +11,7 @@ export default function ChannelScreen({ route }) {
   const { video, query } = route.params;
 
   return (
-    <ThView style={styles.screenContainer}>
+    <ThView style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
       <ThView style={styles.paddedHorizontalContainer}>
         <ChannelScreenCoverImage
           style={{ marginBottom: 16 }}
@@ -58,7 +58,7 @@ export default function ChannelScreen({ route }) {
             </ThText>
             <ThText
               style={{
-                color: colors.textMuted,
+                color: colors.textSecondary,
                 fontSize: fontSizes.xs,
               }}
             >
@@ -70,7 +70,7 @@ export default function ChannelScreen({ route }) {
         <ThText
           style={{
             marginBottom: 12,
-            color: colors.textMuted,
+            color: colors.textSecondary,
             fontSize: fontSizes.xs,
           }}
         >
@@ -90,10 +90,10 @@ export default function ChannelScreen({ route }) {
           </ThText>
         </ThText>
         <ThPressable
-          style={[styles.wideButton, { backgroundColor: colors.bgAccent }]}
+          style={[styles.wideButton, { backgroundColor: colors.bgContrast }]}
           onPress={() => console.log("Subscribe pressed")}
         >
-          <ThText style={{ color: colors.textAccent, fontWeight: "medium" }}>
+          <ThText style={{ color: colors.textContrast, fontWeight: "medium" }}>
             Subscribe
           </ThText>
         </ThPressable>

@@ -7,18 +7,20 @@ import {
   HeaderMicIcon,
   HeaderShareScreenIcon,
 } from "../components/HeaderComponents";
-import { SearchResultScreenHeaderDotVerticalModal } from "../components/ModalComponents";
+import {
+  SearchResultScreenHeaderDotVerticalModal,
+  ShareScreenModal,
+} from "../components/ModalComponents";
 import {
   ThFlatList,
   ThTextInput,
   ThView,
-  ThTextInputCloseButton,
+  ThHeaderContainer,
 } from "../components/ThemedComponents";
 import { FlatListVideoItem } from "../components/VideoComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 import { showMainBottomTabBar } from "../utils/utils";
-import { ShareScreenModal } from "../components/ModalComponents";
 
 export default function SearchResultScreen({ navigation, route }) {
   const { colors } = useTheme();
@@ -71,41 +73,32 @@ export default function SearchResultScreen({ navigation, route }) {
 
       <ThView style={styles.screenContainer}>
         {/*Header*/}
-        <ThView
-          style={{
-            marginTop: insets.top + 12,
-            marginBottom: 12,
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
+        <ThHeaderContainer>
           <HeaderArrowBackIcon onPress={() => navigation.pop(2)} />
-          <ThView style={{ marginLeft: 14, flex: 1 }}>
-            <ThTextInput
-              value={searchInput}
-              onChangeText={setSearchInput}
-              onPress={() => {
-                navigation.navigate("SearchScreen", { search: searchInput });
-              }}
-            />
-            <ThTextInputCloseButton
-              onPress={() =>
-                navigation.navigate("SearchScreen", { search: "" })
-              }
-            />
-          </ThView>
+          <ThTextInput
+            style={{ marginLeft: 12 }}
+            value={searchInput}
+            onChangeText={setSearchInput}
+            autoFocus={false}
+            onPress={() => {
+              navigation.navigate("SearchScreen", { search: searchInput });
+            }}
+            setClearButton={() =>
+              navigation.navigate("SearchScreen", { search: "" })
+            }
+          />
           <ThView style={styles.headerRightContainer}>
             <HeaderMicIcon />
             <HeaderShareScreenIcon
-              setIsModalVisible={setIsShareScreenModalVisible}
+              onPress={() => setIsShareScreenModalVisible(true)}
             />
             <HeaderDotVerticalIcon
-              setIsModalVisible={
-                setIsSearchResultScreenHeaderDotVerticalModalVisible
+              onPress={() =>
+                setIsSearchResultScreenHeaderDotVerticalModalVisible(true)
               }
             />
           </ThView>
-        </ThView>
+        </ThHeaderContainer>
 
         {/*Searched Videos*/}
         <ThFlatList

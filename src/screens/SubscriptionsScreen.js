@@ -1,8 +1,12 @@
 import { ThView, ThText } from "../components/ThemedComponents";
+import { styles } from "../styles/styles";
+import { useTheme } from "../styles/ThemeContext";
 
 export default function SubscriptionsScreen() {
+  const {colors} = useTheme();
+  
   return (
-    <ThView style={{ flex: 1 }}>
+    <ThView style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
       <ThText>SubscriptionsScreen Body</ThText>
     </ThView>
   );

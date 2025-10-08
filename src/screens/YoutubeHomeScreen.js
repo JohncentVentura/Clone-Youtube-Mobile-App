@@ -47,7 +47,7 @@ export default function YoutubeHomeScreen({ navigation }) {
   showMainBottomTabBar(navigation, colors);
 
   return (
-    <ThView style={styles.screenContainer}>
+    <ThView style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
       <ThFlatList
         data={videos}
         keyExtractor={(item) => item.id.toString()}
@@ -107,7 +107,7 @@ function TopQueryTabBar({ setQuery }) {
           borderRadius: 4,
           paddingHorizontal: 10,
           paddingVertical: 4,
-          backgroundColor: colors.bgMuted,
+          backgroundColor: colors.bgSecondary,
           opacity: pressed ? 0.2 : 1,
         })}
         onPress={() => navigation.getParent("MainNavigator")?.openDrawer()}
@@ -146,7 +146,7 @@ function TopQueryTabBar({ setQuery }) {
           navigation.navigate("YouTubeFlatListScreen");
         }}
       >
-        (Testing YouTube API)
+        (YouTube API)
       </ThTopQueryTab>
     </ThScrollViewRow>
   );

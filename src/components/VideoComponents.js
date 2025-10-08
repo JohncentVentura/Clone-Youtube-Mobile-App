@@ -1,15 +1,11 @@
 import { useIsFocused } from "@react-navigation/native";
 import { useVideoPlayer, VideoView } from "expo-video";
 import { useEffect, useState } from "react";
+import { AnimFadeRoundButton } from "./AnimatedComponents";
 import { DotVerticalIcon } from "./IconComponents";
 import { MainVideoScreenChannelImage } from "../components/ImageComponents";
 import { FlatListVideoItemModal } from "./ModalComponents";
-import {
-  ThPressable,
-  ThText,
-  ThView,
-  AnimFadeRoundButton,
-} from "../components/ThemedComponents";
+import { ThPressable, ThText, ThView } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 
@@ -72,7 +68,9 @@ export function FlatListVideoItem({
             >
               {video.title}
             </ThText>
-            <ThText style={{ color: colors.textMuted, fontSize: fontSizes.xs }}>
+            <ThText
+              style={{ color: colors.textSecondary, fontSize: fontSizes.xs }}
+            >
               {video.channelName} • {video.views} views • {video.uploadedDate}
             </ThText>
           </ThView>

@@ -54,7 +54,7 @@ function SwipeDownModal({
             borderRadius: 12,
             width: 42,
             height: 4,
-            backgroundColor: colors.borderMuted,
+            backgroundColor: colors.borderSecondary,
             alignSelf: "center",
           }}
         />
@@ -70,7 +70,9 @@ function SwipeDownModal({
                   //children means this modal has a header
                   paddingLeft: children ? 30 : 20,
                   paddingVertical: 12,
-                  backgroundColor: pressed ? colors.bgMuted : "transparent",
+                  backgroundColor: pressed
+                    ? colors.bgInteractive
+                    : "transparent",
                   flexDirection: "row",
                   alignItems: "center",
                 },
@@ -236,7 +238,7 @@ function TopRightModal({ isModalVisible, setIsModalVisible, items = [] }) {
               style={({ pressed }) => ({
                 paddingHorizontal: 14,
                 paddingVertical: 12,
-                backgroundColor: pressed ? colors.bgMuted : "transparent",
+                backgroundColor: pressed ? colors.bgInteractive : "transparent",
               })}
               onPress={item.onPress}
             >
@@ -403,20 +405,16 @@ export function RemoveSearchHistoryModal({
       <ThText style={{ marginBottom: 46 }}>Remove from search history?</ThText>
       <ThView
         style={{
-          backgroundColor: "transparent",
           flexDirection: "row",
           justifyContent: "flex-end",
           alignItems: "center",
         }}
       >
-        <ThPressable
-          style={{ backgroundColor: "transparent" }}
-          onPress={() => setIsModalVisible(false)}
-        >
+        <ThPressable onPress={() => setIsModalVisible(false)}>
           <ThText style={{ color: colors.primary }}>Cancel</ThText>
         </ThPressable>
         <ThPressable
-          style={{ marginLeft: 20, backgroundColor: "transparent" }}
+          style={{ marginLeft: 20 }}
           onPress={() => {
             removeSearchHistoryItem(removingItem.text);
             setIsModalVisible(false);

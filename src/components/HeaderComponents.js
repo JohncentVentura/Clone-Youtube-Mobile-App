@@ -1,4 +1,5 @@
 import { Image } from "react-native";
+import { AnimFadeRoundButton } from "./AnimatedComponents";
 import {
   ArrowBackIcon,
   DotVerticalIcon,
@@ -7,9 +8,10 @@ import {
   SearchIcon,
   ShareScreenIcon,
 } from "./IconComponents";
-import { ThText, AnimFadeRoundButton } from "./ThemedComponents";
+import { ThText } from "./ThemedComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
+import { imagePaths } from "../utils/paths";
 
 export function HeaderArrowBackIcon({ style, navigation, ...rest }) {
   return (
@@ -23,13 +25,9 @@ export function HeaderArrowBackIcon({ style, navigation, ...rest }) {
   );
 }
 
-export function HeaderDotVerticalIcon({ style, setIsModalVisible, ...rest }) {
+export function HeaderDotVerticalIcon({ style, ...rest }) {
   return (
-    <AnimFadeRoundButton
-      style={[styles.headerRight, style]}
-      onPress={() => setIsModalVisible(true)}
-      {...rest}
-    >
+    <AnimFadeRoundButton style={[styles.headerRight, style]} {...rest}>
       <DotVerticalIcon />
     </AnimFadeRoundButton>
   );
@@ -71,13 +69,9 @@ export function HeaderSearchIcon({ style, navigation, search, ...rest }) {
   );
 }
 
-export function HeaderShareScreenIcon({ style, setIsModalVisible, ...rest }) {
+export function HeaderShareScreenIcon({ style, ...rest }) {
   return (
-    <AnimFadeRoundButton
-      style={[styles.headerRight, style]}
-      onPress={() => setIsModalVisible(true)}
-      {...rest}
-    >
+    <AnimFadeRoundButton style={[styles.headerRight, style]} {...rest}>
       <ShareScreenIcon />
     </AnimFadeRoundButton>
   );
@@ -90,11 +84,13 @@ export function HeaderTitleText({ style, children, ...rest }) {
     <ThText
       style={[
         styles.headerTitle,
-        {
-          fontSize: fontSizes.xl,
-          fontWeight: "medium",
-        },
-        style,
+        [
+          {
+            fontSize: fontSizes.xl,
+            fontWeight: "medium",
+          },
+          style,
+        ],
       ]}
       {...rest}
     >
@@ -108,12 +104,12 @@ export function HeaderYouTubeLogoImage({ style, ...rest }) {
 
   return (
     <Image
-      style={[styles.headerLeft, { width: 95, height: 95 }, style]}
-      resizeMode={"contain"}
+      style={[{ width: 90, height: 25 }, style]}
+      resizeMode={"stretch"}
       source={
         colorScheme === "light"
-          ? require("../assets/images/youtube-logo-light-mode.png")
-          : require("../assets/images/youtube-logo-dark-mode.png")
+          ? imagePaths.youtubeLogoLightMode
+          : imagePaths.youtubeLogoDarkMode
       }
       alt="Channel Image"
       {...rest}

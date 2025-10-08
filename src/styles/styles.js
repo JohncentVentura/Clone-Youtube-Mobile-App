@@ -1,7 +1,6 @@
 import { Dimensions, StyleSheet } from "react-native";
 
 //TODO: export and use screenWidth and screenHeight to other components
-//TODO: maybe use useWindowDimensions hook?
 export const screenWidth = Dimensions.get("window").width * 1; //Multiply by 1 to get 100%
 export const screenHeight = Dimensions.get("window").height * 1; //Multiply by 1 to get 100%
 export const globalHorizontalSpacing = 16;
@@ -9,19 +8,19 @@ export const globalHorizontalSpacing = 16;
 export const styles = StyleSheet.create({
   /******************************Headers******************************/
   headerLeft: {
-    marginLeft: globalHorizontalSpacing,
+    marginVertical: 8,
   },
   headerTitle: {
-    marginLeft: 12,
+    marginLeft: 14,
   },
   headerRightContainer: {
-    marginRight: globalHorizontalSpacing,
-    height: "100%",
+    marginLeft: "auto",
     flexDirection: "row",
     alignItems: "center",
   },
   headerRight: {
-    marginLeft: 20,
+    marginLeft: 24,
+    marginVertical: 8,
   },
   /******************************Containers******************************/
   screenContainer: {
@@ -31,6 +30,10 @@ export const styles = StyleSheet.create({
   paddedHorizontalContainer: {
     paddingHorizontal: globalHorizontalSpacing,
     width: "100%",
+  },
+  flexRowContainer: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   /******************************Images******************************/
   coverImages: {
@@ -63,5 +66,41 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+  },
+  /******************************Text******************************/
+  fontBold: {
+    fontFamily: "roboto-bold",
+  },
+  fontMedium: {
+    fontFamily: "roboto-medium",
+  },
+  fontRegular: {
+    fontFamily: "roboto-regular",
+  },
+  fontSize2XS: {
+    fontSize: 10,
+  },
+  fontSizeXS: {
+    fontSize: 12,
+  },
+  fontSizeSM: {
+    fontSize: 14,
+  },
+  fontSizeBase: {
+    fontSize: 16,
+  },
+  fontSizeLG: {
+    fontSize: 18,
+  },
+  fontSizeXL: {
+    fontSize: 20,
+  },
+  fontSize2XL: {
+    fontSize: 24,
+  },
+  /******************************Icons******************************/
+  iconSizeBase: {
+    width: 24,
+    height: 24,
   },
 });

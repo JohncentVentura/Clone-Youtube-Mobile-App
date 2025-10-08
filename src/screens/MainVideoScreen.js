@@ -58,7 +58,7 @@ export default function MainVideoScreen({ navigation, route }) {
 
   return (
     <>
-      <ThView style={[styles.screenContainer]}>
+      <ThView style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
         <ThFlatList
           data={relatedVideos}
           keyExtractor={(item) => item.id.toString()}
@@ -79,14 +79,17 @@ export default function MainVideoScreen({ navigation, route }) {
                 {/*Total views, Uploaded Date, & ...more link section*/}
                 <ThView style={{ marginBottom: 14, flexDirection: "row" }}>
                   <ThText
-                    style={{ color: colors.textMuted, fontSize: fontSizes.xs }}
+                    style={{
+                      color: colors.textSecondary,
+                      fontSize: fontSizes.xs,
+                    }}
                   >
                     {video.views} views
                   </ThText>
                   <ThText
                     style={{
                       marginLeft: 8,
-                      color: colors.textMuted,
+                      color: colors.textSecondary,
                       fontSize: fontSizes.xs,
                     }}
                   >
@@ -147,7 +150,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     <ThText
                       style={{
                         marginLeft: 8,
-                        color: colors.textMuted,
+                        color: colors.textSecondary,
                         fontSize: fontSizes.xs,
                       }}
                     >
@@ -157,12 +160,12 @@ export default function MainVideoScreen({ navigation, route }) {
                   <ThPressable
                     style={[
                       styles.baseButton,
-                      { backgroundColor: colors.bgAccent },
+                      { backgroundColor: colors.bgContrast },
                     ]}
                   >
                     <ThText
                       style={{
-                        color: colors.textAccent,
+                        color: colors.textContrast,
                         fontSize: fontSizes.xs,
                         fontWeight: "medium",
                       }}
@@ -179,7 +182,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     style={[
                       {
                         borderRadius: 9999,
-                        backgroundColor: colors.bgMuted,
+                        backgroundColor: colors.bgSecondary,
                         flexDirection: "row",
                         alignItems: "center",
                       },
@@ -190,8 +193,8 @@ export default function MainVideoScreen({ navigation, route }) {
                         styles.iconTextButton,
                         {
                           backgroundColor: pressed
-                            ? colors.borderMuted
-                            : colors.bgMuted,
+                            ? colors.bgInteractive
+                            : colors.bgSecondary,
                         },
                       ]}
                       onPress={() => console.log("Liked Press")}
@@ -211,7 +214,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     <ThText
                       style={{
                         borderRightWidth: 1,
-                        borderRightColor: colors.border,
+                        borderRightColor: colors.borderPrimary,
                         fontSize: fontSizes.xs,
                       }}
                     />
@@ -220,8 +223,8 @@ export default function MainVideoScreen({ navigation, route }) {
                         styles.iconTextButton,
                         {
                           backgroundColor: pressed
-                            ? colors.borderMuted
-                            : colors.bgMuted,
+                            ? colors.bgInteractive
+                            : colors.bgSecondary,
                         },
                       ]}
                       onPress={() => console.log("Disliked Press")}
@@ -276,8 +279,8 @@ export default function MainVideoScreen({ navigation, route }) {
                       paddingHorizontal: 12,
                       paddingTop: 8,
                       backgroundColor: pressed
-                        ? colors.borderMuted
-                        : colors.bgMuted,
+                        ? colors.bgInteractive
+                        : colors.bgSecondary,
                     },
                   ]}
                   onPress={() => setShowComments(true)}
@@ -300,7 +303,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     <ThText
                       style={{
                         marginLeft: 10,
-                        color: colors.textMuted,
+                        color: colors.textSecondary,
                         fontSize: fontSizes.xs,
                       }}
                     >

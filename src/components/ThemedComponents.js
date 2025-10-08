@@ -8,43 +8,38 @@ import {
   TextInput,
   View,
 } from "react-native";
-import Animated, {
-  interpolateColor,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { styles } from "../styles/styles";
 import { useTheme } from "../styles/ThemeContext";
 
 /******************************Base Components******************************/
 export function ThFlatList({ style, ...rest }) {
-  const { colors } = useTheme();
-
-  return <FlatList style={[{ backgroundColor: colors.bg }, style]} {...rest} />;
+  return (
+    <FlatList style={[{ backgroundColor: "transparent" }, style]} {...rest} />
+  );
 }
 
 export function ThIcon({ IconComponent, ...rest }) {
   const { colors, iconSizes } = useTheme();
 
-  return <IconComponent size={iconSizes.base} color={colors.icon} {...rest} />;
+  return (
+    <IconComponent size={iconSizes.base} color={colors.iconPrimary} {...rest} />
+  );
 }
 
 export function ThPressable({ style, children, ...rest }) {
-  const { colors } = useTheme();
-
   //Allows style to be static (normal) or functional (access props, like pressed)
   const functionStyle =
     typeof style === "function"
       ? (state) => [
           {
-            backgroundColor: colors.bg,
+            backgroundColor: "transparent",
           },
           style(state),
         ]
-      : (state) => [
+      : () => [
           {
-            backgroundColor: colors.bg,
+            backgroundColor: "transparent",
           },
           style,
         ];
@@ -57,11 +52,9 @@ export function ThPressable({ style, children, ...rest }) {
 }
 
 export function ThScrollViewColumn({ style, children, ...rest }) {
-  const { colors } = useTheme();
-
   return (
     <ScrollView
-      style={[{ backgroundColor: colors.bg }, style]}
+      style={[{ backgroundColor: "transparent" }, style]}
       contentContainerStyle={StyleSheet.create({
         alignItems: "center",
       })}
@@ -74,11 +67,9 @@ export function ThScrollViewColumn({ style, children, ...rest }) {
 }
 
 export function ThScrollViewRow({ style, children, ...rest }) {
-  const { colors } = useTheme();
-
   return (
     <ScrollView
-      style={[{ backgroundColor: colors.bg }, style]}
+      style={[{ backgroundColor: "transparent" }, style]}
       contentContainerStyle={StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
@@ -96,22 +87,22 @@ export function ThText({ style, children, ...rest }) {
   const { colors, fontSizes } = useTheme();
 
   const flattenedStyle = StyleSheet.flatten(style) || {};
-  const weight = flattenedStyle.fontWeight;
+  const flattenedFontWeight = flattenedStyle.fontWeight;
   let fontFamily;
 
-  if (weight === "bold") fontFamily = "roboto-bold";
-  else if (weight === "medium") fontFamily = "roboto-medium";
+  if (flattenedFontWeight === "bold") fontFamily = "roboto-bold";
+  else if (flattenedFontWeight === "medium") fontFamily = "roboto-medium";
   else fontFamily = "roboto-regular";
 
-  //Remove fontWeight from the flattened style so it doesn't override fontFamily
+  //Remove fontWeight from flattenedStyle so it doesn't override fontFamily
   const { fontWeight, ...restStyle } = flattenedStyle;
 
   return (
     <Text
       style={[
         {
-          color: colors.text,
-          fontFamily,
+          color: colors.textPrimary,
+          fontFamily: fontFamily,
           fontSize: fontSizes.base,
         },
         restStyle, //All other style props except fontWeight
@@ -127,45 +118,83 @@ export function ThTextInput({
   style,
   placeholder = "Search Youtube",
   returnKeyType = "search",
+  setClearButton,
   ...rest
 }) {
   const { colors, fontSizes } = useTheme();
 
   return (
-    <TextInput
-      style={[
-        {
-          borderRadius: 9999,
-          paddingLeft: 16,
-          paddingRight: 8,
-          paddingVertical: 8,
-          backgroundColor: colors.bgMuted,
-          color: colors.textMuted,
-          fontSize: fontSizes.base,
-          fontWeight: "medium",
-        },
-        style,
-      ]}
-      placeholderTextColor={colors.textMuted}
-      placeholder={placeholder}
-      returnKeyType={returnKeyType}
-      {...rest}
-    />
+    <ThView style={[{ flex: 1 }, style]}>
+      <TextInput
+        style={[
+          {
+            borderRadius: 9999,
+            paddingLeft: 14,
+            paddingVertical: 8,
+            backgroundColor: colors.bgSecondary,
+            color: colors.textSecondary,
+            fontSize: fontSizes.base,
+            fontWeight: "medium",
+          },
+        ]}
+        placeholderTextColor={colors.textSecondary}
+        placeholder={placeholder}
+        returnKeyType={returnKeyType}
+        {...rest}
+      />
+      <ThPressable
+        onPress={setClearButton}
+        style={[
+          {
+            position: "absolute",
+            top: 0,
+            right: 0,
+            padding: 6,
+          },
+        ]}
+      >
+        <ThIcon
+          IconComponent={Ionicons}
+          name="close"
+          color={colors.iconSecondary}
+        />
+      </ThPressable>
+    </ThView>
   );
 }
 
-//TODO: Maybe change backgroundColor to transparent
 export function ThView({ style, children, ...rest }) {
-  const { colors } = useTheme();
-
   return (
-    <View style={[{ backgroundColor: colors.bg }, style]} {...rest}>
+    <View style={[{ backgroundColor: "transparent" }, style]} {...rest}>
       {children}
     </View>
   );
 }
 
-/******************************Extended Components******************************/
+/******************************Extended Themed Components******************************/
+export function ThHeaderContainer({ style, children, ...rest }) {
+  const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
+
+  return (
+    <ThView
+      style={[
+        styles.paddedHorizontalContainer,
+        {
+          paddingTop: insets.top + 4,
+          backgroundColor: colors.bg,
+          flexDirection: "row",
+          alignItems: "center",
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      {children}
+    </ThView>
+  );
+}
+
 export function ThTopQueryTab({ style, selected, children, ...rest }) {
   const { colors } = useTheme();
 
@@ -177,13 +206,15 @@ export function ThTopQueryTab({ style, selected, children, ...rest }) {
           borderRadius: 8,
           paddingHorizontal: 12,
           paddingVertical: 6,
-          backgroundColor: selected ? colors.bgAccent : colors.bgMuted,
+          backgroundColor: selected ? colors.bgContrast : colors.bgSecondary,
         },
         style,
       ]}
       {...rest}
     >
-      <ThText style={{ color: selected ? colors.textAccent : colors.text }}>
+      <ThText
+        style={{ color: selected ? colors.textContrast : colors.textPrimary }}
+      >
         {children}
       </ThText>
     </ThPressable>
@@ -198,7 +229,7 @@ export function ThSmallIconButton({ style, children, ...rest }) {
       style={({ pressed }) => [
         styles.iconTextButton,
         {
-          backgroundColor: colors.bgMuted,
+          backgroundColor: colors.bgSecondary,
           transform: [{ scale: pressed ? 0.94 : 1 }],
         },
         style,
@@ -228,69 +259,4 @@ export function ThSmallIconButtonText({ style, children, ...rest }) {
 
 export function ThTextInputCloseButton({ style, ...rest }) {
   const { colors } = useTheme();
-
-  return (
-    <ThPressable
-      style={[
-        {
-          position: "absolute",
-          top: 0,
-          right: 0,
-          padding: 6,
-          backgroundColor: "transparent",
-        },
-        style,
-      ]}
-      {...rest}
-    >
-      <ThIcon IconComponent={Ionicons} name="close" color={colors.iconMuted} />
-    </ThPressable>
-  );
-}
-
-/******************************Animated Components******************************/
-export function AnimFadeRoundButton({
-  style,
-  roundSize = 10,
-  children,
-  ...rest
-}) {
-  const { colors } = useTheme();
-  const pressed = useSharedValue(0);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    backgroundColor: interpolateColor(
-      pressed.value,
-      [0, 1],
-      ["transparent", colors.borderMuted]
-    ),
-    transform: [
-      { scale: withTiming(pressed.value ? 1 : 0, { duration: 150 }) },
-    ],
-  }));
-
-  return (
-    <Pressable
-      style={style}
-      onPressIn={() => (pressed.value = withTiming(1, { duration: 200 }))}
-      onPressOut={() => (pressed.value = withTiming(0, { duration: 400 }))}
-      {...rest}
-    >
-      <Animated.View
-        style={[
-          {
-            //Expand background outward
-            position: "absolute",
-            left: -roundSize,
-            right: -roundSize,
-            top: -roundSize,
-            bottom: -roundSize,
-            borderRadius: 9999,
-          },
-          animatedStyle,
-        ]}
-      />
-      {children}
-    </Pressable>
-  );
 }

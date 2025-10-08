@@ -60,13 +60,13 @@ const drawerItems = [
     route: "MoviesStack",
     icon: MovieIcon,
     label: "Movies",
-    component: UploadStack,
+    component: SubscriptionsStack,
   },
   {
     route: "LiveStack",
     icon: LiveIcon,
     label: "Live",
-    component: SubscriptionsStack,
+    component: UploadStack,
   },
   {
     route: "GamingStack",
@@ -172,8 +172,8 @@ export default function MainNavigator() {
       screenOptions={{ headerShown: false }}
       drawerContent={(props) => {
         return (
-          <ThView style={{ flex: 1, justifyContent: "space-between" }}>
-            <DrawerContentScrollView style={{ backgroundColor: colors.bg }}>
+          <ThView style={{ backgroundColor: colors.bg, flex: 1 }}>
+            <DrawerContentScrollView>
               {drawerItems.map((item, index) => {
                 const isCurrentItemThisRoute =
                   drawerItems[props.state.index].route === item.route;
@@ -187,7 +187,7 @@ export default function MainNavigator() {
                       <ThView
                         style={{
                           marginVertical: 12,
-                          backgroundColor: colors.primary,
+                          backgroundColor: colors.borderSecondary,
                           width: "100%",
                           height: 1,
                         }}
@@ -196,7 +196,7 @@ export default function MainNavigator() {
 
                     <DrawerItem
                       style={{
-                        marginBottom: 2,
+                        paddingVertical: 2,
                         backgroundColor:
                           isCurrentItemThisRoute &&
                           !isCurrentItemYoutubeHomeStack
@@ -216,11 +216,11 @@ export default function MainNavigator() {
                               item.route
                               ? isCurrentItemThisRoute &&
                                 !isCurrentItemYoutubeHomeStack
-                                ? colors.iconAccent
+                                ? colors.iconContrast
                                 : colors.primary
                               : isCurrentItemThisRoute
-                              ? colors.iconAccent
-                              : colors.icon
+                              ? colors.iconContrast
+                              : colors.iconPrimary
                           }
                         />
                       )}
@@ -241,8 +241,8 @@ export default function MainNavigator() {
                             color:
                               isCurrentItemThisRoute &&
                               !isCurrentItemYoutubeHomeStack
-                                ? colors.textAccent
-                                : colors.text,
+                                ? colors.textContrast
+                                : colors.textPrimary,
                           }}
                         >
                           {item.label}
@@ -257,7 +257,7 @@ export default function MainNavigator() {
             {/*Drawer Footer*/}
             <ThView
               style={{
-                marginBottom: insets.bottom + 6,
+                marginBottom: insets.bottom + 10,
                 flexDirection: "row",
                 justifyContent: "center",
               }}
@@ -267,11 +267,7 @@ export default function MainNavigator() {
               >
                 Privacy Policy
               </DrawerFooterText>
-              <DrawerFooterText
-                style={{
-                  marginHorizontal: 6,
-                }}
-              >
+              <DrawerFooterText style={{ marginHorizontal: 8 }}>
                 •
               </DrawerFooterText>
               <DrawerFooterText
@@ -298,7 +294,7 @@ export default function MainNavigator() {
 function MainBottomTabBar({ navigation }) {
   const { colors, fontSizes } = useTheme();
   const mainNavigator = navigation.getParent("MainNavigator");
-  
+
   //Assign updated bottomTabItems so the HomeStack route of this tab uses the component of the currently selected Drawer route
   const updatedTabItems = bottomTabItems(
     drawerItems[mainNavigator.getState().index].component
@@ -319,12 +315,12 @@ function MainBottomTabBar({ navigation }) {
             focused ? (
               <currentTabItem.activeIcon color={colors.primary} />
             ) : (
-              <currentTabItem.inactiveIcon color={colors.iconMuted} />
+              <currentTabItem.inactiveIcon color={colors.iconSecondary} />
             ),
           tabBarLabel: ({ focused }) => (
             <ThText
               style={{
-                color: focused ? colors.text : colors.textMuted,
+                color: focused ? colors.textPrimary : colors.textSecondary,
                 fontWeight: "medium",
                 fontSize: fontSizes.xs2,
               }}
@@ -355,7 +351,7 @@ function DrawerFooterText({ style, children, ...rest }) {
     <ThText
       style={[
         {
-          color: colors.textMuted,
+          color: colors.textSecondary,
           fontSize: fontSizes.xs,
         },
         style,
