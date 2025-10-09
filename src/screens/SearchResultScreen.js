@@ -7,6 +7,7 @@ import {
   HeaderMicIcon,
   HeaderShareScreenIcon,
 } from "../components/HeaderComponents";
+
 import {
   SearchResultScreenHeaderDotVerticalModal,
   ShareScreenModal,
@@ -18,23 +19,23 @@ import {
   ThHeaderContainer,
 } from "../components/ThemedComponents";
 import { FlatListVideoItem } from "../components/VideoComponents";
+
+import { useModal } from "../context/ModalContext";
+import { useTheme } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
-import { useTheme } from "../styles/ThemeContext";
 import { showMainBottomTabBar } from "../utils/utils";
 
 export default function SearchResultScreen({ navigation, route }) {
+  const {
+    setIsShareScreenModalVisible,
+    setIsSearchResultScreenHeaderDotVerticalModalVisible,
+  } = useModal();
   const { colors } = useTheme();
-  const insets = useSafeAreaInsets();
+
   const { search } = route.params;
   const [searchInput, setSearchInput] = useState(search);
   const [searchVideos, setSearchVideos] = useState([]);
   const [autoPlayVideoId, setAutoPlayVideoId] = useState(null);
-  const [isShareScreenModalVisible, setIsShareScreenModalVisible] =
-    useState(false);
-  const [
-    isSearchResultScreenHeaderDotVerticalModalVisible,
-    setIsSearchResultScreenHeaderDotVerticalModalVisible,
-  ] = useState(false);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -61,18 +62,7 @@ export default function SearchResultScreen({ navigation, route }) {
 
   return (
     <>
-      <ShareScreenModal
-        isModalVisible={isShareScreenModalVisible}
-        setIsModalVisible={setIsShareScreenModalVisible}
-      />
-
-      <SearchResultScreenHeaderDotVerticalModal
-        isModalVisible={isSearchResultScreenHeaderDotVerticalModalVisible}
-        setIsModalVisible={setIsSearchResultScreenHeaderDotVerticalModalVisible}
-      />
-
       <ThView style={styles.screenContainer}>
-        {/*Header*/}
         <ThHeaderContainer>
           <HeaderArrowBackIcon onPress={() => navigation.pop(2)} />
           <ThTextInput
@@ -83,24 +73,26 @@ export default function SearchResultScreen({ navigation, route }) {
             onPress={() => {
               navigation.navigate("SearchScreen", { search: searchInput });
             }}
-            setClearButton={() =>
-              navigation.navigate("SearchScreen", { search: "" })
-            }
+            setClearButton={() => {
+              setSearchInput("");
+              navigation.navigate("SearchScreen", { search: "" });
+            }}
           />
           <ThView style={styles.headerRightContainer}>
             <HeaderMicIcon />
             <HeaderShareScreenIcon
-              onPress={() => setIsShareScreenModalVisible(true)}
+              onPress={() => {
+                setIsShareScreenModalVisible(true);
+              }}
             />
             <HeaderDotVerticalIcon
-              onPress={() =>
-                setIsSearchResultScreenHeaderDotVerticalModalVisible(true)
-              }
+              onPress={() => {
+                setIsSearchResultScreenHeaderDotVerticalModalVisible(true);
+              }}
             />
           </ThView>
         </ThHeaderContainer>
 
-        {/*Searched Videos*/}
         <ThFlatList
           data={searchVideos}
           keyExtractor={(item) => item.id.toString()}

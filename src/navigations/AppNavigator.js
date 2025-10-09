@@ -3,7 +3,9 @@ import { useFonts } from "expo-font";
 import { useState } from "react";
 import { ActivityIndicator } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { ThemeProvider } from "../styles/ThemeContext";
+import { ModalProvider } from "../context/ModalContext";
+import { SearchProvider } from "../context/SearchContext";
+import { ThemeProvider } from "../context/ThemeContext";
 import { fontPaths } from "../utils/paths";
 import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
@@ -23,9 +25,13 @@ export default function AppNavigator() {
   return (
     <ThemeProvider>
       <SafeAreaProvider>
-        <NavigationContainer>
-          {isLoggedIn ? <MainNavigator /> : <AuthNavigator />}
-        </NavigationContainer>
+        <ModalProvider>
+          <SearchProvider>
+            <NavigationContainer>
+              {isLoggedIn ? <MainNavigator /> : <AuthNavigator />}
+            </NavigationContainer>
+          </SearchProvider>
+        </ModalProvider>
       </SafeAreaProvider>
     </ThemeProvider>
   );

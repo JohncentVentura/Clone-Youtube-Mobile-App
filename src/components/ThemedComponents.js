@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { styles } from "../styles/styles";
-import { useTheme } from "../styles/ThemeContext";
+import { useTheme } from "../context/ThemeContext";
 
 /******************************Base Components******************************/
 export function ThFlatList({ style, ...rest }) {

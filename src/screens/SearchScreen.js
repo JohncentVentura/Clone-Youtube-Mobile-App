@@ -13,8 +13,11 @@ import {
 import { SearchScreenHistoryImage } from "../components/ImageComponents";
 import {
   ClearSearchHistoryModal,
-  RemoveSearchHistoryModal,
+  RemoveSearchFromHistoryModal,
 } from "../components/ModalComponents";
+import { useModal } from "../context/ModalContext";
+import { useSearch } from "../context/SearchContext";
+import { useTheme } from "../context/ThemeContext";
 import {
   ThFlatList,
   ThPressable,
@@ -24,119 +27,25 @@ import {
   ThHeaderContainer,
 } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
-import { useTheme } from "../styles/ThemeContext";
 import { hideMainBottomTabBar } from "../utils/utils";
 
-const SEARCH_HISTORY_KEY = "searchHistory";
-
 export default function SearchScreen({ navigation, route }) {
+  const {
+    setIsClearHistoryModalVisible,
+    setIsRemoveSearchFromHistoryModalVisible,
+  } = useModal();
+  const { searchHistory, setRemovingSearchItem, handleSearch } = useSearch();
   const { colors, fontSizes, iconSizes } = useTheme();
-  const insets = useSafeAreaInsets();
+
   const { search } = route.params;
   const [searchInput, setSearchInput] = useState(search);
-  const [searchHistory, setSearchHistory] = useState([]); //Contains search text & search image
-  const [removingItem, setRemovingItem] = useState(null);
-  const [isRemoveSearchModalVisible, setIsRemoveSearchModalVisible] =
-    useState(false);
-  const [isClearHistoryModalVisible, setIsClearHistoryModalVisible] =
-    useState(false);
+  const [removingSearch, setRemoveSearch] = useState(null);
 
   hideMainBottomTabBar(navigation);
 
-  //Save history every time it changes
-  useEffect(() => {
-    if (searchHistory.length > 0) {
-      (async () => {
-        try {
-          await AsyncStorage.setItem(
-            SEARCH_HISTORY_KEY,
-            JSON.stringify(searchHistory)
-          );
-        } catch (e) {
-          console.log("Failed to save history: ", e);
-        }
-      })();
-    }
-  }, [searchHistory]);
-
-  //Load history when screen mounts
-  useEffect(() => {
-    (async () => {
-      try {
-        const loadedSearchHistory = await AsyncStorage.getItem(
-          SEARCH_HISTORY_KEY
-        );
-        if (loadedSearchHistory)
-          setSearchHistory(JSON.parse(loadedSearchHistory));
-      } catch (e) {
-        console.log("Failed to load history: ", e);
-      }
-    })();
-  }, []);
-
-  const handleSearch = async (navigation, searchText) => {
-    if (!searchText) return; //Ignores empty search input
-
-    let searchPicture = "";
-    try {
-      //fetch data for the searched picture only after searching it
-      const data = await fetchPexelsData(searchText, 1);
-      searchPicture = data[0].picture;
-    } catch (e) {
-      console.log("Failed to fetch on handleSearch: ", e);
-      return;
-    }
-
-    const searchedItem = {
-      text: searchText,
-      picture: searchPicture,
-    };
-
-    setSearchHistory((prevSearchHistory) => {
-      if (prevSearchHistory.some((item) => item.text === searchText))
-        return prevSearchHistory; //Prevents duplicate searches
-      return [searchedItem, ...prevSearchHistory]; //Add new searched item
-    });
-
-    navigation.push("SearchResultScreen", { search: searchedItem.text });
-  };
-
-  const clearSearchHistory = async () => {
-    try {
-      await AsyncStorage.removeItem(SEARCH_HISTORY_KEY);
-      setSearchHistory([]);
-    } catch (e) {
-      console.log("Failed to clear history: ", e);
-    }
-  };
-
-  const removeSearchHistoryItem = async (itemText) => {
-    try {
-      const updated = searchHistory.filter((item) => item.text !== itemText);
-      setSearchHistory(updated);
-      await AsyncStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(updated));
-    } catch (e) {
-      console.log("Failed to remove item: ", e);
-    }
-  };
-
   return (
     <>
-      <RemoveSearchHistoryModal
-        isModalVisible={isRemoveSearchModalVisible}
-        setIsModalVisible={setIsRemoveSearchModalVisible}
-        removingItem={removingItem}
-        removeSearchHistoryItem={removeSearchHistoryItem}
-      />
-
-      <ClearSearchHistoryModal
-        isModalVisible={isClearHistoryModalVisible}
-        setIsModalVisible={setIsClearHistoryModalVisible}
-        clearSearchHistory={clearSearchHistory}
-      />
-
       <ThView style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
-        {/*Header*/}
         <ThHeaderContainer>
           <HeaderArrowBackIcon navigation={navigation} />
           <ThTextInput
@@ -144,13 +53,14 @@ export default function SearchScreen({ navigation, route }) {
             value={searchInput}
             onChangeText={setSearchInput}
             autoFocus={true}
-            onSubmitEditing={() => handleSearch(navigation, searchInput)}
+            onSubmitEditing={() =>
+              handleSearch({ navigation, searchInput: searchInput })
+            }
             setClearButton={() => setSearchInput("")}
           />
           <HeaderMicIcon style={styles.headerRightContainer} />
         </ThHeaderContainer>
 
-        {/*Search History*/}
         <ThFlatList
           data={searchHistory}
           keyExtractor={(item, index) => item.text + index}
@@ -160,11 +70,13 @@ export default function SearchScreen({ navigation, route }) {
                 paddingVertical: 12,
                 backgroundColor: pressed ? colors.bgInteractive : colors.bg,
               })}
-              onPress={() => handleSearch(navigation, item.text)}
+              onPress={() => {
+                navigation.push("SearchResultScreen", { search: item.text });
+              }}
               delayLongPress={200}
               onLongPress={() => {
-                setRemovingItem(item);
-                setIsRemoveSearchModalVisible(true);
+                setRemovingSearchItem(item);
+                setIsRemoveSearchFromHistoryModalVisible(true);
               }}
             >
               <ThView

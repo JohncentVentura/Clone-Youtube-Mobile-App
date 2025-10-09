@@ -4,7 +4,7 @@ import {
   HeaderTitleText,
 } from "../components/HeaderComponents";
 import ShortsScreen from "../screens/ShortsScreen";
-import { useTheme } from "../styles/ThemeContext";
+import { useTheme } from "../context/ThemeContext";
 
 const Stack = createStackNavigator();
 

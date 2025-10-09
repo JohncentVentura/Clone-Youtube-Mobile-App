@@ -1,4 +1,6 @@
 import Modal from "react-native-modal";
+import { useSearch } from "../context/SearchContext";
+import { useTheme } from "../context/ThemeContext";
 import { ThPressable, ThText, ThView } from "./ThemedComponents";
 import {
   DontRecommendChannelIcon,
@@ -13,7 +15,6 @@ import {
   ShareIcon,
   ShareScreenIcon,
 } from "./IconComponents";
-import { useTheme } from "../styles/ThemeContext";
 
 /******************************SwipeDownModal Components******************************/
 function SwipeDownModal({
@@ -378,13 +379,13 @@ function QuestionModal({ isModalVisible, setIsModalVisible, children }) {
   );
 }
 
-export function RemoveSearchHistoryModal({
+export function RemoveSearchFromHistoryModal({
   isModalVisible,
   setIsModalVisible,
   removingItem,
-  removeSearchHistoryItem,
 }) {
   const { colors, fontSizes } = useTheme();
+  const { setRemovingSearchItem, removeSearchFromHistory } = useSearch();
 
   if (!removingItem) return null;
 
@@ -416,7 +417,8 @@ export function RemoveSearchHistoryModal({
         <ThPressable
           style={{ marginLeft: 20 }}
           onPress={() => {
-            removeSearchHistoryItem(removingItem.text);
+            removeSearchFromHistory(removingItem.text);
+            setRemovingSearchItem("");
             setIsModalVisible(false);
           }}
         >
@@ -429,12 +431,9 @@ export function RemoveSearchHistoryModal({
   );
 }
 
-export function ClearSearchHistoryModal({
-  isModalVisible,
-  setIsModalVisible,
-  clearSearchHistory,
-}) {
+export function ClearSearchHistoryModal({ isModalVisible, setIsModalVisible }) {
   const { colors } = useTheme();
+  const { clearSearchHistory } = useSearch();
 
   return (
     <QuestionModal

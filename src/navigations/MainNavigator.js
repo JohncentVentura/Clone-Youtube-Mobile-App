@@ -31,7 +31,7 @@ import {
   YoutubePremiumIcon,
 } from "../components/IconComponents";
 import { ThText, ThView } from "../components/ThemedComponents";
-import { useTheme } from "../styles/ThemeContext";
+import { useTheme } from "../context/ThemeContext";
 import { getMainBottomTabBarStyle } from "../utils/utils";
 import ShortsStack from "./ShortsStack";
 import SubscriptionsStack from "./SubscriptionsStack";

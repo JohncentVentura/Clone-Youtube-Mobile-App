@@ -4,7 +4,7 @@ import {
   HeaderTitleText,
 } from "../components/HeaderComponents";
 import YouScreen from "../screens/YouScreen";
-import { useTheme } from "../styles/ThemeContext";
+import { useTheme } from "../context/ThemeContext";
 
 const Stack = createStackNavigator();
 

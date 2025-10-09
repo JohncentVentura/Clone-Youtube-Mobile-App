@@ -28,7 +28,7 @@ import {
   MainVideoView,
 } from "../components/VideoComponents";
 import { styles } from "../styles/styles";
-import { useTheme } from "../styles/ThemeContext";
+import { useTheme } from "../context/ThemeContext";
 import { hideMainBottomTabBar } from "../utils/utils";
 
 export default function MainVideoScreen({ navigation, route }) {

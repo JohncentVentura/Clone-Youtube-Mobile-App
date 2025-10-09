@@ -11,7 +11,7 @@ import {
 } from "../components/ThemedComponents";
 import { FlatListVideoItem } from "../components/VideoComponents";
 import { styles } from "../styles/styles";
-import { useTheme } from "../styles/ThemeContext";
+import { useTheme } from "../context/ThemeContext";
 import { showMainBottomTabBar } from "../utils/utils";
 
 const defaultQuery = "Humans";

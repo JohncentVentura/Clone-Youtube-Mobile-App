@@ -4,7 +4,7 @@ import {
 } from "../components/ImageComponents";
 import { ThPressable, ThText, ThView } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
-import { useTheme } from "../styles/ThemeContext";
+import { useTheme } from "../context/ThemeContext";
 
 export default function ChannelScreen({ route }) {
   const { colors, fontSizes } = useTheme();

@@ -7,7 +7,8 @@ import { MainVideoScreenChannelImage } from "../components/ImageComponents";
 import { FlatListVideoItemModal } from "./ModalComponents";
 import { ThPressable, ThText, ThView } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
-import { useTheme } from "../styles/ThemeContext";
+import { useModal } from "../context/ModalContext";
+import { useTheme } from "../context/ThemeContext";
 
 export function FlatListVideoItem({
   style,
@@ -16,16 +17,11 @@ export function FlatListVideoItem({
   query,
   autoPlayVideoId,
 }) {
+  const { setIsFlatListVideoItemModalVisible } = useModal();
   const { colors, fontSizes } = useTheme();
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
   return (
     <>
-      <FlatListVideoItemModal
-        isModalVisible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-      />
-
       <ThView style={[{ marginBottom: 28 }, { width: "100%" }, style]}>
         <ThPressable
           style={{ marginBottom: 10, width: "100%" }}
@@ -77,7 +73,7 @@ export function FlatListVideoItem({
           <AnimFadeRoundButton
             style={{ marginLeft: "auto" }}
             roundSize={4}
-            onPress={() => setIsModalVisible(true)}
+            onPress={() => setIsFlatListVideoItemModalVisible(true)}
           >
             <DotVerticalIcon />
           </AnimFadeRoundButton>

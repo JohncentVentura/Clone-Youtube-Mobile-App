@@ -10,7 +10,7 @@ import {
 } from "./IconComponents";
 import { ThText } from "./ThemedComponents";
 import { styles } from "../styles/styles";
-import { useTheme } from "../styles/ThemeContext";
+import { useTheme } from "../context/ThemeContext";
 import { imagePaths } from "../utils/paths";
 
 export function HeaderArrowBackIcon({ style, navigation, ...rest }) {
@@ -55,12 +55,12 @@ export function HeaderNotificationsIcon({ style, navigation, ...rest }) {
   );
 }
 
-export function HeaderSearchIcon({ style, navigation, search, ...rest }) {
+export function HeaderSearchIcon({ style, navigation, ...rest }) {
   return (
     <AnimFadeRoundButton
       style={[styles.headerRight, style]}
       onPress={() => {
-        navigation.navigate("SearchScreen", { search: search });
+        navigation.navigate("SearchScreen", { search: "" });
       }}
       {...rest}
     >

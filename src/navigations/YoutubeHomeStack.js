@@ -1,11 +1,12 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { useState } from "react";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 import YouTubeFlatListScreen from "../api/YouTubeFlatListScreen";
 import YouTubePlayerScreen from "../api/YouTubePlayerScreen";
 import {
   HeaderArrowBackIcon,
   HeaderDotVerticalIcon,
+  HeaderMicIcon,
   HeaderNotificationsIcon,
   HeaderSearchIcon,
   HeaderShareScreenIcon,
@@ -14,7 +15,12 @@ import {
 } from "../components/HeaderComponents";
 import {
   ChannelScreenHeaderDotVerticalModal,
+  ClearSearchHistoryModal,
+  FlatListVideoItemModal,
   NotificationsScreenHeaderDotVerticalModal,
+  NotificationsScreenItemDotVerticalModal,
+  RemoveSearchFromHistoryModal,
+  SearchResultScreenHeaderDotVerticalModal,
   ShareScreenModal,
 } from "../components/ModalComponents";
 import {
@@ -23,6 +29,9 @@ import {
   ThHeaderContainer,
   ThTextInputCloseButton,
 } from "../components/ThemedComponents";
+import { useModal } from "../context/ModalContext";
+import { useSearch } from "../context/SearchContext";
+import { useTheme } from "../context/ThemeContext";
 import ChannelScreen from "../screens/ChannelScreen";
 import MainVideoScreen from "../screens/MainVideoScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
@@ -30,30 +39,55 @@ import SearchScreen from "../screens/SearchScreen";
 import SearchResultScreen from "../screens/SearchResultScreen";
 import YoutubeHomeScreen from "../screens/YoutubeHomeScreen";
 import { styles } from "../styles/styles";
-import { useTheme } from "../styles/ThemeContext";
 
 const Stack = createStackNavigator();
 
 export default function YoutubeHomeStack() {
-  const { colors } = useTheme();
-  const insets = useSafeAreaInsets();
-  const [searchInput, setSearchInput] = useState("");
-  const [
+  const {
     isChannelScreenHeaderDotVerticalModalVisible,
     setIsChannelScreenHeaderDotVerticalModalVisible,
-  ] = useState(false);
-  const [
+  } = useModal();
+  const { isClearHistoryModalVisible, setIsClearHistoryModalVisible } =
+    useModal();
+  const {
+    isFlatListVideoItemModalVisible,
+    setIsFlatListVideoItemModalVisible,
+  } = useModal();
+  const {
     isNotificationsScreenHeaderDotVerticalModalVisible,
     setIsNotificationsScreenHeaderDotVerticalModalVisible,
-  ] = useState(false);
-  const [isShareScreenModalVisible, setIsShareScreenModalVisible] =
-    useState(false);
+  } = useModal();
+  const {
+    isNotificationsScreenItemDotVerticalModalVisible,
+    setIsNotificationsScreenItemDotVerticalModalVisible,
+  } = useModal();
+  const {
+    isRemoveSearchFromHistoryModalVisible,
+    setIsRemoveSearchFromHistoryModalVisible,
+  } = useModal();
+  const {
+    isSearchResultScreenHeaderDotVerticalModalVisible,
+    setIsSearchResultScreenHeaderDotVerticalModalVisible,
+  } = useModal();
+  const { isShareScreenModalVisible, setIsShareScreenModalVisible } =
+    useModal();
 
+    const { removingSearchItem } = useSearch();
   return (
     <>
       <ChannelScreenHeaderDotVerticalModal
         isModalVisible={isChannelScreenHeaderDotVerticalModalVisible}
         setIsModalVisible={setIsChannelScreenHeaderDotVerticalModalVisible}
+      />
+
+      <ClearSearchHistoryModal
+        isModalVisible={isClearHistoryModalVisible}
+        setIsModalVisible={setIsClearHistoryModalVisible}
+      />
+
+      <FlatListVideoItemModal
+        isModalVisible={isFlatListVideoItemModalVisible}
+        setIsModalVisible={setIsFlatListVideoItemModalVisible}
       />
 
       <NotificationsScreenHeaderDotVerticalModal
@@ -63,16 +97,32 @@ export default function YoutubeHomeStack() {
         }
       />
 
+      <NotificationsScreenItemDotVerticalModal
+        isModalVisible={isNotificationsScreenItemDotVerticalModalVisible}
+        setIsModalVisible={setIsNotificationsScreenItemDotVerticalModalVisible}
+      />
+
+      <RemoveSearchFromHistoryModal
+        isModalVisible={isRemoveSearchFromHistoryModalVisible}
+        setIsModalVisible={setIsRemoveSearchFromHistoryModalVisible}
+        removingItem={removingSearchItem}
+      />
+
       <ShareScreenModal
         isModalVisible={isShareScreenModalVisible}
         setIsModalVisible={setIsShareScreenModalVisible}
+      />
+
+      <SearchResultScreenHeaderDotVerticalModal
+        isModalVisible={isSearchResultScreenHeaderDotVerticalModalVisible}
+        setIsModalVisible={setIsSearchResultScreenHeaderDotVerticalModalVisible}
       />
 
       <Stack.Navigator id="YoutubeHomeStack">
         <Stack.Screen
           name="YoutubeHomeScreen"
           component={YoutubeHomeScreen}
-          options={({ navigation, route }) => {
+          options={({ navigation }) => {
             return {
               header: () => (
                 <ThHeaderContainer>
@@ -82,10 +132,7 @@ export default function YoutubeHomeStack() {
                       onPress={() => setIsShareScreenModalVisible(true)}
                     />
                     <HeaderNotificationsIcon navigation={navigation} />
-                    <HeaderSearchIcon
-                      navigation={navigation}
-                      search={searchInput}
-                    />
+                    <HeaderSearchIcon navigation={navigation} />
                   </ThView>
                 </ThHeaderContainer>
               ),
@@ -117,10 +164,7 @@ export default function YoutubeHomeStack() {
                     <HeaderShareScreenIcon
                       onPress={() => setIsShareScreenModalVisible(true)}
                     />
-                    <HeaderSearchIcon
-                      navigation={navigation}
-                      search={searchInput}
-                    />
+                    <HeaderSearchIcon navigation={navigation} />
                     <HeaderDotVerticalIcon
                       onPress={() =>
                         setIsChannelScreenHeaderDotVerticalModalVisible(true)
@@ -145,10 +189,7 @@ export default function YoutubeHomeStack() {
                     <HeaderShareScreenIcon
                       onPress={() => setIsShareScreenModalVisible(true)}
                     />
-                    <HeaderSearchIcon
-                      navigation={navigation}
-                      search={searchInput}
-                    />
+                    <HeaderSearchIcon navigation={navigation} />
                     <HeaderDotVerticalIcon
                       onPress={() =>
                         setIsNotificationsScreenHeaderDotVerticalModalVisible(
@@ -165,14 +206,20 @@ export default function YoutubeHomeStack() {
         <Stack.Screen
           name="SearchScreen"
           component={SearchScreen}
-          //Header is in component
-          options={{ headerShown: false }}
+          options={({}) => {
+            return {
+              headerShown: false,
+            };
+          }}
         />
         <Stack.Screen
           name="SearchResultScreen"
           component={SearchResultScreen}
-          //Header is in component
-          options={{ headerShown: false }}
+          options={({}) => {
+            return {
+              headerShown: false,
+            };
+          }}
         />
         {/*Experimental*/}
         <Stack.Screen

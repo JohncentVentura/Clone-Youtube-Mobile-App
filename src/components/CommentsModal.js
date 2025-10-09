@@ -8,7 +8,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { ThPressable, ThText, ThView } from "./ThemedComponents";
 import { screenHeight, styles } from "../styles/styles";
-import { useTheme } from "../styles/ThemeContext";
+import { useTheme } from "../context/ThemeContext";
 
 export default function CommentsModal({ setShowComments }) {
   const { colors } = useTheme();

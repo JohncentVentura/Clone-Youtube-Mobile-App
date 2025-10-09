@@ -1,6 +1,6 @@
 import { ThView, ThText } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
-import { useTheme } from "../styles/ThemeContext";
+import { useTheme } from "../context/ThemeContext";
 
 export default function SubscriptionsScreen() {
   const {colors} = useTheme();

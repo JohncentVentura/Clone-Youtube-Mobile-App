@@ -14,15 +14,17 @@ import {
   ThView,
 } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
-import { useTheme } from "../styles/ThemeContext";
+import { useModal } from "../context/ModalContext";
+import { useTheme } from "../context/ThemeContext";
 
 export default function NotificationsScreen({ navigation }) {
+  const { setIsNotificationsScreenItemDotVerticalModalVisible } = useModal();
   const { colors, fontSizes } = useTheme();
+
   const [newVideoQuery, setNewVideoQuery] = useState("food");
   const [newVideos, setNewVideos] = useState([]);
   const [oldVideoQuery, setOldVideoQuery] = useState("sweets");
   const [oldVideos, setOldVideos] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -54,11 +56,6 @@ export default function NotificationsScreen({ navigation }) {
 
   return (
     <>
-      <NotificationsScreenItemDotVerticalModal
-        isModalVisible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-      />
-
       <ThScrollViewColumn
         style={[styles.screenContainer, { backgroundColor: colors.bg }]}
       >
@@ -80,7 +77,7 @@ export default function NotificationsScreen({ navigation }) {
             navigation={navigation}
             video={video}
             query={newVideoQuery}
-            setVisible={setIsModalVisible}
+            setVisible={setIsNotificationsScreenItemDotVerticalModalVisible}
           />
         ))}
         <ThText
@@ -101,7 +98,7 @@ export default function NotificationsScreen({ navigation }) {
             navigation={navigation}
             video={video}
             query={oldVideoQuery}
-            setVisible={setIsModalVisible}
+            setVisible={setIsNotificationsScreenItemDotVerticalModalVisible}
           />
         ))}
       </ThScrollViewColumn>

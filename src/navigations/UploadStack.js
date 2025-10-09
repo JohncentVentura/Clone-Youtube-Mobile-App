@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";import {
   HeaderTitleText,
 } from "../components/HeaderComponents";
 import UploadScreen from "../screens/UploadScreen";
-import { useTheme } from "../styles/ThemeContext";
+import { useTheme } from "../context/ThemeContext";
 
 const Stack = createStackNavigator();
 
