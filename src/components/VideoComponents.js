@@ -1,14 +1,51 @@
 import { useIsFocused } from "@react-navigation/native";
 import { useVideoPlayer, VideoView } from "expo-video";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { FlatList, Pressable, View } from "react-native";
 import { AnimFadeRoundButton } from "./AnimatedComponents";
 import { DotVerticalIcon } from "./IconComponents";
 import { MainVideoScreenChannelImage } from "../components/ImageComponents";
-import { FlatListVideoItemModal } from "./ModalComponents";
-import { ThPressable, ThText, ThView } from "../components/ThemedComponents";
+import { ThText } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
 import { useModal } from "../context/ModalContext";
 import { useTheme } from "../context/ThemeContext";
+
+export function AutoPlayFlatList({ style, data, navigation, query, ...rest }) {
+  const [autoPlayVideoId, setAutoPlayVideoId] = useState(null);
+
+  return (
+    <FlatList
+      style={style}
+      data={data}
+      keyExtractor={(item, index) => index.toString() + item.id}
+      renderItem={({ item }) => {
+        return (
+          <FlatListVideoItem
+            navigation={navigation}
+            video={item}
+            query={query}
+            autoPlayVideoId={item.id === autoPlayVideoId}
+          />
+        );
+      }}
+      onViewableItemsChanged={
+        //useRef for same reference each render, called whenever visible items changes (scrolled) & get the first visible item
+        useRef(({ viewableItems }) => {
+          if (viewableItems.length > 0) {
+            setAutoPlayVideoId(viewableItems[0].item.id);
+          }
+        }).current
+      }
+      viewabilityConfig={
+        //useRef for same reference each render, threshold of item in the screen to be count as visible
+        useRef({
+          viewAreaCoveragePercentThreshold: 50,
+        }).current
+      }
+      {...rest}
+    />
+  );
+}
 
 export function FlatListVideoItem({
   style,
@@ -17,13 +54,13 @@ export function FlatListVideoItem({
   query,
   autoPlayVideoId,
 }) {
-  const { setIsFlatListVideoItemModalVisible } = useModal();
+  const { setIsFlatListVideoItemVisible } = useModal();
   const { colors, fontSizes } = useTheme();
 
   return (
     <>
-      <ThView style={[{ marginBottom: 28 }, { width: "100%" }, style]}>
-        <ThPressable
+      <View style={[{ marginBottom: 28 }, { width: "100%" }, style]}>
+        <Pressable
           style={{ marginBottom: 10, width: "100%" }}
           onPress={() => {
             navigation.push("MainVideoScreen", {
@@ -33,8 +70,8 @@ export function FlatListVideoItem({
           }}
         >
           <FlatListVideoView video={video} autoPlayVideoId={autoPlayVideoId} />
-        </ThPressable>
-        <ThView
+        </Pressable>
+        <View
           style={[
             styles.paddedHorizontalContainer,
             {
@@ -44,7 +81,7 @@ export function FlatListVideoItem({
             },
           ]}
         >
-          <ThPressable
+          <Pressable
             onPress={() => {
               navigation.navigate("ChannelScreen", {
                 video: video,
@@ -53,8 +90,8 @@ export function FlatListVideoItem({
             }}
           >
             <MainVideoScreenChannelImage source={{ uri: video.picture }} />
-          </ThPressable>
-          <ThView style={{ flexShrink: 1, marginLeft: 12 }}>
+          </Pressable>
+          <View style={{ flexShrink: 1, marginLeft: 12 }}>
             <ThText
               style={{
                 marginBottom: 4,
@@ -69,16 +106,16 @@ export function FlatListVideoItem({
             >
               {video.channelName} • {video.views} views • {video.uploadedDate}
             </ThText>
-          </ThView>
+          </View>
           <AnimFadeRoundButton
             style={{ marginLeft: "auto" }}
             roundSize={4}
-            onPress={() => setIsFlatListVideoItemModalVisible(true)}
+            onPress={() => setIsFlatListVideoItemVisible(true)}
           >
             <DotVerticalIcon />
           </AnimFadeRoundButton>
-        </ThView>
-      </ThView>
+        </View>
+      </View>
     </>
   );
 }

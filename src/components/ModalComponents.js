@@ -1,7 +1,8 @@
+import { Pressable, View } from "react-native";
 import Modal from "react-native-modal";
 import { useSearch } from "../context/SearchContext";
 import { useTheme } from "../context/ThemeContext";
-import { ThPressable, ThText, ThView } from "./ThemedComponents";
+import { ThText } from "./ThemedComponents";
 import {
   DontRecommendChannelIcon,
   EyeInvisbleIcon,
@@ -41,7 +42,7 @@ function SwipeDownModal({
         alignItems: "center",
       }}
     >
-      <ThView
+      <View
         style={{
           borderRadius: 12,
           width: "100%",
@@ -49,7 +50,7 @@ function SwipeDownModal({
         }}
       >
         {/*Swipe Bar*/}
-        <ThView
+        <View
           style={{
             marginVertical: 8,
             borderRadius: 12,
@@ -62,7 +63,7 @@ function SwipeDownModal({
         {children}
         {items.map((item, index) => {
           return (
-            <ThPressable
+            <Pressable
               key={index + item.name}
               style={({ pressed }) => [
                 {
@@ -84,10 +85,10 @@ function SwipeDownModal({
               <ThText style={{ marginLeft: 24, flexShrink: 1 }}>
                 {item.name}
               </ThText>
-            </ThPressable>
+            </Pressable>
           );
         })}
-      </ThView>
+      </View>
     </Modal>
   );
 }
@@ -176,10 +177,7 @@ export function ShareScreenModal({ isModalVisible, setIsModalVisible }) {
   );
 }
 
-export function NotificationsScreenItemDotVerticalModal({
-  isModalVisible,
-  setIsModalVisible,
-}) {
+export function NotificationsItemModal({ isModalVisible, setIsModalVisible }) {
   const modalItems = [
     {
       name: "Save to Watch later",
@@ -231,10 +229,10 @@ function TopRightModal({ isModalVisible, setIsModalVisible, items = [] }) {
         alignItems: "flex-end",
       }}
     >
-      <ThView style={{ backgroundColor: colors.bg }}>
+      <View style={{ backgroundColor: colors.bg }}>
         {items.map((item, index) => {
           return (
-            <ThPressable
+            <Pressable
               key={index + item.name}
               style={({ pressed }) => ({
                 paddingHorizontal: 14,
@@ -244,15 +242,15 @@ function TopRightModal({ isModalVisible, setIsModalVisible, items = [] }) {
               onPress={item.onPress}
             >
               <ThText style={{ flexShrink: 1 }}>{item.name}</ThText>
-            </ThPressable>
+            </Pressable>
           );
         })}
-      </ThView>
+      </View>
     </Modal>
   );
 }
 
-export function NotificationsScreenHeaderDotVerticalModal({
+export function NotificationsHeaderModal({
   isModalVisible,
   setIsModalVisible,
 }) {
@@ -284,10 +282,7 @@ export function NotificationsScreenHeaderDotVerticalModal({
   );
 }
 
-export function ChannelScreenHeaderDotVerticalModal({
-  isModalVisible,
-  setIsModalVisible,
-}) {
+export function ChannelHeaderModal({ isModalVisible, setIsModalVisible }) {
   const modalItems = [
     {
       name: "Share",
@@ -324,10 +319,7 @@ export function ChannelScreenHeaderDotVerticalModal({
   );
 }
 
-export function SearchResultScreenHeaderDotVerticalModal({
-  isModalVisible,
-  setIsModalVisible,
-}) {
+export function SearchResultHeaderModal({ isModalVisible, setIsModalVisible }) {
   const modalItems = [
     {
       name: "Search filters",
@@ -366,7 +358,7 @@ function QuestionModal({ isModalVisible, setIsModalVisible, children }) {
         alignItems: "center",
       }}
     >
-      <ThView
+      <View
         style={{
           padding: 24,
           width: "80%",
@@ -374,12 +366,12 @@ function QuestionModal({ isModalVisible, setIsModalVisible, children }) {
         }}
       >
         {children}
-      </ThView>
+      </View>
     </Modal>
   );
 }
 
-export function RemoveSearchFromHistoryModal({
+export function RemoveSearchModal({
   isModalVisible,
   setIsModalVisible,
   removingItem,
@@ -404,17 +396,17 @@ export function RemoveSearchFromHistoryModal({
         {removingItem.text}
       </ThText>
       <ThText style={{ marginBottom: 46 }}>Remove from search history?</ThText>
-      <ThView
+      <View
         style={{
           flexDirection: "row",
           justifyContent: "flex-end",
           alignItems: "center",
         }}
       >
-        <ThPressable onPress={() => setIsModalVisible(false)}>
+        <Pressable onPress={() => setIsModalVisible(false)}>
           <ThText style={{ color: colors.primary }}>Cancel</ThText>
-        </ThPressable>
-        <ThPressable
+        </Pressable>
+        <Pressable
           style={{ marginLeft: 20 }}
           onPress={() => {
             removeSearchFromHistory(removingItem.text);
@@ -425,13 +417,13 @@ export function RemoveSearchFromHistoryModal({
           <ThText style={{ marginLeft: 22, color: colors.primary }}>
             Remove
           </ThText>
-        </ThPressable>
-      </ThView>
+        </Pressable>
+      </View>
     </QuestionModal>
   );
 }
 
-export function ClearSearchHistoryModal({ isModalVisible, setIsModalVisible }) {
+export function ClearHistoryModal({ isModalVisible, setIsModalVisible }) {
   const { colors } = useTheme();
   const { clearSearchHistory } = useSearch();
 
@@ -441,17 +433,17 @@ export function ClearSearchHistoryModal({ isModalVisible, setIsModalVisible }) {
       setIsModalVisible={setIsModalVisible}
     >
       <ThText style={{ marginBottom: 46 }}>Clear all search history?</ThText>
-      <ThView
+      <View
         style={{
           flexDirection: "row",
           justifyContent: "flex-end",
           alignItems: "center",
         }}
       >
-        <ThPressable onPress={() => setIsModalVisible(false)}>
+        <Pressable onPress={() => setIsModalVisible(false)}>
           <ThText style={{ color: colors.primary }}>Cancel</ThText>
-        </ThPressable>
-        <ThPressable
+        </Pressable>
+        <Pressable
           style={{ marginLeft: 20, color: colors.primary }}
           onPress={() => {
             clearSearchHistory();
@@ -461,8 +453,8 @@ export function ClearSearchHistoryModal({ isModalVisible, setIsModalVisible }) {
           <ThText style={{ marginLeft: 22, color: colors.primary }}>
             Clear
           </ThText>
-        </ThPressable>
-      </ThView>
+        </Pressable>
+      </View>
     </QuestionModal>
   );
 }

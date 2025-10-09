@@ -1,7 +1,5 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { fetchPexelsData } from "../api/pexelsAPI";
+import { useState } from "react";
+import { FlatList, Pressable, View } from "react-native";
 import {
   HeaderArrowBackIcon,
   HeaderMicIcon,
@@ -11,19 +9,12 @@ import {
   ClockRotateLeftIcon,
 } from "../components/IconComponents";
 import { SearchScreenHistoryImage } from "../components/ImageComponents";
-import {
-  ClearSearchHistoryModal,
-  RemoveSearchFromHistoryModal,
-} from "../components/ModalComponents";
 import { useModal } from "../context/ModalContext";
 import { useSearch } from "../context/SearchContext";
 import { useTheme } from "../context/ThemeContext";
 import {
-  ThFlatList,
-  ThPressable,
   ThText,
-  ThTextInput,
-  ThView,
+  ThTextInputView,
   ThHeaderContainer,
 } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
@@ -45,14 +36,14 @@ export default function SearchScreen({ navigation, route }) {
 
   return (
     <>
-      <ThView style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
+      <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
         <ThHeaderContainer>
           <HeaderArrowBackIcon navigation={navigation} />
-          <ThTextInput
+          <ThTextInputView
             style={{ marginHorizontal: 12 }}
+            autoFocus={true}
             value={searchInput}
             onChangeText={setSearchInput}
-            autoFocus={true}
             onSubmitEditing={() =>
               handleSearch({ navigation, searchInput: searchInput })
             }
@@ -61,11 +52,11 @@ export default function SearchScreen({ navigation, route }) {
           <HeaderMicIcon style={styles.headerRightContainer} />
         </ThHeaderContainer>
 
-        <ThFlatList
+        <FlatList
           data={searchHistory}
-          keyExtractor={(item, index) => item.text + index}
+          keyExtractor={(item, index) => index + item.text}
           renderItem={({ item }) => (
-            <ThPressable
+            <Pressable
               style={({ pressed }) => ({
                 paddingVertical: 12,
                 backgroundColor: pressed ? colors.bgInteractive : colors.bg,
@@ -79,7 +70,7 @@ export default function SearchScreen({ navigation, route }) {
                 setIsRemoveSearchFromHistoryModalVisible(true);
               }}
             >
-              <ThView
+              <View
                 style={[
                   styles.paddedHorizontalContainer,
                   {
@@ -105,12 +96,12 @@ export default function SearchScreen({ navigation, route }) {
                     setSearchInput(item.text);
                   }}
                 />
-              </ThView>
-            </ThPressable>
+              </View>
+            </Pressable>
           )}
           ListFooterComponent={
             searchHistory.length > 0 ? (
-              <ThPressable onPress={() => setIsClearHistoryModalVisible(true)}>
+              <Pressable onPress={() => setIsClearHistoryModalVisible(true)}>
                 <ThText
                   style={{
                     color: colors.textSecondary,
@@ -120,11 +111,11 @@ export default function SearchScreen({ navigation, route }) {
                 >
                   Clear History
                 </ThText>
-              </ThPressable>
+              </Pressable>
             ) : null
           }
         />
-      </ThView>
+      </View>
     </>
   );
 }

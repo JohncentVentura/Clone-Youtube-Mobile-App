@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import { PanResponder } from "react-native";
+import { PanResponder, Pressable, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
   runOnJS,
 } from "react-native-reanimated";
-import { ThPressable, ThText, ThView } from "./ThemedComponents";
+import { ThText } from "./ThemedComponents";
 import { screenHeight, styles } from "../styles/styles";
 import { useTheme } from "../context/ThemeContext";
 
@@ -72,7 +72,7 @@ export default function CommentsModal({ setShowComments }) {
       />
 
       {/* Tap outside to close */}
-      <ThPressable
+      <Pressable
         onPress={close}
         style={{
           position: "absolute",
@@ -103,7 +103,7 @@ export default function CommentsModal({ setShowComments }) {
         ]}
       >
         {/* Handle bar */}
-        <ThPressable
+        <Pressable
           onPress={close}
           style={{
             alignSelf: "center",
@@ -123,7 +123,7 @@ export default function CommentsModal({ setShowComments }) {
         </ThText>
 
         {/* Placeholder text */}
-        <ThView
+        <View
           style={{
             flex: 1,
             justifyContent: "center",
@@ -133,7 +133,7 @@ export default function CommentsModal({ setShowComments }) {
           <ThText style={{ color: colors.textSecondary }}>
             No comments yet... Be the first one!
           </ThText>
-        </ThView>
+        </View>
       </Animated.View>
     </>
   );

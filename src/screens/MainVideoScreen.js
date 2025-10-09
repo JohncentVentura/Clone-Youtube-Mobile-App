@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FlatList, Pressable, View } from "react-native";
 import { fetchPexelsData } from "../api/pexelsAPI";
 import {
   DislikeIcon,
@@ -14,15 +15,8 @@ import {
   MainVideoScreenCommentImage,
 } from "../components/ImageComponents";
 import CommentsModal from "../components/CommentsModal";
-import {
-  ThFlatList,
-  ThPressable,
-  ThScrollViewRow,
-  ThText,
-  ThView,
-  ThSmallIconButton,
-  ThSmallIconButtonText,
-} from "../components/ThemedComponents";
+import { ThSmallIconTextButton, ThText } from "../components/ThemedComponents";
+import { RowScrollView } from "components/UtilComponents";
 import {
   FlatListVideoItem,
   MainVideoView,
@@ -58,14 +52,14 @@ export default function MainVideoScreen({ navigation, route }) {
 
   return (
     <>
-      <ThView style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
-        <ThFlatList
+      <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
+        <FlatList
           data={relatedVideos}
           keyExtractor={(item) => item.id.toString()}
           ListHeaderComponent={
             <>
               <MainVideoView style={{ marginBottom: 8 }} video={video} />
-              <ThView style={styles.paddedHorizontalContainer}>
+              <View style={styles.paddedHorizontalContainer}>
                 <ThText
                   style={{
                     marginBottom: 4,
@@ -77,7 +71,7 @@ export default function MainVideoScreen({ navigation, route }) {
                 </ThText>
 
                 {/*Total views, Uploaded Date, & ...more link section*/}
-                <ThView style={{ marginBottom: 14, flexDirection: "row" }}>
+                <View style={{ marginBottom: 14, flexDirection: "row" }}>
                   <ThText
                     style={{
                       color: colors.textSecondary,
@@ -107,10 +101,10 @@ export default function MainVideoScreen({ navigation, route }) {
                   >
                     ...more
                   </ThText>
-                </ThView>
+                </View>
 
                 {/*Channel image, Channel Name, Subscribers, & Subscribe Button section*/}
-                <ThView
+                <View
                   style={{
                     marginBottom: 10,
                     width: "100%",
@@ -119,13 +113,13 @@ export default function MainVideoScreen({ navigation, route }) {
                     justifyContent: "space-between",
                   }}
                 >
-                  <ThView
+                  <View
                     style={{
                       flexDirection: "row",
                       alignItems: "center",
                     }}
                   >
-                    <ThPressable
+                    <Pressable
                       onPress={() => {
                         console.log("Channel Image Pressed");
                         navigation.navigate("ChannelScreen", {
@@ -137,7 +131,7 @@ export default function MainVideoScreen({ navigation, route }) {
                       <MainVideoScreenChannelImage
                         source={{ uri: video.picture }}
                       />
-                    </ThPressable>
+                    </Pressable>
                     <ThText
                       style={{
                         marginLeft: 8,
@@ -156,8 +150,8 @@ export default function MainVideoScreen({ navigation, route }) {
                     >
                       {video.channelSubscribers}
                     </ThText>
-                  </ThView>
-                  <ThPressable
+                  </View>
+                  <Pressable
                     style={[
                       styles.baseButton,
                       { backgroundColor: colors.bgContrast },
@@ -173,28 +167,29 @@ export default function MainVideoScreen({ navigation, route }) {
                     >
                       Subscribe
                     </ThText>
-                  </ThPressable>
-                </ThView>
+                  </Pressable>
+                </View>
 
                 {/*Likes/Dislikes, share, & other buttons section*/}
-                <ThScrollViewRow style={{ marginBottom: 16 }}>
-                  <ThView
+                <RowScrollView style={{ marginBottom: 16 }}>
+                  <View
                     style={[
                       {
-                        borderRadius: 9999,
+                        borderRadius: 99,
+                        height: 30,
                         backgroundColor: colors.bgSecondary,
                         flexDirection: "row",
                         alignItems: "center",
                       },
                     ]}
                   >
-                    <ThPressable
+                    <Pressable
                       style={({ pressed }) => [
                         styles.iconTextButton,
                         {
                           backgroundColor: pressed
                             ? colors.bgInteractive
-                            : colors.bgSecondary,
+                            : "transparent",
                         },
                       ]}
                       onPress={() => console.log("Liked Press")}
@@ -209,69 +204,64 @@ export default function MainVideoScreen({ navigation, route }) {
                       >
                         {video.likes}
                       </ThText>
-                    </ThPressable>
+                    </Pressable>
                     {/*Divider of like & dislike buttons*/}
-                    <ThText
+                    <View
                       style={{
-                        borderRightWidth: 1,
-                        borderRightColor: colors.borderPrimary,
-                        fontSize: fontSizes.xs,
+                        width: 1,
+                        height: "50%",
+                        backgroundColor: colors.borderPrimary,
                       }}
                     />
-                    <ThPressable
+                    <Pressable
                       style={({ pressed }) => [
                         styles.iconTextButton,
                         {
                           backgroundColor: pressed
                             ? colors.bgInteractive
-                            : colors.bgSecondary,
+                            : "transparent",
                         },
                       ]}
                       onPress={() => console.log("Disliked Press")}
                     >
                       <DislikeIcon size={iconSizes.xs} />
-                    </ThPressable>
-                  </ThView>
+                    </Pressable>
+                  </View>
 
-                  <ThSmallIconButton
+                  <ThSmallIconTextButton
                     style={{ marginLeft: 8 }}
+                    Icon={ShareIcon}
+                    text="Share"
                     onPress={() => console.log("Share Press")}
-                  >
-                    <ShareIcon size={iconSizes.xs2} />
-                    <ThSmallIconButtonText>Share</ThSmallIconButtonText>
-                  </ThSmallIconButton>
-                  <ThSmallIconButton
+                  />
+                  <ThSmallIconTextButton
                     style={{ marginLeft: 8 }}
+                    Icon={RemixIcon}
+                    text="Remix"
                     onPress={() => console.log("Remix Press")}
-                  >
-                    <RemixIcon size={iconSizes.xs2} />
-                    <ThSmallIconButtonText>Remix</ThSmallIconButtonText>
-                  </ThSmallIconButton>
-                  <ThSmallIconButton
+                  />
+                  <ThSmallIconTextButton
                     style={{ marginLeft: 8 }}
+                    Icon={DownloadIcon}
+                    text="Download"
                     onPress={() => console.log("Download Press")}
-                  >
-                    <DownloadIcon size={iconSizes.xs2} />
-                    <ThSmallIconButtonText>Download</ThSmallIconButtonText>
-                  </ThSmallIconButton>
-                  <ThSmallIconButton
+                  />
+                  <ThSmallIconTextButton
                     style={{ marginLeft: 8 }}
+                    Icon={ReportIcon}
+                    text="Report"
                     onPress={() => console.log("Report Press")}
-                  >
-                    <ReportIcon size={iconSizes.xs2} />
-                    <ThSmallIconButtonText>Report</ThSmallIconButtonText>
-                  </ThSmallIconButton>
-                  <ThSmallIconButton
+                  />
+                  <ThSmallIconTextButton
                     style={{ marginLeft: 8 }}
+                    Icon={SaveIcon}
+                    text="Save"
                     onPress={() => console.log("Save Press")}
-                  >
-                    <SaveIcon size={iconSizes.xs2} />
-                    <ThSmallIconButtonText>Save</ThSmallIconButtonText>
-                  </ThSmallIconButton>
-                </ThScrollViewRow>
+                  />
+                </RowScrollView>
 
                 {/*Comments section*/}
-                <ThPressable
+                <Pressable
                   style={({ pressed }) => [
                     {
                       marginBottom: 16,
@@ -285,7 +275,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   ]}
                   onPress={() => setShowComments(true)}
                 >
-                  <ThView
+                  <View
                     style={{
                       backgroundColor: "transparent",
                       flexDirection: "row",
@@ -309,8 +299,8 @@ export default function MainVideoScreen({ navigation, route }) {
                     >
                       {video.commentsCount}
                     </ThText>
-                  </ThView>
-                  <ThView
+                  </View>
+                  <View
                     style={{
                       paddingVertical: 14,
                       backgroundColor: "transparent",
@@ -318,7 +308,7 @@ export default function MainVideoScreen({ navigation, route }) {
                       alignItems: "center",
                     }}
                   >
-                    <ThPressable
+                    <Pressable
                       style={{ backgroundColor: "transparent" }}
                       onPress={() => {
                         navigation.navigate("ChannelScreen", {
@@ -330,7 +320,7 @@ export default function MainVideoScreen({ navigation, route }) {
                       <MainVideoScreenCommentImage
                         source={{ uri: video.picture }}
                       />
-                    </ThPressable>
+                    </Pressable>
                     <ThText
                       style={{
                         marginLeft: 10,
@@ -340,9 +330,9 @@ export default function MainVideoScreen({ navigation, route }) {
                     >
                       {video.commentsDescription}
                     </ThText>
-                  </ThView>
-                </ThPressable>
-              </ThView>
+                  </View>
+                </Pressable>
+              </View>
             </>
           }
           renderItem={({ item }) => (
@@ -353,7 +343,7 @@ export default function MainVideoScreen({ navigation, route }) {
             />
           )}
         />
-      </ThView>
+      </View>
 
       {showComments && <CommentsModal setShowComments={setShowComments} />}
     </>

@@ -1,8 +1,9 @@
+import { Pressable, View } from "react-native";
 import {
   ChannelScreenCoverImage,
   ChannelScreenProfileImage,
 } from "../components/ImageComponents";
-import { ThPressable, ThText, ThView } from "../components/ThemedComponents";
+import { ThText } from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../context/ThemeContext";
 
@@ -11,20 +12,20 @@ export default function ChannelScreen({ route }) {
   const { video, query } = route.params;
 
   return (
-    <ThView style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
-      <ThView style={styles.paddedHorizontalContainer}>
+    <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
+      <View style={styles.paddedHorizontalContainer}>
         <ChannelScreenCoverImage
           style={{ marginBottom: 16 }}
           source={{ uri: video.picture }}
         />
-        <ThView
+        <View
           style={{
             marginBottom: 8,
             flexDirection: "row",
             alignItems: "center",
           }}
         >
-          <ThPressable
+          <Pressable
             style={{
               height: "100%",
               flex: 1,
@@ -36,8 +37,8 @@ export default function ChannelScreen({ route }) {
             }}
           >
             <ChannelScreenProfileImage source={{ uri: video.picture }} />
-          </ThPressable>
-          <ThView style={{ flex: 4, marginLeft: 8, marginBottom: 6 }}>
+          </Pressable>
+          <View style={{ flex: 4, marginLeft: 8, marginBottom: 6 }}>
             <ThText
               style={{
                 marginBottom: 4,
@@ -65,8 +66,8 @@ export default function ChannelScreen({ route }) {
               {video.channelSubscribers} subscribers • {video.channelVideos}{" "}
               videos
             </ThText>
-          </ThView>
-        </ThView>
+          </View>
+        </View>
         <ThText
           style={{
             marginBottom: 12,
@@ -89,15 +90,15 @@ export default function ChannelScreen({ route }) {
             ...more
           </ThText>
         </ThText>
-        <ThPressable
+        <Pressable
           style={[styles.wideButton, { backgroundColor: colors.bgContrast }]}
           onPress={() => console.log("Subscribe pressed")}
         >
           <ThText style={{ color: colors.textContrast, fontWeight: "medium" }}>
             Subscribe
           </ThText>
-        </ThPressable>
-      </ThView>
-    </ThView>
+        </Pressable>
+      </View>
+    </View>
   );
 }

@@ -5,6 +5,7 @@ import {
   DrawerItem,
 } from "@react-navigation/drawer";
 import React from "react";
+import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   ActiveHomeIcon,
@@ -13,13 +14,13 @@ import {
   ActiveUploadIcon,
   ActiveYouIcon,
   CourseIcon,
+  FashionAndBeautyIcon,
+  GamingIcon,
   InactiveHomeIcon,
   InactiveShortsIcon,
   InactiveSubscriptionIcon,
   InactiveUploadIcon,
   InactiveYouIcon,
-  FashionAndBeautyIcon,
-  GamingIcon,
   LiveIcon,
   MovieIcon,
   MusicIcon,
@@ -30,7 +31,7 @@ import {
   YoutubeMusicIcon,
   YoutubePremiumIcon,
 } from "../components/IconComponents";
-import { ThText, ThView } from "../components/ThemedComponents";
+import { ThText } from "../components/ThemedComponents";
 import { useTheme } from "../context/ThemeContext";
 import { getMainBottomTabBarStyle } from "../utils/utils";
 import ShortsStack from "./ShortsStack";
@@ -163,8 +164,8 @@ const bottomTabItems = (HomeComponent = YoutubeHomeStack) => [
 ];
 
 export default function MainNavigator() {
-  const { colors, fontSizes } = useTheme();
   const insets = useSafeAreaInsets();
+  const { colors, fontSizes } = useTheme();
 
   return (
     <Drawer.Navigator
@@ -172,24 +173,23 @@ export default function MainNavigator() {
       screenOptions={{ headerShown: false }}
       drawerContent={(props) => {
         return (
-          <ThView style={{ backgroundColor: colors.bg, flex: 1 }}>
+          <View style={{ backgroundColor: colors.bg, flex: 1 }}>
             <DrawerContentScrollView>
               {drawerItems.map((item, index) => {
-                const isCurrentItemThisRoute =
+                const isHomeRoute = drawerItems[0].route === item.route;
+                const isActiveRoute =
                   drawerItems[props.state.index].route === item.route;
-                const isCurrentItemYoutubeHomeStack =
-                  drawerItems[0].route === item.route;
 
                 return (
                   <React.Fragment key={item.route}>
                     {/*Render divider if index is in the last 3 items of drawerItems*/}
                     {index === drawerItems.length - 3 && (
-                      <ThView
+                      <View
                         style={{
                           marginVertical: 12,
-                          backgroundColor: colors.borderSecondary,
                           width: "100%",
                           height: 1,
+                          backgroundColor: colors.borderSecondary,
                         }}
                       />
                     )}
@@ -198,8 +198,7 @@ export default function MainNavigator() {
                       style={{
                         paddingVertical: 2,
                         backgroundColor:
-                          isCurrentItemThisRoute &&
-                          !isCurrentItemYoutubeHomeStack
+                          !isHomeRoute && isActiveRoute
                             ? colors.primary
                             : colors.bg,
                       }}
@@ -207,18 +206,17 @@ export default function MainNavigator() {
                       icon={() => (
                         <item.icon
                           color={
-                            isCurrentItemYoutubeHomeStack ||
+                            isHomeRoute ||
                             drawerItems[drawerItems.length - 3].route ===
                               item.route ||
                             drawerItems[drawerItems.length - 2].route ===
                               item.route ||
                             drawerItems[drawerItems.length - 1].route ===
                               item.route
-                              ? isCurrentItemThisRoute &&
-                                !isCurrentItemYoutubeHomeStack
+                              ? !isHomeRoute && isActiveRoute
                                 ? colors.iconContrast
                                 : colors.primary
-                              : isCurrentItemThisRoute
+                              : isActiveRoute
                               ? colors.iconContrast
                               : colors.iconPrimary
                           }
@@ -227,20 +225,17 @@ export default function MainNavigator() {
                       label={() => (
                         <ThText
                           style={{
-                            marginLeft: isCurrentItemYoutubeHomeStack
-                              ? -10
-                              : 10,
-                            fontSize: isCurrentItemYoutubeHomeStack
+                            marginLeft: isHomeRoute ? -10 : 10,
+                            fontSize: isHomeRoute
                               ? fontSizes.xl
                               : fontSizes.base,
-                            fontWeight: isCurrentItemYoutubeHomeStack
+                            fontWeight: isHomeRoute
                               ? "bold"
-                              : isCurrentItemThisRoute
+                              : isActiveRoute
                               ? "bold"
                               : "medium",
                             color:
-                              isCurrentItemThisRoute &&
-                              !isCurrentItemYoutubeHomeStack
+                              !isHomeRoute && isActiveRoute
                                 ? colors.textContrast
                                 : colors.textPrimary,
                           }}
@@ -255,7 +250,7 @@ export default function MainNavigator() {
             </DrawerContentScrollView>
 
             {/*Drawer Footer*/}
-            <ThView
+            <View
               style={{
                 marginBottom: insets.bottom + 10,
                 flexDirection: "row",
@@ -275,8 +270,8 @@ export default function MainNavigator() {
               >
                 Terms of Service
               </DrawerFooterText>
-            </ThView>
-          </ThView>
+            </View>
+          </View>
         );
       }}
     >
@@ -305,7 +300,7 @@ function MainBottomTabBar({ navigation }) {
       id="MainBottomTabBar"
       key={colors.bg} //Force remount on theme change
       screenOptions={({ route }) => {
-        const currentTabItem = bottomTabItems().find(
+        const activeTabItem = bottomTabItems().find(
           (bottomTabItem) => bottomTabItem.route === route.name
         );
         return {
@@ -313,21 +308,21 @@ function MainBottomTabBar({ navigation }) {
           tabBarStyle: getMainBottomTabBarStyle(colors),
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <currentTabItem.activeIcon color={colors.primary} />
+              <activeTabItem.activeIcon color={colors.primary} />
             ) : (
-              <currentTabItem.inactiveIcon color={colors.iconSecondary} />
+              <activeTabItem.inactiveIcon color={colors.iconSecondary} />
             ),
           tabBarLabel: ({ focused }) => (
             <ThText
               style={{
-                color: focused ? colors.textPrimary : colors.textSecondary,
-                fontWeight: "medium",
                 fontSize: fontSizes.xs2,
+                fontWeight: "medium",
+                color: focused ? colors.textPrimary : colors.textSecondary,
               }}
             >
               {focused
-                ? currentTabItem.activeLabel
-                : currentTabItem.inactiveLabel}
+                ? activeTabItem.activeLabel
+                : activeTabItem.inactiveLabel}
             </ThText>
           ),
         };
@@ -349,13 +344,7 @@ function DrawerFooterText({ style, children, ...rest }) {
 
   return (
     <ThText
-      style={[
-        {
-          color: colors.textSecondary,
-          fontSize: fontSizes.xs,
-        },
-        style,
-      ]}
+      style={[{ fontSize: fontSizes.xs, color: colors.textSecondary }, style]}
       {...rest}
     >
       {children}

@@ -31,10 +31,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: globalHorizontalSpacing,
     width: "100%",
   },
-  flexRowContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
   /******************************Images******************************/
   coverImages: {
     borderRadius: 8,
@@ -48,19 +44,19 @@ export const styles = StyleSheet.create({
   },
   /******************************Buttons******************************/
   baseButton: {
-    borderRadius: 9999,
+    borderRadius: 99,
     paddingHorizontal: 14,
     paddingVertical: 8,
   },
   iconTextButton: {
-    borderRadius: 9999,
+    borderRadius: 99,
     paddingHorizontal: 12,
     paddingVertical: 6,
     flexDirection: "row",
     alignItems: "center",
   },
   wideButton: {
-    borderRadius: 9999,
+    borderRadius: 99,
     paddingVertical: 10,
     width: "100%",
     flexDirection: "row",

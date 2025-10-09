@@ -1,15 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { Pressable, View } from "react-native";
 import { fetchPexelsData } from "../api/pexelsAPI";
 import { CompassIcon } from "../components/IconComponents";
-import {
-  ThFlatList,
-  ThPressable,
-  ThScrollViewRow,
-  ThView,
-  ThTopQueryTab,
-} from "../components/ThemedComponents";
-import { FlatListVideoItem } from "../components/VideoComponents";
+import { ThTopQueryTab } from "../components/ThemedComponents";
+import { RowScrollView } from "../components/UtilComponents";
+import { AutoPlayFlatList } from "../components/VideoComponents";
 import { styles } from "../styles/styles";
 import { useTheme } from "../context/ThemeContext";
 import { showMainBottomTabBar } from "../utils/utils";
@@ -21,7 +17,6 @@ export default function YoutubeHomeScreen({ navigation }) {
   const [query, setQuery] = useState(defaultQuery);
   const [queryCount, setQueryCount] = useState(4);
   const [videos, setVideos] = useState([]);
-  const [autoPlayVideoId, setAutoPlayVideoId] = useState(null);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -47,37 +42,14 @@ export default function YoutubeHomeScreen({ navigation }) {
   showMainBottomTabBar(navigation, colors);
 
   return (
-    <ThView style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
-      <ThFlatList
+    <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
+      <AutoPlayFlatList
         data={videos}
-        keyExtractor={(item) => item.id.toString()}
+        navigation={navigation}
+        query={query}
         ListHeaderComponent={<TopQueryTabBar setQuery={setQuery} />}
-        renderItem={({ item }) => {
-          return (
-            <FlatListVideoItem
-              navigation={navigation}
-              video={item}
-              query={query}
-              autoPlayVideoId={item.id === autoPlayVideoId}
-            />
-          );
-        }}
-        onViewableItemsChanged={
-          //useRef for same reference each render, called whenever visible items changes (scrolled) & get the first visible item
-          useRef(({ viewableItems }) => {
-            if (viewableItems.length > 0) {
-              setAutoPlayVideoId(viewableItems[0].item.id);
-            }
-          }).current
-        }
-        viewabilityConfig={
-          //useRef for same reference each render, threshold of item in the screen to be count as visible
-          useRef({
-            viewAreaCoveragePercentThreshold: 50,
-          }).current
-        }
       />
-    </ThView>
+    </View>
   );
 }
 
@@ -99,10 +71,10 @@ function TopQueryTabBar({ setQuery }) {
   };
 
   return (
-    <ThScrollViewRow
+    <RowScrollView
       style={[styles.paddedHorizontalContainer, { marginBottom: 10 }]}
     >
-      <ThPressable
+      <Pressable
         style={({ pressed }) => ({
           borderRadius: 4,
           paddingHorizontal: 10,
@@ -113,7 +85,7 @@ function TopQueryTabBar({ setQuery }) {
         onPress={() => navigation.getParent("MainNavigator")?.openDrawer()}
       >
         <CompassIcon />
-      </ThPressable>
+      </Pressable>
       <ThTopQueryTab
         style={{ marginLeft: 14 }}
         selected={selectedQuery === defaultQuery}
@@ -148,6 +120,6 @@ function TopQueryTabBar({ setQuery }) {
       >
         (YouTube API)
       </ThTopQueryTab>
-    </ThScrollViewRow>
+    </RowScrollView>
   );
 }

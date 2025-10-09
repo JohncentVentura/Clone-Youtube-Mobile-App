@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { View } from "react-native";
 import { fetchPexelsData } from "../api/pexelsAPI";
 import {
   HeaderArrowBackIcon,
@@ -7,19 +7,11 @@ import {
   HeaderMicIcon,
   HeaderShareScreenIcon,
 } from "../components/HeaderComponents";
-
 import {
-  SearchResultScreenHeaderDotVerticalModal,
-  ShareScreenModal,
-} from "../components/ModalComponents";
-import {
-  ThFlatList,
-  ThTextInput,
-  ThView,
+  ThTextInputView,
   ThHeaderContainer,
 } from "../components/ThemedComponents";
-import { FlatListVideoItem } from "../components/VideoComponents";
-
+import { AutoPlayFlatList } from "../components/VideoComponents";
 import { useModal } from "../context/ModalContext";
 import { useTheme } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
@@ -27,8 +19,8 @@ import { showMainBottomTabBar } from "../utils/utils";
 
 export default function SearchResultScreen({ navigation, route }) {
   const {
-    setIsShareScreenModalVisible,
-    setIsSearchResultScreenHeaderDotVerticalModalVisible,
+    setIsShareScreenVisible,
+    setIsSearchResultHeaderVisible,
   } = useModal();
   const { colors } = useTheme();
 
@@ -62,14 +54,13 @@ export default function SearchResultScreen({ navigation, route }) {
 
   return (
     <>
-      <ThView style={styles.screenContainer}>
+      <View style={styles.screenContainer}>
         <ThHeaderContainer>
           <HeaderArrowBackIcon onPress={() => navigation.pop(2)} />
-          <ThTextInput
+          <ThTextInputView
             style={{ marginLeft: 12 }}
             value={searchInput}
             onChangeText={setSearchInput}
-            autoFocus={false}
             onPress={() => {
               navigation.navigate("SearchScreen", { search: searchInput });
             }}
@@ -78,50 +69,27 @@ export default function SearchResultScreen({ navigation, route }) {
               navigation.navigate("SearchScreen", { search: "" });
             }}
           />
-          <ThView style={styles.headerRightContainer}>
+          <View style={styles.headerRightContainer}>
             <HeaderMicIcon />
             <HeaderShareScreenIcon
               onPress={() => {
-                setIsShareScreenModalVisible(true);
+                setIsShareScreenVisible(true);
               }}
             />
             <HeaderDotVerticalIcon
               onPress={() => {
-                setIsSearchResultScreenHeaderDotVerticalModalVisible(true);
+                setIsSearchResultHeaderVisible(true);
               }}
             />
-          </ThView>
+          </View>
         </ThHeaderContainer>
 
-        <ThFlatList
+        <AutoPlayFlatList
           data={searchVideos}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => {
-            return (
-              <FlatListVideoItem
-                navigation={navigation}
-                video={item}
-                query={searchInput}
-                autoPlayVideoId={item.id === autoPlayVideoId}
-              />
-            );
-          }}
-          onViewableItemsChanged={
-            //useRef for same reference each render, called whenever visible items changes (scrolled) & get the first visible item
-            useRef(({ viewableItems }) => {
-              if (viewableItems.length > 0) {
-                setAutoPlayVideoId(viewableItems[0].item.id);
-              }
-            }).current
-          }
-          viewabilityConfig={
-            //useRef for same reference each render, threshold of item in the screen to be count as visible
-            useRef({
-              viewAreaCoveragePercentThreshold: 50,
-            }).current
-          }
+          navigation={navigation}
+          query={searchInput}
         />
-      </ThView>
+      </View>
     </>
   );
 }

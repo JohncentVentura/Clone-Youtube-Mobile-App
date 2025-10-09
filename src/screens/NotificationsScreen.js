@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Pressable, View } from "react-native";
 import { fetchPexelsData } from "../api/pexelsAPI";
 import { AnimFadeRoundButton } from "../components/AnimatedComponents";
 import { DotVerticalIcon } from "../components/IconComponents";
@@ -6,19 +7,14 @@ import {
   NotificationsScreenPreviewImage,
   NotificationsScreenProfileImage,
 } from "../components/ImageComponents";
-import { NotificationsScreenItemDotVerticalModal } from "../components/ModalComponents";
-import {
-  ThPressable,
-  ThScrollViewColumn,
-  ThText,
-  ThView,
-} from "../components/ThemedComponents";
+import { ThText } from "../components/ThemedComponents";
+import { ColumnScrollView } from "components/UtilComponents";
 import { styles } from "../styles/styles";
 import { useModal } from "../context/ModalContext";
 import { useTheme } from "../context/ThemeContext";
 
 export default function NotificationsScreen({ navigation }) {
-  const { setIsNotificationsScreenItemDotVerticalModalVisible } = useModal();
+  const { setIsNotificationsItemVisible } = useModal();
   const { colors, fontSizes } = useTheme();
 
   const [newVideoQuery, setNewVideoQuery] = useState("food");
@@ -56,7 +52,7 @@ export default function NotificationsScreen({ navigation }) {
 
   return (
     <>
-      <ThScrollViewColumn
+      <ColumnScrollView
         style={[styles.screenContainer, { backgroundColor: colors.bg }]}
       >
         <ThText
@@ -77,7 +73,7 @@ export default function NotificationsScreen({ navigation }) {
             navigation={navigation}
             video={video}
             query={newVideoQuery}
-            setVisible={setIsNotificationsScreenItemDotVerticalModalVisible}
+            setVisible={setIsNotificationsItemVisible}
           />
         ))}
         <ThText
@@ -98,10 +94,10 @@ export default function NotificationsScreen({ navigation }) {
             navigation={navigation}
             video={video}
             query={oldVideoQuery}
-            setVisible={setIsNotificationsScreenItemDotVerticalModalVisible}
+            setVisible={setIsNotificationsItemVisible}
           />
         ))}
-      </ThScrollViewColumn>
+      </ColumnScrollView>
     </>
   );
 }
@@ -110,7 +106,7 @@ function NotificationItem({ navigation, video, query, setVisible }) {
   const { colors, fontSizes, iconSizes } = useTheme();
 
   return (
-    <ThPressable
+    <Pressable
       key={video.id}
       style={({ pressed }) => {
         return {
@@ -125,7 +121,7 @@ function NotificationItem({ navigation, video, query, setVisible }) {
         });
       }}
     >
-      <ThView
+      <View
         style={[
           styles.paddedHorizontalContainer,
           {
@@ -135,7 +131,7 @@ function NotificationItem({ navigation, video, query, setVisible }) {
           },
         ]}
       >
-        <ThPressable
+        <Pressable
           style={{
             marginLeft: 4,
             backgroundColor: "transparent",
@@ -152,9 +148,9 @@ function NotificationItem({ navigation, video, query, setVisible }) {
               uri: video.picture,
             }}
           />
-        </ThPressable>
+        </Pressable>
 
-        <ThView
+        <View
           style={{
             marginLeft: 16,
             backgroundColor: "transparent",
@@ -172,7 +168,7 @@ function NotificationItem({ navigation, video, query, setVisible }) {
           >
             {video.uploadedDate}
           </ThText>
-        </ThView>
+        </View>
 
         <NotificationsScreenPreviewImage
           style={{ marginLeft: 12 }}
@@ -190,7 +186,7 @@ function NotificationItem({ navigation, video, query, setVisible }) {
         >
           <DotVerticalIcon size={iconSizes.sm} />
         </AnimFadeRoundButton>
-      </ThView>
-    </ThPressable>
+      </View>
+    </Pressable>
   );
 }

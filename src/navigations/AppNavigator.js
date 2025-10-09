@@ -23,16 +23,16 @@ export default function AppNavigator() {
   }
 
   return (
-    <ThemeProvider>
-      <SafeAreaProvider>
-        <ModalProvider>
-          <SearchProvider>
+    <SafeAreaProvider>
+      <ModalProvider>
+        <SearchProvider>
+          <ThemeProvider>
             <NavigationContainer>
               {isLoggedIn ? <MainNavigator /> : <AuthNavigator />}
             </NavigationContainer>
-          </SearchProvider>
-        </ModalProvider>
-      </SafeAreaProvider>
-    </ThemeProvider>
+          </ThemeProvider>
+        </SearchProvider>
+      </ModalProvider>
+    </SafeAreaProvider>
   );
 }
