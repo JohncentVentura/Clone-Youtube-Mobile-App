@@ -1,9 +1,10 @@
-import { createStackNavigator } from "@react-navigation/stack";import {
+import { createStackNavigator } from "@react-navigation/stack";
+import {
   HeaderArrowBackIcon,
   HeaderTitleText,
 } from "../components/HeaderComponents";
-import UploadScreen from "../screens/UploadScreen";
 import { useTheme } from "../context/ThemeContext";
+import UploadScreen from "../screens/UploadScreen";
 
 const Stack = createStackNavigator();
 

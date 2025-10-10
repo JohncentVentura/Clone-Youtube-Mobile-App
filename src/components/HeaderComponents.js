@@ -1,4 +1,7 @@
 import { Image } from "react-native";
+import { useTheme } from "../context/ThemeContext";
+import { styles } from "../styles/styles";
+import { imagePaths } from "../utils/paths";
 import { AnimFadeRoundButton } from "./AnimatedComponents";
 import {
   ArrowBackIcon,
@@ -9,9 +12,6 @@ import {
   ShareScreenIcon,
 } from "./IconComponents";
 import { ThText } from "./ThemedComponents";
-import { styles } from "../styles/styles";
-import { useTheme } from "../context/ThemeContext";
-import { imagePaths } from "../utils/paths";
 
 export function HeaderArrowBackIcon({ style, navigation, ...rest }) {
   return (

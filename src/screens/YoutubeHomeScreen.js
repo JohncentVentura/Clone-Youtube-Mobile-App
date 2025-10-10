@@ -6,8 +6,8 @@ import { CompassIcon } from "../components/IconComponents";
 import { ThTopQueryTab } from "../components/ThemedComponents";
 import { RowScrollView } from "../components/UtilComponents";
 import { AutoPlayFlatList } from "../components/VideoComponents";
-import { styles } from "../styles/styles";
 import { useTheme } from "../context/ThemeContext";
+import { styles } from "../styles/styles";
 import { showMainBottomTabBar } from "../utils/utils";
 
 const defaultQuery = "Humans";

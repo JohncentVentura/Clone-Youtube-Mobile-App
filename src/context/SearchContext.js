@@ -6,12 +6,12 @@ const SearchContext = createContext();
 const SEARCH_HISTORY_KEY = "SearchHistoryKey";
 
 export function SearchProvider({ children }) {
+  const [globalSearch, setGlobalSearch] = useState("");
   const [searchHistory, setSearchHistory] = useState([]);
   const [removingSearchItem, setRemovingSearchItem] = useState("");
 
-  //Load search history
   useEffect(() => {
-    (async () => {
+    const loadSearchHistory = async () => {
       try {
         const loadedSearchHistory = await AsyncStorage.getItem(
           SEARCH_HISTORY_KEY
@@ -21,49 +21,41 @@ export function SearchProvider({ children }) {
           setSearchHistory(JSON.parse(loadedSearchHistory));
         }
       } catch (e) {
-        console.log(e);
+        console.log("SearchContext.js failed to load search history: ", e);
       }
-    })();
+    };
+    loadSearchHistory();
   }, []);
 
   async function handleSearch({ navigation, searchInput }) {
     if (!searchInput?.trim()) {
-      console.log("SearchContext.js search is empty");
-      return;
+      return console.log("Search input is empty");
     }
-
-    let searchedItem = {};
 
     try {
       const data = await fetchPexelsData(searchInput, 1);
-      searchedItem = { text: searchInput, picture: data[0].picture };
-    } catch (e) {
-      console.log("SearchContext.js failed to fetch pexels data: ", e);
-    }
+      const searchedItem = { text: searchInput, picture: data[0].picture };
 
-    if (!searchHistory.some((item) => item.text === searchInput)) {
-      const updatedSearchHistory = [searchedItem, ...searchHistory];
-      setSearchHistory(updatedSearchHistory);
-
-      try {
+      if (!searchHistory.some((item) => item.text === searchInput)) {
+        const updatedSearchHistory = [searchedItem, ...searchHistory];
+        setSearchHistory(updatedSearchHistory);
         await AsyncStorage.setItem(
           SEARCH_HISTORY_KEY,
           JSON.stringify(updatedSearchHistory)
         );
-      } catch (e) {
-        console.log("SearchContext.js failed to save search history: ", e);
       }
-    }
 
-    navigation.push("SearchResultScreen", { search: searchInput });
+      navigation.push("SearchResultScreen", { search: searchInput });
+    } catch (e) {
+      console.log("Search failed: ", e);
+    }
   }
 
-  async function removeSearchFromHistory(itemText) {
+  async function removeSearchHistoryItem() {
     try {
       const updatedSearchHistory = searchHistory.filter(
-        (item) => item.text !== itemText
+        (item) => item.text !== removingSearchItem.text
       );
-
       setSearchHistory(updatedSearchHistory);
       await AsyncStorage.setItem(
         SEARCH_HISTORY_KEY,
@@ -86,11 +78,13 @@ export function SearchProvider({ children }) {
   return (
     <SearchContext.Provider
       value={{
-        //search,
-        //setSearch,
+        globalSearch,
+        setGlobalSearch,
         searchHistory,
+        removingSearchItem,
+        setRemovingSearchItem,
         handleSearch,
-        removeSearchFromHistory,
+        removeSearchHistoryItem,
         clearSearchHistory,
       }}
     >

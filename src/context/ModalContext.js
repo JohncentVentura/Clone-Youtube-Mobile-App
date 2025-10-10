@@ -4,14 +4,16 @@ const ModalContext = createContext();
 
 export function ModalProvider({ children }) {
   const [isChannelHeaderVisible, setIsChannelHeaderVisible] = useState(false);
-  const [isClearHistoryVisible, setIsClearHistoryVisible] = useState(false);
+  const [isClearSearchHistoryVisible, setIsClearSearchHistoryVisible] =
+    useState(false);
   const [isFlatListVideoItemVisible, setIsFlatListVideoItemVisible] =
     useState(false);
   const [isNotificationsHeaderVisible, setIsNotificationsHeaderVisible] =
     useState(false);
   const [isNotificationsItemVisible, setIsNotificationsItemVisible] =
     useState(false);
-  const [isRemoveSearchVisible, setIsRemoveSearchVisible] = useState(false);
+  const [isRemoveSearchItemVisible, setIsRemoveSearchItemVisible] =
+    useState(false);
   const [isShareScreenVisible, setIsShareScreenVisible] = useState(false);
   const [isSearchResultHeaderVisible, setIsSearchResultHeaderVisible] =
     useState(false);
@@ -21,16 +23,16 @@ export function ModalProvider({ children }) {
       value={{
         isChannelHeaderVisible,
         setIsChannelHeaderVisible,
-        isClearHistoryVisible,
-        setIsClearHistoryVisible,
+        isClearSearchHistoryVisible,
+        setIsClearSearchHistoryVisible,
         isFlatListVideoItemVisible,
         setIsFlatListVideoItemVisible,
         isNotificationsHeaderVisible,
         setIsNotificationsHeaderVisible,
         isNotificationsItemVisible,
         setIsNotificationsItemVisible,
-        isRemoveSearchVisible,
-        setIsRemoveSearchVisible,
+        isRemoveSearchItemVisible,
+        setIsRemoveSearchItemVisible,
         isShareScreenVisible,
         setIsShareScreenVisible,
         isSearchResultHeaderVisible,

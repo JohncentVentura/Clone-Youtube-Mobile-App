@@ -1,10 +1,12 @@
 import { createStackNavigator } from "@react-navigation/stack";
+import { useState } from "react";
 import { View } from "react-native";
 import YouTubeFlatListScreen from "../api/YouTubeFlatListScreen";
 import YouTubePlayerScreen from "../api/YouTubePlayerScreen";
 import {
   HeaderArrowBackIcon,
   HeaderDotVerticalIcon,
+  HeaderMicIcon,
   HeaderNotificationsIcon,
   HeaderSearchIcon,
   HeaderShareScreenIcon,
@@ -13,15 +15,18 @@ import {
 } from "../components/HeaderComponents";
 import {
   ChannelHeaderModal,
-  ClearHistoryModal,
+  ClearSearchHistoryModal,
   FlatListVideoItemModal,
   NotificationsHeaderModal,
   NotificationsItemModal,
-  RemoveSearchModal,
+  RemoveSearchItemModal,
   SearchResultHeaderModal,
   ShareScreenModal,
 } from "../components/ModalComponents";
-import { ThHeaderContainer } from "../components/ThemedComponents";
+import {
+  ThHeaderContainer,
+  ThTextInputView,
+} from "../components/ThemedComponents";
 import { useModal } from "../context/ModalContext";
 import { useSearch } from "../context/SearchContext";
 import ChannelScreen from "../screens/ChannelScreen";
@@ -34,38 +39,26 @@ import { styles } from "../styles/styles";
 
 const Stack = createStackNavigator();
 
-export default function YoutubeHomeStack() {
+export default function YouTubeHomeStack() {
   const {
-  isChannelHeaderVisible,
-  setIsChannelHeaderVisible,
-} = useModal();
-const { isClearHistoryVisible, setIsClearHistoryVisible } =
-  useModal();
-const {
-  isFlatListVideoItemVisible,
-  setIsFlatListVideoItemVisible,
-} = useModal();
-const {
-  isNotificationsHeaderVisible,
-  setIsNotificationsHeaderVisible,
-} = useModal();
-const {
-  isNotificationsItemVisible,
-  setIsNotificationsItemVisible,
-} = useModal();
-const {
-  isRemoveSearchVisible,
-  setIsRemoveSearchVisible,
-} = useModal();
-const {
-  isShareScreenVisible,
-  setIsShareScreenVisible,
-} = useModal();
-const { isSearchResultHeaderVisible, setIsSearchResultHeaderVisible } =
-  useModal();
+    isChannelHeaderVisible,
+    setIsChannelHeaderVisible,
+    isClearSearchHistoryVisible,
+    setIsClearSearchHistoryVisible,
+    isFlatListVideoItemVisible,
+    setIsFlatListVideoItemVisible,
+    isNotificationsHeaderVisible,
+    setIsNotificationsHeaderVisible,
+    isNotificationsItemVisible,
+    setIsNotificationsItemVisible,
+    isRemoveSearchItemVisible,
+    setIsRemoveSearchItemVisible,
+    isShareScreenVisible,
+    setIsShareScreenVisible,
+    isSearchResultHeaderVisible,
+    setIsSearchResultHeaderVisible,
+  } = useModal();
 
-
-  const { removingSearchItem } = useSearch();
   return (
     <>
       <ChannelHeaderModal
@@ -73,9 +66,9 @@ const { isSearchResultHeaderVisible, setIsSearchResultHeaderVisible } =
         setIsModalVisible={setIsChannelHeaderVisible}
       />
 
-      <ClearHistoryModal
-        isModalVisible={isClearHistoryVisible}
-        setIsModalVisible={setIsClearHistoryVisible}
+      <ClearSearchHistoryModal
+        isModalVisible={isClearSearchHistoryVisible}
+        setIsModalVisible={setIsClearSearchHistoryVisible}
       />
 
       <FlatListVideoItemModal
@@ -85,9 +78,7 @@ const { isSearchResultHeaderVisible, setIsSearchResultHeaderVisible } =
 
       <NotificationsHeaderModal
         isModalVisible={isNotificationsHeaderVisible}
-        setIsModalVisible={
-          setIsNotificationsHeaderVisible
-        }
+        setIsModalVisible={setIsNotificationsHeaderVisible}
       />
 
       <NotificationsItemModal
@@ -95,10 +86,9 @@ const { isSearchResultHeaderVisible, setIsSearchResultHeaderVisible } =
         setIsModalVisible={setIsNotificationsItemVisible}
       />
 
-      <RemoveSearchModal
-        isModalVisible={isRemoveSearchVisible}
-        setIsModalVisible={setIsRemoveSearchVisible}
-        removingItem={removingSearchItem}
+      <RemoveSearchItemModal
+        isModalVisible={isRemoveSearchItemVisible}
+        setIsModalVisible={setIsRemoveSearchItemVisible}
       />
 
       <ShareScreenModal
@@ -159,9 +149,7 @@ const { isSearchResultHeaderVisible, setIsSearchResultHeaderVisible } =
                     />
                     <HeaderSearchIcon navigation={navigation} />
                     <HeaderDotVerticalIcon
-                      onPress={() =>
-                        setIsChannelHeaderVisible(true)
-                      }
+                      onPress={() => setIsChannelHeaderVisible(true)}
                     />
                   </View>
                 </ThHeaderContainer>
@@ -184,11 +172,7 @@ const { isSearchResultHeaderVisible, setIsSearchResultHeaderVisible } =
                     />
                     <HeaderSearchIcon navigation={navigation} />
                     <HeaderDotVerticalIcon
-                      onPress={() =>
-                        setIsNotificationsHeaderVisible(
-                          true
-                        )
-                      }
+                      onPress={() => setIsNotificationsHeaderVisible(true)}
                     />
                   </View>
                 </ThHeaderContainer>
@@ -199,20 +183,81 @@ const { isSearchResultHeaderVisible, setIsSearchResultHeaderVisible } =
         <Stack.Screen
           name="SearchScreen"
           component={SearchScreen}
-          options={({}) => {
-            return {
-              headerShown: false,
-            };
-          }}
+          options={({ navigation, route }) => ({
+            header: () => {
+              const { globalSearch, setGlobalSearch, handleSearch } =
+                useSearch();
+              const [searchInput, setSearchInput] = useState(
+                route.params.search
+              );
+
+              return (
+                <ThHeaderContainer>
+                  <HeaderArrowBackIcon navigation={navigation} />
+                  <ThTextInputView
+                    style={{ marginHorizontal: 12 }}
+                    autoFocus={true}
+                    value={globalSearch ? globalSearch : searchInput}
+                    onChangeText={setSearchInput}
+                    onSubmitEditing={() => {
+                      handleSearch({
+                        navigation,
+                        searchInput: globalSearch ? globalSearch : searchInput,
+                      });
+                      setGlobalSearch("");
+                    }}
+                    setClearButton={() => {
+                      setGlobalSearch("");
+                      setSearchInput("");
+                    }}
+                  />
+                  <HeaderMicIcon />
+                </ThHeaderContainer>
+              );
+            },
+          })}
         />
         <Stack.Screen
           name="SearchResultScreen"
           component={SearchResultScreen}
-          options={({}) => {
-            return {
-              headerShown: false,
-            };
-          }}
+          options={({ navigation, route }) => ({
+            header: () => {
+              const [searchInput, setSearchInput] = useState(
+                route.params?.search || ""
+              );
+
+              return (
+                <ThHeaderContainer>
+                  <HeaderArrowBackIcon
+                    onPress={() => {
+                      navigation.pop(2);
+                    }}
+                  />
+                  <ThTextInputView
+                    style={{ marginLeft: 12 }}
+                    value={searchInput}
+                    onPress={() =>
+                      navigation.navigate("SearchScreen", {
+                        search: searchInput,
+                      })
+                    }
+                    setClearButton={() => {
+                      navigation.navigate("SearchScreen", { search: "" });
+                    }}
+                  />
+                  <View style={styles.headerRightContainer}>
+                    <HeaderMicIcon />
+                    <HeaderShareScreenIcon
+                      onPress={() => setIsShareScreenVisible(true)}
+                    />
+                    <HeaderDotVerticalIcon
+                      onPress={() => setIsSearchResultHeaderVisible(true)}
+                    />
+                  </View>
+                </ThHeaderContainer>
+              );
+            },
+          })}
         />
         {/*Experimental*/}
         <Stack.Screen

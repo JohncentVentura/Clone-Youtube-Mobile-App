@@ -1,57 +1,28 @@
-import { useState } from "react";
 import { FlatList, Pressable, View } from "react-native";
-import {
-  HeaderArrowBackIcon,
-  HeaderMicIcon,
-} from "../components/HeaderComponents";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   ArrowUpLeftIcon,
   ClockRotateLeftIcon,
 } from "../components/IconComponents";
 import { SearchScreenHistoryImage } from "../components/ImageComponents";
+import { ThText } from "../components/ThemedComponents";
 import { useModal } from "../context/ModalContext";
 import { useSearch } from "../context/SearchContext";
 import { useTheme } from "../context/ThemeContext";
-import {
-  ThText,
-  ThTextInputView,
-  ThHeaderContainer,
-} from "../components/ThemedComponents";
 import { styles } from "../styles/styles";
 import { hideMainBottomTabBar } from "../utils/utils";
 
-export default function SearchScreen({ navigation, route }) {
-  const {
-    setIsClearHistoryModalVisible,
-    setIsRemoveSearchFromHistoryModalVisible,
-  } = useModal();
-  const { searchHistory, setRemovingSearchItem, handleSearch } = useSearch();
+export default function SearchScreen({ navigation }) {
+  const insets = useSafeAreaInsets();
+  const { setIsClearSearchHistoryVisible, setIsRemoveSearchItemVisible } =
+    useModal();
+  const { setGlobalSearch, searchHistory, setRemovingSearchItem } = useSearch();
   const { colors, fontSizes, iconSizes } = useTheme();
-
-  const { search } = route.params;
-  const [searchInput, setSearchInput] = useState(search);
-  const [removingSearch, setRemoveSearch] = useState(null);
-
   hideMainBottomTabBar(navigation);
 
   return (
     <>
       <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
-        <ThHeaderContainer>
-          <HeaderArrowBackIcon navigation={navigation} />
-          <ThTextInputView
-            style={{ marginHorizontal: 12 }}
-            autoFocus={true}
-            value={searchInput}
-            onChangeText={setSearchInput}
-            onSubmitEditing={() =>
-              handleSearch({ navigation, searchInput: searchInput })
-            }
-            setClearButton={() => setSearchInput("")}
-          />
-          <HeaderMicIcon style={styles.headerRightContainer} />
-        </ThHeaderContainer>
-
         <FlatList
           data={searchHistory}
           keyExtractor={(item, index) => index + item.text}
@@ -62,12 +33,13 @@ export default function SearchScreen({ navigation, route }) {
                 backgroundColor: pressed ? colors.bgInteractive : colors.bg,
               })}
               onPress={() => {
+                setGlobalSearch("");
                 navigation.push("SearchResultScreen", { search: item.text });
               }}
               delayLongPress={200}
               onLongPress={() => {
                 setRemovingSearchItem(item);
-                setIsRemoveSearchFromHistoryModalVisible(true);
+                setIsRemoveSearchItemVisible(true);
               }}
             >
               <View
@@ -93,7 +65,7 @@ export default function SearchScreen({ navigation, route }) {
                 <ArrowUpLeftIcon
                   style={{ marginLeft: 12 }}
                   onPress={() => {
-                    setSearchInput(item.text);
+                    setGlobalSearch(item.text);
                   }}
                 />
               </View>
@@ -101,11 +73,14 @@ export default function SearchScreen({ navigation, route }) {
           )}
           ListFooterComponent={
             searchHistory.length > 0 ? (
-              <Pressable onPress={() => setIsClearHistoryModalVisible(true)}>
+              <Pressable
+                style={{ marginBottom: insets.bottom + 6 }}
+                onPress={() => setIsClearSearchHistoryVisible(true)}
+              >
                 <ThText
                   style={{
-                    color: colors.textSecondary,
                     fontSize: fontSizes.sm,
+                    color: colors.textSecondary,
                     textAlign: "center",
                   }}
                 >

@@ -3,8 +3,8 @@ import {
   HeaderArrowBackIcon,
   HeaderTitleText,
 } from "../components/HeaderComponents";
-import SubscriptionsScreen from "../screens/SubscriptionsScreen";
 import { useTheme } from "../context/ThemeContext";
+import SubscriptionsScreen from "../screens/SubscriptionsScreen";
 
 const Stack = createStackNavigator();
 

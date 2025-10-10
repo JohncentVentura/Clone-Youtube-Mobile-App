@@ -2,13 +2,13 @@ import { useIsFocused } from "@react-navigation/native";
 import { useVideoPlayer, VideoView } from "expo-video";
 import { useEffect, useRef, useState } from "react";
 import { FlatList, Pressable, View } from "react-native";
-import { AnimFadeRoundButton } from "./AnimatedComponents";
-import { DotVerticalIcon } from "./IconComponents";
 import { MainVideoScreenChannelImage } from "../components/ImageComponents";
 import { ThText } from "../components/ThemedComponents";
-import { styles } from "../styles/styles";
 import { useModal } from "../context/ModalContext";
 import { useTheme } from "../context/ThemeContext";
+import { styles } from "../styles/styles";
+import { AnimFadeRoundButton } from "./AnimatedComponents";
+import { DotVerticalIcon } from "./IconComponents";
 
 export function AutoPlayFlatList({ style, data, navigation, query, ...rest }) {
   const [autoPlayVideoId, setAutoPlayVideoId] = useState(null);
@@ -59,9 +59,9 @@ export function FlatListVideoItem({
 
   return (
     <>
-      <View style={[{ marginBottom: 28 }, { width: "100%" }, style]}>
+      <View style={[{ marginBottom: 28, width: "100%" }, style]}>
         <Pressable
-          style={{ marginBottom: 10, width: "100%" }}
+          style={{ marginBottom: 10 }}
           onPress={() => {
             navigation.push("MainVideoScreen", {
               video: video,
@@ -91,7 +91,7 @@ export function FlatListVideoItem({
           >
             <MainVideoScreenChannelImage source={{ uri: video.picture }} />
           </Pressable>
-          <View style={{ flexShrink: 1, marginLeft: 12 }}>
+          <View style={{ marginLeft: 12, flexShrink: 1 }}>
             <ThText
               style={{
                 marginBottom: 4,
@@ -102,7 +102,7 @@ export function FlatListVideoItem({
               {video.title}
             </ThText>
             <ThText
-              style={{ color: colors.textSecondary, fontSize: fontSizes.xs }}
+              style={{ fontSize: fontSizes.xs, color: colors.textSecondary }}
             >
               {video.channelName} • {video.views} views • {video.uploadedDate}
             </ThText>

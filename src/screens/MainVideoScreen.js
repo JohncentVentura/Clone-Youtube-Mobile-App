@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FlatList, Pressable, View } from "react-native";
 import { fetchPexelsData } from "../api/pexelsAPI";
+import CommentsModal from "../components/CommentsModal";
 import {
   DislikeIcon,
   DownloadIcon,
@@ -14,15 +15,14 @@ import {
   MainVideoScreenChannelImage,
   MainVideoScreenCommentImage,
 } from "../components/ImageComponents";
-import CommentsModal from "../components/CommentsModal";
 import { ThSmallIconTextButton, ThText } from "../components/ThemedComponents";
 import { RowScrollView } from "components/UtilComponents";
 import {
   FlatListVideoItem,
   MainVideoView,
 } from "../components/VideoComponents";
-import { styles } from "../styles/styles";
 import { useTheme } from "../context/ThemeContext";
+import { styles } from "../styles/styles";
 import { hideMainBottomTabBar } from "../utils/utils";
 
 export default function MainVideoScreen({ navigation, route }) {
@@ -74,8 +74,8 @@ export default function MainVideoScreen({ navigation, route }) {
                 <View style={{ marginBottom: 14, flexDirection: "row" }}>
                   <ThText
                     style={{
-                      color: colors.textSecondary,
                       fontSize: fontSizes.xs,
+                      color: colors.textSecondary,
                     }}
                   >
                     {video.views} views
@@ -83,8 +83,8 @@ export default function MainVideoScreen({ navigation, route }) {
                   <ThText
                     style={{
                       marginLeft: 8,
-                      color: colors.textSecondary,
                       fontSize: fontSizes.xs,
+                      color: colors.textSecondary,
                     }}
                   >
                     {video.uploadedDate}
@@ -92,8 +92,8 @@ export default function MainVideoScreen({ navigation, route }) {
                   <ThText
                     style={{
                       marginLeft: 8,
-                      fontWeight: "medium",
                       fontSize: fontSizes.xs,
+                      fontWeight: "medium",
                     }}
                     onPress={() => {
                       console.log("...more press");
@@ -144,8 +144,8 @@ export default function MainVideoScreen({ navigation, route }) {
                     <ThText
                       style={{
                         marginLeft: 8,
-                        color: colors.textSecondary,
                         fontSize: fontSizes.xs,
+                        color: colors.textSecondary,
                       }}
                     >
                       {video.channelSubscribers}
@@ -159,9 +159,9 @@ export default function MainVideoScreen({ navigation, route }) {
                   >
                     <ThText
                       style={{
-                        color: colors.textContrast,
                         fontSize: fontSizes.xs,
                         fontWeight: "medium",
+                        color: colors.textContrast,
                       }}
                       onPress={() => console.log("Subscribe Press")}
                     >
@@ -293,8 +293,8 @@ export default function MainVideoScreen({ navigation, route }) {
                     <ThText
                       style={{
                         marginLeft: 10,
-                        color: colors.textSecondary,
                         fontSize: fontSizes.xs,
+                        color: colors.textSecondary,
                       }}
                     >
                       {video.commentsCount}
@@ -324,8 +324,8 @@ export default function MainVideoScreen({ navigation, route }) {
                     <ThText
                       style={{
                         marginLeft: 10,
-                        flex: 1,
                         fontSize: fontSizes.xs,
+                        flex: 1,
                       }}
                     >
                       {video.commentsDescription}

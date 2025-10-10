@@ -3,8 +3,8 @@ import {
   HeaderArrowBackIcon,
   HeaderTitleText,
 } from "../components/HeaderComponents";
-import YouScreen from "../screens/YouScreen";
 import { useTheme } from "../context/ThemeContext";
+import YouScreen from "../screens/YouScreen";
 
 const Stack = createStackNavigator();
 

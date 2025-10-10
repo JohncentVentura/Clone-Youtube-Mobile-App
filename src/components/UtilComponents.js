@@ -3,9 +3,9 @@ import { ScrollView, StyleSheet } from "react-native";
 export function ColumnScrollView({ style, children, ...rest }) {
   return (
     <ScrollView
-      style={[{ backgroundColor: "transparent" }, style]}
+      style={style}
       contentContainerStyle={StyleSheet.create({
-        alignItems: "center",
+        alignItems: "ceter",
       })}
       showsVerticalScrollIndicator={false}
       {...rest}
@@ -18,10 +18,9 @@ export function ColumnScrollView({ style, children, ...rest }) {
 export function RowScrollView({ style, children, ...rest }) {
   return (
     <ScrollView
-      style={[{ backgroundColor: "transparent" }, style]}
+      style={style}
       contentContainerStyle={StyleSheet.create({
         flexDirection: "row",
-
         alignItems: "center",
       })}
       showsHorizontalScrollIndicator={false}

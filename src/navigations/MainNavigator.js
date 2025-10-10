@@ -38,7 +38,7 @@ import ShortsStack from "./ShortsStack";
 import SubscriptionsStack from "./SubscriptionsStack";
 import UploadStack from "./UploadStack";
 import YouStack from "./YouStack";
-import YoutubeHomeStack from "./YoutubeHomeStack";
+import YouTubeHomeStack from "./YouTubeHomeStack";
 
 const Drawer = createDrawerNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -46,120 +46,120 @@ const BottomTab = createBottomTabNavigator();
 //TODO: Change drawerItems components into the actual component based on the same route name
 const drawerItems = [
   {
-    route: "YoutubeHomeStack",
+    route: "YouTubeHomeStack",
+    component: YouTubeHomeStack,
     icon: YoutubeMainIcon,
     label: "Youtube",
-    component: YoutubeHomeStack,
   },
   {
     route: "MusicStack",
+    component: ShortsStack,
     icon: MusicIcon,
     label: "Music",
-    component: ShortsStack,
   },
   {
     route: "MoviesStack",
+    component: SubscriptionsStack,
     icon: MovieIcon,
     label: "Movies",
-    component: SubscriptionsStack,
   },
   {
     route: "LiveStack",
+    component: UploadStack,
     icon: LiveIcon,
     label: "Live",
-    component: UploadStack,
   },
   {
     route: "GamingStack",
+    component: YouStack,
     icon: GamingIcon,
     label: "Gaming",
-    component: YouStack,
   },
   {
     route: "NewsStack",
+    component: YouTubeHomeStack,
     icon: NewsIcon,
     label: "News",
-    component: YoutubeHomeStack,
   },
   {
     route: "SportsStack",
+    component: YouTubeHomeStack,
     icon: SportsIcon,
     label: "Sports",
-    component: YoutubeHomeStack,
   },
   {
     route: "CoursesStack",
+    component: YouTubeHomeStack,
     icon: CourseIcon,
     label: "Courses",
-    component: YoutubeHomeStack,
   },
   {
     route: "FashionAndBeautyStack",
+    component: YouTubeHomeStack,
     icon: FashionAndBeautyIcon,
     label: "Fashion & Beauty",
-    component: YoutubeHomeStack,
   },
   {
     route: "YoutubePremiumStack",
+    component: YouTubeHomeStack,
     icon: YoutubePremiumIcon,
     label: "Youtube Premium",
-    component: YoutubeHomeStack,
   },
   {
     route: "YoutubeMusicStack",
+    component: YouTubeHomeStack,
     icon: YoutubeMusicIcon,
     label: "Youtube Music",
-    component: YoutubeHomeStack,
   },
   {
     route: "YoutubeKidsStack",
+    component: YouTubeHomeStack,
     icon: YoutubeKidsIcon,
     label: "Youtube Kids",
-    component: YoutubeHomeStack,
   },
 ];
 
 //HomeComponent in the parameter will change into the component of the currently selected Drawer route
-const bottomTabItems = (HomeComponent = YoutubeHomeStack) => [
+const bottomTabItems = (HomeComponent = YouTubeHomeStack) => [
   {
     route: "HomeStack",
+    component: HomeComponent,
     activeIcon: ActiveHomeIcon,
     inactiveIcon: InactiveHomeIcon,
     activeLabel: "Welcome",
     inactiveLabel: "Home",
-    component: HomeComponent,
   },
   {
     route: "ShortsStack",
+    component: ShortsStack,
     activeIcon: ActiveShortsIcon,
     inactiveIcon: InactiveShortsIcon,
     activeLabel: "or Trunks?",
     inactiveLabel: "Shorts",
-    component: ShortsStack,
   },
   {
     route: "UploadStack",
+    component: UploadStack,
     activeIcon: ActiveUploadIcon,
     inactiveIcon: InactiveUploadIcon,
     activeLabel: "B-But I'm shy...",
     inactiveLabel: "Upload",
-    component: UploadStack,
   },
   {
     route: "SubscriptionsStack",
+    component: SubscriptionsStack,
     activeIcon: ActiveSubscriptionIcon,
     inactiveIcon: InactiveSubscriptionIcon,
     activeLabel: "Please like &",
     inactiveLabel: "Subscriptions",
-    component: SubscriptionsStack,
   },
   {
     route: "YouStack",
+    component: YouStack,
     activeIcon: ActiveYouIcon,
     inactiveIcon: InactiveYouIcon,
     activeLabel: "Who? M-Me?",
     inactiveLabel: "You",
-    component: YouStack,
   },
 ];
 
@@ -182,7 +182,7 @@ export default function MainNavigator() {
 
                 return (
                   <React.Fragment key={item.route}>
-                    {/*Render divider if index is in the last 3 items of drawerItems*/}
+                    {/*Drawer divider*/}
                     {index === drawerItems.length - 3 && (
                       <View
                         style={{
@@ -248,8 +248,6 @@ export default function MainNavigator() {
                 );
               })}
             </DrawerContentScrollView>
-
-            {/*Drawer Footer*/}
             <View
               style={{
                 marginBottom: insets.bottom + 10,
@@ -289,7 +287,6 @@ export default function MainNavigator() {
 function MainBottomTabBar({ navigation }) {
   const { colors, fontSizes } = useTheme();
   const mainNavigator = navigation.getParent("MainNavigator");
-
   //Assign updated bottomTabItems so the HomeStack route of this tab uses the component of the currently selected Drawer route
   const updatedTabItems = bottomTabItems(
     drawerItems[mainNavigator.getState().index].component
@@ -303,6 +300,7 @@ function MainBottomTabBar({ navigation }) {
         const activeTabItem = bottomTabItems().find(
           (bottomTabItem) => bottomTabItem.route === route.name
         );
+
         return {
           headerShown: false,
           tabBarStyle: getMainBottomTabBarStyle(colors),

@@ -2,7 +2,6 @@ import { Pressable, View } from "react-native";
 import Modal from "react-native-modal";
 import { useSearch } from "../context/SearchContext";
 import { useTheme } from "../context/ThemeContext";
-import { ThText } from "./ThemedComponents";
 import {
   DontRecommendChannelIcon,
   EyeInvisbleIcon,
@@ -16,6 +15,7 @@ import {
   ShareIcon,
   ShareScreenIcon,
 } from "./IconComponents";
+import { ThText } from "./ThemedComponents";
 
 /******************************SwipeDownModal Components******************************/
 function SwipeDownModal({
@@ -371,15 +371,10 @@ function QuestionModal({ isModalVisible, setIsModalVisible, children }) {
   );
 }
 
-export function RemoveSearchModal({
-  isModalVisible,
-  setIsModalVisible,
-  removingItem,
-}) {
+export function RemoveSearchItemModal({ isModalVisible, setIsModalVisible }) {
   const { colors, fontSizes } = useTheme();
-  const { setRemovingSearchItem, removeSearchFromHistory } = useSearch();
-
-  if (!removingItem) return null;
+  const { removingSearchItem, setRemovingSearchItem, removeSearchHistoryItem } =
+    useSearch();
 
   return (
     <QuestionModal
@@ -393,7 +388,7 @@ export function RemoveSearchModal({
           fontWeight: "medium",
         }}
       >
-        {removingItem.text}
+        {removingSearchItem.text}
       </ThText>
       <ThText style={{ marginBottom: 46 }}>Remove from search history?</ThText>
       <View
@@ -409,7 +404,7 @@ export function RemoveSearchModal({
         <Pressable
           style={{ marginLeft: 20 }}
           onPress={() => {
-            removeSearchFromHistory(removingItem.text);
+            removeSearchHistoryItem(removingSearchItem.text);
             setRemovingSearchItem("");
             setIsModalVisible(false);
           }}
@@ -423,7 +418,7 @@ export function RemoveSearchModal({
   );
 }
 
-export function ClearHistoryModal({ isModalVisible, setIsModalVisible }) {
+export function ClearSearchHistoryModal({ isModalVisible, setIsModalVisible }) {
   const { colors } = useTheme();
   const { clearSearchHistory } = useSearch();
 

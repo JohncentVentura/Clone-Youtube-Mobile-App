@@ -9,9 +9,9 @@ import {
 } from "../components/ImageComponents";
 import { ThText } from "../components/ThemedComponents";
 import { ColumnScrollView } from "components/UtilComponents";
-import { styles } from "../styles/styles";
 import { useModal } from "../context/ModalContext";
 import { useTheme } from "../context/ThemeContext";
+import { styles } from "../styles/styles";
 
 export default function NotificationsScreen({ navigation }) {
   const { setIsNotificationsItemVisible } = useModal();

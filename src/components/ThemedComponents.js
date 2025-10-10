@@ -1,5 +1,12 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
@@ -13,9 +20,14 @@ export function ThHeaderContainer({ style, children, ...rest }) {
       style={[
         styles.paddedHorizontalContainer,
         {
-          paddingTop: insets.top + 4,
+          paddingTop: insets.top,
+          height:
+            Platform.OS === "android"
+              ? 56 + insets.top //Android header height
+              : 44 + insets.top, //iOS header height
           backgroundColor: colors.bg,
           flexDirection: "row",
+          justifyContent: "space-between",
           alignItems: "center",
         },
         style,
@@ -35,22 +47,6 @@ export function ThIcon({ IconComponent, ...rest }) {
   );
 }
 
-export function ThSmallIconButtonText({ style, children, ...rest }) {
-  const { fontSizes } = useTheme();
-
-  return (
-    <ThText
-      style={[
-        { paddingLeft: 4, fontWeight: "medium", fontSize: fontSizes.xs },
-        style,
-      ]}
-      {...rest}
-    >
-      {children}
-    </ThText>
-  );
-}
-
 export function ThText({ style, children, ...rest }) {
   const { colors, fontSizes } = useTheme();
   const { fontWeight, ...restStyle } = StyleSheet.flatten(style) || {};
@@ -65,7 +61,7 @@ export function ThText({ style, children, ...rest }) {
   return (
     <Text
       style={[
-        { color: colors.textPrimary, fontFamily, fontSize: fontSizes.base },
+        { fontSize: fontSizes.base, fontFamily, color: colors.textPrimary },
         restStyle,
       ]}
       {...rest}
@@ -145,13 +141,7 @@ export function ThTopQueryTab({ style, selected, children, ...rest }) {
   );
 }
 
-export function ThSmallIconTextButton({
-  style,
-  Icon,
-  text,
-
-  ...rest
-}) {
+export function ThSmallIconTextButton({ style, Icon, text, ...rest }) {
   const { colors, fontSizes, iconSizes } = useTheme();
 
   return (
@@ -159,8 +149,8 @@ export function ThSmallIconTextButton({
       style={({ pressed }) => [
         styles.iconTextButton,
         {
-          backgroundColor: colors.bgSecondary,
           transform: [{ scale: pressed ? 0.95 : 1 }],
+          backgroundColor: colors.bgSecondary,
         },
         style,
       ]}

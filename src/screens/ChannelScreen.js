@@ -4,8 +4,8 @@ import {
   ChannelScreenProfileImage,
 } from "../components/ImageComponents";
 import { ThText } from "../components/ThemedComponents";
-import { styles } from "../styles/styles";
 import { useTheme } from "../context/ThemeContext";
+import { styles } from "../styles/styles";
 
 export default function ChannelScreen({ route }) {
   const { colors, fontSizes } = useTheme();

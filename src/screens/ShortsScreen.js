@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { ThText } from "../components/ThemedComponents";
-import { styles } from "../styles/styles";
 import { useTheme } from "../context/ThemeContext";
+import { styles } from "../styles/styles";
 
 export default function ShortsScreen() {
   const { colors } = useTheme();
