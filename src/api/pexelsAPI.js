@@ -11,7 +11,7 @@ const { PEXELS_API_URL, PEXELS_API_KEY } = Constants.expoConfig.extra;
 export async function fetchPexelsData(
   query = "pixels",
   queryCount = 3,
-  signal
+  signal,
 ) {
   try {
     const url = `${PEXELS_API_URL}/search?query=${encodeURIComponent(

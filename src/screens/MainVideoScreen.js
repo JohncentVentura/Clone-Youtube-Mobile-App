@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FlatList, Pressable, View } from "react-native";
 import { fetchPexelsData } from "../api/pexelsAPI";
 import CommentsModal from "../components/CommentsModal";
@@ -16,14 +16,14 @@ import {
   MainVideoScreenCommentImage,
 } from "../components/ImageComponents";
 import { ThSmallIconTextButton, ThText } from "../components/ThemedComponents";
-import { RowScrollView } from "components/UtilComponents";
+import { RowScrollView } from "../components/UtilComponents";
 import {
   FlatListVideoItem,
   MainVideoView,
 } from "../components/VideoComponents";
 import { useTheme } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
-import { hideMainBottomTabBar } from "../utils/utils";
+import { useHideTabBarOnFocus, useScrollToTopOnFocus } from "../utils/utils";
 
 export default function MainVideoScreen({ navigation, route }) {
   const { colors, fontSizes, iconSizes } = useTheme();
@@ -31,12 +31,17 @@ export default function MainVideoScreen({ navigation, route }) {
   const [relatedVideos, setRelatedVideos] = useState([]);
   const [showComments, setShowComments] = useState(false);
 
+  useHideTabBarOnFocus();
+
+  const listRef = useRef(null);
+  useScrollToTopOnFocus(listRef);
+
   useEffect(() => {
     const abortController = new AbortController();
     let isMounted = true;
 
     (async function () {
-      const data = await fetchPexelsData(query, 5, abortController.signal);
+      const data = await fetchPexelsData(query, 5);
       if (isMounted) {
         setRelatedVideos(data);
       }
@@ -48,12 +53,11 @@ export default function MainVideoScreen({ navigation, route }) {
     };
   }, [video]);
 
-  hideMainBottomTabBar(navigation);
-
   return (
     <>
       <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
         <FlatList
+          ref={listRef}
           data={relatedVideos}
           keyExtractor={(item) => item.id.toString()}
           ListHeaderComponent={

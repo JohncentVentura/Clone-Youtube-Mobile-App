@@ -1,5 +1,6 @@
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
+import { useUIState } from "../context/UIStateContext";
 
 export function getPexelsTagUserName(url) {
   // Remove trailing slash if it exists
@@ -53,37 +54,22 @@ export function roundOffNumber(num) {
   }
 }
 
-/******************************MainBottomTabs Utils******************************/
-export function getMainBottomTabBarStyle(colors) {
-  return {
-    borderTopColor: colors.borderSecondary,
-    borderTopWidth: 2,
-    backgroundColor: colors.bg,
-    elevation: 0, //Android: removes drop shadow
-    shadowOpacity: 0, //iOS: removes drop shadow
-  };
-}
+export function useHideTabBarOnFocus() {
+  const { setIsTabBarVisible } = useUIState();
 
-export function hideMainBottomTabBar(navigation) {
   useFocusEffect(
     useCallback(() => {
-      const mainBottomTab = navigation.getParent("MainBottomTabBar");
-
-      mainBottomTab?.setOptions({
-        tabBarStyle: { display: "none" },
-      });
-    }, [navigation])
+      setIsTabBarVisible(false);
+      return () => setIsTabBarVisible(true);
+    }, [])
   );
 }
 
-export function showMainBottomTabBar(navigation, colors) {
+export function useScrollToTopOnFocus(ref) {
   useFocusEffect(
     useCallback(() => {
-      const mainBottomTabs = navigation.getParent("MainBottomTabBar");
-
-      mainBottomTabs?.setOptions({
-        tabBarStyle: getMainBottomTabBarStyle(colors),
-      });
-    }, [navigation])
+      ref.current?.scrollToOffset?.({ offset: 0, animated: false });
+      ref.current?.scrollTo?.({ y: 0, animated: false });
+    }, [])
   );
 }

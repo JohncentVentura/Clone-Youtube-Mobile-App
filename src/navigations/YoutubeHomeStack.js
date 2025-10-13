@@ -5,6 +5,7 @@ import YouTubeFlatListScreen from "../api/YouTubeFlatListScreen";
 import YouTubePlayerScreen from "../api/YouTubePlayerScreen";
 import {
   HeaderArrowBackIcon,
+  HeaderContainer,
   HeaderDotVerticalIcon,
   HeaderMicIcon,
   HeaderNotificationsIcon,
@@ -23,10 +24,7 @@ import {
   SearchResultHeaderModal,
   ShareScreenModal,
 } from "../components/ModalComponents";
-import {
-  ThHeaderContainer,
-  ThTextInputView,
-} from "../components/ThemedComponents";
+import { ThTextInputView } from "../components/ThemedComponents";
 import { useModal } from "../context/ModalContext";
 import { useSearch } from "../context/SearchContext";
 import ChannelScreen from "../screens/ChannelScreen";
@@ -62,43 +60,43 @@ export default function YouTubeHomeStack() {
   return (
     <>
       <ChannelHeaderModal
-        isModalVisible={isChannelHeaderVisible}
-        setIsModalVisible={setIsChannelHeaderVisible}
+        isVisible={isChannelHeaderVisible}
+        setIsVisible={setIsChannelHeaderVisible}
       />
 
       <ClearSearchHistoryModal
-        isModalVisible={isClearSearchHistoryVisible}
-        setIsModalVisible={setIsClearSearchHistoryVisible}
+        isVisible={isClearSearchHistoryVisible}
+        setIsVisible={setIsClearSearchHistoryVisible}
       />
 
       <FlatListVideoItemModal
-        isModalVisible={isFlatListVideoItemVisible}
-        setIsModalVisible={setIsFlatListVideoItemVisible}
+        isVisible={isFlatListVideoItemVisible}
+        setIsVisible={setIsFlatListVideoItemVisible}
       />
 
       <NotificationsHeaderModal
-        isModalVisible={isNotificationsHeaderVisible}
-        setIsModalVisible={setIsNotificationsHeaderVisible}
+        isVisible={isNotificationsHeaderVisible}
+        setIsVisible={setIsNotificationsHeaderVisible}
       />
 
       <NotificationsItemModal
-        isModalVisible={isNotificationsItemVisible}
-        setIsModalVisible={setIsNotificationsItemVisible}
+        isVisible={isNotificationsItemVisible}
+        setIsVisible={setIsNotificationsItemVisible}
       />
 
       <RemoveSearchItemModal
-        isModalVisible={isRemoveSearchItemVisible}
-        setIsModalVisible={setIsRemoveSearchItemVisible}
+        isVisible={isRemoveSearchItemVisible}
+        setIsVisible={setIsRemoveSearchItemVisible}
       />
 
       <ShareScreenModal
-        isModalVisible={isShareScreenVisible}
-        setIsModalVisible={setIsShareScreenVisible}
+        isVisible={isShareScreenVisible}
+        setIsVisible={setIsShareScreenVisible}
       />
 
       <SearchResultHeaderModal
-        isModalVisible={isSearchResultHeaderVisible}
-        setIsModalVisible={setIsSearchResultHeaderVisible}
+        isVisible={isSearchResultHeaderVisible}
+        setIsVisible={setIsSearchResultHeaderVisible}
       />
 
       <Stack.Navigator id="YoutubeHomeStack">
@@ -108,7 +106,7 @@ export default function YouTubeHomeStack() {
           options={({ navigation }) => {
             return {
               header: () => (
-                <ThHeaderContainer>
+                <HeaderContainer>
                   <HeaderYouTubeLogoImage />
                   <View style={styles.headerRightContainer}>
                     <HeaderShareScreenIcon
@@ -117,7 +115,7 @@ export default function YouTubeHomeStack() {
                     <HeaderNotificationsIcon navigation={navigation} />
                     <HeaderSearchIcon navigation={navigation} />
                   </View>
-                </ThHeaderContainer>
+                </HeaderContainer>
               ),
             };
           }}
@@ -128,9 +126,9 @@ export default function YouTubeHomeStack() {
           options={({ navigation }) => {
             return {
               header: () => (
-                <ThHeaderContainer>
+                <HeaderContainer>
                   <HeaderArrowBackIcon onPress={() => navigation.pop()} />
-                </ThHeaderContainer>
+                </HeaderContainer>
               ),
             };
           }}
@@ -141,7 +139,7 @@ export default function YouTubeHomeStack() {
           options={({ navigation }) => {
             return {
               header: () => (
-                <ThHeaderContainer>
+                <HeaderContainer>
                   <HeaderArrowBackIcon navigation={navigation} />
                   <View style={styles.headerRightContainer}>
                     <HeaderShareScreenIcon
@@ -152,7 +150,7 @@ export default function YouTubeHomeStack() {
                       onPress={() => setIsChannelHeaderVisible(true)}
                     />
                   </View>
-                </ThHeaderContainer>
+                </HeaderContainer>
               ),
             };
           }}
@@ -163,7 +161,7 @@ export default function YouTubeHomeStack() {
           options={({ navigation }) => {
             return {
               header: () => (
-                <ThHeaderContainer>
+                <HeaderContainer>
                   <HeaderArrowBackIcon navigation={navigation} />
                   <HeaderTitleText>Notifications</HeaderTitleText>
                   <View style={styles.headerRightContainer}>
@@ -175,7 +173,7 @@ export default function YouTubeHomeStack() {
                       onPress={() => setIsNotificationsHeaderVisible(true)}
                     />
                   </View>
-                </ThHeaderContainer>
+                </HeaderContainer>
               ),
             };
           }}
@@ -192,7 +190,7 @@ export default function YouTubeHomeStack() {
               );
 
               return (
-                <ThHeaderContainer>
+                <HeaderContainer>
                   <HeaderArrowBackIcon navigation={navigation} />
                   <ThTextInputView
                     style={{ marginHorizontal: 12 }}
@@ -212,7 +210,7 @@ export default function YouTubeHomeStack() {
                     }}
                   />
                   <HeaderMicIcon />
-                </ThHeaderContainer>
+                </HeaderContainer>
               );
             },
           })}
@@ -227,7 +225,7 @@ export default function YouTubeHomeStack() {
               );
 
               return (
-                <ThHeaderContainer>
+                <HeaderContainer>
                   <HeaderArrowBackIcon
                     onPress={() => {
                       navigation.pop(2);
@@ -254,7 +252,7 @@ export default function YouTubeHomeStack() {
                       onPress={() => setIsSearchResultHeaderVisible(true)}
                     />
                   </View>
-                </ThHeaderContainer>
+                </HeaderContainer>
               );
             },
           })}
@@ -266,9 +264,9 @@ export default function YouTubeHomeStack() {
           options={({ navigation }) => {
             return {
               header: () => (
-                <ThHeaderContainer>
+                <HeaderContainer>
                   <HeaderArrowBackIcon navigation={navigation} />
-                </ThHeaderContainer>
+                </HeaderContainer>
               ),
             };
           }}
@@ -279,9 +277,9 @@ export default function YouTubeHomeStack() {
           options={({ navigation }) => {
             return {
               header: () => (
-                <ThHeaderContainer>
+                <HeaderContainer>
                   <HeaderArrowBackIcon navigation={navigation} />
-                </ThHeaderContainer>
+                </HeaderContainer>
               ),
             };
           }}

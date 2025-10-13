@@ -34,13 +34,5 @@ export default {
       PEXELS_API_URL: process.env.PEXELS_API_URL,
       PEXELS_API_KEY: process.env.PEXELS_API_KEY,
     },
-    compilerOptions: {
-      checkJs: true,
-      baseUrl: ".",
-      paths: {
-        "*": ["*"],
-      },
-    },
-    include: ["**/*"],
   },
 };

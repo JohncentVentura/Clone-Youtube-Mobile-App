@@ -1,11 +1,10 @@
 import { ScrollView, StyleSheet } from "react-native";
 
-export function ColumnScrollView({ style, children, ...rest }) {
+export function ColumnScrollView({ children, ...rest }) {
   return (
     <ScrollView
-      style={style}
       contentContainerStyle={StyleSheet.create({
-        alignItems: "ceter",
+        alignItems: "flex-start",
       })}
       showsVerticalScrollIndicator={false}
       {...rest}
@@ -15,10 +14,9 @@ export function ColumnScrollView({ style, children, ...rest }) {
   );
 }
 
-export function RowScrollView({ style, children, ...rest }) {
+export function RowScrollView({ children, ...rest }) {
   return (
     <ScrollView
-      style={style}
       contentContainerStyle={StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",

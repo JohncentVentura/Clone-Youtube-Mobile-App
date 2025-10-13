@@ -1,17 +1,13 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import {
-  createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItem,
-} from "@react-navigation/drawer";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import React from "react";
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { HeaderYouTubeLogoImage } from "components/HeaderComponents";
 import {
   ActiveHomeIcon,
   ActiveShortsIcon,
   ActiveSubscriptionIcon,
-  ActiveUploadIcon,
   ActiveYouIcon,
   CourseIcon,
   FashionAndBeautyIcon,
@@ -19,21 +15,22 @@ import {
   InactiveHomeIcon,
   InactiveShortsIcon,
   InactiveSubscriptionIcon,
-  InactiveUploadIcon,
   InactiveYouIcon,
   LiveIcon,
   MovieIcon,
   MusicIcon,
   NewsIcon,
   SportsIcon,
+  UploadIcon,
   YoutubeKidsIcon,
   YoutubeMainIcon,
   YoutubeMusicIcon,
   YoutubePremiumIcon,
 } from "../components/IconComponents";
 import { ThText } from "../components/ThemedComponents";
+import { ColumnScrollView } from "components/UtilComponents";
 import { useTheme } from "../context/ThemeContext";
-import { getMainBottomTabBarStyle } from "../utils/utils";
+import { useUIState } from "../context/UIStateContext";
 import ShortsStack from "./ShortsStack";
 import SubscriptionsStack from "./SubscriptionsStack";
 import UploadStack from "./UploadStack";
@@ -48,73 +45,73 @@ const drawerItems = [
   {
     route: "YouTubeHomeStack",
     component: YouTubeHomeStack,
-    icon: YoutubeMainIcon,
+    Icon: YoutubeMainIcon,
     label: "Youtube",
   },
   {
     route: "MusicStack",
     component: ShortsStack,
-    icon: MusicIcon,
+    Icon: MusicIcon,
     label: "Music",
   },
   {
     route: "MoviesStack",
     component: SubscriptionsStack,
-    icon: MovieIcon,
+    Icon: MovieIcon,
     label: "Movies",
   },
   {
     route: "LiveStack",
     component: UploadStack,
-    icon: LiveIcon,
+    Icon: LiveIcon,
     label: "Live",
   },
   {
     route: "GamingStack",
     component: YouStack,
-    icon: GamingIcon,
+    Icon: GamingIcon,
     label: "Gaming",
   },
   {
     route: "NewsStack",
     component: YouTubeHomeStack,
-    icon: NewsIcon,
+    Icon: NewsIcon,
     label: "News",
   },
   {
     route: "SportsStack",
     component: YouTubeHomeStack,
-    icon: SportsIcon,
+    Icon: SportsIcon,
     label: "Sports",
   },
   {
     route: "CoursesStack",
     component: YouTubeHomeStack,
-    icon: CourseIcon,
+    Icon: CourseIcon,
     label: "Courses",
   },
   {
     route: "FashionAndBeautyStack",
     component: YouTubeHomeStack,
-    icon: FashionAndBeautyIcon,
+    Icon: FashionAndBeautyIcon,
     label: "Fashion & Beauty",
   },
   {
     route: "YoutubePremiumStack",
     component: YouTubeHomeStack,
-    icon: YoutubePremiumIcon,
+    Icon: YoutubePremiumIcon,
     label: "Youtube Premium",
   },
   {
     route: "YoutubeMusicStack",
     component: YouTubeHomeStack,
-    icon: YoutubeMusicIcon,
+    Icon: YoutubeMusicIcon,
     label: "Youtube Music",
   },
   {
     route: "YoutubeKidsStack",
     component: YouTubeHomeStack,
-    icon: YoutubeKidsIcon,
+    Icon: YoutubeKidsIcon,
     label: "Youtube Kids",
   },
 ];
@@ -140,10 +137,7 @@ const bottomTabItems = (HomeComponent = YouTubeHomeStack) => [
   {
     route: "UploadStack",
     component: UploadStack,
-    activeIcon: ActiveUploadIcon,
-    inactiveIcon: InactiveUploadIcon,
-    activeLabel: "B-But I'm shy...",
-    inactiveLabel: "Upload",
+    Icon: UploadIcon,
   },
   {
     route: "SubscriptionsStack",
@@ -165,113 +159,122 @@ const bottomTabItems = (HomeComponent = YouTubeHomeStack) => [
 
 export default function MainNavigator() {
   const insets = useSafeAreaInsets();
-  const { colors, fontSizes } = useTheme();
+  const { colors, iconSizes } = useTheme();
 
   return (
     <Drawer.Navigator
       id="MainNavigator"
-      screenOptions={{ headerShown: false }}
-      drawerContent={(props) => {
-        return (
-          <View style={{ backgroundColor: colors.bg, flex: 1 }}>
-            <DrawerContentScrollView>
-              {drawerItems.map((item, index) => {
-                const isHomeRoute = drawerItems[0].route === item.route;
-                const isActiveRoute =
-                  drawerItems[props.state.index].route === item.route;
+      screenOptions={{
+        headerShown: false,
+        drawerStyle: { width: 280 },
+      }}
+      drawerContent={(props) => (
+        <View
+          style={{
+            paddingTop: insets.top,
+            backgroundColor: colors.bg,
+            flex: 1,
+          }}
+        >
+          <ColumnScrollView>
+            {drawerItems.map((item, index) => {
+              const isHomeRoute = drawerItems[0].route === item.route;
+              const isActiveRoute =
+                drawerItems[props.state.index].route === item.route;
 
-                return (
-                  <React.Fragment key={item.route}>
-                    {/*Drawer divider*/}
-                    {index === drawerItems.length - 3 && (
-                      <View
-                        style={{
-                          marginVertical: 12,
-                          width: "100%",
-                          height: 1,
-                          backgroundColor: colors.borderSecondary,
-                        }}
-                      />
-                    )}
-
-                    <DrawerItem
+              return (
+                <React.Fragment key={index + item.route}>
+                  {index === drawerItems.length - 3 && (
+                    <View
                       style={{
-                        paddingVertical: 2,
+                        marginVertical: 8,
+                        width: "100%",
+                        height: 1,
+                        backgroundColor: colors.borderSecondary,
+                      }}
+                    />
+                  )}
+
+                  <Pressable
+                    onPress={() => props.navigation.navigate(item.route)}
+                    style={[
+                      {
+                        marginHorizontal: 8,
+                        borderRadius: 99,
+                        paddingHorizontal: 8,
+                        paddingVertical: 16,
+                        width: "94%",
                         backgroundColor:
                           !isHomeRoute && isActiveRoute
                             ? colors.primary
-                            : colors.bg,
-                      }}
-                      onPress={() => props.navigation.navigate(item.route)}
-                      icon={() => (
-                        <item.icon
-                          color={
-                            isHomeRoute ||
-                            drawerItems[drawerItems.length - 3].route ===
-                              item.route ||
-                            drawerItems[drawerItems.length - 2].route ===
-                              item.route ||
-                            drawerItems[drawerItems.length - 1].route ===
-                              item.route
-                              ? !isHomeRoute && isActiveRoute
-                                ? colors.iconContrast
-                                : colors.primary
-                              : isActiveRoute
+                            : "transparent",
+                        flexDirection: "row",
+                        alignItems: "center",
+                      },
+                    ]}
+                  >
+                    {isHomeRoute ? (
+                      <HeaderYouTubeLogoImage />
+                    ) : (
+                      <item.Icon
+                        size={iconSizes.lg}
+                        color={
+                          drawerItems[drawerItems.length - 3].route ===
+                            item.route ||
+                          drawerItems[drawerItems.length - 2].route ===
+                            item.route ||
+                          drawerItems[drawerItems.length - 1].route ===
+                            item.route
+                            ? !isHomeRoute && isActiveRoute
                               ? colors.iconContrast
-                              : colors.iconPrimary
-                          }
-                        />
-                      )}
-                      label={() => (
-                        <ThText
-                          style={{
-                            marginLeft: isHomeRoute ? -10 : 10,
-                            fontSize: isHomeRoute
-                              ? fontSizes.xl
-                              : fontSizes.base,
-                            fontWeight: isHomeRoute
-                              ? "bold"
-                              : isActiveRoute
-                              ? "bold"
-                              : "medium",
-                            color:
-                              !isHomeRoute && isActiveRoute
-                                ? colors.textContrast
-                                : colors.textPrimary,
-                          }}
-                        >
-                          {item.label}
-                        </ThText>
-                      )}
-                    />
-                  </React.Fragment>
-                );
-              })}
-            </DrawerContentScrollView>
-            <View
-              style={{
-                marginBottom: insets.bottom + 10,
-                flexDirection: "row",
-                justifyContent: "center",
-              }}
+                              : colors.primary
+                            : isActiveRoute
+                            ? colors.iconContrast
+                            : colors.iconPrimary
+                        }
+                      />
+                    )}
+                    {!isHomeRoute && (
+                      <ThText
+                        style={{
+                          marginLeft: 18,
+                          fontWeight: isActiveRoute ? "bold" : "medium",
+                          color: isActiveRoute
+                            ? colors.textContrast
+                            : colors.textPrimary,
+                        }}
+                      >
+                        {item.label}
+                      </ThText>
+                    )}
+                  </Pressable>
+                </React.Fragment>
+              );
+            })}
+          </ColumnScrollView>
+          <View
+            style={{
+              paddingBottom: insets.bottom + 8,
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            <DrawerFooterText
+              onPress={() => console.log("Privacy Policy Press")}
             >
-              <DrawerFooterText
-                onPress={() => console.log("Privacy Policy Press")}
-              >
-                Privacy Policy
-              </DrawerFooterText>
-              <DrawerFooterText style={{ marginHorizontal: 8 }}>
-                •
-              </DrawerFooterText>
-              <DrawerFooterText
-                onPress={() => console.log("Terms of Service Press")}
-              >
-                Terms of Service
-              </DrawerFooterText>
-            </View>
+              Privacy Policy
+            </DrawerFooterText>
+            <DrawerFooterText style={{ marginHorizontal: 4 }}>
+              •
+            </DrawerFooterText>
+            <DrawerFooterText
+              onPress={() => console.log("Terms of Service Press")}
+            >
+              Terms of Service
+            </DrawerFooterText>
           </View>
-        );
-      }}
+        </View>
+      )}
     >
       {drawerItems.map((item) => (
         <Drawer.Screen
@@ -285,8 +288,11 @@ export default function MainNavigator() {
 }
 
 function MainBottomTabBar({ navigation }) {
+  const insets = useSafeAreaInsets();
   const { colors, fontSizes } = useTheme();
+  const { isTabBarVisible } = useUIState();
   const mainNavigator = navigation.getParent("MainNavigator");
+
   //Assign updated bottomTabItems so the HomeStack route of this tab uses the component of the currently selected Drawer route
   const updatedTabItems = bottomTabItems(
     drawerItems[mainNavigator.getState().index].component
@@ -296,34 +302,85 @@ function MainBottomTabBar({ navigation }) {
     <BottomTab.Navigator
       id="MainBottomTabBar"
       key={colors.bg} //Force remount on theme change
-      screenOptions={({ route }) => {
-        const activeTabItem = bottomTabItems().find(
-          (bottomTabItem) => bottomTabItem.route === route.name
-        );
+      screenOptions={{ headerShown: false }}
+      tabBar={(props) => {
+        return (
+          <View
+            style={[
+              {
+                borderTopColor: colors.borderSecondary,
+                borderTopWidth: 1.5,
+                paddingBottom: insets.bottom,
+                height: insets.bottom + 49,
+                backgroundColor: colors.bg,
+                flexDirection: "row",
+              },
+              !isTabBarVisible && { display: "none" },
+            ]}
+          >
+            {updatedTabItems.map((item, index) => {
+              const isUploadRoute = updatedTabItems[2].route === item.route;
+              const isActiveRoute =
+                updatedTabItems[props.state.index].route === item.route;
 
-        return {
-          headerShown: false,
-          tabBarStyle: getMainBottomTabBarStyle(colors),
-          tabBarIcon: ({ focused }) =>
-            focused ? (
-              <activeTabItem.activeIcon color={colors.primary} />
-            ) : (
-              <activeTabItem.inactiveIcon color={colors.iconSecondary} />
-            ),
-          tabBarLabel: ({ focused }) => (
-            <ThText
-              style={{
-                fontSize: fontSizes.xs2,
-                fontWeight: "medium",
-                color: focused ? colors.textPrimary : colors.textSecondary,
-              }}
-            >
-              {focused
-                ? activeTabItem.activeLabel
-                : activeTabItem.inactiveLabel}
-            </ThText>
-          ),
-        };
+              return (
+                <Pressable
+                  key={index + item.route}
+                  onPress={() => props.navigation.navigate(item.route)}
+                  style={{
+                    width: "20%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <>
+                    {isUploadRoute ? (
+                      <View
+                        style={{
+                          borderRadius: 99,
+                          padding: 6,
+                          backgroundColor: isActiveRoute
+                            ? colors.primary
+                            : colors.bgSecondary,
+                        }}
+                      >
+                        <UploadIcon
+                          color={
+                            isActiveRoute
+                              ? colors.iconContrast
+                              : colors.iconPrimary
+                          }
+                        />
+                      </View>
+                    ) : (
+                      <>
+                        {isActiveRoute ? (
+                          <item.activeIcon color={colors.primary} />
+                        ) : (
+                          <item.inactiveIcon color={colors.iconSecondary} />
+                        )}
+
+                        <ThText
+                          style={{
+                            fontSize: fontSizes.xs2,
+                            fontWeight: "medium",
+                            color: isActiveRoute
+                              ? colors.textPrimary
+                              : colors.textSecondary,
+                          }}
+                        >
+                          {isActiveRoute
+                            ? item.activeLabel
+                            : item.inactiveLabel}
+                        </ThText>
+                      </>
+                    )}
+                  </>
+                </Pressable>
+              );
+            })}
+          </View>
+        );
       }}
     >
       {updatedTabItems.map((item) => (

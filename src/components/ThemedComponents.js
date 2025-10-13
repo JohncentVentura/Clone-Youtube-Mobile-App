@@ -1,43 +1,7 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {
-  Platform,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { useTheme } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
-
-export function ThHeaderContainer({ style, children, ...rest }) {
-  const insets = useSafeAreaInsets();
-  const { colors } = useTheme();
-
-  return (
-    <View
-      style={[
-        styles.paddedHorizontalContainer,
-        {
-          paddingTop: insets.top,
-          height:
-            Platform.OS === "android"
-              ? 56 + insets.top //Android header height
-              : 44 + insets.top, //iOS header height
-          backgroundColor: colors.bg,
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        },
-        style,
-      ]}
-      {...rest}
-    >
-      {children}
-    </View>
-  );
-}
 
 export function ThIcon({ IconComponent, ...rest }) {
   const { colors, iconSizes } = useTheme();

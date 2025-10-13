@@ -29,14 +29,8 @@ export function InactiveShortsIcon({ ...rest }) {
   return <ThIcon IconComponent={Ionicons} name="videocam-outline" {...rest} />;
 }
 
-export function ActiveUploadIcon({ ...rest }) {
-  return <ThIcon IconComponent={Ionicons} name="add-circle" {...rest} />;
-}
-
-export function InactiveUploadIcon({ ...rest }) {
-  return (
-    <ThIcon IconComponent={Ionicons} name="add-circle-outline" {...rest} />
-  );
+export function UploadIcon({ ...rest }) {
+  return <ThIcon IconComponent={Feather} name="plus" {...rest} />;
 }
 
 export function ActiveSubscriptionIcon({ ...rest }) {

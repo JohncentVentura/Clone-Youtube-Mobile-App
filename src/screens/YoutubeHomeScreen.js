@@ -8,7 +8,6 @@ import { RowScrollView } from "../components/UtilComponents";
 import { AutoPlayFlatList } from "../components/VideoComponents";
 import { useTheme } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
-import { showMainBottomTabBar } from "../utils/utils";
 
 const defaultQuery = "Humans";
 
@@ -38,8 +37,6 @@ export default function YoutubeHomeScreen({ navigation }) {
       abortController.abort();
     };
   }, [query, queryCount]);
-
-  showMainBottomTabBar(navigation, colors);
 
   return (
     <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>

@@ -9,8 +9,9 @@ import { ThText } from "../components/ThemedComponents";
 import { useModal } from "../context/ModalContext";
 import { useSearch } from "../context/SearchContext";
 import { useTheme } from "../context/ThemeContext";
+
 import { styles } from "../styles/styles";
-import { hideMainBottomTabBar } from "../utils/utils";
+import { useHideTabBarOnFocus } from "../utils/utils";
 
 export default function SearchScreen({ navigation }) {
   const insets = useSafeAreaInsets();
@@ -18,7 +19,8 @@ export default function SearchScreen({ navigation }) {
     useModal();
   const { setGlobalSearch, searchHistory, setRemovingSearchItem } = useSearch();
   const { colors, fontSizes, iconSizes } = useTheme();
-  hideMainBottomTabBar(navigation);
+
+  useHideTabBarOnFocus();
 
   return (
     <>

@@ -4,7 +4,6 @@ import { fetchPexelsData } from "../api/pexelsAPI";
 import { AutoPlayFlatList } from "../components/VideoComponents";
 import { useTheme } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
-import { showMainBottomTabBar } from "../utils/utils";
 
 export default function SearchResultScreen({ navigation, route }) {
   const { colors } = useTheme();
@@ -35,8 +34,6 @@ export default function SearchResultScreen({ navigation, route }) {
       abortController.abort();
     };
   }, [searchInput]);
-
-  showMainBottomTabBar(navigation, colors);
 
   return (
     <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>

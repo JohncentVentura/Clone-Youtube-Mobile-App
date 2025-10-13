@@ -6,17 +6,18 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ModalProvider } from "../context/ModalContext";
 import { SearchProvider } from "../context/SearchContext";
 import { ThemeProvider } from "../context/ThemeContext";
+import { UIStateProvider } from "../context/UIStateContext";
 import { fontPaths } from "../utils/paths";
 import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
 
 export default function AppNavigator() {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isFontsLoaded] = useFonts({
     "roboto-bold": fontPaths.robotoBold,
     "roboto-medium": fontPaths.robotoMedium,
     "roboto-regular": fontPaths.robotoRegular,
   });
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   if (!isFontsLoaded) {
     return <ActivityIndicator style={{ flex: 1 }} size="large" />;
@@ -27,9 +28,11 @@ export default function AppNavigator() {
       <ModalProvider>
         <SearchProvider>
           <ThemeProvider>
-            <NavigationContainer>
-              {isLoggedIn ? <MainNavigator /> : <AuthNavigator />}
-            </NavigationContainer>
+            <UIStateProvider>
+              <NavigationContainer>
+                {isLoggedIn ? <MainNavigator /> : <AuthNavigator />}
+              </NavigationContainer>
+            </UIStateProvider>
           </ThemeProvider>
         </SearchProvider>
       </ModalProvider>

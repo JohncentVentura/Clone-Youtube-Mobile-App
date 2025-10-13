@@ -1,4 +1,5 @@
-import { Image } from "react-native";
+import { Image, Platform, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
 import { imagePaths } from "../utils/paths";
@@ -22,6 +23,34 @@ export function HeaderArrowBackIcon({ style, navigation, ...rest }) {
     >
       <ArrowBackIcon />
     </AnimFadeRoundButton>
+  );
+}
+
+export function HeaderContainer({ style, children, ...rest }) {
+  const insets = useSafeAreaInsets();
+  const { colors } = useTheme();
+
+  return (
+    <View
+      style={[
+        styles.paddedHorizontalContainer,
+        {
+          paddingTop: insets.top,
+          height:
+            Platform.OS === "android"
+              ? insets.top + 56 //Android header height
+              : insets.top + 44, //iOS header height
+          backgroundColor: colors.bg,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      {children}
+    </View>
   );
 }
 
@@ -104,12 +133,12 @@ export function HeaderYouTubeLogoImage({ style, ...rest }) {
 
   return (
     <Image
-      style={[{ width: 90, height: 25 }, style]}
+      style={[{ width: 95, height: 25 }, style]}
       resizeMode={"stretch"}
       source={
         colorScheme === "light"
-          ? imagePaths.youtubeLogoLightMode
-          : imagePaths.youtubeLogoDarkMode
+          ? imagePaths.youTubeLogoLightMode
+          : imagePaths.youTubeLogoDarkMode
       }
       alt="Channel Image"
       {...rest}

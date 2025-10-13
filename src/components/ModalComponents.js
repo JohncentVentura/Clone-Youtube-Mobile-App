@@ -19,8 +19,8 @@ import { ThText } from "./ThemedComponents";
 
 /******************************SwipeDownModal Components******************************/
 function SwipeDownModal({
-  isModalVisible,
-  setIsModalVisible,
+  isVisible,
+  setIsVisible,
   items = [],
   children,
 }) {
@@ -28,10 +28,10 @@ function SwipeDownModal({
 
   return (
     <Modal
-      isVisible={isModalVisible}
-      onBackdropPress={() => setIsModalVisible(false)} //Modal backdrop area
-      onRequestClose={() => setIsModalVisible(false)} //Android back button
-      onSwipeComplete={() => setIsModalVisible(false)} //When swiped down
+      isVisible={isVisible}
+      onBackdropPress={() => setIsVisible(false)} //Modal backdrop area
+      onRequestClose={() => setIsVisible(false)} //Android back button
+      onSwipeComplete={() => setIsVisible(false)} //When swiped down
       swipeDirection="down"
       animationIn="slideInUp"
       animationOut="slideOutDown"
@@ -93,7 +93,7 @@ function SwipeDownModal({
   );
 }
 
-export function FlatListVideoItemModal({ isModalVisible, setIsModalVisible }) {
+export function FlatListVideoItemModal({ isVisible, setIsVisible }) {
   const modalItems = [
     {
       name: "Play Next In Queue",
@@ -135,14 +135,14 @@ export function FlatListVideoItemModal({ isModalVisible, setIsModalVisible }) {
 
   return (
     <SwipeDownModal
-      isModalVisible={isModalVisible}
-      setIsModalVisible={setIsModalVisible}
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
       items={modalItems}
     />
   );
 }
 
-export function ShareScreenModal({ isModalVisible, setIsModalVisible }) {
+export function ShareScreenModal({ isVisible, setIsVisible }) {
   const { fontSizes } = useTheme();
   const modalItems = [
     {
@@ -159,8 +159,8 @@ export function ShareScreenModal({ isModalVisible, setIsModalVisible }) {
 
   return (
     <SwipeDownModal
-      isModalVisible={isModalVisible}
-      setIsModalVisible={setIsModalVisible}
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
       items={modalItems}
     >
       <ThText
@@ -177,7 +177,7 @@ export function ShareScreenModal({ isModalVisible, setIsModalVisible }) {
   );
 }
 
-export function NotificationsItemModal({ isModalVisible, setIsModalVisible }) {
+export function NotificationsItemModal({ isVisible, setIsVisible }) {
   const modalItems = [
     {
       name: "Save to Watch later",
@@ -204,22 +204,22 @@ export function NotificationsItemModal({ isModalVisible, setIsModalVisible }) {
 
   return (
     <SwipeDownModal
-      isModalVisible={isModalVisible}
-      setIsModalVisible={setIsModalVisible}
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
       items={modalItems}
     />
   );
 }
 
 /******************************TopRightModal Components******************************/
-function TopRightModal({ isModalVisible, setIsModalVisible, items = [] }) {
+function TopRightModal({ isVisible, setIsVisible, items = [] }) {
   const { colors } = useTheme();
 
   return (
     <Modal
-      isVisible={isModalVisible}
-      onBackdropPress={() => setIsModalVisible(false)} //Modal backdrop area
-      onRequestClose={() => setIsModalVisible(false)} //Android back button
+      isVisible={isVisible}
+      onBackdropPress={() => setIsVisible(false)} //Modal backdrop area
+      onRequestClose={() => setIsVisible(false)} //Android back button
       animationIn="fadeInDown"
       animationOut="fadeOutUp"
       style={{
@@ -251,8 +251,8 @@ function TopRightModal({ isModalVisible, setIsModalVisible, items = [] }) {
 }
 
 export function NotificationsHeaderModal({
-  isModalVisible,
-  setIsModalVisible,
+  isVisible,
+  setIsVisible,
 }) {
   const modalItems = [
     {
@@ -275,14 +275,14 @@ export function NotificationsHeaderModal({
 
   return (
     <TopRightModal
-      isModalVisible={isModalVisible}
-      setIsModalVisible={setIsModalVisible}
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
       items={modalItems}
     />
   );
 }
 
-export function ChannelHeaderModal({ isModalVisible, setIsModalVisible }) {
+export function ChannelHeaderModal({ isVisible, setIsVisible }) {
   const modalItems = [
     {
       name: "Share",
@@ -312,14 +312,14 @@ export function ChannelHeaderModal({ isModalVisible, setIsModalVisible }) {
 
   return (
     <TopRightModal
-      isModalVisible={isModalVisible}
-      setIsModalVisible={setIsModalVisible}
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
       items={modalItems}
     />
   );
 }
 
-export function SearchResultHeaderModal({ isModalVisible, setIsModalVisible }) {
+export function SearchResultHeaderModal({ isVisible, setIsVisible }) {
   const modalItems = [
     {
       name: "Search filters",
@@ -333,22 +333,22 @@ export function SearchResultHeaderModal({ isModalVisible, setIsModalVisible }) {
 
   return (
     <TopRightModal
-      isModalVisible={isModalVisible}
-      setIsModalVisible={setIsModalVisible}
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
       items={modalItems}
     />
   );
 }
 
 /******************************QuestionModal Components******************************/
-function QuestionModal({ isModalVisible, setIsModalVisible, children }) {
+function QuestionModal({ isVisible, setIsVisible, children }) {
   const { colors } = useTheme();
 
   return (
     <Modal
-      isVisible={isModalVisible}
-      onBackdropPress={() => setIsModalVisible(false)} //Modal backdrop area
-      onRequestClose={() => setIsModalVisible(false)} //Android back button
+      isVisible={isVisible}
+      onBackdropPress={() => setIsVisible(false)} //Modal backdrop area
+      onRequestClose={() => setIsVisible(false)} //Android back button
       animationIn="fadeIn"
       animationOut="fadeOut"
       style={{
@@ -371,15 +371,15 @@ function QuestionModal({ isModalVisible, setIsModalVisible, children }) {
   );
 }
 
-export function RemoveSearchItemModal({ isModalVisible, setIsModalVisible }) {
+export function RemoveSearchItemModal({ isVisible, setIsVisible }) {
   const { colors, fontSizes } = useTheme();
   const { removingSearchItem, setRemovingSearchItem, removeSearchHistoryItem } =
     useSearch();
 
   return (
     <QuestionModal
-      isModalVisible={isModalVisible}
-      setIsModalVisible={setIsModalVisible}
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
     >
       <ThText
         style={{
@@ -398,7 +398,7 @@ export function RemoveSearchItemModal({ isModalVisible, setIsModalVisible }) {
           alignItems: "center",
         }}
       >
-        <Pressable onPress={() => setIsModalVisible(false)}>
+        <Pressable onPress={() => setIsVisible(false)}>
           <ThText style={{ color: colors.primary }}>Cancel</ThText>
         </Pressable>
         <Pressable
@@ -406,7 +406,7 @@ export function RemoveSearchItemModal({ isModalVisible, setIsModalVisible }) {
           onPress={() => {
             removeSearchHistoryItem(removingSearchItem.text);
             setRemovingSearchItem("");
-            setIsModalVisible(false);
+            setIsVisible(false);
           }}
         >
           <ThText style={{ marginLeft: 22, color: colors.primary }}>
@@ -418,14 +418,14 @@ export function RemoveSearchItemModal({ isModalVisible, setIsModalVisible }) {
   );
 }
 
-export function ClearSearchHistoryModal({ isModalVisible, setIsModalVisible }) {
+export function ClearSearchHistoryModal({ isVisible, setIsVisible }) {
   const { colors } = useTheme();
   const { clearSearchHistory } = useSearch();
 
   return (
     <QuestionModal
-      isModalVisible={isModalVisible}
-      setIsModalVisible={setIsModalVisible}
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
     >
       <ThText style={{ marginBottom: 46 }}>Clear all search history?</ThText>
       <View
@@ -435,14 +435,14 @@ export function ClearSearchHistoryModal({ isModalVisible, setIsModalVisible }) {
           alignItems: "center",
         }}
       >
-        <Pressable onPress={() => setIsModalVisible(false)}>
+        <Pressable onPress={() => setIsVisible(false)}>
           <ThText style={{ color: colors.primary }}>Cancel</ThText>
         </Pressable>
         <Pressable
           style={{ marginLeft: 20, color: colors.primary }}
           onPress={() => {
             clearSearchHistory();
-            setIsModalVisible(false);
+            setIsVisible(false);
           }}
         >
           <ThText style={{ marginLeft: 22, color: colors.primary }}>
