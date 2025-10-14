@@ -2,7 +2,7 @@ import { Image, Platform, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
-import { imagePaths } from "../utils/paths";
+import { imagePaths } from "../styles/paths";
 import { AnimFadeRoundButton } from "./AnimatedComponents";
 import {
   ArrowBackIcon,

@@ -1,46 +1,35 @@
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Pressable, View } from "react-native";
-import { fetchPexelsData } from "../api/pexelsAPI";
 import { CompassIcon } from "../components/IconComponents";
 import { ThTopQueryTab } from "../components/ThemedComponents";
 import { RowScrollView } from "../components/UtilComponents";
 import { AutoPlayFlatList } from "../components/VideoComponents";
 import { useTheme } from "../context/ThemeContext";
+import { useSetPexelsDataVideos } from "../hooks/usePexelsData";
+import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
 
 const defaultQuery = "Humans";
 
 export default function YoutubeHomeScreen({ navigation }) {
   const { colors } = useTheme();
+  const scrollToTopRef = useRef(null);
   const [query, setQuery] = useState(defaultQuery);
-  const [queryCount, setQueryCount] = useState(4);
   const [videos, setVideos] = useState([]);
 
-  useEffect(() => {
-    const abortController = new AbortController();
-    let isMounted = true;
-
-    (async () => {
-      const data = await fetchPexelsData(
-        query,
-        queryCount,
-        abortController.signal
-      );
-      if (isMounted) {
-        setVideos(data);
-      }
-    })();
-
-    return () => {
-      isMounted = false;
-      abortController.abort();
-    };
-  }, [query, queryCount]);
+  useScrollToTopOnFocus(scrollToTopRef);
+  useSetPexelsDataVideos({
+    query,
+    videosCount: 5,
+    setVideos: setVideos,
+    dependecies: [query],
+  });
 
   return (
     <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
       <AutoPlayFlatList
+        ref={scrollToTopRef}
         data={videos}
         navigation={navigation}
         query={query}

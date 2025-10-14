@@ -1,8 +1,8 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { useState } from "react";
 import { View } from "react-native";
-import YouTubeFlatListScreen from "../api/YouTubeFlatListScreen";
-import YouTubePlayerScreen from "../api/YouTubePlayerScreen";
+import YouTubeFlatListScreen from "../youtubeAPI/YouTubeFlatListScreen";
+import YouTubePlayerScreen from "../youtubeAPI/YouTubePlayerScreen";
 import {
   HeaderArrowBackIcon,
   HeaderContainer,

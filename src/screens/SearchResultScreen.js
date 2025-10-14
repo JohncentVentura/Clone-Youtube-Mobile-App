@@ -1,43 +1,30 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
-import { fetchPexelsData } from "../api/pexelsAPI";
 import { AutoPlayFlatList } from "../components/VideoComponents";
 import { useTheme } from "../context/ThemeContext";
+import { useSetPexelsDataVideos } from "../hooks/usePexelsData";
+import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
 
 export default function SearchResultScreen({ navigation, route }) {
-  const { colors } = useTheme();
   const { search } = route.params;
+  const { colors } = useTheme();
+  const scrollToTopRef = useRef(null);
   const [searchInput, setSearchInput] = useState(search);
   const [searchVideos, setSearchVideos] = useState([]);
 
-  useEffect(() => {
-    const abortController = new AbortController();
-    let isMounted = true;
-
-    (async () => {
-      if (!searchInput?.trim()) return console.log("Search input is empty");
-
-      const data = await fetchPexelsData(
-        searchInput,
-        6,
-        abortController.signal
-      );
-
-      if (isMounted) {
-        setSearchVideos(data);
-      }
-    })();
-
-    return () => {
-      isMounted = false;
-      abortController.abort();
-    };
-  }, [searchInput]);
+  useScrollToTopOnFocus(scrollToTopRef);
+  useSetPexelsDataVideos({
+    query: searchInput,
+    videosCount: 6,
+    setVideos: setSearchVideos,
+    dependecies: [searchInput],
+  });
 
   return (
     <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
       <AutoPlayFlatList
+        ref={scrollToTopRef}
         data={searchVideos}
         navigation={navigation}
         query={searchInput}

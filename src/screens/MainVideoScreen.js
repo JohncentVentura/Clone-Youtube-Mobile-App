@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { FlatList, Pressable, View } from "react-native";
-import { fetchPexelsData } from "../api/pexelsAPI";
 import CommentsModal from "../components/CommentsModal";
 import {
   DislikeIcon,
@@ -22,42 +21,32 @@ import {
   MainVideoView,
 } from "../components/VideoComponents";
 import { useTheme } from "../context/ThemeContext";
+import { useHideBottomTabBarOnFocus } from "../hooks/useHideBottomTabBarOnFocus";
+import { useSetPexelsDataVideos } from "../hooks/usePexelsData";
+import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
-import { useHideTabBarOnFocus, useScrollToTopOnFocus } from "../utils/utils";
 
 export default function MainVideoScreen({ navigation, route }) {
-  const { colors, fontSizes, iconSizes } = useTheme();
   const { video, query } = route.params;
+  const { colors, fontSizes, iconSizes } = useTheme();
+  const scrollToTopRef = useRef(null);
   const [relatedVideos, setRelatedVideos] = useState([]);
   const [showComments, setShowComments] = useState(false);
 
-  useHideTabBarOnFocus();
-
-  const listRef = useRef(null);
-  useScrollToTopOnFocus(listRef);
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    let isMounted = true;
-
-    (async function () {
-      const data = await fetchPexelsData(query, 5);
-      if (isMounted) {
-        setRelatedVideos(data);
-      }
-    })();
-
-    return () => {
-      isMounted = false;
-      abortController.abort();
-    };
-  }, [video]);
+  useHideBottomTabBarOnFocus();
+  useScrollToTopOnFocus(scrollToTopRef);
+  useSetPexelsDataVideos({
+    query,
+    videosCount: 5,
+    setVideos: setRelatedVideos,
+    dependecies: [query],
+  });
 
   return (
     <>
       <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
         <FlatList
-          ref={listRef}
+          ref={scrollToTopRef}
           data={relatedVideos}
           keyExtractor={(item) => item.id.toString()}
           ListHeaderComponent={

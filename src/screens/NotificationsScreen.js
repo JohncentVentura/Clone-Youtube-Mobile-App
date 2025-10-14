@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Pressable, View } from "react-native";
-import { fetchPexelsData } from "../api/pexelsAPI";
 import { AnimFadeRoundButton } from "../components/AnimatedComponents";
 import { DotVerticalIcon } from "../components/IconComponents";
 import {
@@ -11,48 +10,38 @@ import { ThText } from "../components/ThemedComponents";
 import { ColumnScrollView } from "components/UtilComponents";
 import { useModal } from "../context/ModalContext";
 import { useTheme } from "../context/ThemeContext";
+import { useSetPexelsDataVideos } from "../hooks/usePexelsData";
+import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
 
 export default function NotificationsScreen({ navigation }) {
   const { setIsNotificationsItemVisible } = useModal();
   const { colors, fontSizes } = useTheme();
-
-  const [newVideoQuery, setNewVideoQuery] = useState("food");
+  const scrollToTopRef = useRef(null);
+  const [newQuery, setNewQuery] = useState("food");
   const [newVideos, setNewVideos] = useState([]);
-  const [oldVideoQuery, setOldVideoQuery] = useState("sweets");
+  const [oldQuery, setOldQuery] = useState("sweets");
   const [oldVideos, setOldVideos] = useState([]);
+  const [videosCount, setVideosCount] = useState(4);
 
-  useEffect(() => {
-    const abortController = new AbortController();
-    let isMounted = true;
-
-    (async function () {
-      const data = await fetchPexelsData(
-        newVideoQuery,
-        4,
-        abortController.signal
-      );
-      if (isMounted) {
-        setNewVideos(data);
-      }
-    })();
-
-    (async function () {
-      const data = await fetchPexelsData(oldVideoQuery, 4);
-      if (isMounted) {
-        setOldVideos(data);
-      }
-    })();
-
-    return () => {
-      isMounted = false;
-      abortController.abort();
-    };
-  }, []);
+  useScrollToTopOnFocus(scrollToTopRef);
+  useSetPexelsDataVideos({
+    query: newQuery,
+    videosCount,
+    setVideos: setNewVideos,
+    dependecies: [newQuery, videosCount],
+  });
+  useSetPexelsDataVideos({
+    query: oldQuery,
+    videosCount,
+    setVideos: setOldVideos,
+    dependecies: [oldQuery, videosCount],
+  });
 
   return (
     <>
       <ColumnScrollView
+        ref={scrollToTopRef}
         style={[styles.screenContainer, { backgroundColor: colors.bg }]}
       >
         <ThText
@@ -72,7 +61,7 @@ export default function NotificationsScreen({ navigation }) {
             key={video.id}
             navigation={navigation}
             video={video}
-            query={newVideoQuery}
+            query={newQuery}
             setVisible={setIsNotificationsItemVisible}
           />
         ))}
@@ -93,7 +82,7 @@ export default function NotificationsScreen({ navigation }) {
             key={video.id}
             navigation={navigation}
             video={video}
-            query={oldVideoQuery}
+            query={oldQuery}
             setVisible={setIsNotificationsItemVisible}
           />
         ))}

@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { FlatList, Pressable, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
@@ -9,9 +10,9 @@ import { ThText } from "../components/ThemedComponents";
 import { useModal } from "../context/ModalContext";
 import { useSearch } from "../context/SearchContext";
 import { useTheme } from "../context/ThemeContext";
-
+import { useHideBottomTabBarOnFocus } from "../hooks/useHideBottomTabBarOnFocus";
+import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
-import { useHideTabBarOnFocus } from "../utils/utils";
 
 export default function SearchScreen({ navigation }) {
   const insets = useSafeAreaInsets();
@@ -19,9 +20,11 @@ export default function SearchScreen({ navigation }) {
     useModal();
   const { setGlobalSearch, searchHistory, setRemovingSearchItem } = useSearch();
   const { colors, fontSizes, iconSizes } = useTheme();
+  const scrollToTopRef = useRef(null);
 
-  useHideTabBarOnFocus();
-
+  useHideBottomTabBarOnFocus();
+  useScrollToTopOnFocus(scrollToTopRef);
+  
   return (
     <>
       <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>

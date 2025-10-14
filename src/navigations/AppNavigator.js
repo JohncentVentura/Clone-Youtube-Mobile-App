@@ -7,7 +7,7 @@ import { ModalProvider } from "../context/ModalContext";
 import { SearchProvider } from "../context/SearchContext";
 import { ThemeProvider } from "../context/ThemeContext";
 import { UIStateProvider } from "../context/UIStateContext";
-import { fontPaths } from "../utils/paths";
+import { fontPaths } from "../styles/paths";
 import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
 
