@@ -5,7 +5,7 @@ import {
   ArrowUpLeftIcon,
   ClockRotateLeftIcon,
 } from "../components/IconComponents";
-import { SearchScreenHistoryImage } from "../components/ImageComponents";
+import { SearchHistoryThumbnailImage } from "../components/ImageComponents";
 import { ThText } from "../components/ThemedComponents";
 import { useModal } from "../context/ModalContext";
 import { useSearch } from "../context/SearchContext";
@@ -24,12 +24,13 @@ export default function SearchScreen({ navigation }) {
 
   useHideBottomTabBarOnFocus();
   useScrollToTopOnFocus(scrollToTopRef);
-  
+
   return (
     <>
       <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
         <FlatList
           data={searchHistory}
+          ref={scrollToTopRef}
           keyExtractor={(item, index) => index + item.text}
           renderItem={({ item }) => (
             <Pressable
@@ -58,14 +59,18 @@ export default function SearchScreen({ navigation }) {
                 ]}
               >
                 <ClockRotateLeftIcon size={iconSizes.xs} />
-                <ThText style={{ marginLeft: 12, flexShrink: 1 }}>
+                <ThText
+                  style={{
+                    marginLeft: 12,
+                    fontWeight: "medium",
+                    flexShrink: 1,
+                  }}
+                >
                   {item.text}
                 </ThText>
-                <SearchScreenHistoryImage
+                <SearchHistoryThumbnailImage
                   style={{ marginLeft: "auto" }}
-                  source={{
-                    uri: item.picture,
-                  }}
+                  source={{ uri: item.picture }}
                 />
                 <ArrowUpLeftIcon
                   style={{ marginLeft: 12 }}
@@ -79,7 +84,10 @@ export default function SearchScreen({ navigation }) {
           ListFooterComponent={
             searchHistory.length > 0 ? (
               <Pressable
-                style={{ marginBottom: insets.bottom + 6 }}
+                style={({ pressed }) => ({
+                  marginBottom: insets.bottom + 8,
+                  opacity: pressed ? 0.4 : 1,
+                })}
                 onPress={() => setIsClearSearchHistoryVisible(true)}
               >
                 <ThText

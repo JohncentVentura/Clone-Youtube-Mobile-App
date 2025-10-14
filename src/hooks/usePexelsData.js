@@ -4,11 +4,11 @@ import { useEffect } from "react";
 const { PEXELS_API_URL, PEXELS_API_KEY } = Constants.expoConfig.extra;
 const uploadedDatesCache = {};
 
-export async function useFetchPexelsData(query = "home", queryCount = 3) {
+export async function useFetchPexelsData(query = "home", queryResults = 3) {
   try {
     const url = `${PEXELS_API_URL}/search?query=${encodeURIComponent(
       query
-    )}&per_page=${queryCount}`;
+    )}&per_page=${queryResults}`;
     const res = await fetch(url, {
       headers: { Authorization: PEXELS_API_KEY },
     });
@@ -47,7 +47,7 @@ export async function useFetchPexelsData(query = "home", queryCount = 3) {
 
 export function useSetPexelsDataVideos({
   query,
-  videosCount,
+  queryResults,
   setVideos,
   dependecies = [],
 }) {
@@ -55,7 +55,7 @@ export function useSetPexelsDataVideos({
     let isMounted = true;
 
     (async function () {
-      const data = await useFetchPexelsData(query, videosCount);
+      const data = await useFetchPexelsData(query, queryResults);
 
       if (isMounted) {
         setVideos(data);

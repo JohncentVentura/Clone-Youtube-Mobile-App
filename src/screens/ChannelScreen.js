@@ -1,7 +1,7 @@
 import { Pressable, View } from "react-native";
 import {
-  ChannelScreenCoverImage,
-  ChannelScreenProfileImage,
+  ChannelCoverImage,
+  ChannelProfileImage,
 } from "../components/ImageComponents";
 import { ThText } from "../components/ThemedComponents";
 import { useTheme } from "../context/ThemeContext";
@@ -9,96 +9,101 @@ import { styles } from "../styles/styles";
 
 export default function ChannelScreen({ route }) {
   const { colors, fontSizes } = useTheme();
-  const { video, query } = route.params;
+  const { videoData } = route.params;
 
   return (
-    <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
-      <View style={styles.paddedHorizontalContainer}>
-        <ChannelScreenCoverImage
-          style={{ marginBottom: 16 }}
-          source={{ uri: video.picture }}
-        />
-        <View
-          style={{
-            marginBottom: 8,
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <Pressable
+    <View
+      style={[
+        styles.screenContainer,
+        styles.paddedHorizontalContainer,
+        { backgroundColor: colors.bg },
+      ]}
+    >
+      <ChannelCoverImage source={{ uri: videoData.picture }} />
+      <View
+        style={{
+          marginTop: 16,
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <Pressable>
+          <ChannelProfileImage
             style={{
               height: "100%",
               flex: 1,
               justifyContent: "flex-start",
               alignItems: "flex-start",
             }}
+            source={{ uri: videoData.picture }}
             onPress={() => {
               console.log("ChannelScreenProfileImage pressed");
             }}
-          >
-            <ChannelScreenProfileImage source={{ uri: video.picture }} />
-          </Pressable>
-          <View style={{ flex: 4, marginLeft: 8, marginBottom: 6 }}>
-            <ThText
-              style={{
-                marginBottom: 4,
-                fontSize: fontSizes.xl2,
-                fontWeight: "bold",
-              }}
-            >
-              {video.channelName}
-            </ThText>
-            <ThText
-              style={{
-                marginBottom: 4,
-                fontSize: fontSizes.xs,
-                fontWeight: "medium",
-              }}
-            >
-              {video.channelTag}
-            </ThText>
-            <ThText
-              style={{
-                color: colors.textSecondary,
-                fontSize: fontSizes.xs,
-              }}
-            >
-              {video.channelSubscribers} subscribers • {video.channelVideos}{" "}
-              videos
-            </ThText>
-          </View>
-        </View>
-        <ThText
-          style={{
-            marginBottom: 12,
-            color: colors.textSecondary,
-            fontSize: fontSizes.xs,
-          }}
-        >
-          {video.channelDescription}
-          {video.channelDescription}
-          {video.channelDescription}
+          />
+        </Pressable>
+        <View style={{ flex: 4, marginLeft: 8 }}>
           <ThText
             style={{
-              fontWeight: "medium",
-              fontSize: fontSizes.xs,
-            }}
-            onPress={() => {
-              console.log("...more press");
+              fontSize: fontSizes.xl2,
+              fontWeight: "bold",
             }}
           >
-            ...more
+            {videoData.channelName}
           </ThText>
-        </ThText>
-        <Pressable
-          style={[styles.wideButton, { backgroundColor: colors.bgContrast }]}
-          onPress={() => console.log("Subscribe pressed")}
-        >
-          <ThText style={{ color: colors.textContrast, fontWeight: "medium" }}>
-            Subscribe
+          <ThText
+            style={{
+              marginTop: 4,
+              fontSize: fontSizes.xs,
+              fontWeight: "medium",
+            }}
+          >
+            {videoData.channelTag}
           </ThText>
-        </Pressable>
+          <ThText
+            style={{
+              marginTop: 4,
+              fontSize: fontSizes.xs,
+              color: colors.textSecondary,
+            }}
+          >
+            {videoData.channelSubscribers} subscribers •{" "}
+            {videoData.channelVideos} videos
+          </ThText>
+        </View>
       </View>
+      <ThText
+        style={{
+          marginTop: 12,
+          fontSize: fontSizes.xs,
+          color: colors.textSecondary,
+        }}
+      >
+        {videoData.channelDescription}
+        {videoData.channelDescription}
+        {videoData.channelDescription}
+        <ThText
+          style={{
+            fontWeight: "medium",
+            fontSize: fontSizes.xs,
+          }}
+          onPress={() => {
+            console.log("...more press");
+          }}
+        >
+          ...more
+        </ThText>
+      </ThText>
+      <Pressable
+        style={[
+          styles.wideButton,
+          { marginTop: 12, backgroundColor: colors.bgContrast },
+        ]}
+        onPress={() => console.log("Subscribe pressed")}
+      >
+        <ThText style={{ fontWeight: "medium", color: colors.textContrast }}>
+          Subscribe
+        </ThText>
+      </Pressable>
     </View>
   );
 }

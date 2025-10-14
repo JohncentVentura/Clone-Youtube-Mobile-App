@@ -3,7 +3,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import React from "react";
 import { Pressable, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { HeaderYouTubeLogoImage } from "components/HeaderComponents";
+import { HeaderYoutubeLogoImage } from "../components/HeaderComponents";
 import {
   ActiveHomeIcon,
   ActiveShortsIcon,
@@ -28,14 +28,14 @@ import {
   YoutubePremiumIcon,
 } from "../components/IconComponents";
 import { ThText } from "../components/ThemedComponents";
-import { ColumnScrollView } from "components/UtilComponents";
+import { ColumnScrollView } from "components/ScrollableComponents";
 import { useTheme } from "../context/ThemeContext";
 import { useUIState } from "../context/UIStateContext";
 import ShortsStack from "./ShortsStack";
 import SubscriptionsStack from "./SubscriptionsStack";
 import UploadStack from "./UploadStack";
 import YouStack from "./YouStack";
-import YouTubeHomeStack from "./YouTubeHomeStack";
+import YoutubeHomeStack from "./YoutubeHomeStack";
 
 const Drawer = createDrawerNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -44,80 +44,80 @@ const BottomTab = createBottomTabNavigator();
 const drawerItems = [
   {
     route: "YouTubeHomeStack",
-    component: YouTubeHomeStack,
+    component: YoutubeHomeStack,
     Icon: YoutubeMainIcon,
     label: "Youtube",
   },
   {
     route: "MusicStack",
-    component: ShortsStack,
+    component: YoutubeHomeStack,
     Icon: MusicIcon,
     label: "Music",
   },
   {
     route: "MoviesStack",
-    component: SubscriptionsStack,
+    component: ShortsStack,
     Icon: MovieIcon,
     label: "Movies",
   },
   {
     route: "LiveStack",
-    component: UploadStack,
+    component: YoutubeHomeStack,
     Icon: LiveIcon,
     label: "Live",
   },
   {
     route: "GamingStack",
-    component: YouStack,
+    component: YoutubeHomeStack,
     Icon: GamingIcon,
     label: "Gaming",
   },
   {
     route: "NewsStack",
-    component: YouTubeHomeStack,
+    component: YoutubeHomeStack,
     Icon: NewsIcon,
     label: "News",
   },
   {
     route: "SportsStack",
-    component: YouTubeHomeStack,
+    component: YoutubeHomeStack,
     Icon: SportsIcon,
     label: "Sports",
   },
   {
     route: "CoursesStack",
-    component: YouTubeHomeStack,
+    component: YoutubeHomeStack,
     Icon: CourseIcon,
     label: "Courses",
   },
   {
     route: "FashionAndBeautyStack",
-    component: YouTubeHomeStack,
+    component: YoutubeHomeStack,
     Icon: FashionAndBeautyIcon,
     label: "Fashion & Beauty",
   },
   {
     route: "YoutubePremiumStack",
-    component: YouTubeHomeStack,
+    component: YoutubeHomeStack,
     Icon: YoutubePremiumIcon,
     label: "Youtube Premium",
   },
   {
     route: "YoutubeMusicStack",
-    component: YouTubeHomeStack,
+    component: YoutubeHomeStack,
     Icon: YoutubeMusicIcon,
     label: "Youtube Music",
   },
   {
     route: "YoutubeKidsStack",
-    component: YouTubeHomeStack,
+    component: YoutubeHomeStack,
     Icon: YoutubeKidsIcon,
     label: "Youtube Kids",
   },
 ];
 
 //HomeComponent in the parameter will change into the component of the currently selected Drawer route
-const bottomTabItems = (HomeComponent = YouTubeHomeStack) => [
+const bottomTabItems = (HomeComponent = YoutubeHomeStack) => [
   {
     route: "HomeStack",
     component: HomeComponent,
@@ -214,7 +214,7 @@ export default function MainNavigator() {
                     ]}
                   >
                     {isHomeRoute ? (
-                      <HeaderYouTubeLogoImage />
+                      <HeaderYoutubeLogoImage />
                     ) : (
                       <item.Icon
                         size={iconSizes.lg}

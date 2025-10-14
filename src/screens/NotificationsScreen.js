@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Pressable, View } from "react-native";
 import { AnimFadeRoundButton } from "../components/AnimatedComponents";
 import { DotVerticalIcon } from "../components/IconComponents";
 import {
-  NotificationsScreenPreviewImage,
-  NotificationsScreenProfileImage,
+  NotificationsThumbnailImage,
+  NotificationsProfileImage,
 } from "../components/ImageComponents";
+import { ColumnScrollView } from "../components/ScrollableComponents";
 import { ThText } from "../components/ThemedComponents";
-import { ColumnScrollView } from "components/UtilComponents";
 import { useModal } from "../context/ModalContext";
 import { useTheme } from "../context/ThemeContext";
 import { useSetPexelsDataVideos } from "../hooks/usePexelsData";
@@ -22,27 +22,26 @@ export default function NotificationsScreen({ navigation }) {
   const [newVideos, setNewVideos] = useState([]);
   const [oldQuery, setOldQuery] = useState("sweets");
   const [oldVideos, setOldVideos] = useState([]);
-  const [videosCount, setVideosCount] = useState(4);
 
   useScrollToTopOnFocus(scrollToTopRef);
   useSetPexelsDataVideos({
     query: newQuery,
-    videosCount,
+    queryResults: 4,
     setVideos: setNewVideos,
-    dependecies: [newQuery, videosCount],
+    dependecies: [newQuery],
   });
   useSetPexelsDataVideos({
     query: oldQuery,
-    videosCount,
+    queryResults: 4,
     setVideos: setOldVideos,
-    dependecies: [oldQuery, videosCount],
+    dependecies: [oldQuery],
   });
 
   return (
     <>
       <ColumnScrollView
-        ref={scrollToTopRef}
         style={[styles.screenContainer, { backgroundColor: colors.bg }]}
+        ref={scrollToTopRef}
       >
         <ThText
           style={[
@@ -54,14 +53,14 @@ export default function NotificationsScreen({ navigation }) {
             },
           ]}
         >
-          Foods
+          New
         </ThText>
-        {newVideos.map((video) => (
+        {newVideos.map((item) => (
           <NotificationItem
-            key={video.id}
+            key={item.id}
             navigation={navigation}
-            video={video}
             query={newQuery}
+            videoData={item}
             setVisible={setIsNotificationsItemVisible}
           />
         ))}
@@ -75,14 +74,14 @@ export default function NotificationsScreen({ navigation }) {
             },
           ]}
         >
-          Desserts
+          Old
         </ThText>
-        {oldVideos.map((video) => (
+        {oldVideos.map((item) => (
           <NotificationItem
-            key={video.id}
+            key={item.id}
             navigation={navigation}
-            video={video}
             query={oldQuery}
+            videoData={item}
             setVisible={setIsNotificationsItemVisible}
           />
         ))}
@@ -91,12 +90,11 @@ export default function NotificationsScreen({ navigation }) {
   );
 }
 
-function NotificationItem({ navigation, video, query, setVisible }) {
+function NotificationItem({ navigation, query, videoData, setVisible }) {
   const { colors, fontSizes, iconSizes } = useTheme();
 
   return (
     <Pressable
-      key={video.id}
       style={({ pressed }) => {
         return {
           paddingVertical: 10,
@@ -105,8 +103,8 @@ function NotificationItem({ navigation, video, query, setVisible }) {
       }}
       onPress={() => {
         navigation.push("MainVideoScreen", {
-          video: video,
           query: query,
+          videoData: videoData,
         });
       }}
     >
@@ -120,24 +118,19 @@ function NotificationItem({ navigation, video, query, setVisible }) {
           },
         ]}
       >
-        <Pressable
+        <NotificationsProfileImage
           style={{
             marginLeft: 4,
             backgroundColor: "transparent",
           }}
+          source={{ uri: videoData.picture }}
           onPress={() => {
             navigation.navigate("ChannelScreen", {
-              video: video,
+              videoData: videoData,
               query: query,
             });
           }}
-        >
-          <NotificationsScreenProfileImage
-            source={{
-              uri: video.picture,
-            }}
-          />
-        </Pressable>
+        />
 
         <View
           style={{
@@ -147,23 +140,21 @@ function NotificationItem({ navigation, video, query, setVisible }) {
           }}
         >
           <ThText style={{ fontSize: fontSizes.sm, fontWeight: "bold" }}>
-            {video.channelName}
+            {videoData.channelName}
           </ThText>
           <ThText style={{ fontSize: fontSizes.sm }}>
-            {video.description}
+            {videoData.description}
           </ThText>
           <ThText
             style={{ fontSize: fontSizes.xs, color: colors.textSecondary }}
           >
-            {video.uploadedDate}
+            {videoData.uploadedDate}
           </ThText>
         </View>
 
-        <NotificationsScreenPreviewImage
+        <NotificationsThumbnailImage
           style={{ marginLeft: 12 }}
-          source={{
-            uri: video.picture,
-          }}
+          source={{ uri: videoData.picture }}
         />
 
         <AnimFadeRoundButton

@@ -12,7 +12,7 @@ import {
   HeaderSearchIcon,
   HeaderShareScreenIcon,
   HeaderTitleText,
-  HeaderYouTubeLogoImage,
+  HeaderYoutubeLogoImage,
 } from "../components/HeaderComponents";
 import {
   ChannelHeaderModal,
@@ -37,7 +37,7 @@ import { styles } from "../styles/styles";
 
 const Stack = createStackNavigator();
 
-export default function YouTubeHomeStack() {
+export default function YoutubeHomeStack() {
   const {
     isChannelHeaderVisible,
     setIsChannelHeaderVisible,
@@ -107,7 +107,7 @@ export default function YouTubeHomeStack() {
             return {
               header: () => (
                 <HeaderContainer>
-                  <HeaderYouTubeLogoImage />
+                  <HeaderYoutubeLogoImage />
                   <View style={styles.headerRightContainer}>
                     <HeaderShareScreenIcon
                       onPress={() => setIsShareScreenVisible(true)}

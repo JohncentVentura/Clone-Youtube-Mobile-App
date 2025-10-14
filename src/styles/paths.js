@@ -5,6 +5,6 @@ export const fontPaths = {
 };
 
 export const imagePaths = {
-  youTubeLogoDarkMode: require("../assets/images/YouTube-Logo-Dark-Mode.png"),
-  youTubeLogoLightMode: require("../assets/images/YouTube-Logo-Light-Mode.png"),
+  youtubeLogoDarkMode: require("../assets/images/youtube-logo-dark-mode.png"),
+  youtubeLogoLightMode: require("../assets/images/youtube-logo-light-mode.png"),
 };

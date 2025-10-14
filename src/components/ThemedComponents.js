@@ -11,6 +11,35 @@ export function ThIcon({ IconComponent, ...rest }) {
   );
 }
 
+export function ThSmallIconTextButton({ style, Icon, text, ...rest }) {
+  const { colors, fontSizes, iconSizes } = useTheme();
+
+  return (
+    <Pressable
+      style={({ pressed }) => [
+        styles.iconTextButton,
+        {
+          transform: [{ scale: pressed ? 0.95 : 1 }],
+          backgroundColor: colors.bgSecondary,
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      <Icon size={iconSizes.xs2} />
+      <ThText
+        style={{
+          paddingLeft: 4,
+          fontSize: fontSizes.xs,
+          fontWeight: "medium",
+        }}
+      >
+        {text}
+      </ThText>
+    </Pressable>
+  );
+}
+
 export function ThText({ style, children, ...rest }) {
   const { colors, fontSizes } = useTheme();
   const { fontWeight, ...restStyle } = StyleSheet.flatten(style) || {};
@@ -100,35 +129,6 @@ export function ThTopQueryTab({ style, selected, children, ...rest }) {
         style={{ color: selected ? colors.textContrast : colors.textPrimary }}
       >
         {children}
-      </ThText>
-    </Pressable>
-  );
-}
-
-export function ThSmallIconTextButton({ style, Icon, text, ...rest }) {
-  const { colors, fontSizes, iconSizes } = useTheme();
-
-  return (
-    <Pressable
-      style={({ pressed }) => [
-        styles.iconTextButton,
-        {
-          transform: [{ scale: pressed ? 0.95 : 1 }],
-          backgroundColor: colors.bgSecondary,
-        },
-        style,
-      ]}
-      {...rest}
-    >
-      <Icon size={iconSizes.xs2} />
-      <ThText
-        style={{
-          paddingLeft: 4,
-          fontSize: fontSizes.xs,
-          fontWeight: "medium",
-        }}
-      >
-        {text}
       </ThText>
     </Pressable>
   );

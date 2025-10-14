@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { View } from "react-native";
-import { AutoPlayFlatList } from "../components/VideoComponents";
+import { AutoPlayVideoFlatList } from "../components/ScrollableComponents";
 import { useTheme } from "../context/ThemeContext";
 import { useSetPexelsDataVideos } from "../hooks/usePexelsData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
@@ -16,18 +16,18 @@ export default function SearchResultScreen({ navigation, route }) {
   useScrollToTopOnFocus(scrollToTopRef);
   useSetPexelsDataVideos({
     query: searchInput,
-    videosCount: 6,
+    queryResults: 6,
     setVideos: setSearchVideos,
     dependecies: [searchInput],
   });
 
   return (
     <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
-      <AutoPlayFlatList
-        ref={scrollToTopRef}
-        data={searchVideos}
+      <AutoPlayVideoFlatList
         navigation={navigation}
         query={searchInput}
+        data={searchVideos}
+        ref={scrollToTopRef}
       />
     </View>
   );

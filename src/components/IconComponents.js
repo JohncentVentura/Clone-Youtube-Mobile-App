@@ -156,13 +156,13 @@ export function NewsIcon({ ...rest }) {
   return <ThIcon IconComponent={Ionicons} name="newspaper-outline" {...rest} />;
 }
 
-export function NotificationIcon({ ...rest }) {
+export function NotificationsIcon({ ...rest }) {
   return (
     <ThIcon IconComponent={Ionicons} name="notifications-outline" {...rest} />
   );
 }
 
-export function NotificationOffIcon({ ...rest }) {
+export function NotificationsOffIcon({ ...rest }) {
   return (
     <ThIcon
       IconComponent={Ionicons}

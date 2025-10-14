@@ -8,7 +8,7 @@ import {
   ArrowBackIcon,
   DotVerticalIcon,
   MicIcon,
-  NotificationIcon,
+  NotificationsIcon,
   SearchIcon,
   ShareScreenIcon,
 } from "./IconComponents";
@@ -79,7 +79,7 @@ export function HeaderNotificationsIcon({ style, navigation, ...rest }) {
       }}
       {...rest}
     >
-      <NotificationIcon />
+      <NotificationsIcon />
     </AnimFadeRoundButton>
   );
 }
@@ -113,13 +113,11 @@ export function HeaderTitleText({ style, children, ...rest }) {
     <ThText
       style={[
         styles.headerTitle,
-        [
-          {
-            fontSize: fontSizes.xl,
-            fontWeight: "medium",
-          },
-          style,
-        ],
+        {
+          fontSize: fontSizes.xl,
+          fontWeight: "medium",
+        },
+        style,
       ]}
       {...rest}
     >
@@ -128,19 +126,19 @@ export function HeaderTitleText({ style, children, ...rest }) {
   );
 }
 
-export function HeaderYouTubeLogoImage({ style, ...rest }) {
+export function HeaderYoutubeLogoImage({ style, ...rest }) {
   const { colorScheme } = useTheme();
 
   return (
     <Image
       style={[{ width: 95, height: 25 }, style]}
       resizeMode={"stretch"}
+      alt="HeaderYoutubeLogoImage"
       source={
         colorScheme === "light"
-          ? imagePaths.youTubeLogoLightMode
-          : imagePaths.youTubeLogoDarkMode
+          ? imagePaths.youtubeLogoLightMode
+          : imagePaths.youtubeLogoDarkMode
       }
-      alt="Channel Image"
       {...rest}
     />
   );

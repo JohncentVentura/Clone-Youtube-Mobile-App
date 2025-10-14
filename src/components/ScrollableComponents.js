@@ -1,0 +1,160 @@
+import { useRef, useState } from "react";
+import {
+  FlatList,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
+import { useModal } from "../context/ModalContext";
+import { useTheme } from "../context/ThemeContext";
+import { styles } from "../styles/styles";
+import { AnimFadeRoundButton } from "./AnimatedComponents";
+import { DotVerticalIcon } from "./IconComponents";
+import { FlatListChannelImage } from "./ImageComponents";
+import { ThText } from "./ThemedComponents";
+import { FlatListVideoView } from "./VideoComponents";
+
+/******************************FlatList Components******************************/
+export function AutoPlayVideoFlatList({ navigation, query, data, ...rest }) {
+  const [autoPlayVideoId, setAutoPlayVideoId] = useState(null);
+
+  return (
+    <FlatList
+      data={data}
+      keyExtractor={(item, index) => index + item.id}
+      renderItem={({ item }) => {
+        return (
+          <FlatListVideoItem
+            navigation={navigation}
+            query={query}
+            videoData={item}
+            autoPlayVideoId={item.id === autoPlayVideoId}
+          />
+        );
+      }}
+      onViewableItemsChanged={
+        //useRef for same reference each render, called whenever visible items changes (scrolled) & get the first visible item
+        useRef(({ viewableItems }) => {
+          if (viewableItems.length > 0) {
+            setAutoPlayVideoId(viewableItems[0].item.id);
+          }
+        }).current
+      }
+      viewabilityConfig={
+        //useRef for same reference each render, threshold of item in the screen to be count as visible
+        useRef({
+          viewAreaCoveragePercentThreshold: 50,
+        }).current
+      }
+      {...rest}
+    />
+  );
+}
+
+export function FlatListVideoItem({
+  navigation,
+  query,
+  videoData,
+  autoPlayVideoId,
+}) {
+  const { setIsFlatListVideoItemVisible } = useModal();
+  const { colors, fontSizes } = useTheme();
+
+  return (
+    <View style={{ marginBottom: 32 }}>
+      <Pressable
+        onPress={() => {
+          navigation.push("MainVideoScreen", {
+            query: query,
+            videoData: videoData,
+          });
+        }}
+      >
+        <FlatListVideoView
+          videoData={videoData}
+          autoPlayVideoId={autoPlayVideoId}
+        />
+      </Pressable>
+      <View
+        style={[
+          styles.paddedHorizontalContainer,
+          {
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            alignItems: "flex-start",
+          },
+        ]}
+      >
+        <FlatListChannelImage
+          style={{ marginTop: 10 }}
+          source={{ uri: videoData.picture }}
+          onPress={() => {
+            navigation.navigate("ChannelScreen", {
+              query: query,
+              video: videoData,
+            });
+          }}
+        />
+        <View style={{ marginLeft: 14, marginTop: 8, flexShrink: 1 }}>
+          <ThText
+            style={{
+              fontSize: fontSizes.lg,
+              fontWeight: "bold",
+            }}
+          >
+            {videoData.title}
+          </ThText>
+          <ThText
+            style={{
+              marginTop: 4,
+              fontSize: fontSizes.xs,
+              color: colors.textSecondary,
+            }}
+          >
+            {videoData.channelName} • {videoData.views} views •{" "}
+            {videoData.uploadedDate}
+          </ThText>
+        </View>
+        <AnimFadeRoundButton
+          style={{ marginLeft: "auto", marginTop: 10 }}
+          roundSize={4}
+          onPress={() => setIsFlatListVideoItemVisible(true)}
+        >
+          <DotVerticalIcon />
+        </AnimFadeRoundButton>
+      </View>
+    </View>
+  );
+}
+
+/******************************ScrollView Components******************************/
+export function ColumnScrollView({ children, ...rest }) {
+  return (
+    <ScrollView
+      contentContainerStyle={StyleSheet.create({
+        alignItems: "flex-start",
+      })}
+      showsVerticalScrollIndicator={false}
+      {...rest}
+    >
+      {children}
+    </ScrollView>
+  );
+}
+
+export function RowScrollView({ children, ...rest }) {
+  return (
+    <ScrollView
+      contentContainerStyle={StyleSheet.create({
+        flexDirection: "row",
+        alignItems: "center",
+      })}
+      showsHorizontalScrollIndicator={false}
+      horizontal={true}
+      {...rest}
+    >
+      {children}
+    </ScrollView>
+  );
+}

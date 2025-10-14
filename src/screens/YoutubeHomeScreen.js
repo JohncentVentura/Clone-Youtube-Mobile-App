@@ -1,10 +1,11 @@
-import { useNavigation } from "@react-navigation/native";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Pressable, View } from "react-native";
 import { CompassIcon } from "../components/IconComponents";
 import { ThTopQueryTab } from "../components/ThemedComponents";
-import { RowScrollView } from "../components/UtilComponents";
-import { AutoPlayFlatList } from "../components/VideoComponents";
+import {
+  AutoPlayVideoFlatList,
+  RowScrollView,
+} from "../components/ScrollableComponents";
 import { useTheme } from "../context/ThemeContext";
 import { useSetPexelsDataVideos } from "../hooks/usePexelsData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
@@ -16,42 +17,43 @@ export default function YoutubeHomeScreen({ navigation }) {
   const { colors } = useTheme();
   const scrollToTopRef = useRef(null);
   const [query, setQuery] = useState(defaultQuery);
-  const [videos, setVideos] = useState([]);
+  const [homeVideos, setHomeVideos] = useState([]);
 
   useScrollToTopOnFocus(scrollToTopRef);
   useSetPexelsDataVideos({
     query,
-    videosCount: 5,
-    setVideos: setVideos,
+    queryResults: 5,
+    setVideos: setHomeVideos,
     dependecies: [query],
   });
 
   return (
     <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
-      <AutoPlayFlatList
-        ref={scrollToTopRef}
-        data={videos}
+      <AutoPlayVideoFlatList
         navigation={navigation}
         query={query}
-        ListHeaderComponent={<TopQueryTabBar setQuery={setQuery} />}
+        data={homeVideos}
+        ref={scrollToTopRef}
+        ListHeaderComponent={
+          <TopQueryTabBar navigation={navigation} setQuery={setQuery} />
+        }
       />
     </View>
   );
 }
 
-function TopQueryTabBar({ setQuery }) {
+function TopQueryTabBar({ navigation, setQuery }) {
   const { colors } = useTheme();
-  const navigation = useNavigation();
-  const [selectedQuery, setSelectedQuery] = useState(defaultQuery);
+  const [selected, setSelected] = useState(defaultQuery);
 
   const handleSelectedQuery = (query) => {
-    if (selectedQuery === query) {
+    if (selected === query) {
       if (query !== defaultQuery) {
-        setSelectedQuery(defaultQuery);
+        setSelected(defaultQuery);
         setQuery(defaultQuery);
       }
     } else {
-      setSelectedQuery(query);
+      setSelected(query);
       setQuery(query);
     }
   };
@@ -73,33 +75,32 @@ function TopQueryTabBar({ setQuery }) {
         <CompassIcon />
       </Pressable>
       <ThTopQueryTab
-        style={{ marginLeft: 14 }}
-        selected={selectedQuery === defaultQuery}
+        style={{ marginLeft: 16 }}
+        selected={selected === defaultQuery}
         onPress={() => handleSelectedQuery(defaultQuery)}
       >
         All
       </ThTopQueryTab>
       <ThTopQueryTab
-        selected={selectedQuery === "Music"}
+        selected={selected === "Music"}
         onPress={() => handleSelectedQuery("Music")}
       >
         Music
       </ThTopQueryTab>
       <ThTopQueryTab
-        selected={selectedQuery === "Nature"}
+        selected={selected === "Nature"}
         onPress={() => handleSelectedQuery("Nature")}
       >
         Nature
       </ThTopQueryTab>
       <ThTopQueryTab
-        selected={selectedQuery === "City"}
+        selected={selected === "City"}
         onPress={() => handleSelectedQuery("City")}
       >
         City
       </ThTopQueryTab>
       <ThTopQueryTab
         style={{ marginRight: 32 }}
-        selected={selectedQuery === "Youtube"}
         onPress={() => {
           navigation.navigate("YouTubeFlatListScreen");
         }}
