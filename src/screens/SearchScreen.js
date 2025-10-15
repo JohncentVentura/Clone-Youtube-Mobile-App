@@ -50,7 +50,7 @@ export default function SearchScreen({ navigation }) {
             >
               <View
                 style={[
-                  styles.paddedHorizontalContainer,
+                  styles.screenPadHorizontal,
                   {
                     backgroundColor: "transparent",
                     flexDirection: "row",
@@ -61,7 +61,7 @@ export default function SearchScreen({ navigation }) {
                 <ClockRotateLeftIcon size={iconSizes.xs} />
                 <ThText
                   style={{
-                    marginLeft: 12,
+                    marginLeft: 32,
                     fontWeight: "medium",
                     flexShrink: 1,
                   }}

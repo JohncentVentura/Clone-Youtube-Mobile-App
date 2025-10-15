@@ -4,6 +4,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
+  Easing,
 } from "react-native-reanimated";
 
 import { useTheme } from "../context/ThemeContext";
@@ -23,33 +24,42 @@ export function AnimFadeRoundButton({
       [0, 1],
       ["transparent", colors.bgInteractive]
     ),
-    transform: [
-      {
-        scale: withTiming(pressSharedValue.value ? 1 : 0, { duration: 150 }),
-      },
-    ],
+    transform: [{ scale: pressSharedValue.value }],
   }));
 
   return (
     <Pressable
-      style={style}
-      onPressIn={() =>
-        (pressSharedValue.value = withTiming(1, { duration: 200 }))
-      }
-      onPressOut={() =>
-        (pressSharedValue.value = withTiming(0, { duration: 400 }))
-      }
+      style={[
+        {
+          justifyContent: "center",
+          alignItems: "center",
+        },
+        style,
+      ]}
+      onPressIn={() => {
+        pressSharedValue.value = withTiming(1, {
+          duration: 100,
+          easing: Easing.out(Easing.quad),
+        });
+      }}
+      onPressOut={() => {
+        pressSharedValue.value = withTiming(0, {
+          duration: 400,
+          easing: Easing.out(Easing.cubic),
+        });
+      }}
       {...rest}
     >
       <Animated.View
         style={[
           {
             position: "absolute",
+            //If Pressable has padding: roundSize, then -roundSize / 10,
             left: -roundSize,
             right: -roundSize,
             top: -roundSize,
             bottom: -roundSize,
-            borderRadius: 9999,
+            borderRadius: 99,
           },
           animatedStyle,
         ]}

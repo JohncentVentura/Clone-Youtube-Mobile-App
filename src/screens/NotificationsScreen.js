@@ -28,65 +28,61 @@ export default function NotificationsScreen({ navigation }) {
     query: newQuery,
     queryResults: 4,
     setVideos: setNewVideos,
-    dependecies: [newQuery],
   });
   useSetPexelsDataVideos({
     query: oldQuery,
     queryResults: 4,
     setVideos: setOldVideos,
-    dependecies: [oldQuery],
   });
 
   return (
-    <>
-      <ColumnScrollView
-        style={[styles.screenContainer, { backgroundColor: colors.bg }]}
-        ref={scrollToTopRef}
+    <ColumnScrollView
+      style={[styles.screenContainer, { backgroundColor: colors.bg }]}
+      ref={scrollToTopRef}
+    >
+      <ThText
+        style={[
+          styles.screenPadLeft,
+          {
+            marginBottom: 6,
+            fontSize: fontSizes.sm,
+            color: colors.textSecondary,
+          },
+        ]}
       >
-        <ThText
-          style={[
-            styles.paddedHorizontalContainer,
-            {
-              marginBottom: 6,
-              fontSize: fontSizes.sm,
-              color: colors.textSecondary,
-            },
-          ]}
-        >
-          New
-        </ThText>
-        {newVideos.map((item) => (
-          <NotificationItem
-            key={item.id}
-            navigation={navigation}
-            query={newQuery}
-            videoData={item}
-            setVisible={setIsNotificationsItemVisible}
-          />
-        ))}
-        <ThText
-          style={[
-            styles.paddedHorizontalContainer,
-            {
-              marginVertical: 6,
-              fontSize: fontSizes.sm,
-              color: colors.textSecondary,
-            },
-          ]}
-        >
-          Old
-        </ThText>
-        {oldVideos.map((item) => (
-          <NotificationItem
-            key={item.id}
-            navigation={navigation}
-            query={oldQuery}
-            videoData={item}
-            setVisible={setIsNotificationsItemVisible}
-          />
-        ))}
-      </ColumnScrollView>
-    </>
+        New
+      </ThText>
+      {newVideos.map((item) => (
+        <NotificationItem
+          key={item.id}
+          navigation={navigation}
+          query={newQuery}
+          videoData={item}
+          setVisible={setIsNotificationsItemVisible}
+        />
+      ))}
+      <ThText
+        style={[
+          styles.screenPadLeft,
+          {
+            marginVertical: 6,
+            fontSize: fontSizes.sm,
+            color: colors.textSecondary,
+          },
+        ]}
+      >
+        Old
+      </ThText>
+      {oldVideos.map((item) => (
+        <NotificationItem
+          key={item.id}
+          navigation={navigation}
+          query={oldQuery}
+          videoData={item}
+          setVisible={setIsNotificationsItemVisible}
+        />
+      ))}
+    </ColumnScrollView>
   );
 }
 
@@ -98,7 +94,7 @@ function NotificationItem({ navigation, query, videoData, setVisible }) {
       style={({ pressed }) => {
         return {
           paddingVertical: 10,
-          backgroundColor: pressed ? colors.bgInteractive : colors.bg,
+          backgroundColor: pressed ? colors.bgInteractive : "transparent",
         };
       }}
       onPress={() => {
@@ -110,9 +106,9 @@ function NotificationItem({ navigation, query, videoData, setVisible }) {
     >
       <View
         style={[
-          styles.paddedHorizontalContainer,
+          styles.screenPadHorizontal,
           {
-            backgroundColor: "transparent",
+            width: "100%",
             flexDirection: "row",
             alignItems: "flex-start",
           },
@@ -121,7 +117,6 @@ function NotificationItem({ navigation, query, videoData, setVisible }) {
         <NotificationsProfileImage
           style={{
             marginLeft: 4,
-            backgroundColor: "transparent",
           }}
           source={{ uri: videoData.picture }}
           onPress={() => {
@@ -135,7 +130,6 @@ function NotificationItem({ navigation, query, videoData, setVisible }) {
         <View
           style={{
             marginLeft: 16,
-            backgroundColor: "transparent",
             flexShrink: 1,
           }}
         >
@@ -155,6 +149,12 @@ function NotificationItem({ navigation, query, videoData, setVisible }) {
         <NotificationsThumbnailImage
           style={{ marginLeft: 12 }}
           source={{ uri: videoData.picture }}
+          onPress={() => {
+            navigation.push("MainVideoScreen", {
+              query: query,
+              videoData: videoData,
+            });
+          }}
         />
 
         <AnimFadeRoundButton

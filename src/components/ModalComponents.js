@@ -45,12 +45,12 @@ function SwipeDownModal({ isVisible, setIsVisible, items = [], children }) {
           backgroundColor: colors.bg,
         }}
       >
-        {/*Swipe Bar*/}
+        {/*Handle Bar*/}
         <View
           style={{
             marginVertical: 8,
-            borderRadius: 12,
-            width: 42,
+            borderRadius: 99,
+            width: 40,
             height: 4,
             backgroundColor: colors.borderSecondary,
             alignSelf: "center",

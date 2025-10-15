@@ -15,7 +15,7 @@ export default function ChannelScreen({ route }) {
     <View
       style={[
         styles.screenContainer,
-        styles.paddedHorizontalContainer,
+        styles.screenPadHorizontal,
         { backgroundColor: colors.bg },
       ]}
     >

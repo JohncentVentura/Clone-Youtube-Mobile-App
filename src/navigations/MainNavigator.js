@@ -31,6 +31,7 @@ import { ThText } from "../components/ThemedComponents";
 import { ColumnScrollView } from "components/ScrollableComponents";
 import { useTheme } from "../context/ThemeContext";
 import { useUIState } from "../context/UIStateContext";
+import { styles } from "../styles/styles";
 import ShortsStack from "./ShortsStack";
 import SubscriptionsStack from "./SubscriptionsStack";
 import UploadStack from "./UploadStack";
@@ -198,10 +199,9 @@ export default function MainNavigator() {
                   <Pressable
                     onPress={() => props.navigation.navigate(item.route)}
                     style={[
+                      styles.screenMarginAndPadHorizontal,
                       {
-                        marginHorizontal: 8,
                         borderRadius: 99,
-                        paddingHorizontal: 8,
                         paddingVertical: 16,
                         width: "94%",
                         backgroundColor:

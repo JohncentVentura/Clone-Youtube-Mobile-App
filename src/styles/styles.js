@@ -1,38 +1,43 @@
 import { Dimensions, StyleSheet } from "react-native";
 
-export const screenWidth = Dimensions.get("window").width * 1; //Multiply by 1 to get 100%
-export const screenHeight = Dimensions.get("window").height * 1; //Multiply by 1 to get 100%
-export const globalHorizontalSpacing = 16;
+const screenWidth = Dimensions.get("window").width * 1; //Multiply by 1 to get 100%
+const screenHeight = Dimensions.get("window").height * 1; //Multiply by 1 to get 100%
+const screenHorizontalSpacing = 16;
 
 export const styles = StyleSheet.create({
   /******************************Headers******************************/
-  headerLeft: {
-    marginVertical: 8,
-  },
   headerTitle: {
     marginLeft: 14,
   },
-  headerRightContainer: {
+  headerRightIconsContainer: {
     marginLeft: "auto",
     flexDirection: "row",
     alignItems: "center",
   },
-  headerRight: {
-    marginLeft: 24,
-    marginVertical: 8,
+  headerRightIcon: {
+    marginLeft: 16,
   },
-  /******************************Containers******************************/
+  /******************************Screen******************************/
   screenContainer: {
     width: screenWidth,
     flex: 1,
   },
-  paddedHorizontalContainer: {
-    paddingHorizontal: globalHorizontalSpacing,
-    width: "100%",
+  screenMarginAndPadHorizontal: {
+    marginHorizontal: screenHorizontalSpacing / 2,
+    paddingHorizontal: screenHorizontalSpacing / 2,
+  },
+  screenPadHorizontal: {
+    paddingHorizontal: screenHorizontalSpacing,
+  },
+  screenPadLeft: {
+    paddingLeft: screenHorizontalSpacing,
+  },
+  screenPadRight: {
+    paddingRight: screenHorizontalSpacing,
   },
   /******************************Videos******************************/
   videoView: {
-    width: "100%`",
+    width: screenWidth,
     height: screenHeight * 0.25,
   },
   /******************************Buttons******************************/

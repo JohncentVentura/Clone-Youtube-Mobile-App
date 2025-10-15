@@ -74,7 +74,7 @@ export function ThTextInputView({
   const { colors, fontSizes } = useTheme();
 
   return (
-    <View style={[{ flex: 1 }, style]}>
+    <View style={[styles.headerTitle, { flex: 1 }, style]}>
       <TextInput
         style={{
           borderRadius: 99,

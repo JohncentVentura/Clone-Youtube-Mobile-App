@@ -66,6 +66,10 @@ export function ClockRotateLeftIcon({ ...rest }) {
   );
 }
 
+export function CloseIcon({ ...rest }) {
+  return <ThIcon IconComponent={Ionicons} name="close" {...rest} />;
+}
+
 export function CompassIcon({ ...rest }) {
   return <ThIcon IconComponent={Ionicons} name="compass-outline" {...rest} />;
 }
@@ -130,6 +134,16 @@ export function LikeIcon({ ...rest }) {
 
 export function LiveIcon({ ...rest }) {
   return <ThIcon IconComponent={MaterialIcons} name="live-tv" {...rest} />;
+}
+
+export function MessageTextIcon({ ...rest }) {
+  return (
+    <ThIcon
+      IconComponent={MaterialCommunityIcons}
+      name="message-text-outline"
+      {...rest}
+    />
+  );
 }
 
 export function MicIcon({ ...rest }) {

@@ -17,6 +17,9 @@ export function ModalProvider({ children }) {
   const [isShareScreenVisible, setIsShareScreenVisible] = useState(false);
   const [isSearchResultHeaderVisible, setIsSearchResultHeaderVisible] =
     useState(false);
+  const [isVideoCommentModalVisible, setIsVideoCommentModalVisible] =
+    useState(false);
+  const [modalVideoData, setModalVideoData] = useState({});
 
   return (
     <ModalContext.Provider
@@ -37,6 +40,10 @@ export function ModalProvider({ children }) {
         setIsShareScreenVisible,
         isSearchResultHeaderVisible,
         setIsSearchResultHeaderVisible,
+        isVideoCommentModalVisible,
+        setIsVideoCommentModalVisible,
+        modalVideoData,
+        setModalVideoData,
       }}
     >
       {children}

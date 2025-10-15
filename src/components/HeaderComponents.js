@@ -14,13 +14,9 @@ import {
 } from "./IconComponents";
 import { ThText } from "./ThemedComponents";
 
-export function HeaderArrowBackIcon({ style, navigation, ...rest }) {
+export function HeaderArrowBackIcon({ navigation, ...rest }) {
   return (
-    <AnimFadeRoundButton
-      style={[styles.headerLeft, style]}
-      onPress={() => navigation.goBack()}
-      {...rest}
-    >
+    <AnimFadeRoundButton onPress={() => navigation.goBack()} {...rest}>
       <ArrowBackIcon />
     </AnimFadeRoundButton>
   );
@@ -33,7 +29,7 @@ export function HeaderContainer({ style, children, ...rest }) {
   return (
     <View
       style={[
-        styles.paddedHorizontalContainer,
+        styles.screenPadHorizontal,
         {
           paddingTop: insets.top,
           height:
@@ -56,7 +52,7 @@ export function HeaderContainer({ style, children, ...rest }) {
 
 export function HeaderDotVerticalIcon({ style, ...rest }) {
   return (
-    <AnimFadeRoundButton style={[styles.headerRight, style]} {...rest}>
+    <AnimFadeRoundButton style={[styles.headerRightIcon, style]} {...rest}>
       <DotVerticalIcon />
     </AnimFadeRoundButton>
   );
@@ -64,7 +60,7 @@ export function HeaderDotVerticalIcon({ style, ...rest }) {
 
 export function HeaderMicIcon({ style, ...rest }) {
   return (
-    <AnimFadeRoundButton style={[styles.headerRight, style]} {...rest}>
+    <AnimFadeRoundButton style={[styles.headerRightIcon, style]} {...rest}>
       <MicIcon />
     </AnimFadeRoundButton>
   );
@@ -73,7 +69,7 @@ export function HeaderMicIcon({ style, ...rest }) {
 export function HeaderNotificationsIcon({ style, navigation, ...rest }) {
   return (
     <AnimFadeRoundButton
-      style={[styles.headerRight, style]}
+      style={[styles.headerRightIcon, style]}
       onPress={() => {
         navigation.navigate("NotificationsScreen");
       }}
@@ -87,7 +83,7 @@ export function HeaderNotificationsIcon({ style, navigation, ...rest }) {
 export function HeaderSearchIcon({ style, navigation, ...rest }) {
   return (
     <AnimFadeRoundButton
-      style={[styles.headerRight, style]}
+      style={[styles.headerRightIcon, style]}
       onPress={() => {
         navigation.navigate("SearchScreen", { search: "" });
       }}
@@ -100,7 +96,7 @@ export function HeaderSearchIcon({ style, navigation, ...rest }) {
 
 export function HeaderShareScreenIcon({ style, ...rest }) {
   return (
-    <AnimFadeRoundButton style={[styles.headerRight, style]} {...rest}>
+    <AnimFadeRoundButton style={[styles.headerRightIcon, style]} {...rest}>
       <ShareScreenIcon />
     </AnimFadeRoundButton>
   );
@@ -114,6 +110,7 @@ export function HeaderTitleText({ style, children, ...rest }) {
       style={[
         styles.headerTitle,
         {
+          marginLeft: 12,
           fontSize: fontSizes.xl,
           fontWeight: "medium",
         },

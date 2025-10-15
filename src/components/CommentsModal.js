@@ -1,47 +1,58 @@
-import { useEffect } from "react";
-import { PanResponder, Pressable, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+import { PanResponder, Pressable, StyleSheet, View } from "react-native";
 import Animated, {
+  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
-  runOnJS,
 } from "react-native-reanimated";
-import { ThText } from "./ThemedComponents";
-import { screenHeight, styles } from "../styles/styles";
 import { useTheme } from "../context/ThemeContext";
+import { styles } from "styles/styles";
+import { AnimFadeRoundButton } from "./AnimatedComponents";
+import {
+  CloseIcon,
+  DislikeIcon,
+  DotVerticalIcon,
+  LikeIcon,
+  MessageTextIcon,
+} from "./IconComponents";
+import { MainVideoCommentImage } from "./ImageComponents";
+import { ThText, ThTopQueryTab } from "./ThemedComponents";
+import { ColumnScrollView, RowScrollView } from "./ScrollableComponents";
 
-export default function CommentsModal({ setShowComments }) {
-  const { colors } = useTheme();
+export default function CommentsModal({
+  videoData,
+  setIsVideoCommentModalVisible,
+}) {
+  const navigation = useNavigation();
+  const { colors, fontSizes } = useTheme();
 
-  // Animated values for position and background fade
-  const translateY = useSharedValue(screenHeight);
+  const translateY = useSharedValue("100%");
   const backdropOpacity = useSharedValue(0);
 
-  // Open animation when component mounts
+  //Open modal
   useEffect(() => {
     translateY.value = withTiming(0, { duration: 250 });
     backdropOpacity.value = withTiming(0.5, { duration: 250 });
   }, []);
 
-  // Close animation with smooth fade and slide down
-  const close = () => {
-    translateY.value = withTiming(screenHeight, { duration: 250 });
+  //Close modal
+  const closeModal = () => {
+    translateY.value = withTiming("100%", { duration: 250 });
     backdropOpacity.value = withTiming(0, { duration: 250 }, (finished) => {
-      if (finished) runOnJS(setShowComments)(false);
+      if (finished) runOnJS(setIsVideoCommentModalVisible)(false);
     });
   };
 
-  // Style for fading backdrop
   const backdropStyle = useAnimatedStyle(() => ({
     opacity: backdropOpacity.value,
   }));
 
-  // Style for sliding sheet
-  const sheetStyle = useAnimatedStyle(() => ({
+  const translateYStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: translateY.value }],
   }));
 
-  // Detect and handle drag gestures
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: (_, gesture) => gesture.dy > 5, // start when dragging down
     onPanResponderMove: (_, gesture) => {
@@ -49,92 +60,170 @@ export default function CommentsModal({ setShowComments }) {
     },
     onPanResponderRelease: (_, gesture) => {
       // close if dragged far enough or fast
-      if (gesture.dy > 120 || gesture.vy > 0.6) close();
+      if (gesture.dy > 120 || gesture.vy > 0.6) closeModal();
       else translateY.value = withTiming(0, { duration: 200 }); // snap back up
     },
   });
 
   return (
     <>
-      {/* Background overlay */}
+      {/*Background*/}
       <Animated.View
         style={[
-          {
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "black",
-          },
+          StyleSheet.absoluteFillObject,
+          { backgroundColor: "black" },
           backdropStyle,
         ]}
-      />
+      >
+        <Pressable onPress={closeModal} style={StyleSheet.absoluteFillObject} />
+      </Animated.View>
 
-      {/* Tap outside to close */}
-      <Pressable
-        onPress={close}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: "transparent",
-        }}
-      />
-
-      {/* Slide-up comment panel */}
+      {/*Slide-up comment panel*/}
       <Animated.View
         {...panResponder.panHandlers}
         style={[
           {
             position: "absolute",
-            bottom: 0,
             left: 0,
             right: 0,
-            height: "70%",
-            backgroundColor: colors.bg,
+            bottom: 0,
+
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
-            padding: 16,
+            height: "67%",
+            backgroundColor: colors.bg,
           },
-          sheetStyle,
+          translateYStyle,
         ]}
       >
-        {/* Handle bar */}
+        {/*Handle bar*/}
         <Pressable
-          onPress={close}
+          onPress={closeModal}
           style={{
-            alignSelf: "center",
+            marginTop: 16,
+            borderRadius: 99,
             width: 50,
             height: 5,
-            borderRadius: 2.5,
-            backgroundColor: colors.textSecondary,
-            marginBottom: 10,
+            backgroundColor: colors.borderSecondary,
+            alignSelf: "center",
           }}
         />
-
-        {/* Title */}
-        <ThText
-          style={[styles.fontMedium, styles.fontSizeLG, { marginBottom: 8 }]}
+        <View
+          style={[
+            styles.screenPadHorizontal,
+            {
+              marginTop: 8,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            },
+          ]}
         >
-          Comments Section
-        </ThText>
-
-        {/* Placeholder text */}
+          <ThText style={{ fontSize: fontSizes.xl, fontWeight: "bold" }}>
+            Comments
+          </ThText>
+          <CloseIcon onPress={closeModal} />
+        </View>
+        <SortOrderTabBar />
         <View
           style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            marginTop: 16,
+            width: "100%",
+            height: 1,
+            backgroundColor: colors.borderSecondary,
           }}
-        >
-          <ThText style={{ color: colors.textSecondary }}>
-            No comments yet... Be the first one!
-          </ThText>
-        </View>
+        />
+        <ColumnScrollView style={{ marginTop: 8 }}>
+          <View
+            style={[
+              styles.screenPadHorizontal,
+              {
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "flex-start",
+              },
+            ]}
+          >
+            <MainVideoCommentImage
+              style={{ marginTop: 10 }}
+              source={{ uri: videoData.picture }}
+              onPress={() => {
+                navigation.navigate("ChannelScreen");
+              }}
+            />
+            <View style={{ marginLeft: 14, marginTop: 8, flexShrink: 1 }}>
+              <ThText
+                style={{ fontSize: fontSizes.sm, color: colors.textSecondary }}
+              >
+                {videoData.channelTag} • {videoData.uploadedDate} ago
+              </ThText>
+              <ThText style={{ marginTop: 2, fontSize: fontSizes.sm }}>
+                {videoData.commentsDescription}
+              </ThText>
+              <View
+                style={{
+                  marginTop: 10,
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <AnimFadeRoundButton roundSize={6}>
+                  <LikeIcon />
+                </AnimFadeRoundButton>
+                <ThText style={{ marginLeft: 8, fontSize: fontSizes.sm }}>
+                  {videoData.likes}
+                </ThText>
+                <AnimFadeRoundButton style={{ marginLeft: 20 }} roundSize={6}>
+                  <DislikeIcon />
+                </AnimFadeRoundButton>
+                <AnimFadeRoundButton style={{ marginLeft: 20 }} roundSize={6}>
+                  <MessageTextIcon />
+                </AnimFadeRoundButton>
+              </View>
+            </View>
+            <AnimFadeRoundButton
+              style={{ marginLeft: "auto", marginTop: 6 }}
+              roundSize={4}
+            >
+              <DotVerticalIcon />
+            </AnimFadeRoundButton>
+          </View>
+        </ColumnScrollView>
       </Animated.View>
     </>
+  );
+}
+
+const defaultQuery = "all";
+function SortOrderTabBar({ navigation, setQuery }) {
+  const { colors } = useTheme();
+  const [selected, setSelected] = useState(defaultQuery);
+
+  const handleSelectedQuery = (query) => {
+    if (selected === query) {
+      if (query !== defaultQuery) {
+        setSelected(defaultQuery);
+      }
+    } else {
+      setSelected(query);
+    }
+  };
+
+  return (
+    <RowScrollView style={[styles.screenPadHorizontal, { marginTop: 24 }]}>
+      <ThTopQueryTab
+        style={{ marginLeft: 0 }}
+        selected={selected === defaultQuery}
+        onPress={() => handleSelectedQuery(defaultQuery)}
+      >
+        Top
+      </ThTopQueryTab>
+      <ThTopQueryTab
+        selected={selected === "Music"}
+        onPress={() => handleSelectedQuery("Music")}
+      >
+        Newest
+      </ThTopQueryTab>
+    </RowScrollView>
   );
 }

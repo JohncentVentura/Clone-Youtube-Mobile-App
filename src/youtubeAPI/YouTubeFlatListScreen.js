@@ -1,7 +1,7 @@
 import { FlatList, Text, TouchableOpacity } from "react-native";
 import { autoFetchYoutubeData } from "./youtubeAPI";
 
-export default function YouTubeFlatListScreen({ navigation }) {
+export default function YoutubeFlatListScreen({ navigation }) {
   const { videos, loading, error } = autoFetchYoutubeData("news");
 
   if (loading) return <Text>Loading...</Text>;

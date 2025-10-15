@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import YoutubePlayer from "react-native-youtube-iframe";
 
-export default function YouTubePlayerScreen({ route }) {
+export default function YoutubePlayerScreen({ route }) {
   const isFocused = useIsFocused();
   const playerRef = useRef(null);
   const [loading, setLoading] = useState(true);

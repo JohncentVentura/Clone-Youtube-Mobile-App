@@ -60,7 +60,7 @@ function TopQueryTabBar({ navigation, setQuery }) {
 
   return (
     <RowScrollView
-      style={[styles.paddedHorizontalContainer, { marginBottom: 10 }]}
+      style={[styles.screenPadHorizontal, { marginBottom: 10 }]}
     >
       <Pressable
         style={({ pressed }) => ({

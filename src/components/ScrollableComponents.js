@@ -78,7 +78,7 @@ export function FlatListVideoItem({
       </Pressable>
       <View
         style={[
-          styles.paddedHorizontalContainer,
+          styles.screenPadHorizontal,
           {
             flexDirection: "row",
             justifyContent: "flex-start",
@@ -92,7 +92,7 @@ export function FlatListVideoItem({
           onPress={() => {
             navigation.navigate("ChannelScreen", {
               query: query,
-              video: videoData,
+              videoData: videoData,
             });
           }}
         />
@@ -117,7 +117,7 @@ export function FlatListVideoItem({
           </ThText>
         </View>
         <AnimFadeRoundButton
-          style={{ marginLeft: "auto", marginTop: 10 }}
+          style={{ marginLeft: "auto", marginTop: 6 }}
           roundSize={4}
           onPress={() => setIsFlatListVideoItemVisible(true)}
         >
@@ -143,9 +143,10 @@ export function ColumnScrollView({ children, ...rest }) {
   );
 }
 
-export function RowScrollView({ children, ...rest }) {
+export function RowScrollView({ style, children, ...rest }) {
   return (
     <ScrollView
+      style={[{ flexGrow: 0 }, style]}
       contentContainerStyle={StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
