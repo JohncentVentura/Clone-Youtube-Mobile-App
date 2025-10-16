@@ -1,18 +1,18 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useContext, useState } from "react";
+const UIContext = createContext();
 
-const ModalContext = createContext();
-
-export function ModalProvider({ children }) {
-  const [isChannelHeaderVisible, setIsChannelHeaderVisible] = useState(false);
+export function UIProvider({ children }) {
   const [isClearSearchHistoryVisible, setIsClearSearchHistoryVisible] =
     useState(false);
+  const [isRemoveSearchItemVisible, setIsRemoveSearchItemVisible] =
+    useState(false);
+  const [isChannelHeaderVisible, setIsChannelHeaderVisible] = useState(false);
   const [isFlatListVideoItemVisible, setIsFlatListVideoItemVisible] =
     useState(false);
+  const [isMainTabBarVisible, setIsMainTabBarVisible] = useState(true);
   const [isNotificationsHeaderVisible, setIsNotificationsHeaderVisible] =
     useState(false);
   const [isNotificationsItemVisible, setIsNotificationsItemVisible] =
-    useState(false);
-  const [isRemoveSearchItemVisible, setIsRemoveSearchItemVisible] =
     useState(false);
   const [isShareScreenVisible, setIsShareScreenVisible] = useState(false);
   const [isSearchResultHeaderVisible, setIsSearchResultHeaderVisible] =
@@ -20,9 +20,8 @@ export function ModalProvider({ children }) {
   const [isVideoCommentModalVisible, setIsVideoCommentModalVisible] =
     useState(false);
   const [modalVideoData, setModalVideoData] = useState({});
-
   return (
-    <ModalContext.Provider
+    <UIContext.Provider
       value={{
         isChannelHeaderVisible,
         setIsChannelHeaderVisible,
@@ -30,6 +29,8 @@ export function ModalProvider({ children }) {
         setIsClearSearchHistoryVisible,
         isFlatListVideoItemVisible,
         setIsFlatListVideoItemVisible,
+        isMainTabBarVisible,
+        setIsMainTabBarVisible,
         isNotificationsHeaderVisible,
         setIsNotificationsHeaderVisible,
         isNotificationsItemVisible,
@@ -47,10 +48,10 @@ export function ModalProvider({ children }) {
       }}
     >
       {children}
-    </ModalContext.Provider>
+    </UIContext.Provider>
   );
 }
 
-export function useModal() {
-  return useContext(ModalContext);
+export function useUI() {
+  return useContext(UIContext);
 }

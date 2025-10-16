@@ -1,9 +1,10 @@
 import { Pressable, View } from "react-native";
+import { ScreenContainer } from "../components/ContainerComponents";
 import {
   ChannelCoverImage,
   ChannelProfileImage,
 } from "../components/ImageComponents";
-import { ThText } from "../components/ThemedComponents";
+import { BaseText } from "../components/TextComponents";
 import { useTheme } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
 
@@ -12,13 +13,7 @@ export default function ChannelScreen({ route }) {
   const { videoData } = route.params;
 
   return (
-    <View
-      style={[
-        styles.screenContainer,
-        styles.screenPadHorizontal,
-        { backgroundColor: colors.bg },
-      ]}
-    >
+    <ScreenContainer style={styles.screenPadHorizontal}>
       <ChannelCoverImage source={{ uri: videoData.picture }} />
       <View
         style={{
@@ -42,15 +37,15 @@ export default function ChannelScreen({ route }) {
           />
         </Pressable>
         <View style={{ flex: 4, marginLeft: 8 }}>
-          <ThText
+          <BaseText
             style={{
               fontSize: fontSizes.xl2,
               fontWeight: "bold",
             }}
           >
             {videoData.channelName}
-          </ThText>
-          <ThText
+          </BaseText>
+          <BaseText
             style={{
               marginTop: 4,
               fontSize: fontSizes.xs,
@@ -58,8 +53,8 @@ export default function ChannelScreen({ route }) {
             }}
           >
             {videoData.channelTag}
-          </ThText>
-          <ThText
+          </BaseText>
+          <BaseText
             style={{
               marginTop: 4,
               fontSize: fontSizes.xs,
@@ -68,10 +63,10 @@ export default function ChannelScreen({ route }) {
           >
             {videoData.channelSubscribers} subscribers •{" "}
             {videoData.channelVideos} videos
-          </ThText>
+          </BaseText>
         </View>
       </View>
-      <ThText
+      <BaseText
         style={{
           marginTop: 12,
           fontSize: fontSizes.xs,
@@ -81,7 +76,7 @@ export default function ChannelScreen({ route }) {
         {videoData.channelDescription}
         {videoData.channelDescription}
         {videoData.channelDescription}
-        <ThText
+        <BaseText
           style={{
             fontWeight: "medium",
             fontSize: fontSizes.xs,
@@ -91,8 +86,8 @@ export default function ChannelScreen({ route }) {
           }}
         >
           ...more
-        </ThText>
-      </ThText>
+        </BaseText>
+      </BaseText>
       <Pressable
         style={[
           styles.wideButton,
@@ -100,10 +95,10 @@ export default function ChannelScreen({ route }) {
         ]}
         onPress={() => console.log("Subscribe pressed")}
       >
-        <ThText style={{ fontWeight: "medium", color: colors.textContrast }}>
+        <BaseText style={{ fontWeight: "medium", color: colors.textContrast }}>
           Subscribe
-        </ThText>
+        </BaseText>
       </Pressable>
-    </View>
+    </ScreenContainer>
   );
 }

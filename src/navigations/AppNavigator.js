@@ -3,10 +3,10 @@ import { useFonts } from "expo-font";
 import { useState } from "react";
 import { ActivityIndicator } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { ModalProvider } from "../context/ModalContext";
 import { SearchProvider } from "../context/SearchContext";
 import { ThemeProvider } from "../context/ThemeContext";
-import { UIStateProvider } from "../context/UIStateContext";
+import { UIProvider } from "../context/UIContext";
+import { navigationRef } from "../navigations/NavigationService";
 import { fontPaths } from "../styles/paths";
 import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
@@ -25,17 +25,15 @@ export default function AppNavigator() {
 
   return (
     <SafeAreaProvider>
-      <ModalProvider>
-        <SearchProvider>
-          <ThemeProvider>
-            <UIStateProvider>
-              <NavigationContainer>
-                {isLoggedIn ? <MainNavigator /> : <AuthNavigator />}
-              </NavigationContainer>
-            </UIStateProvider>
-          </ThemeProvider>
-        </SearchProvider>
-      </ModalProvider>
+      <SearchProvider>
+        <ThemeProvider>
+          <UIProvider>
+            <NavigationContainer ref={navigationRef}>
+              {isLoggedIn ? <MainNavigator /> : <AuthNavigator />}
+            </NavigationContainer>
+          </UIProvider>
+        </ThemeProvider>
+      </SearchProvider>
     </SafeAreaProvider>
   );
 }

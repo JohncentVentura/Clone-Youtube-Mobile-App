@@ -1,11 +1,12 @@
 import { useRef, useState } from "react";
 import { Pressable, View } from "react-native";
+import { TabButton } from "../components/PressableComponents";
 import { CompassIcon } from "../components/IconComponents";
-import { ThTopQueryTab } from "../components/ThemedComponents";
 import {
   AutoPlayVideoFlatList,
   RowScrollView,
-} from "../components/ScrollableComponents";
+  ScreenContainer
+} from "../components/ContainerComponents";
 import { useTheme } from "../context/ThemeContext";
 import { useSetPexelsDataVideos } from "../hooks/usePexelsData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
@@ -28,7 +29,7 @@ export default function YoutubeHomeScreen({ navigation }) {
   });
 
   return (
-    <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
+    <ScreenContainer>
       <AutoPlayVideoFlatList
         navigation={navigation}
         query={query}
@@ -38,7 +39,7 @@ export default function YoutubeHomeScreen({ navigation }) {
           <TopQueryTabBar navigation={navigation} setQuery={setQuery} />
         }
       />
-    </View>
+    </ScreenContainer>
   );
 }
 
@@ -59,9 +60,7 @@ function TopQueryTabBar({ navigation, setQuery }) {
   };
 
   return (
-    <RowScrollView
-      style={[styles.screenPadHorizontal, { marginBottom: 10 }]}
-    >
+    <RowScrollView style={[styles.screenPadHorizontal, { marginBottom: 10 }]}>
       <Pressable
         style={({ pressed }) => ({
           borderRadius: 4,
@@ -74,39 +73,39 @@ function TopQueryTabBar({ navigation, setQuery }) {
       >
         <CompassIcon />
       </Pressable>
-      <ThTopQueryTab
+      <TabButton
         style={{ marginLeft: 16 }}
         selected={selected === defaultQuery}
         onPress={() => handleSelectedQuery(defaultQuery)}
       >
         All
-      </ThTopQueryTab>
-      <ThTopQueryTab
+      </TabButton>
+      <TabButton
         selected={selected === "Music"}
         onPress={() => handleSelectedQuery("Music")}
       >
         Music
-      </ThTopQueryTab>
-      <ThTopQueryTab
+      </TabButton>
+      <TabButton
         selected={selected === "Nature"}
         onPress={() => handleSelectedQuery("Nature")}
       >
         Nature
-      </ThTopQueryTab>
-      <ThTopQueryTab
+      </TabButton>
+      <TabButton
         selected={selected === "City"}
         onPress={() => handleSelectedQuery("City")}
       >
         City
-      </ThTopQueryTab>
-      <ThTopQueryTab
+      </TabButton>
+      <TabButton
         style={{ marginRight: 32 }}
         onPress={() => {
           navigation.navigate("YouTubeFlatListScreen");
         }}
       >
         (YouTube API)
-      </ThTopQueryTab>
+      </TabButton>
     </RowScrollView>
   );
 }

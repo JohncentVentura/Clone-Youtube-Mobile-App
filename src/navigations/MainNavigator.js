@@ -3,7 +3,6 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import React from "react";
 import { Pressable, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { HeaderYoutubeLogoImage } from "../components/HeaderComponents";
 import {
   ActiveHomeIcon,
   ActiveShortsIcon,
@@ -27,10 +26,11 @@ import {
   YoutubeMusicIcon,
   YoutubePremiumIcon,
 } from "../components/IconComponents";
-import { ThText } from "../components/ThemedComponents";
-import { ColumnScrollView } from "components/ScrollableComponents";
+import { HeaderYoutubeLogoImage } from "../components/ImageComponents";
+import { BaseText, DrawerFooterText } from "../components/TextComponents";
+import { ColumnScrollView } from "components/ContainerComponents";
 import { useTheme } from "../context/ThemeContext";
-import { useUIState } from "../context/UIStateContext";
+import { useUI } from "../context/UIContext";
 import { styles } from "../styles/styles";
 import ShortsStack from "./ShortsStack";
 import SubscriptionsStack from "./SubscriptionsStack";
@@ -235,7 +235,7 @@ export default function MainNavigator() {
                       />
                     )}
                     {!isHomeRoute && (
-                      <ThText
+                      <BaseText
                         style={{
                           marginLeft: 18,
                           fontWeight: isActiveRoute ? "bold" : "medium",
@@ -245,7 +245,7 @@ export default function MainNavigator() {
                         }}
                       >
                         {item.label}
-                      </ThText>
+                      </BaseText>
                     )}
                   </Pressable>
                 </React.Fragment>
@@ -290,7 +290,7 @@ export default function MainNavigator() {
 function MainBottomTabBar({ navigation }) {
   const insets = useSafeAreaInsets();
   const { colors, fontSizes } = useTheme();
-  const { isTabBarVisible } = useUIState();
+  const { isMainTabBarVisible } = useUI();
   const mainNavigator = navigation.getParent("MainNavigator");
 
   //Assign updated bottomTabItems so the HomeStack route of this tab uses the component of the currently selected Drawer route
@@ -315,7 +315,7 @@ function MainBottomTabBar({ navigation }) {
                 backgroundColor: colors.bg,
                 flexDirection: "row",
               },
-              !isTabBarVisible && { display: "none" },
+              !isMainTabBarVisible && { display: "none" },
             ]}
           >
             {updatedTabItems.map((item, index) => {
@@ -360,7 +360,7 @@ function MainBottomTabBar({ navigation }) {
                           <item.inactiveIcon color={colors.iconSecondary} />
                         )}
 
-                        <ThText
+                        <BaseText
                           style={{
                             fontSize: fontSizes.xs2,
                             fontWeight: "medium",
@@ -372,7 +372,7 @@ function MainBottomTabBar({ navigation }) {
                           {isActiveRoute
                             ? item.activeLabel
                             : item.inactiveLabel}
-                        </ThText>
+                        </BaseText>
                       </>
                     )}
                   </>
@@ -391,18 +391,5 @@ function MainBottomTabBar({ navigation }) {
         />
       ))}
     </BottomTab.Navigator>
-  );
-}
-
-function DrawerFooterText({ style, children, ...rest }) {
-  const { colors, fontSizes } = useTheme();
-
-  return (
-    <ThText
-      style={[{ fontSize: fontSizes.xs, color: colors.textSecondary }, style]}
-      {...rest}
-    >
-      {children}
-    </ThText>
   );
 }

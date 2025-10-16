@@ -1,5 +1,6 @@
 import { View } from "react-native";
-import { ThText } from "../components/ThemedComponents";
+import { ScreenContainer } from "../components/ContainerComponents";
+import { BaseText } from "../components/TextComponents";
 import { useTheme } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
 
@@ -7,8 +8,8 @@ export default function UploadScreen() {
   const { colors } = useTheme();
 
   return (
-    <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
-      <ThText>UploadScreen Body</ThText>
-    </View>
+    <ScreenContainer>
+      <BaseText>UploadScreen Body</BaseText>
+    </ScreenContainer>
   );
 }

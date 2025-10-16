@@ -1,21 +1,21 @@
 import { useRef, useState } from "react";
 import { Pressable, View } from "react-native";
-import { AnimFadeRoundButton } from "../components/AnimatedComponents";
+import { ScreenScrollView } from "../components/ContainerComponents";
 import { DotVerticalIcon } from "../components/IconComponents";
 import {
   NotificationsThumbnailImage,
   NotificationsProfileImage,
 } from "../components/ImageComponents";
-import { ColumnScrollView } from "../components/ScrollableComponents";
-import { ThText } from "../components/ThemedComponents";
-import { useModal } from "../context/ModalContext";
+import { RippleButton } from "../components/PressableComponents";
+import { BaseText } from "../components/TextComponents";
 import { useTheme } from "../context/ThemeContext";
+import { useUI } from "../context/UIContext";
 import { useSetPexelsDataVideos } from "../hooks/usePexelsData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
 
 export default function NotificationsScreen({ navigation }) {
-  const { setIsNotificationsItemVisible } = useModal();
+  const { setIsNotificationsItemVisible } = useUI();
   const { colors, fontSizes } = useTheme();
   const scrollToTopRef = useRef(null);
   const [newQuery, setNewQuery] = useState("food");
@@ -36,11 +36,8 @@ export default function NotificationsScreen({ navigation }) {
   });
 
   return (
-    <ColumnScrollView
-      style={[styles.screenContainer, { backgroundColor: colors.bg }]}
-      ref={scrollToTopRef}
-    >
-      <ThText
+    <ScreenScrollView ref={scrollToTopRef}>
+      <BaseText
         style={[
           styles.screenPadLeft,
           {
@@ -51,7 +48,7 @@ export default function NotificationsScreen({ navigation }) {
         ]}
       >
         New
-      </ThText>
+      </BaseText>
       {newVideos.map((item) => (
         <NotificationItem
           key={item.id}
@@ -61,7 +58,7 @@ export default function NotificationsScreen({ navigation }) {
           setVisible={setIsNotificationsItemVisible}
         />
       ))}
-      <ThText
+      <BaseText
         style={[
           styles.screenPadLeft,
           {
@@ -72,7 +69,7 @@ export default function NotificationsScreen({ navigation }) {
         ]}
       >
         Old
-      </ThText>
+      </BaseText>
       {oldVideos.map((item) => (
         <NotificationItem
           key={item.id}
@@ -82,7 +79,7 @@ export default function NotificationsScreen({ navigation }) {
           setVisible={setIsNotificationsItemVisible}
         />
       ))}
-    </ColumnScrollView>
+    </ScreenScrollView>
   );
 }
 
@@ -133,17 +130,17 @@ function NotificationItem({ navigation, query, videoData, setVisible }) {
             flexShrink: 1,
           }}
         >
-          <ThText style={{ fontSize: fontSizes.sm, fontWeight: "bold" }}>
+          <BaseText style={{ fontSize: fontSizes.sm, fontWeight: "bold" }}>
             {videoData.channelName}
-          </ThText>
-          <ThText style={{ fontSize: fontSizes.sm }}>
+          </BaseText>
+          <BaseText style={{ fontSize: fontSizes.sm }}>
             {videoData.description}
-          </ThText>
-          <ThText
+          </BaseText>
+          <BaseText
             style={{ fontSize: fontSizes.xs, color: colors.textSecondary }}
           >
             {videoData.uploadedDate}
-          </ThText>
+          </BaseText>
         </View>
 
         <NotificationsThumbnailImage
@@ -157,7 +154,7 @@ function NotificationItem({ navigation, query, videoData, setVisible }) {
           }}
         />
 
-        <AnimFadeRoundButton
+        <RippleButton
           style={{ marginLeft: 4 }}
           roundSize={2}
           onPress={() => {
@@ -165,7 +162,7 @@ function NotificationItem({ navigation, query, videoData, setVisible }) {
           }}
         >
           <DotVerticalIcon size={iconSizes.sm} />
-        </AnimFadeRoundButton>
+        </RippleButton>
       </View>
     </Pressable>
   );

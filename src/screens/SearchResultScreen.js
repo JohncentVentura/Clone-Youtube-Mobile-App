@@ -1,10 +1,11 @@
 import { useRef, useState } from "react";
-import { View } from "react-native";
-import { AutoPlayVideoFlatList } from "../components/ScrollableComponents";
+import {
+  AutoPlayVideoFlatList,
+  ScreenContainer,
+} from "../components/ContainerComponents";
 import { useTheme } from "../context/ThemeContext";
 import { useSetPexelsDataVideos } from "../hooks/usePexelsData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
-import { styles } from "../styles/styles";
 
 export default function SearchResultScreen({ navigation, route }) {
   const { search } = route.params;
@@ -22,13 +23,13 @@ export default function SearchResultScreen({ navigation, route }) {
   });
 
   return (
-    <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
+    <ScreenContainer>
       <AutoPlayVideoFlatList
         navigation={navigation}
         query={searchInput}
         data={searchVideos}
         ref={scrollToTopRef}
       />
-    </View>
+    </ScreenContainer>
   );
 }

@@ -1,8 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import {
-  HeaderArrowBackIcon,
-  HeaderTitleText,
-} from "../components/HeaderComponents";
+import { HeaderTitleText } from "../components/TextComponents";
+import { HeaderArrowBackIcon } from "../components/IconComponents";
 import ShortsScreen from "../screens/ShortsScreen";
 import { useTheme } from "../context/ThemeContext";
 

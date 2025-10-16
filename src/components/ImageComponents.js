@@ -1,4 +1,6 @@
 import { Image, Pressable } from "react-native";
+import { useTheme } from "../context/ThemeContext";
+import { imagePaths } from "../styles/paths";
 
 export function ChannelCoverImage({ source, ...rest }) {
   return (
@@ -36,6 +38,24 @@ export function FlatListChannelImage({ source, ...rest }) {
         alt="MainVideoScreenChannelImage"
       />
     </Pressable>
+  );
+}
+
+export function HeaderYoutubeLogoImage({ style, ...rest }) {
+  const { colorScheme } = useTheme();
+
+  return (
+    <Image
+      style={[{ width: 95, height: 25 }, style]}
+      resizeMode={"stretch"}
+      alt="HeaderYoutubeLogoImage"
+      source={
+        colorScheme === "light"
+          ? imagePaths.youtubeLogoLightMode
+          : imagePaths.youtubeLogoDarkMode
+      }
+      {...rest}
+    />
   );
 }
 

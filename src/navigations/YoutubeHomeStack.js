@@ -1,31 +1,34 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { useState } from "react";
 import { View } from "react-native";
-import CommentsModal from "../components/CommentsModal";
+import { HeaderContainer } from "../components/ContainerComponents";
+import {
+  ClearSearchHistoryAlert,
+  RemoveSearchItemAlert,
+} from "../components/alerts/QuestionAlerts";
+import CommentsModal from "../components/modals/CommentsModal";
+import {
+  FlatListVideoItemModal,
+  NotificationsItemModal,
+  ShareScreenModal,
+} from "../components/modals/SwipeDownModals";
+import {
+  ChannelHeaderModal,
+  NotificationsHeaderModal,
+  SearchResultHeaderModal,
+} from "../components/modals/TopRightModals";
 import {
   HeaderArrowBackIcon,
-  HeaderContainer,
   HeaderDotVerticalIcon,
   HeaderMicIcon,
   HeaderNotificationsIcon,
   HeaderSearchIcon,
   HeaderShareScreenIcon,
-  HeaderTitleText,
-  HeaderYoutubeLogoImage,
-} from "../components/HeaderComponents";
-import {
-  ChannelHeaderModal,
-  ClearSearchHistoryModal,
-  FlatListVideoItemModal,
-  NotificationsHeaderModal,
-  NotificationsItemModal,
-  RemoveSearchItemModal,
-  SearchResultHeaderModal,
-  ShareScreenModal,
-} from "../components/ModalComponents";
-import { ThTextInputView } from "../components/ThemedComponents";
-import { useModal } from "../context/ModalContext";
+} from "../components/IconComponents";
+import { HeaderYoutubeLogoImage } from "../components/ImageComponents";
+import { HeaderTitleText, TextInputView } from "../components/TextComponents";
 import { useSearch } from "../context/SearchContext";
+import { useUI } from "../context/UIContext";
 import ChannelScreen from "../screens/ChannelScreen";
 import MainVideoScreen from "../screens/MainVideoScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
@@ -47,7 +50,7 @@ export default function YoutubeHomeStack() {
     isVideoCommentModalVisible,
     setIsVideoCommentModalVisible,
     modalVideoData,
-  } = useModal();
+  } = useUI();
 
   return (
     <>
@@ -146,7 +149,7 @@ export default function YoutubeHomeStack() {
               return (
                 <HeaderContainer>
                   <HeaderArrowBackIcon navigation={navigation} />
-                  <ThTextInputView
+                  <TextInputView
                     autoFocus={true}
                     value={globalSearch ? globalSearch : searchInput}
                     onChangeText={setSearchInput}
@@ -184,7 +187,7 @@ export default function YoutubeHomeStack() {
                       navigation.pop(2);
                     }}
                   />
-                  <ThTextInputView
+                  <TextInputView
                     value={searchInput}
                     onPress={() =>
                       navigation.navigate("SearchScreen", {
@@ -266,7 +269,7 @@ function getModalComponents() {
     setIsShareScreenVisible,
     isSearchResultHeaderVisible,
     setIsSearchResultHeaderVisible,
-  } = useModal();
+  } = useUI();
 
   return (
     <>
@@ -275,7 +278,7 @@ function getModalComponents() {
         setIsVisible={setIsChannelHeaderVisible}
       />
 
-      <ClearSearchHistoryModal
+      <ClearSearchHistoryAlert
         isVisible={isClearSearchHistoryVisible}
         setIsVisible={setIsClearSearchHistoryVisible}
       />
@@ -295,7 +298,7 @@ function getModalComponents() {
         setIsVisible={setIsNotificationsItemVisible}
       />
 
-      <RemoveSearchItemModal
+      <RemoveSearchItemAlert
         isVisible={isRemoveSearchItemVisible}
         setIsVisible={setIsRemoveSearchItemVisible}
       />

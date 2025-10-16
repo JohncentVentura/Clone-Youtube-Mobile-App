@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { PanResponder, Pressable, StyleSheet, View } from "react-native";
 import Animated, {
@@ -7,26 +6,26 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { useTheme } from "../context/ThemeContext";
-import { styles } from "styles/styles";
-import { AnimFadeRoundButton } from "./AnimatedComponents";
+import { useTheme } from "../../context/ThemeContext";
+import { navigate } from "../../navigations/NavigationService";
+import { styles } from "../../styles/styles";
+import { ColumnScrollView, RowScrollView } from "../ContainerComponents";
 import {
   CloseIcon,
   DislikeIcon,
   DotVerticalIcon,
   LikeIcon,
   MessageTextIcon,
-} from "./IconComponents";
-import { MainVideoCommentImage } from "./ImageComponents";
-import { ThText, ThTopQueryTab } from "./ThemedComponents";
-import { ColumnScrollView, RowScrollView } from "./ScrollableComponents";
+} from "../IconComponents";
+import { MainVideoCommentImage } from "../ImageComponents";
+import { RippleButton, BasePressable, TabButton } from "../PressableComponents";
+import { BaseText } from "../TextComponents";
 
 export default function CommentsModal({
   videoData,
   setIsVideoCommentModalVisible,
 }) {
-  const navigation = useNavigation();
-  const { colors, fontSizes } = useTheme();
+  const { colors, fontSizes, iconSizes } = useTheme();
 
   const translateY = useSharedValue("100%");
   const backdropOpacity = useSharedValue(0);
@@ -119,9 +118,9 @@ export default function CommentsModal({
             },
           ]}
         >
-          <ThText style={{ fontSize: fontSizes.xl, fontWeight: "bold" }}>
+          <BaseText style={{ fontSize: fontSizes.xl, fontWeight: "bold" }}>
             Comments
-          </ThText>
+          </BaseText>
           <CloseIcon onPress={closeModal} />
         </View>
         <SortOrderTabBar />
@@ -134,7 +133,7 @@ export default function CommentsModal({
           }}
         />
         <ColumnScrollView style={{ marginTop: 8 }}>
-          <View
+          <BasePressable
             style={[
               styles.screenPadHorizontal,
               {
@@ -148,18 +147,19 @@ export default function CommentsModal({
               style={{ marginTop: 10 }}
               source={{ uri: videoData.picture }}
               onPress={() => {
-                navigation.navigate("ChannelScreen");
+                navigate("ChannelScreen", { videoData: videoData });
+                closeModal();
               }}
             />
             <View style={{ marginLeft: 14, marginTop: 8, flexShrink: 1 }}>
-              <ThText
-                style={{ fontSize: fontSizes.sm, color: colors.textSecondary }}
+              <BaseText
+                style={{ fontSize: fontSizes.xs, color: colors.textSecondary }}
               >
                 {videoData.channelTag} • {videoData.uploadedDate} ago
-              </ThText>
-              <ThText style={{ marginTop: 2, fontSize: fontSizes.sm }}>
+              </BaseText>
+              <BaseText style={{ marginTop: 2, fontSize: fontSizes.xs }}>
                 {videoData.commentsDescription}
-              </ThText>
+              </BaseText>
               <View
                 style={{
                   marginTop: 10,
@@ -167,27 +167,38 @@ export default function CommentsModal({
                   alignItems: "center",
                 }}
               >
-                <AnimFadeRoundButton roundSize={6}>
-                  <LikeIcon />
-                </AnimFadeRoundButton>
-                <ThText style={{ marginLeft: 8, fontSize: fontSizes.sm }}>
+                <RippleButton
+                  roundSize={6}
+                  onPress={() => console.log("Comment Like Press")}
+                >
+                  <LikeIcon size={iconSizes.xs2} />
+                </RippleButton>
+                <BaseText style={{ marginLeft: 8, fontSize: fontSizes.xs }}>
                   {videoData.likes}
-                </ThText>
-                <AnimFadeRoundButton style={{ marginLeft: 20 }} roundSize={6}>
-                  <DislikeIcon />
-                </AnimFadeRoundButton>
-                <AnimFadeRoundButton style={{ marginLeft: 20 }} roundSize={6}>
-                  <MessageTextIcon />
-                </AnimFadeRoundButton>
+                </BaseText>
+                <RippleButton
+                  style={{ marginLeft: 20 }}
+                  roundSize={6}
+                  onPress={() => console.log("Comment Dislike Press")}
+                >
+                  <DislikeIcon size={iconSizes.xs2} />
+                </RippleButton>
+                <RippleButton
+                  style={{ marginLeft: 24 }}
+                  roundSize={6}
+                  onPress={() => console.log("Comment Messages Press")}
+                >
+                  <MessageTextIcon size={iconSizes.xs} />
+                </RippleButton>
               </View>
             </View>
-            <AnimFadeRoundButton
+            <RippleButton
               style={{ marginLeft: "auto", marginTop: 6 }}
               roundSize={4}
             >
-              <DotVerticalIcon />
-            </AnimFadeRoundButton>
-          </View>
+              <DotVerticalIcon size={iconSizes.sm} />
+            </RippleButton>
+          </BasePressable>
         </ColumnScrollView>
       </Animated.View>
     </>
@@ -211,19 +222,19 @@ function SortOrderTabBar({ navigation, setQuery }) {
 
   return (
     <RowScrollView style={[styles.screenPadHorizontal, { marginTop: 24 }]}>
-      <ThTopQueryTab
+      <TabButton
         style={{ marginLeft: 0 }}
         selected={selected === defaultQuery}
         onPress={() => handleSelectedQuery(defaultQuery)}
       >
         Top
-      </ThTopQueryTab>
-      <ThTopQueryTab
+      </TabButton>
+      <TabButton
         selected={selected === "Music"}
         onPress={() => handleSelectedQuery("Music")}
       >
         Newest
-      </ThTopQueryTab>
+      </TabButton>
     </RowScrollView>
   );
 }

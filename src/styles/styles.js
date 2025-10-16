@@ -6,7 +6,7 @@ const screenHorizontalSpacing = 16;
 
 export const styles = StyleSheet.create({
   /******************************Headers******************************/
-  headerTitle: {
+  headerCenter: {
     marginLeft: 14,
   },
   headerRightIconsContainer: {

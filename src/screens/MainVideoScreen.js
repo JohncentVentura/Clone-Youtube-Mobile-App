@@ -1,6 +1,10 @@
 import { useRef, useState } from "react";
 import { FlatList, Pressable, View } from "react-native";
-
+import {
+  FlatListVideoItem,
+  RowScrollView,
+  ScreenContainer,
+} from "../components/ContainerComponents";
 import {
   DislikeIcon,
   DownloadIcon,
@@ -14,14 +18,11 @@ import {
   FlatListChannelImage,
   MainVideoCommentImage,
 } from "../components/ImageComponents";
-import { ThSmallIconTextButton, ThText } from "../components/ThemedComponents";
-import {
-  RowScrollView,
-  FlatListVideoItem,
-} from "../components/ScrollableComponents";
+import { SmallIconTextButton } from "../components/PressableComponents";
+import { BaseText } from "../components/TextComponents";
 import { MainVideoView } from "../components/VideoComponents";
-import { useModal } from "../context/ModalContext";
 import { useTheme } from "../context/ThemeContext";
+import { useUI } from "../context/UIContext";
 import { useHideBottomTabBarOnFocus } from "../hooks/useHideBottomTabBarOnFocus";
 import { useSetPexelsDataVideos } from "../hooks/usePexelsData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
@@ -32,8 +33,7 @@ export default function MainVideoScreen({ navigation, route }) {
   const { colors, fontSizes, iconSizes } = useTheme();
   const scrollToTopRef = useRef(null);
   const [relatedVideos, setRelatedVideos] = useState([]);
-  const { setModalQuery, setModalVideoData, setIsVideoCommentModalVisible } =
-    useModal();
+  const { setModalVideoData, setIsVideoCommentModalVisible } = useUI();
 
   useHideBottomTabBarOnFocus();
   useScrollToTopOnFocus(scrollToTopRef);
@@ -45,7 +45,7 @@ export default function MainVideoScreen({ navigation, route }) {
   });
 
   return (
-    <View style={[styles.screenContainer, { backgroundColor: colors.bg }]}>
+    <ScreenContainer>
       <FlatList
         data={relatedVideos}
         keyExtractor={(item) => item.id.toString()}
@@ -54,7 +54,7 @@ export default function MainVideoScreen({ navigation, route }) {
           <>
             <MainVideoView videoData={videoData} />
             <View style={styles.screenPadHorizontal}>
-              <ThText
+              <BaseText
                 style={{
                   marginTop: 4,
 
@@ -63,19 +63,19 @@ export default function MainVideoScreen({ navigation, route }) {
                 }}
               >
                 {videoData.title}
-              </ThText>
+              </BaseText>
 
               {/*Total views, Uploaded Date, & ...more link section*/}
               <View style={{ marginTop: 4, flexDirection: "row" }}>
-                <ThText
+                <BaseText
                   style={{
                     fontSize: fontSizes.xs,
                     color: colors.textSecondary,
                   }}
                 >
                   {videoData.views} views
-                </ThText>
-                <ThText
+                </BaseText>
+                <BaseText
                   style={{
                     marginLeft: 8,
                     fontSize: fontSizes.xs,
@@ -83,8 +83,8 @@ export default function MainVideoScreen({ navigation, route }) {
                   }}
                 >
                   {videoData.uploadedDate}
-                </ThText>
-                <ThText
+                </BaseText>
+                <BaseText
                   style={{
                     marginLeft: 8,
                     fontSize: fontSizes.xs,
@@ -95,7 +95,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   }}
                 >
                   ...more
-                </ThText>
+                </BaseText>
               </View>
 
               {/*Channel image, Channel Name, Subscribers, & Subscribe Button section*/}
@@ -122,7 +122,7 @@ export default function MainVideoScreen({ navigation, route }) {
                       });
                     }}
                   />
-                  <ThText
+                  <BaseText
                     style={{
                       marginLeft: 8,
                       fontSize: fontSizes.sm,
@@ -130,8 +130,8 @@ export default function MainVideoScreen({ navigation, route }) {
                     }}
                   >
                     {videoData.channelName}
-                  </ThText>
-                  <ThText
+                  </BaseText>
+                  <BaseText
                     style={{
                       marginLeft: 8,
                       fontSize: fontSizes.xs,
@@ -139,7 +139,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     }}
                   >
                     {videoData.channelSubscribers}
-                  </ThText>
+                  </BaseText>
                 </View>
                 <Pressable
                   style={[
@@ -147,7 +147,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     { backgroundColor: colors.bgContrast },
                   ]}
                 >
-                  <ThText
+                  <BaseText
                     style={{
                       fontSize: fontSizes.xs,
                       fontWeight: "medium",
@@ -156,7 +156,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     onPress={() => console.log("Subscribe Press")}
                   >
                     Subscribe
-                  </ThText>
+                  </BaseText>
                 </Pressable>
               </View>
 
@@ -182,8 +182,8 @@ export default function MainVideoScreen({ navigation, route }) {
                     ]}
                     onPress={() => console.log("Liked Press")}
                   >
-                    <LikeIcon size={iconSizes.xs} />
-                    <ThText
+                    <LikeIcon size={iconSizes.xs2} />
+                    <BaseText
                       style={{
                         paddingLeft: 8,
                         fontSize: fontSizes.xs,
@@ -191,7 +191,7 @@ export default function MainVideoScreen({ navigation, route }) {
                       }}
                     >
                       {videoData.likes}
-                    </ThText>
+                    </BaseText>
                   </Pressable>
                   {/*Divider of like & dislike buttons*/}
                   <View
@@ -212,35 +212,35 @@ export default function MainVideoScreen({ navigation, route }) {
                     ]}
                     onPress={() => console.log("Disliked Press")}
                   >
-                    <DislikeIcon size={iconSizes.xs} />
+                    <DislikeIcon size={iconSizes.xs2} />
                   </Pressable>
                 </View>
 
-                <ThSmallIconTextButton
+                <SmallIconTextButton
                   style={{ marginLeft: 8 }}
                   Icon={ShareIcon}
                   text="Share"
                   onPress={() => console.log("Share Press")}
                 />
-                <ThSmallIconTextButton
+                <SmallIconTextButton
                   style={{ marginLeft: 8 }}
                   Icon={RemixIcon}
                   text="Remix"
                   onPress={() => console.log("Remix Press")}
                 />
-                <ThSmallIconTextButton
+                <SmallIconTextButton
                   style={{ marginLeft: 8 }}
                   Icon={DownloadIcon}
                   text="Download"
                   onPress={() => console.log("Download Press")}
                 />
-                <ThSmallIconTextButton
+                <SmallIconTextButton
                   style={{ marginLeft: 8 }}
                   Icon={ReportIcon}
                   text="Report"
                   onPress={() => console.log("Report Press")}
                 />
-                <ThSmallIconTextButton
+                <SmallIconTextButton
                   style={{ marginLeft: 8 }}
                   Icon={SaveIcon}
                   text="Save"
@@ -273,15 +273,15 @@ export default function MainVideoScreen({ navigation, route }) {
                     alignItems: "center",
                   }}
                 >
-                  <ThText
+                  <BaseText
                     style={{
                       fontSize: fontSizes.sm,
                       fontWeight: "medium",
                     }}
                   >
                     Comments
-                  </ThText>
-                  <ThText
+                  </BaseText>
+                  <BaseText
                     style={{
                       marginLeft: 10,
                       fontSize: fontSizes.xs,
@@ -289,7 +289,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     }}
                   >
                     {videoData.commentsCount}
-                  </ThText>
+                  </BaseText>
                 </View>
                 <View
                   style={{
@@ -308,7 +308,7 @@ export default function MainVideoScreen({ navigation, route }) {
                       });
                     }}
                   />
-                  <ThText
+                  <BaseText
                     style={{
                       marginLeft: 10,
                       fontSize: fontSizes.xs,
@@ -316,7 +316,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     }}
                   >
                     {videoData.commentsDescription}
-                  </ThText>
+                  </BaseText>
                 </View>
               </Pressable>
             </View>
@@ -330,6 +330,6 @@ export default function MainVideoScreen({ navigation, route }) {
           />
         )}
       />
-    </View>
+    </ScreenContainer>
   );
 }
