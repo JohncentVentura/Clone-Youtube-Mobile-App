@@ -8,6 +8,7 @@ import {
 } from "../components/IconComponents";
 import { SearchHistoryThumbnailImage } from "../components/ImageComponents";
 import { BaseText } from "../components/TextComponents";
+import { BasePressable } from "../components/PressableComponents";
 import { useSearch } from "../context/SearchContext";
 import { useTheme } from "../context/ThemeContext";
 import { useUI } from "../context/UIContext";
@@ -17,7 +18,7 @@ import { styles } from "../styles/styles";
 
 export default function SearchScreen({ navigation }) {
   const insets = useSafeAreaInsets();
-  const { setIsClearSearchHistoryVisible, setIsRemoveSearchItemVisible } =
+  const { setShowAlertClearSearchHistory, setShowAlertRemoveSearchItem } =
     useUI();
   const { setGlobalSearch, searchHistory, setRemovingSearchItem } = useSearch();
   const { colors, fontSizes, iconSizes } = useTheme();
@@ -33,11 +34,8 @@ export default function SearchScreen({ navigation }) {
         ref={scrollToTopRef}
         keyExtractor={(item, index) => index + item.text}
         renderItem={({ item }) => (
-          <Pressable
-            style={({ pressed }) => ({
-              paddingVertical: 12,
-              backgroundColor: pressed ? colors.bgInteractive : colors.bg,
-            })}
+          <BasePressable
+            style={{paddingVertical: 12,}}
             onPress={() => {
               setGlobalSearch("");
               navigation.push("SearchResultScreen", { search: item.text });
@@ -45,7 +43,7 @@ export default function SearchScreen({ navigation }) {
             delayLongPress={300}
             onLongPress={() => {
               setRemovingSearchItem(item);
-              setIsRemoveSearchItemVisible(true);
+              setShowAlertRemoveSearchItem(true);
             }}
           >
             <View
@@ -64,7 +62,7 @@ export default function SearchScreen({ navigation }) {
               />
               <BaseText
                 style={{
-                  marginLeft: 32,
+                  marginLeft: 30,
                   fontWeight: "medium",
                   flexShrink: 1,
                 }}
@@ -82,16 +80,16 @@ export default function SearchScreen({ navigation }) {
                 }}
               />
             </View>
-          </Pressable>
+          </BasePressable>
         )}
         ListFooterComponent={
           searchHistory.length > 0 ? (
             <Pressable
               style={({ pressed }) => ({
                 marginBottom: insets.bottom + 8,
-                opacity: pressed ? 0.4 : 1,
+                opacity: pressed ? 0.5 : 1,
               })}
-              onPress={() => setIsClearSearchHistoryVisible(true)}
+              onPress={() => setShowAlertClearSearchHistory(true)}
             >
               <BaseText
                 style={{

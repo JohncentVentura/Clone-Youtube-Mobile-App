@@ -5,9 +5,15 @@ const screenHeight = Dimensions.get("window").height * 1; //Multiply by 1 to get
 const screenHorizontalSpacing = 16;
 
 export const styles = StyleSheet.create({
-  /******************************Headers******************************/
+  /******************************Main & Headers******************************/
+  mainBottomTab: {
+    borderTopWidth: 2,
+    width: "20%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   headerCenter: {
-    marginLeft: 14,
+    marginLeft: 16,
   },
   headerRightIconsContainer: {
     marginLeft: "auto",
@@ -15,16 +21,12 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   headerRightIcon: {
-    marginLeft: 16,
+    marginLeft: 24,
   },
   /******************************Screen******************************/
   screenContainer: {
     width: screenWidth,
     flex: 1,
-  },
-  screenMarginAndPadHorizontal: {
-    marginHorizontal: screenHorizontalSpacing / 2,
-    paddingHorizontal: screenHorizontalSpacing / 2,
   },
   screenPadHorizontal: {
     paddingHorizontal: screenHorizontalSpacing,

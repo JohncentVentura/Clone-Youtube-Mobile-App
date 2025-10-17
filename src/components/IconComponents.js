@@ -11,6 +11,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Octicons from "@expo/vector-icons/Octicons";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import { useTheme } from "../context/ThemeContext";
+import { useUI } from "../context/UIContext";
 import { styles } from "../styles/styles";
 import { RippleButton } from "./PressableComponents";
 
@@ -118,8 +119,14 @@ export function HeaderSearchIcon({ style, navigation, ...rest }) {
 }
 
 export function HeaderShareScreenIcon({ style, ...rest }) {
+  const { setShowModalShareScreen } = useUI();
+
   return (
-    <RippleButton style={[styles.headerRightIcon, style]} {...rest}>
+    <RippleButton
+      style={[styles.headerRightIcon, style]}
+      onPress={() => setShowModalShareScreen(true)}
+      {...rest}
+    >
       <ShareScreenIcon />
     </RippleButton>
   );

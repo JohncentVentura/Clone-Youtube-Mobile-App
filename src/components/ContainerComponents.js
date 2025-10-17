@@ -153,7 +153,7 @@ export function FlatListVideoItem({
   videoData,
   autoPlayVideoId,
 }) {
-  const { setIsFlatListVideoItemVisible } = useUI();
+  const { setShowModalFlatListVideoItem } = useUI();
   const { colors, fontSizes } = useTheme();
 
   return (
@@ -214,7 +214,7 @@ export function FlatListVideoItem({
         <RippleButton
           style={{ marginLeft: "auto", marginTop: 6 }}
           roundSize={4}
-          onPress={() => setIsFlatListVideoItemVisible(true)}
+          onPress={() => setShowModalFlatListVideoItem(true)}
         >
           <DotVerticalIcon />
         </RippleButton>

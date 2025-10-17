@@ -57,6 +57,7 @@ function TopQueryTabBar({ navigation, setQuery }) {
       setSelected(query);
       setQuery(query);
     }
+    
   };
 
   return (
@@ -67,7 +68,7 @@ function TopQueryTabBar({ navigation, setQuery }) {
           paddingHorizontal: 10,
           paddingVertical: 4,
           backgroundColor: colors.bgSecondary,
-          opacity: pressed ? 0.2 : 1,
+          opacity: pressed ? 0.5 : 1,
         })}
         onPress={() => navigation.getParent("MainNavigator")?.openDrawer()}
       >

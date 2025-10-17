@@ -43,13 +43,12 @@ const Stack = createStackNavigator();
 
 export default function YoutubeHomeStack() {
   const {
-    setIsChannelHeaderVisible,
-    setIsNotificationsHeaderVisible,
-    setIsShareScreenVisible,
-    setIsSearchResultHeaderVisible,
-    isVideoCommentModalVisible,
-    setIsVideoCommentModalVisible,
     modalVideoData,
+    setShowModalChannelHeader,
+    setShowModalNotifHeader,
+    setShowModalSearchResultHeader,
+    showModalVideoComment,
+    setShowModalVideoComment,
   } = useUI();
 
   return (
@@ -66,9 +65,7 @@ export default function YoutubeHomeStack() {
                 <HeaderContainer>
                   <HeaderYoutubeLogoImage />
                   <View style={styles.headerRightIconsContainer}>
-                    <HeaderShareScreenIcon
-                      onPress={() => setIsShareScreenVisible(true)}
-                    />
+                    <HeaderShareScreenIcon />
                     <HeaderNotificationsIcon navigation={navigation} />
                     <HeaderSearchIcon navigation={navigation} />
                   </View>
@@ -99,12 +96,10 @@ export default function YoutubeHomeStack() {
                 <HeaderContainer>
                   <HeaderArrowBackIcon navigation={navigation} />
                   <View style={styles.headerRightIconsContainer}>
-                    <HeaderShareScreenIcon
-                      onPress={() => setIsShareScreenVisible(true)}
-                    />
+                    <HeaderShareScreenIcon />
                     <HeaderSearchIcon navigation={navigation} />
                     <HeaderDotVerticalIcon
-                      onPress={() => setIsChannelHeaderVisible(true)}
+                      onPress={() => setShowModalChannelHeader(true)}
                     />
                   </View>
                 </HeaderContainer>
@@ -122,12 +117,10 @@ export default function YoutubeHomeStack() {
                   <HeaderArrowBackIcon navigation={navigation} />
                   <HeaderTitleText>Notifications</HeaderTitleText>
                   <View style={styles.headerRightIconsContainer}>
-                    <HeaderShareScreenIcon
-                      onPress={() => setIsShareScreenVisible(true)}
-                    />
+                    <HeaderShareScreenIcon />
                     <HeaderSearchIcon navigation={navigation} />
                     <HeaderDotVerticalIcon
-                      onPress={() => setIsNotificationsHeaderVisible(true)}
+                      onPress={() => setShowModalNotifHeader(true)}
                     />
                   </View>
                 </HeaderContainer>
@@ -199,12 +192,10 @@ export default function YoutubeHomeStack() {
                     }}
                   />
                   <View style={styles.headerRightIconsContainer}>
-                    <HeaderMicIcon />
-                    <HeaderShareScreenIcon
-                      onPress={() => setIsShareScreenVisible(true)}
-                    />
+                    <HeaderMicIcon style={{ marginLeft: 16 }} />
+                    <HeaderShareScreenIcon />
                     <HeaderDotVerticalIcon
-                      onPress={() => setIsSearchResultHeaderVisible(true)}
+                      onPress={() => setShowModalSearchResultHeader(true)}
                     />
                   </View>
                 </HeaderContainer>
@@ -241,10 +232,10 @@ export default function YoutubeHomeStack() {
         />
       </Stack.Navigator>
 
-      {isVideoCommentModalVisible && (
+      {showModalVideoComment && (
         <CommentsModal
           videoData={modalVideoData}
-          setIsVideoCommentModalVisible={setIsVideoCommentModalVisible}
+          setShowModalVideoComment={setShowModalVideoComment}
         />
       )}
     </>
@@ -253,64 +244,64 @@ export default function YoutubeHomeStack() {
 
 function getModalComponents() {
   const {
-    isChannelHeaderVisible,
-    setIsChannelHeaderVisible,
-    isClearSearchHistoryVisible,
-    setIsClearSearchHistoryVisible,
-    isFlatListVideoItemVisible,
-    setIsFlatListVideoItemVisible,
-    isNotificationsHeaderVisible,
-    setIsNotificationsHeaderVisible,
-    isNotificationsItemVisible,
-    setIsNotificationsItemVisible,
-    isRemoveSearchItemVisible,
-    setIsRemoveSearchItemVisible,
-    isShareScreenVisible,
-    setIsShareScreenVisible,
-    isSearchResultHeaderVisible,
-    setIsSearchResultHeaderVisible,
+    showAlertClearSearchHistory,
+    setShowAlertClearSearchHistory,
+    showAlertRemoveSearchItem,
+    setShowAlertRemoveSearchItem,
+    showModalChannelHeader,
+    setShowModalChannelHeader,
+    showModalFlatListVideoItem,
+    setShowModalFlatListVideoItem,
+    showModalNotifHeader,
+    setShowModalNotifHeader,
+    showModalNotifItem,
+    setShowModalNotifItem,
+    showModalSearchResultHeader,
+    setShowModalSearchResultHeader,
+    showModalShareScreen,
+    setShowModalShareScreen,
   } = useUI();
 
   return (
     <>
-      <ChannelHeaderModal
-        isVisible={isChannelHeaderVisible}
-        setIsVisible={setIsChannelHeaderVisible}
-      />
-
       <ClearSearchHistoryAlert
-        isVisible={isClearSearchHistoryVisible}
-        setIsVisible={setIsClearSearchHistoryVisible}
-      />
-
-      <FlatListVideoItemModal
-        isVisible={isFlatListVideoItemVisible}
-        setIsVisible={setIsFlatListVideoItemVisible}
-      />
-
-      <NotificationsHeaderModal
-        isVisible={isNotificationsHeaderVisible}
-        setIsVisible={setIsNotificationsHeaderVisible}
-      />
-
-      <NotificationsItemModal
-        isVisible={isNotificationsItemVisible}
-        setIsVisible={setIsNotificationsItemVisible}
+        showAlert={showAlertClearSearchHistory}
+        setShowAlert={setShowAlertClearSearchHistory}
       />
 
       <RemoveSearchItemAlert
-        isVisible={isRemoveSearchItemVisible}
-        setIsVisible={setIsRemoveSearchItemVisible}
+        showAlert={showAlertRemoveSearchItem}
+        setShowAlert={setShowAlertRemoveSearchItem}
       />
 
-      <ShareScreenModal
-        isVisible={isShareScreenVisible}
-        setIsVisible={setIsShareScreenVisible}
+      <ChannelHeaderModal
+        showModal={showModalChannelHeader}
+        setShowModal={setShowModalChannelHeader}
+      />
+
+      <FlatListVideoItemModal
+        showModal={showModalFlatListVideoItem}
+        setShowModal={setShowModalFlatListVideoItem}
+      />
+
+      <NotificationsHeaderModal
+        showModal={showModalNotifHeader}
+        setShowModal={setShowModalNotifHeader}
+      />
+
+      <NotificationsItemModal
+        showModal={showModalNotifItem}
+        setShowModal={setShowModalNotifItem}
       />
 
       <SearchResultHeaderModal
-        isVisible={isSearchResultHeaderVisible}
-        setIsVisible={setIsSearchResultHeaderVisible}
+        showModal={showModalSearchResultHeader}
+        setShowModal={setShowModalSearchResultHeader}
+      />
+
+      <ShareScreenModal
+        showModal={showModalShareScreen}
+        setShowModal={setShowModalShareScreen}
       />
     </>
   );

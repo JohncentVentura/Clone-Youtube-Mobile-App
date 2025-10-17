@@ -16,16 +16,16 @@ import {
 } from "../IconComponents";
 import { BaseText } from "../TextComponents";
 
-function SwipeDownModal({ isVisible, setIsVisible, items = [], children }) {
+function SwipeDownModal({ showModal, setShowModal, items = [], children }) {
   const { colors } = useTheme();
   const modalBorderRadius = 12;
 
   return (
     <Modal
-      isVisible={isVisible}
-      onBackdropPress={() => setIsVisible(false)} //Modal backdrop area
-      onRequestClose={() => setIsVisible(false)} //Android back button
-      onSwipeComplete={() => setIsVisible(false)} //When swiped down
+      isVisible={showModal}
+      onBackdropPress={() => setShowModal(false)} //Modal backdrop area
+      onRequestClose={() => setShowModal(false)} //Android back button
+      onSwipeComplete={() => setShowModal(false)} //When swiped down
       swipeDirection="down"
       animationIn="slideInUp"
       animationOut="slideOutDown"
@@ -89,7 +89,7 @@ function SwipeDownModal({ isVisible, setIsVisible, items = [], children }) {
   );
 }
 
-export function FlatListVideoItemModal({ isVisible, setIsVisible }) {
+export function FlatListVideoItemModal({ showModal, setShowModal }) {
   const modalItems = [
     {
       name: "Play Next In Queue",
@@ -131,48 +131,14 @@ export function FlatListVideoItemModal({ isVisible, setIsVisible }) {
 
   return (
     <SwipeDownModal
-      isVisible={isVisible}
-      setIsVisible={setIsVisible}
+      showModal={showModal}
+      setShowModal={setShowModal}
       items={modalItems}
     />
   );
 }
 
-export function ShareScreenModal({ isVisible, setIsVisible }) {
-  const { fontSizes } = useTheme();
-  const modalItems = [
-    {
-      name: "Link with TV code",
-      icon: ShareScreenIcon,
-      onPress: () => console.log("Link with TV code pressed"),
-    },
-    {
-      name: "Learn More",
-      icon: InformationIcon,
-      onPress: () => console.log("Learn More pressed"),
-    },
-  ];
-
-  return (
-    <SwipeDownModal
-      isVisible={isVisible}
-      setIsVisible={setIsVisible}
-      items={modalItems}
-    >
-      <BaseText
-        style={{
-          marginLeft: 12,
-          marginVertical: 6,
-          fontSize: fontSizes.sm,
-        }}
-      >
-        Select a device
-      </BaseText>
-    </SwipeDownModal>
-  );
-}
-
-export function NotificationsItemModal({ isVisible, setIsVisible }) {
+export function NotificationsItemModal({ showModal, setShowModal }) {
   const modalItems = [
     {
       name: "Save to Watch later",
@@ -199,9 +165,43 @@ export function NotificationsItemModal({ isVisible, setIsVisible }) {
 
   return (
     <SwipeDownModal
-      isVisible={isVisible}
-      setIsVisible={setIsVisible}
+      showModal={showModal}
+      setShowModal={setShowModal}
       items={modalItems}
     />
+  );
+}
+
+export function ShareScreenModal({ showModal, setShowModal }) {
+  const { fontSizes } = useTheme();
+  const modalItems = [
+    {
+      name: "Link with TV code",
+      icon: ShareScreenIcon,
+      onPress: () => console.log("Link with TV code pressed"),
+    },
+    {
+      name: "Learn More",
+      icon: InformationIcon,
+      onPress: () => console.log("Learn More pressed"),
+    },
+  ];
+
+  return (
+    <SwipeDownModal
+      showModal={showModal}
+      setShowModal={setShowModal}
+      items={modalItems}
+    >
+      <BaseText
+        style={{
+          marginLeft: 12,
+          marginVertical: 6,
+          fontSize: fontSizes.sm,
+        }}
+      >
+        Select a device
+      </BaseText>
+    </SwipeDownModal>
   );
 }

@@ -32,21 +32,21 @@ export const colorThemes = {
 };
 
 export const fontSizes = {
-  xs2: 8,
+  xs2: 10,
   xs: 12,
   sm: 14,
   base: 16,
   lg: 18,
   xl: 20,
-  xl2: 24,
+  xl2: 22,
 };
 
 export const iconSizes = {
-  xs2: 16,
+  xs2: 18,
   xs: 20,
   sm: 22,
   base: 24,
   lg: 26,
   xl: 28,
-  xl2: 32,
+  xl2: 30,
 };

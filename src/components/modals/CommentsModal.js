@@ -23,7 +23,7 @@ import { BaseText } from "../TextComponents";
 
 export default function CommentsModal({
   videoData,
-  setIsVideoCommentModalVisible,
+  setShowModalVideoComment,
 }) {
   const { colors, fontSizes, iconSizes } = useTheme();
 
@@ -40,7 +40,7 @@ export default function CommentsModal({
   const closeModal = () => {
     translateY.value = withTiming("100%", { duration: 250 });
     backdropOpacity.value = withTiming(0, { duration: 250 }, (finished) => {
-      if (finished) runOnJS(setIsVideoCommentModalVisible)(false);
+      if (finished) runOnJS(setShowModalVideoComment)(false);
     });
   };
 

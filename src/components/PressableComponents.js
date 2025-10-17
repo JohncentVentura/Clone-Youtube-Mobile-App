@@ -1,4 +1,5 @@
-import { Pressable, StyleSheet } from "react-native";
+import { useEffect } from "react";
+import { Pressable, StyleSheet, View } from "react-native";
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
@@ -10,7 +11,199 @@ import { styles } from "../styles/styles";
 import { BaseText } from "./TextComponents";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+const AnimatedText = Animated.createAnimatedComponent(BaseText);
 
+//#region Main Nav
+export function MainDrawerPressable({
+  style,
+  Icon,
+  iconColor,
+  label,
+  ...rest
+}) {
+  const { colors, iconSizes } = useTheme();
+  const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+  const sharedValue = useSharedValue(0);
+  const animatedPressable = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(
+      sharedValue.value,
+      [0, 1],
+      [colors.bg, colors.primary]
+    ),
+  }));
+  const animatedIcon = useAnimatedStyle(() => ({
+    color: interpolateColor(
+      sharedValue.value,
+      [0, 1],
+      [iconColor || colors.iconPrimary, colors.iconContrast]
+    ),
+  }));
+  const animatedText = useAnimatedStyle(() => ({
+    color: interpolateColor(
+      sharedValue.value,
+      [0, 1],
+      [colors.textPrimary, colors.textContrast]
+    ),
+  }));
+
+  return (
+    <AnimatedPressable
+      style={[animatedPressable, style]}
+      onPressIn={() => {
+        sharedValue.value = withTiming(1, { duration: 250 });
+      }}
+      onPressOut={() => {
+        sharedValue.value = withTiming(0, { duration: 500 });
+      }}
+      {...rest}
+    >
+      <AnimatedIcon size={iconSizes.lg} style={animatedIcon} />
+      <AnimatedText style={[animatedText, { marginLeft: 18 }]}>
+        {label}
+      </AnimatedText>
+    </AnimatedPressable>
+  );
+}
+
+export function MainIconTab({ style, isActiveRoute, Icon, ...rest }) {
+  const { colors } = useTheme();
+  const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+  const backgroundValue = useSharedValue(0);
+  const foregroundValue = useSharedValue(isActiveRoute ? 1 : 0);
+  const animatedPressable = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(
+      backgroundValue.value,
+      [0, 1],
+      [colors.bg, colors.bgInteractive]
+    ),
+  }));
+  const animatedBorder = useAnimatedStyle(() => ({
+    borderTopColor: interpolateColor(
+      foregroundValue.value,
+      [0, 1],
+      [colors.borderSecondary, colors.primary]
+    ),
+  }));
+  const animatedIconWrapper = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(
+      foregroundValue.value,
+      [0, 1],
+      [colors.bgSecondary, colors.primary]
+    ),
+  }));
+  const animatedIcon = useAnimatedStyle(() => ({
+    color: interpolateColor(
+      foregroundValue.value,
+      [0, 1],
+      [colors.iconSecondary, colors.iconContrast]
+    ),
+  }));
+
+  useEffect(() => {
+    if (isActiveRoute) {
+      foregroundValue.value = withTiming(1, { duration: 250 });
+    } else if (!isActiveRoute) {
+      foregroundValue.value = withTiming(0, { duration: 500 });
+    }
+  }, [isActiveRoute]);
+
+  return (
+    <AnimatedPressable
+      style={[styles.mainBottomTab, animatedPressable, animatedBorder, style]}
+      onPressIn={() => {
+        backgroundValue.value = withTiming(1, { duration: 250 });
+      }}
+      onPressOut={() => {
+        backgroundValue.value = withTiming(0, { duration: 500 });
+      }}
+      {...rest}
+    >
+      <Animated.View
+        style={[animatedIconWrapper, { borderRadius: 99, padding: 6 }]}
+      >
+        <AnimatedIcon style={animatedIcon} />
+      </Animated.View>
+    </AnimatedPressable>
+  );
+}
+
+export function MainIconTextTab({
+  style,
+  isActiveRoute,
+  Icon,
+  label,
+  ...rest
+}) {
+  const { colors, fontSizes } = useTheme();
+  const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+  const backgroundValue = useSharedValue(0);
+  const foregroundValue = useSharedValue(isActiveRoute ? 1 : 0);
+  const animatedPressable = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(
+      backgroundValue.value,
+      [0, 1],
+      [colors.bg, colors.bgInteractive]
+    ),
+  }));
+  const animatedBorder = useAnimatedStyle(() => ({
+    borderTopColor: interpolateColor(
+      foregroundValue.value,
+      [0, 1],
+      [colors.borderSecondary, colors.primary]
+    ),
+  }));
+  const animatedIcon = useAnimatedStyle(() => ({
+    color: interpolateColor(
+      foregroundValue.value,
+      [0, 1],
+      [colors.iconSecondary, colors.primary]
+    ),
+  }));
+  const animatedText = useAnimatedStyle(() => ({
+    color: interpolateColor(
+      foregroundValue.value,
+      [0, 1],
+      [colors.textSecondary, colors.textPrimary]
+    ),
+  }));
+
+  useEffect(() => {
+    if (isActiveRoute) {
+      foregroundValue.value = withTiming(1, { duration: 250 });
+    } else if (!isActiveRoute) {
+      foregroundValue.value = withTiming(0, { duration: 500 });
+    }
+  }, [isActiveRoute]);
+
+  return (
+    <AnimatedPressable
+      style={[styles.mainBottomTab, animatedPressable, animatedBorder, style]}
+      onPressIn={() => {
+        backgroundValue.value = withTiming(1, { duration: 250 });
+      }}
+      onPressOut={() => {
+        backgroundValue.value = withTiming(0, { duration: 500 });
+      }}
+      {...rest}
+    >
+      <AnimatedIcon style={animatedIcon} />
+      <AnimatedText
+        style={[
+          animatedText,
+          {
+            fontSize: fontSizes.xs2,
+            fontWeight: "medium",
+          },
+        ]}
+      >
+        {label}
+      </AnimatedText>
+    </AnimatedPressable>
+  );
+}
+//#endregion
+
+//#region Pressable
 export function BasePressable({ style, children, ...rest }) {
   const { colors } = useTheme();
   const sharedValue = useSharedValue(0);
@@ -38,7 +231,9 @@ export function BasePressable({ style, children, ...rest }) {
     </AnimatedPressable>
   );
 }
+//#endregion
 
+//#region Buttons
 export function RippleButton({ style, roundSize = 10, children, ...rest }) {
   const { colors } = useTheme();
   const sharedValue = useSharedValue(0);
@@ -84,21 +279,30 @@ export function RippleButton({ style, roundSize = 10, children, ...rest }) {
 
 export function SmallIconTextButton({ style, Icon, text, ...rest }) {
   const { colors, fontSizes, iconSizes } = useTheme();
+  const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+  const sharedValue = useSharedValue(1);
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: sharedValue.value }],
+  }));
 
   return (
-    <Pressable
-      style={({ pressed }) => [
+    <AnimatedPressable
+      style={[
         styles.iconTextButton,
-        {
-          transform: [{ scale: pressed ? 0.95 : 1 }],
-          backgroundColor: colors.bgSecondary,
-        },
+        animatedStyle,
+        { backgroundColor: colors.bgSecondary },
         style,
       ]}
+      onPressIn={() => {
+        sharedValue.value = withTiming(0.9, { duration: 100 });
+      }}
+      onPressOut={() => {
+        sharedValue.value = withTiming(1, { duration: 400 });
+      }}
       {...rest}
     >
-      <Icon size={iconSizes.xs2} />
-      <BaseText
+      <AnimatedIcon size={iconSizes.xs2} />
+      <AnimatedText
         style={{
           paddingLeft: 4,
           fontSize: fontSizes.xs,
@@ -106,33 +310,51 @@ export function SmallIconTextButton({ style, Icon, text, ...rest }) {
         }}
       >
         {text}
-      </BaseText>
-    </Pressable>
+      </AnimatedText>
+    </AnimatedPressable>
   );
 }
 
 export function TabButton({ style, selected, children, ...rest }) {
   const { colors } = useTheme();
+  const sharedValue = useSharedValue(selected ? 1 : 0);
+  const animatedBackgroundColor = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(
+      sharedValue.value,
+      [0, 1],
+      [colors.bgSecondary, colors.bgContrast]
+    ),
+  }));
+  const animatedForegroundColor = useAnimatedStyle(() => ({
+    color: interpolateColor(
+      sharedValue.value,
+      [0, 1],
+      [colors.textPrimary, colors.textContrast]
+    ),
+  }));
+
+  useEffect(() => {
+    sharedValue.value = withTiming(selected ? 1 : 0, {
+      duration: selected ? 250 : 500,
+    });
+  }, [selected]);
 
   return (
-    <Pressable
+    <AnimatedPressable
       style={[
+        animatedBackgroundColor,
         {
           marginLeft: 8,
           borderRadius: 8,
           paddingHorizontal: 12,
           paddingVertical: 6,
-          backgroundColor: selected ? colors.bgContrast : colors.bgSecondary,
         },
         style,
       ]}
       {...rest}
     >
-      <BaseText
-        style={{ color: selected ? colors.textContrast : colors.textPrimary }}
-      >
-        {children}
-      </BaseText>
-    </Pressable>
+      <AnimatedText style={animatedForegroundColor}>{children}</AnimatedText>
+    </AnimatedPressable>
   );
 }
+//#endregion

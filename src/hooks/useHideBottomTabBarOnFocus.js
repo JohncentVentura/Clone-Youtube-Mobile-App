@@ -3,12 +3,12 @@ import { useCallback } from "react";
 import { useUI } from "../context/UIContext";
 
 export function useHideBottomTabBarOnFocus() {
-  const { setIsMainTabBarVisible } = useUI();
+  const { setShowMainTabBarModal } = useUI();
 
   useFocusEffect(
     useCallback(() => {
-      setIsMainTabBarVisible(false);
-      return () => setIsMainTabBarVisible(true);
+      setShowMainTabBarModal(false);
+      return () => setShowMainTabBarModal(true);
     }, [])
   );
 }

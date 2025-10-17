@@ -27,6 +27,11 @@ import {
   YoutubePremiumIcon,
 } from "../components/IconComponents";
 import { HeaderYoutubeLogoImage } from "../components/ImageComponents";
+import {
+  MainDrawerPressable,
+  MainIconTab,
+  MainIconTextTab,
+} from "../components/PressableComponents";
 import { BaseText, DrawerFooterText } from "../components/TextComponents";
 import { ColumnScrollView } from "components/ContainerComponents";
 import { useTheme } from "../context/ThemeContext";
@@ -160,7 +165,7 @@ const bottomTabItems = (HomeComponent = YoutubeHomeStack) => [
 
 export default function MainNavigator() {
   const insets = useSafeAreaInsets();
-  const { colors, iconSizes } = useTheme();
+  const { colors } = useTheme();
 
   return (
     <Drawer.Navigator
@@ -180,8 +185,6 @@ export default function MainNavigator() {
           <ColumnScrollView>
             {drawerItems.map((item, index) => {
               const isHomeRoute = drawerItems[0].route === item.route;
-              const isActiveRoute =
-                drawerItems[props.state.index].route === item.route;
 
               return (
                 <React.Fragment key={index + item.route}>
@@ -196,58 +199,41 @@ export default function MainNavigator() {
                     />
                   )}
 
-                  <Pressable
-                    onPress={() => props.navigation.navigate(item.route)}
-                    style={[
-                      styles.screenMarginAndPadHorizontal,
-                      {
-                        borderRadius: 99,
-                        paddingVertical: 16,
-                        width: "94%",
-                        backgroundColor:
-                          !isHomeRoute && isActiveRoute
-                            ? colors.primary
-                            : "transparent",
-                        flexDirection: "row",
-                        alignItems: "center",
-                      },
-                    ]}
-                  >
-                    {isHomeRoute ? (
+                  {isHomeRoute ? (
+                    <Pressable
+                      style={[
+                        styles.screenPadLeft,
+                        { marginBottom: 8, paddingVertical: 16 },
+                      ]}
+                      onPress={() => props.navigation.navigate(item.route)}
+                    >
                       <HeaderYoutubeLogoImage />
-                    ) : (
-                      <item.Icon
-                        size={iconSizes.lg}
-                        color={
-                          drawerItems[drawerItems.length - 3].route ===
-                            item.route ||
+                    </Pressable>
+                  ) : (
+                    <MainDrawerPressable
+                      style={[
+                        styles.screenPadLeft,
+                        {
+                          paddingVertical: 16,
+                          width: "100%",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        },
+                      ]}
+                      Icon={item.Icon}
+                      iconColor={
+                        (drawerItems[drawerItems.length - 3].route ===
+                          item.route ||
                           drawerItems[drawerItems.length - 2].route ===
                             item.route ||
                           drawerItems[drawerItems.length - 1].route ===
-                            item.route
-                            ? !isHomeRoute && isActiveRoute
-                              ? colors.iconContrast
-                              : colors.primary
-                            : isActiveRoute
-                            ? colors.iconContrast
-                            : colors.iconPrimary
-                        }
-                      />
-                    )}
-                    {!isHomeRoute && (
-                      <BaseText
-                        style={{
-                          marginLeft: 18,
-                          fontWeight: isActiveRoute ? "bold" : "medium",
-                          color: isActiveRoute
-                            ? colors.textContrast
-                            : colors.textPrimary,
-                        }}
-                      >
-                        {item.label}
-                      </BaseText>
-                    )}
-                  </Pressable>
+                            item.route) &&
+                        colors.primary
+                      }
+                      label={item.label}
+                      onPress={() => props.navigation.navigate(item.route)}
+                    />
+                  )}
                 </React.Fragment>
               );
             })}
@@ -289,8 +275,8 @@ export default function MainNavigator() {
 
 function MainBottomTabBar({ navigation }) {
   const insets = useSafeAreaInsets();
-  const { colors, fontSizes } = useTheme();
-  const { isMainTabBarVisible } = useUI();
+  const { colors } = useTheme();
+  const { showMainTabBarModal } = useUI();
   const mainNavigator = navigation.getParent("MainNavigator");
 
   //Assign updated bottomTabItems so the HomeStack route of this tab uses the component of the currently selected Drawer route
@@ -308,14 +294,12 @@ function MainBottomTabBar({ navigation }) {
           <View
             style={[
               {
-                borderTopColor: colors.borderSecondary,
-                borderTopWidth: 1.5,
                 paddingBottom: insets.bottom,
                 height: insets.bottom + 49,
                 backgroundColor: colors.bg,
                 flexDirection: "row",
               },
-              !isMainTabBarVisible && { display: "none" },
+              !showMainTabBarModal && { display: "none" },
             ]}
           >
             {updatedTabItems.map((item, index) => {
@@ -323,60 +307,21 @@ function MainBottomTabBar({ navigation }) {
               const isActiveRoute =
                 updatedTabItems[props.state.index].route === item.route;
 
-              return (
-                <Pressable
+              return isUploadRoute ? (
+                <MainIconTab
                   key={index + item.route}
+                  isActiveRoute={isActiveRoute}
+                  Icon={item.Icon}
                   onPress={() => props.navigation.navigate(item.route)}
-                  style={{
-                    width: "20%",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <>
-                    {isUploadRoute ? (
-                      <View
-                        style={{
-                          borderRadius: 99,
-                          padding: 6,
-                          backgroundColor: isActiveRoute
-                            ? colors.primary
-                            : colors.bgSecondary,
-                        }}
-                      >
-                        <UploadIcon
-                          color={
-                            isActiveRoute
-                              ? colors.iconContrast
-                              : colors.iconPrimary
-                          }
-                        />
-                      </View>
-                    ) : (
-                      <>
-                        {isActiveRoute ? (
-                          <item.activeIcon color={colors.primary} />
-                        ) : (
-                          <item.inactiveIcon color={colors.iconSecondary} />
-                        )}
-
-                        <BaseText
-                          style={{
-                            fontSize: fontSizes.xs2,
-                            fontWeight: "medium",
-                            color: isActiveRoute
-                              ? colors.textPrimary
-                              : colors.textSecondary,
-                          }}
-                        >
-                          {isActiveRoute
-                            ? item.activeLabel
-                            : item.inactiveLabel}
-                        </BaseText>
-                      </>
-                    )}
-                  </>
-                </Pressable>
+                />
+              ) : (
+                <MainIconTextTab
+                  key={index + item.route}
+                  isActiveRoute={isActiveRoute}
+                  Icon={isActiveRoute ? item.activeIcon : item.inactiveIcon}
+                  label={isActiveRoute ? item.activeLabel : item.inactiveLabel}
+                  onPress={() => props.navigation.navigate(item.route)}
+                />
               );
             })}
           </View>

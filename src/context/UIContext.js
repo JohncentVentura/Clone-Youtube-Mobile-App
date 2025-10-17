@@ -2,49 +2,55 @@ import { createContext, useContext, useState } from "react";
 const UIContext = createContext();
 
 export function UIProvider({ children }) {
-  const [isClearSearchHistoryVisible, setIsClearSearchHistoryVisible] =
+  //#region Alert
+  const [showAlertClearSearchHistory, setShowAlertClearSearchHistory] =
     useState(false);
-  const [isRemoveSearchItemVisible, setIsRemoveSearchItemVisible] =
+  const [showAlertRemoveSearchItem, setShowAlertRemoveSearchItem] =
     useState(false);
-  const [isChannelHeaderVisible, setIsChannelHeaderVisible] = useState(false);
-  const [isFlatListVideoItemVisible, setIsFlatListVideoItemVisible] =
-    useState(false);
-  const [isMainTabBarVisible, setIsMainTabBarVisible] = useState(true);
-  const [isNotificationsHeaderVisible, setIsNotificationsHeaderVisible] =
-    useState(false);
-  const [isNotificationsItemVisible, setIsNotificationsItemVisible] =
-    useState(false);
-  const [isShareScreenVisible, setIsShareScreenVisible] = useState(false);
-  const [isSearchResultHeaderVisible, setIsSearchResultHeaderVisible] =
-    useState(false);
-  const [isVideoCommentModalVisible, setIsVideoCommentModalVisible] =
-    useState(false);
+  //#endregion
+
+  //#region Main
+  const [showMainTabBarModal, setShowMainTabBarModal] = useState(true);
+  //#endregion
+
+  //#region Modals
   const [modalVideoData, setModalVideoData] = useState({});
+  const [showModalChannelHeader, setShowModalChannelHeader] = useState(false);
+  const [showModalFlatListVideoItem, setShowModalFlatListVideoItem] =
+    useState(false);
+  const [showModalNotifHeader, setShowModalNotifHeader] = useState(false);
+  const [showModalNotifItem, setShowModalNotifItem] = useState(false);
+  const [showModalSearchResultHeader, setShowModalSearchResultHeader] =
+    useState(false);
+  const [showModalShareScreen, setShowModalShareScreen] = useState(false);
+  const [showModalVideoComment, setShowModalVideoComment] = useState(false);
+  //#endregion
+
   return (
     <UIContext.Provider
       value={{
-        isChannelHeaderVisible,
-        setIsChannelHeaderVisible,
-        isClearSearchHistoryVisible,
-        setIsClearSearchHistoryVisible,
-        isFlatListVideoItemVisible,
-        setIsFlatListVideoItemVisible,
-        isMainTabBarVisible,
-        setIsMainTabBarVisible,
-        isNotificationsHeaderVisible,
-        setIsNotificationsHeaderVisible,
-        isNotificationsItemVisible,
-        setIsNotificationsItemVisible,
-        isRemoveSearchItemVisible,
-        setIsRemoveSearchItemVisible,
-        isShareScreenVisible,
-        setIsShareScreenVisible,
-        isSearchResultHeaderVisible,
-        setIsSearchResultHeaderVisible,
-        isVideoCommentModalVisible,
-        setIsVideoCommentModalVisible,
+        showMainTabBarModal,
+        setShowMainTabBarModal,
+        showAlertClearSearchHistory,
+        setShowAlertClearSearchHistory,
+        showAlertRemoveSearchItem,
+        setShowAlertRemoveSearchItem,
         modalVideoData,
         setModalVideoData,
+        showModalChannelHeader,
+        setShowModalChannelHeader,
+        showModalFlatListVideoItem,
+        setShowModalFlatListVideoItem,
+        showModalNotifHeader,
+        setShowModalNotifHeader,
+        showModalNotifItem,
+        setShowModalNotifItem,
+        showModalSearchResultHeader,
+        setShowModalSearchResultHeader,
+        showModalShareScreen,
+        setShowModalShareScreen,
+        showModalVideoComment,
+        setShowModalVideoComment,
       }}
     >
       {children}

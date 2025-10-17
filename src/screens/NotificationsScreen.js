@@ -6,7 +6,7 @@ import {
   NotificationsThumbnailImage,
   NotificationsProfileImage,
 } from "../components/ImageComponents";
-import { RippleButton } from "../components/PressableComponents";
+import { BasePressable, RippleButton } from "../components/PressableComponents";
 import { BaseText } from "../components/TextComponents";
 import { useTheme } from "../context/ThemeContext";
 import { useUI } from "../context/UIContext";
@@ -15,7 +15,7 @@ import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
 
 export default function NotificationsScreen({ navigation }) {
-  const { setIsNotificationsItemVisible } = useUI();
+  const { setShowModalNotifItem } = useUI();
   const { colors, fontSizes } = useTheme();
   const scrollToTopRef = useRef(null);
   const [newQuery, setNewQuery] = useState("food");
@@ -55,7 +55,7 @@ export default function NotificationsScreen({ navigation }) {
           navigation={navigation}
           query={newQuery}
           videoData={item}
-          setVisible={setIsNotificationsItemVisible}
+          setVisible={setShowModalNotifItem}
         />
       ))}
       <BaseText
@@ -76,7 +76,7 @@ export default function NotificationsScreen({ navigation }) {
           navigation={navigation}
           query={oldQuery}
           videoData={item}
-          setVisible={setIsNotificationsItemVisible}
+          setVisible={setShowModalNotifItem}
         />
       ))}
     </ScreenScrollView>
@@ -87,13 +87,8 @@ function NotificationItem({ navigation, query, videoData, setVisible }) {
   const { colors, fontSizes, iconSizes } = useTheme();
 
   return (
-    <Pressable
-      style={({ pressed }) => {
-        return {
-          paddingVertical: 10,
-          backgroundColor: pressed ? colors.bgInteractive : "transparent",
-        };
-      }}
+    <BasePressable
+      style={{ paddingVertical: 10 }}
       onPress={() => {
         navigation.push("MainVideoScreen", {
           query: query,
@@ -164,6 +159,6 @@ function NotificationItem({ navigation, query, videoData, setVisible }) {
           <DotVerticalIcon size={iconSizes.sm} />
         </RippleButton>
       </View>
-    </Pressable>
+    </BasePressable>
   );
 }

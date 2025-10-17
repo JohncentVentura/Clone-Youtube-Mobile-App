@@ -89,9 +89,13 @@ export default function ChannelScreen({ route }) {
         </BaseText>
       </BaseText>
       <Pressable
-        style={[
+        style={({ pressed }) => [
           styles.wideButton,
-          { marginTop: 12, backgroundColor: colors.bgContrast },
+          {
+            marginTop: 12,
+            backgroundColor: colors.bgContrast,
+            opacity: pressed ? 0.5 : 1,
+          },
         ]}
         onPress={() => console.log("Subscribe pressed")}
       >

@@ -18,7 +18,10 @@ import {
   FlatListChannelImage,
   MainVideoCommentImage,
 } from "../components/ImageComponents";
-import { SmallIconTextButton } from "../components/PressableComponents";
+import {
+  BasePressable,
+  SmallIconTextButton,
+} from "../components/PressableComponents";
 import { BaseText } from "../components/TextComponents";
 import { MainVideoView } from "../components/VideoComponents";
 import { useTheme } from "../context/ThemeContext";
@@ -33,7 +36,7 @@ export default function MainVideoScreen({ navigation, route }) {
   const { colors, fontSizes, iconSizes } = useTheme();
   const scrollToTopRef = useRef(null);
   const [relatedVideos, setRelatedVideos] = useState([]);
-  const { setModalVideoData, setIsVideoCommentModalVisible } = useUI();
+  const { setModalVideoData, setShowModalVideoComment } = useUI();
 
   useHideBottomTabBarOnFocus();
   useScrollToTopOnFocus(scrollToTopRef);
@@ -171,14 +174,10 @@ export default function MainVideoScreen({ navigation, route }) {
                     alignItems: "center",
                   }}
                 >
-                  <Pressable
-                    style={({ pressed }) => [
+                  <BasePressable
+                    style={[
                       styles.iconTextButton,
-                      {
-                        backgroundColor: pressed
-                          ? colors.bgInteractive
-                          : "transparent",
-                      },
+                      { backgroundColor: colors.bgSecondary },
                     ]}
                     onPress={() => console.log("Liked Press")}
                   >
@@ -192,7 +191,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     >
                       {videoData.likes}
                     </BaseText>
-                  </Pressable>
+                  </BasePressable>
                   {/*Divider of like & dislike buttons*/}
                   <View
                     style={{
@@ -201,19 +200,15 @@ export default function MainVideoScreen({ navigation, route }) {
                       backgroundColor: colors.borderPrimary,
                     }}
                   />
-                  <Pressable
-                    style={({ pressed }) => [
+                  <BasePressable
+                    style={[
                       styles.iconTextButton,
-                      {
-                        backgroundColor: pressed
-                          ? colors.bgInteractive
-                          : "transparent",
-                      },
+                      { backgroundColor: colors.bgSecondary },
                     ]}
                     onPress={() => console.log("Disliked Press")}
                   >
                     <DislikeIcon size={iconSizes.xs2} />
-                  </Pressable>
+                  </BasePressable>
                 </View>
 
                 <SmallIconTextButton
@@ -249,21 +244,17 @@ export default function MainVideoScreen({ navigation, route }) {
               </RowScrollView>
 
               {/*Comments section*/}
-              <Pressable
-                style={({ pressed }) => [
-                  {
-                    marginVertical: 16,
-                    borderRadius: 8,
-                    paddingHorizontal: 12,
-                    paddingTop: 8,
-                    backgroundColor: pressed
-                      ? colors.bgInteractive
-                      : colors.bgSecondary,
-                  },
-                ]}
+              <BasePressable
+                style={{
+                  marginVertical: 16,
+                  borderRadius: 8,
+                  paddingHorizontal: 12,
+                  paddingTop: 8,
+                  backgroundColor: colors.bgSecondary,
+                }}
                 onPress={() => {
                   setModalVideoData(videoData);
-                  setIsVideoCommentModalVisible(true);
+                  setShowModalVideoComment(true);
                 }}
               >
                 <View
@@ -318,7 +309,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     {videoData.commentsDescription}
                   </BaseText>
                 </View>
-              </Pressable>
+              </BasePressable>
             </View>
           </>
         }
