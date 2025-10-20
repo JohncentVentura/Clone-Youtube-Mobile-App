@@ -1,12 +1,12 @@
 import { useRef, useState } from "react";
-import { Pressable, View } from "react-native";
-import { TabButton } from "../components/PressableComponents";
-import { CompassIcon } from "../components/IconComponents";
+import { Pressable } from "react-native";
 import {
   AutoPlayVideoFlatList,
   RowScrollView,
-  ScreenContainer
+  ScreenContainer,
 } from "../components/ContainerComponents";
+import { CompassIcon } from "../components/IconComponents";
+import { TabButton } from "../components/PressableComponents";
 import { useTheme } from "../context/ThemeContext";
 import { useSetPexelsDataVideos } from "../hooks/usePexelsData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
@@ -15,7 +15,6 @@ import { styles } from "../styles/styles";
 const defaultQuery = "Humans";
 
 export default function YoutubeHomeScreen({ navigation }) {
-  const { colors } = useTheme();
   const scrollToTopRef = useRef(null);
   const [query, setQuery] = useState(defaultQuery);
   const [homeVideos, setHomeVideos] = useState([]);
@@ -31,10 +30,11 @@ export default function YoutubeHomeScreen({ navigation }) {
   return (
     <ScreenContainer>
       <AutoPlayVideoFlatList
+        ref={scrollToTopRef}
         navigation={navigation}
         query={query}
         data={homeVideos}
-        ref={scrollToTopRef}
+        showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <TopQueryTabBar navigation={navigation} setQuery={setQuery} />
         }
@@ -46,24 +46,27 @@ export default function YoutubeHomeScreen({ navigation }) {
 function TopQueryTabBar({ navigation, setQuery }) {
   const { colors } = useTheme();
   const [selected, setSelected] = useState(defaultQuery);
+  const selectableTabs = [
+    { label: "All", query: defaultQuery },
+    { label: "Music", query: "Music" },
+    { label: "Nature", query: "Nature" },
+    { label: "City", query: "City" },
+  ];
 
-  const handleSelectedQuery = (query) => {
-    if (selected === query) {
-      if (query !== defaultQuery) {
-        setSelected(defaultQuery);
-        setQuery(defaultQuery);
-      }
-    } else {
-      setSelected(query);
-      setQuery(query);
-    }
-    
+  const handleSelected = (query) => {
+    setSelected((prev) => {
+      const newQuery =
+        prev === query && query !== defaultQuery ? defaultQuery : query;
+      setQuery(newQuery);
+      return newQuery;
+    });
   };
 
   return (
     <RowScrollView style={[styles.screenPadHorizontal, { marginBottom: 10 }]}>
       <Pressable
         style={({ pressed }) => ({
+          marginRight: 8,
           borderRadius: 4,
           paddingHorizontal: 10,
           paddingVertical: 4,
@@ -74,31 +77,17 @@ function TopQueryTabBar({ navigation, setQuery }) {
       >
         <CompassIcon />
       </Pressable>
-      <TabButton
-        style={{ marginLeft: 16 }}
-        selected={selected === defaultQuery}
-        onPress={() => handleSelectedQuery(defaultQuery)}
-      >
-        All
-      </TabButton>
-      <TabButton
-        selected={selected === "Music"}
-        onPress={() => handleSelectedQuery("Music")}
-      >
-        Music
-      </TabButton>
-      <TabButton
-        selected={selected === "Nature"}
-        onPress={() => handleSelectedQuery("Nature")}
-      >
-        Nature
-      </TabButton>
-      <TabButton
-        selected={selected === "City"}
-        onPress={() => handleSelectedQuery("City")}
-      >
-        City
-      </TabButton>
+      {selectableTabs.map((item, index) => {
+        return (
+          <TabButton
+            key={index}
+            selected={selected === item.query}
+            onPress={() => handleSelected(item.query)}
+          >
+            {item.label}
+          </TabButton>
+        );
+      })}
       <TabButton
         style={{ marginRight: 32 }}
         onPress={() => {

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
@@ -14,58 +14,7 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const AnimatedText = Animated.createAnimatedComponent(BaseText);
 
 //#region Main Nav
-export function MainDrawerPressable({
-  style,
-  Icon,
-  iconColor,
-  label,
-  ...rest
-}) {
-  const { colors, iconSizes } = useTheme();
-  const AnimatedIcon = Animated.createAnimatedComponent(Icon);
-  const sharedValue = useSharedValue(0);
-  const animatedPressable = useAnimatedStyle(() => ({
-    backgroundColor: interpolateColor(
-      sharedValue.value,
-      [0, 1],
-      [colors.bg, colors.primary]
-    ),
-  }));
-  const animatedIcon = useAnimatedStyle(() => ({
-    color: interpolateColor(
-      sharedValue.value,
-      [0, 1],
-      [iconColor || colors.iconPrimary, colors.iconContrast]
-    ),
-  }));
-  const animatedText = useAnimatedStyle(() => ({
-    color: interpolateColor(
-      sharedValue.value,
-      [0, 1],
-      [colors.textPrimary, colors.textContrast]
-    ),
-  }));
-
-  return (
-    <AnimatedPressable
-      style={[animatedPressable, style]}
-      onPressIn={() => {
-        sharedValue.value = withTiming(1, { duration: 250 });
-      }}
-      onPressOut={() => {
-        sharedValue.value = withTiming(0, { duration: 500 });
-      }}
-      {...rest}
-    >
-      <AnimatedIcon size={iconSizes.lg} style={animatedIcon} />
-      <AnimatedText style={[animatedText, { marginLeft: 18 }]}>
-        {label}
-      </AnimatedText>
-    </AnimatedPressable>
-  );
-}
-
-export function MainIconTab({ style, isActiveRoute, Icon, ...rest }) {
+export function BottomTabBarIconTab({ style, isActiveRoute, Icon, ...rest }) {
   const { colors } = useTheme();
   const AnimatedIcon = Animated.createAnimatedComponent(Icon);
   const backgroundValue = useSharedValue(0);
@@ -127,7 +76,7 @@ export function MainIconTab({ style, isActiveRoute, Icon, ...rest }) {
   );
 }
 
-export function MainIconTextTab({
+export function BottomTabBarIconTextTab({
   style,
   isActiveRoute,
   Icon,
@@ -201,6 +150,50 @@ export function MainIconTextTab({
     </AnimatedPressable>
   );
 }
+export function DrawerPressable({ style, Icon, iconColor, label, ...rest }) {
+  const { colors, iconSizes } = useTheme();
+  const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+  const sharedValue = useSharedValue(0);
+  const animatedPressable = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(
+      sharedValue.value,
+      [0, 1],
+      [colors.bg, colors.primary]
+    ),
+  }));
+  const animatedIcon = useAnimatedStyle(() => ({
+    color: interpolateColor(
+      sharedValue.value,
+      [0, 1],
+      [iconColor || colors.iconPrimary, colors.iconContrast]
+    ),
+  }));
+  const animatedText = useAnimatedStyle(() => ({
+    color: interpolateColor(
+      sharedValue.value,
+      [0, 1],
+      [colors.textPrimary, colors.textContrast]
+    ),
+  }));
+
+  return (
+    <AnimatedPressable
+      style={[animatedPressable, style]}
+      onPressIn={() => {
+        sharedValue.value = withTiming(1, { duration: 250 });
+      }}
+      onPressOut={() => {
+        sharedValue.value = withTiming(0, { duration: 500 });
+      }}
+      {...rest}
+    >
+      <AnimatedIcon size={iconSizes.lg} style={animatedIcon} />
+      <AnimatedText style={[animatedText, { marginLeft: 18 }]}>
+        {label}
+      </AnimatedText>
+    </AnimatedPressable>
+  );
+}
 //#endregion
 
 //#region Pressable
@@ -234,7 +227,7 @@ export function BasePressable({ style, children, ...rest }) {
 //#endregion
 
 //#region Buttons
-export function RippleButton({ style, roundSize = 10, children, ...rest }) {
+export function RippleButton({ style, rippleSize = 10, children, ...rest }) {
   const { colors } = useTheme();
   const sharedValue = useSharedValue(0);
   const { backgroundColor, ...restStyle } = StyleSheet.flatten(style) || {};
@@ -262,11 +255,11 @@ export function RippleButton({ style, roundSize = 10, children, ...rest }) {
         style={[
           {
             position: "absolute",
-            //If Pressable has padding: roundSize, then -roundSize / 10,
-            left: -roundSize,
-            right: -roundSize,
-            top: -roundSize,
-            bottom: -roundSize,
+            //If Pressable has padding: rippleSize, then -rippleSize / 10,
+            left: -rippleSize,
+            right: -rippleSize,
+            top: -rippleSize,
+            bottom: -rippleSize,
             borderRadius: 99,
           },
           animatedStyle,
@@ -317,6 +310,34 @@ export function SmallIconTextButton({ style, Icon, text, ...rest }) {
 
 export function TabButton({ style, selected, children, ...rest }) {
   const { colors } = useTheme();
+
+  return (
+    <Pressable
+      style={[
+        {
+          marginLeft: 8,
+          borderRadius: 8,
+          paddingHorizontal: 12,
+          paddingVertical: 6,
+          backgroundColor: selected ? colors.bgContrast : colors.bgSecondary,
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      <BaseText
+        style={{ color: selected ? colors.textContrast : colors.textPrimary }}
+      >
+        {children}
+      </BaseText>
+    </Pressable>
+  );
+}
+//#endregion
+
+/*
+export function AnimatedTabButton({ style, selected, children, ...rest }) {
+  const { colors } = useTheme();
   const sharedValue = useSharedValue(selected ? 1 : 0);
   const animatedBackgroundColor = useAnimatedStyle(() => ({
     backgroundColor: interpolateColor(
@@ -357,4 +378,4 @@ export function TabButton({ style, selected, children, ...rest }) {
     </AnimatedPressable>
   );
 }
-//#endregion
+*/

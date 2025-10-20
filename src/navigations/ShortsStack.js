@@ -1,23 +1,40 @@
 import { createStackNavigator } from "@react-navigation/stack";
+import { View } from "react-native";
+import { HeaderContainer } from "../components/ContainerComponents";
+import {
+  HeaderArrowBackIcon,
+  HeaderNotificationsIcon,
+  HeaderSearchIcon,
+  HeaderShareScreenIcon,
+} from "../components/IconComponents";
 import { HeaderTitleText } from "../components/TextComponents";
-import { HeaderArrowBackIcon } from "../components/IconComponents";
 import ShortsScreen from "../screens/ShortsScreen";
-import { useTheme } from "../context/ThemeContext";
+import { styles } from "../styles/styles";
 
 const Stack = createStackNavigator();
 
-export default function ShortsStack({ navigation }) {
-  const { colors } = useTheme();
-
+export default function ShortsStack() {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: { backgroundColor: colors.bg },
-        headerLeft: () => <HeaderArrowBackIcon navigation={navigation} />,
-        headerTitle: () => <HeaderTitleText>Shorts</HeaderTitleText>,
-      }}
-    >
-      <Stack.Screen name="ShortsScreen" component={ShortsScreen} />
+    <Stack.Navigator>
+      <Stack.Screen
+        name="ShortsScreen"
+        component={ShortsScreen}
+        options={({ navigation }) => {
+          return {
+            header: () => (
+              <HeaderContainer>
+                <HeaderArrowBackIcon navigation={navigation} />
+                <HeaderTitleText>Shorts</HeaderTitleText>
+                <View style={styles.headerRightIconsContainer}>
+                  <HeaderShareScreenIcon />
+                  <HeaderNotificationsIcon navigation={navigation} />
+                  <HeaderSearchIcon navigation={navigation} />
+                </View>
+              </HeaderContainer>
+            ),
+          };
+        }}
+      />
     </Stack.Navigator>
   );
 }

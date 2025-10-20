@@ -9,6 +9,7 @@ export async function fetchPexelsData(query = "home", queryResults = 3) {
     const url = `${PEXELS_API_URL}/search?query=${encodeURIComponent(
       query
     )}&per_page=${queryResults}`;
+    
     const res = await fetch(url, {
       headers: { Authorization: PEXELS_API_KEY },
     });

@@ -1,9 +1,11 @@
 import { useRef, useState } from "react";
 import { FlatList, Pressable, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   FlatListVideoItem,
   RowScrollView,
   ScreenContainer,
+  ColumnScrollView,
 } from "../components/ContainerComponents";
 import {
   DislikeIcon,
@@ -33,6 +35,7 @@ import { styles } from "../styles/styles";
 
 export default function MainVideoScreen({ navigation, route }) {
   const { query, videoData } = route.params;
+  const insets = useSafeAreaInsets();
   const { colors, fontSizes, iconSizes } = useTheme();
   const scrollToTopRef = useRef(null);
   const [relatedVideos, setRelatedVideos] = useState([]);
@@ -50,17 +53,17 @@ export default function MainVideoScreen({ navigation, route }) {
   return (
     <ScreenContainer>
       <FlatList
+        ref={scrollToTopRef}
         data={relatedVideos}
         keyExtractor={(item) => item.id.toString()}
-        ref={scrollToTopRef}
+        showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <>
             <MainVideoView videoData={videoData} />
-            <View style={styles.screenPadHorizontal}>
+            <View style={[styles.screenPadHorizontal, { marginBottom: 16 }]}>
               <BaseText
                 style={{
                   marginTop: 4,
-
                   fontSize: fontSizes.xl,
                   fontWeight: "bold",
                 }}
@@ -145,9 +148,12 @@ export default function MainVideoScreen({ navigation, route }) {
                   </BaseText>
                 </View>
                 <Pressable
-                  style={[
+                  style={({ pressed }) => [
                     styles.baseButton,
-                    { backgroundColor: colors.bgContrast },
+                    {
+                      backgroundColor: colors.bgContrast,
+                      opacity: pressed ? 0.5 : 1,
+                    },
                   ]}
                 >
                   <BaseText
@@ -246,7 +252,7 @@ export default function MainVideoScreen({ navigation, route }) {
               {/*Comments section*/}
               <BasePressable
                 style={{
-                  marginVertical: 16,
+                  marginTop: 16,
                   borderRadius: 8,
                   paddingHorizontal: 12,
                   paddingTop: 8,
@@ -313,8 +319,12 @@ export default function MainVideoScreen({ navigation, route }) {
             </View>
           </>
         }
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <FlatListVideoItem
+            style={{
+              paddingBottom:
+                index === relatedVideos.length - 1 && insets.bottom,
+            }}
             navigation={navigation}
             query={query}
             videoData={item}

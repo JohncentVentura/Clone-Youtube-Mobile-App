@@ -3,8 +3,6 @@ import Entypo from "@expo/vector-icons/Entypo";
 import Feather from "@expo/vector-icons/Feather";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import Fontisto from "@expo/vector-icons/Fontisto";
-import Foundation from "@expo/vector-icons/Foundation";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -322,10 +320,6 @@ export function SportsIcon({ ...rest }) {
 
 export function YoutubeKidsIcon({ ...rest }) {
   return <BaseIcon IconComponent={Feather} name="youtube" {...rest} />;
-}
-
-export function YoutubeMainIcon({ ...rest }) {
-  return <BaseIcon IconComponent={Fontisto} name="youtube-play" {...rest} />;
 }
 
 export function YoutubeMusicIcon({ ...rest }) {

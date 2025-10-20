@@ -3,8 +3,8 @@ import { Pressable, View } from "react-native";
 import { ScreenScrollView } from "../components/ContainerComponents";
 import { DotVerticalIcon } from "../components/IconComponents";
 import {
-  NotificationsThumbnailImage,
-  NotificationsProfileImage,
+  NotifThumbnailImage,
+  NotifProfileImage,
 } from "../components/ImageComponents";
 import { BasePressable, RippleButton } from "../components/PressableComponents";
 import { BaseText } from "../components/TextComponents";
@@ -106,7 +106,7 @@ function NotificationItem({ navigation, query, videoData, setVisible }) {
           },
         ]}
       >
-        <NotificationsProfileImage
+        <NotifProfileImage
           style={{
             marginLeft: 4,
           }}
@@ -138,7 +138,7 @@ function NotificationItem({ navigation, query, videoData, setVisible }) {
           </BaseText>
         </View>
 
-        <NotificationsThumbnailImage
+        <NotifThumbnailImage
           style={{ marginLeft: 12 }}
           source={{ uri: videoData.picture }}
           onPress={() => {
@@ -151,7 +151,7 @@ function NotificationItem({ navigation, query, videoData, setVisible }) {
 
         <RippleButton
           style={{ marginLeft: 4 }}
-          roundSize={2}
+          rippleSize={2}
           onPress={() => {
             setVisible(true);
           }}

@@ -110,7 +110,7 @@ export function RowScrollView({ style, children, ...rest }) {
 }
 //#endregion
 
-//#region FlatList
+//#region FlatList & Item
 export function AutoPlayVideoFlatList({ navigation, query, data, ...rest }) {
   const [autoPlayVideoId, setAutoPlayVideoId] = useState(null);
 
@@ -148,6 +148,7 @@ export function AutoPlayVideoFlatList({ navigation, query, data, ...rest }) {
 }
 
 export function FlatListVideoItem({
+  style,
   navigation,
   query,
   videoData,
@@ -157,7 +158,7 @@ export function FlatListVideoItem({
   const { colors, fontSizes } = useTheme();
 
   return (
-    <View style={{ marginBottom: 32 }}>
+    <View style={[{ marginBottom: 32 }, style]}>
       <Pressable
         onPress={() => {
           navigation.push("MainVideoScreen", {
@@ -213,7 +214,7 @@ export function FlatListVideoItem({
         </View>
         <RippleButton
           style={{ marginLeft: "auto", marginTop: 6 }}
-          roundSize={4}
+          rippleSize={4}
           onPress={() => setShowModalFlatListVideoItem(true)}
         >
           <DotVerticalIcon />

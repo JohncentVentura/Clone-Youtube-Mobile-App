@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import React from "react";
+import React, { useMemo } from "react";
 import { Pressable, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
@@ -22,18 +22,16 @@ import {
   SportsIcon,
   UploadIcon,
   YoutubeKidsIcon,
-  YoutubeMainIcon,
   YoutubeMusicIcon,
   YoutubePremiumIcon,
 } from "../components/IconComponents";
 import { HeaderYoutubeLogoImage } from "../components/ImageComponents";
 import {
-  MainDrawerPressable,
-  MainIconTab,
-  MainIconTextTab,
+  BottomTabBarIconTab,
+  BottomTabBarIconTextTab,
+  DrawerPressable,
 } from "../components/PressableComponents";
-import { BaseText, DrawerFooterText } from "../components/TextComponents";
-import { ColumnScrollView } from "components/ContainerComponents";
+import { DrawerFooterText } from "../components/TextComponents";
 import { useTheme } from "../context/ThemeContext";
 import { useUI } from "../context/UIContext";
 import { styles } from "../styles/styles";
@@ -47,12 +45,10 @@ const Drawer = createDrawerNavigator();
 const BottomTab = createBottomTabNavigator();
 
 //TODO: Change drawerItems components into the actual component based on the same route name
-const drawerItems = [
+export const drawerItems = [
   {
     route: "YouTubeHomeStack",
     component: YoutubeHomeStack,
-    Icon: YoutubeMainIcon,
-    label: "Youtube",
   },
   {
     route: "MusicStack",
@@ -123,7 +119,7 @@ const drawerItems = [
 ];
 
 //HomeComponent in the parameter will change into the component of the currently selected Drawer route
-const bottomTabItems = (HomeComponent = YoutubeHomeStack) => [
+export const bottomTabItems = (HomeComponent = YoutubeHomeStack) => [
   {
     route: "HomeStack",
     component: HomeComponent,
@@ -180,37 +176,29 @@ export default function MainNavigator() {
             paddingTop: insets.top,
             backgroundColor: colors.bg,
             flex: 1,
+            justifyContent: "space-between",
           }}
         >
-          <ColumnScrollView>
+          <View>
             {drawerItems.map((item, index) => {
-              const isHomeRoute = drawerItems[0].route === item.route;
+              const isHomeRoute = index === 0;
+              const isYoutubeSpecialRoute = index >= drawerItems.length - 3;
 
               return (
                 <React.Fragment key={index + item.route}>
-                  {index === drawerItems.length - 3 && (
-                    <View
-                      style={{
-                        marginVertical: 8,
-                        width: "100%",
-                        height: 1,
-                        backgroundColor: colors.borderSecondary,
-                      }}
-                    />
-                  )}
-
+                  {index === drawerItems.length - 3 && <DrawerDivider />}
                   {isHomeRoute ? (
                     <Pressable
                       style={[
                         styles.screenPadLeft,
-                        { marginBottom: 8, paddingVertical: 16 },
+                        { marginBottom: 8, paddingVertical: 16, width: "100%" },
                       ]}
                       onPress={() => props.navigation.navigate(item.route)}
                     >
                       <HeaderYoutubeLogoImage />
                     </Pressable>
                   ) : (
-                    <MainDrawerPressable
+                    <DrawerPressable
                       style={[
                         styles.screenPadLeft,
                         {
@@ -221,15 +209,7 @@ export default function MainNavigator() {
                         },
                       ]}
                       Icon={item.Icon}
-                      iconColor={
-                        (drawerItems[drawerItems.length - 3].route ===
-                          item.route ||
-                          drawerItems[drawerItems.length - 2].route ===
-                            item.route ||
-                          drawerItems[drawerItems.length - 1].route ===
-                            item.route) &&
-                        colors.primary
-                      }
+                      iconColor={isYoutubeSpecialRoute && colors.primary}
                       label={item.label}
                       onPress={() => props.navigation.navigate(item.route)}
                     />
@@ -237,7 +217,7 @@ export default function MainNavigator() {
                 </React.Fragment>
               );
             })}
-          </ColumnScrollView>
+          </View>
           <View
             style={{
               paddingBottom: insets.bottom + 8,
@@ -280,8 +260,9 @@ function MainBottomTabBar({ navigation }) {
   const mainNavigator = navigation.getParent("MainNavigator");
 
   //Assign updated bottomTabItems so the HomeStack route of this tab uses the component of the currently selected Drawer route
-  const updatedTabItems = bottomTabItems(
-    drawerItems[mainNavigator.getState().index].component
+  const updatedTabItems = useMemo(
+    () => bottomTabItems(drawerItems[mainNavigator.getState().index].component),
+    [mainNavigator.getState().index]
   );
 
   return (
@@ -292,15 +273,13 @@ function MainBottomTabBar({ navigation }) {
       tabBar={(props) => {
         return (
           <View
-            style={[
-              {
-                paddingBottom: insets.bottom,
-                height: insets.bottom + 49,
-                backgroundColor: colors.bg,
-                flexDirection: "row",
-              },
-              !showMainTabBarModal && { display: "none" },
-            ]}
+            style={{
+              display: showMainTabBarModal ? "flex" : "none",
+              paddingBottom: insets.bottom,
+              height: insets.bottom + 49,
+              backgroundColor: colors.bg,
+              flexDirection: "row",
+            }}
           >
             {updatedTabItems.map((item, index) => {
               const isUploadRoute = updatedTabItems[2].route === item.route;
@@ -308,14 +287,14 @@ function MainBottomTabBar({ navigation }) {
                 updatedTabItems[props.state.index].route === item.route;
 
               return isUploadRoute ? (
-                <MainIconTab
+                <BottomTabBarIconTab
                   key={index + item.route}
                   isActiveRoute={isActiveRoute}
                   Icon={item.Icon}
                   onPress={() => props.navigation.navigate(item.route)}
                 />
               ) : (
-                <MainIconTextTab
+                <BottomTabBarIconTextTab
                   key={index + item.route}
                   isActiveRoute={isActiveRoute}
                   Icon={isActiveRoute ? item.activeIcon : item.inactiveIcon}
@@ -336,5 +315,20 @@ function MainBottomTabBar({ navigation }) {
         />
       ))}
     </BottomTab.Navigator>
+  );
+}
+
+function DrawerDivider() {
+  const { colors } = useTheme();
+
+  return (
+    <View
+      style={{
+        marginVertical: 8,
+        width: "100%",
+        height: 1,
+        backgroundColor: colors.borderSecondary,
+      }}
+    />
   );
 }

@@ -80,7 +80,7 @@ export default function YoutubeHomeStack() {
           options={({ navigation }) => {
             return {
               header: () => (
-                <HeaderContainer>
+                <HeaderContainer >
                   <HeaderArrowBackIcon onPress={() => navigation.pop()} />
                 </HeaderContainer>
               ),
@@ -133,7 +133,7 @@ export default function YoutubeHomeStack() {
           component={SearchScreen}
           options={({ navigation, route }) => ({
             header: () => {
-              const { globalSearch, setGlobalSearch, handleSearch } =
+              const { globalHomeSearch, setGlobalHomeSearch, handleSearch } =
                 useSearch();
               const [searchInput, setSearchInput] = useState(
                 route.params.search
@@ -144,17 +144,19 @@ export default function YoutubeHomeStack() {
                   <HeaderArrowBackIcon navigation={navigation} />
                   <TextInputView
                     autoFocus={true}
-                    value={globalSearch ? globalSearch : searchInput}
+                    value={globalHomeSearch ? globalHomeSearch : searchInput}
                     onChangeText={setSearchInput}
                     onSubmitEditing={() => {
                       handleSearch({
                         navigation,
-                        searchInput: globalSearch ? globalSearch : searchInput,
+                        searchInput: globalHomeSearch
+                          ? globalHomeSearch
+                          : searchInput,
                       });
-                      setGlobalSearch("");
+                      setGlobalHomeSearch("");
                     }}
                     setClearButton={() => {
-                      setGlobalSearch("");
+                      setGlobalHomeSearch("");
                       setSearchInput("");
                     }}
                   />

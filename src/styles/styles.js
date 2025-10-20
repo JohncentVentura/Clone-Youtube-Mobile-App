@@ -25,6 +25,7 @@ export const styles = StyleSheet.create({
   },
   /******************************Screen******************************/
   screenContainer: {
+    position: "relative",
     width: screenWidth,
     flex: 1,
   },

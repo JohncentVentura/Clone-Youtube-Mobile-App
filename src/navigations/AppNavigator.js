@@ -6,7 +6,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { SearchProvider } from "../context/SearchContext";
 import { ThemeProvider } from "../context/ThemeContext";
 import { UIProvider } from "../context/UIContext";
-import { navigationRef } from "../navigations/NavigationService";
+import { navigationRef } from "./NavigationConfig";
 import { fontPaths } from "../styles/paths";
 import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";

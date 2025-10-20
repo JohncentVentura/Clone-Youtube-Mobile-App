@@ -6,7 +6,7 @@ const SearchContext = createContext();
 const SEARCH_HISTORY_KEY = "SearchHistoryKey";
 
 export function SearchProvider({ children }) {
-  const [globalSearch, setGlobalSearch] = useState("");
+  const [globalHomeSearch, setGlobalHomeSearch] = useState("");
   const [searchHistory, setSearchHistory] = useState([]);
   const [removingSearchItem, setRemovingSearchItem] = useState("");
 
@@ -78,8 +78,8 @@ export function SearchProvider({ children }) {
   return (
     <SearchContext.Provider
       value={{
-        globalSearch,
-        setGlobalSearch,
+        globalHomeSearch,
+        setGlobalHomeSearch,
         searchHistory,
         removingSearchItem,
         setRemovingSearchItem,

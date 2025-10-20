@@ -29,10 +29,10 @@ export default {
     },
     plugins: ["expo-video", "expo-font"],
     extra: {
-      YOUTUBE_API_URL: process.env.YOUTUBE_API_URL,
-      YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
       PEXELS_API_URL: process.env.PEXELS_API_URL,
       PEXELS_API_KEY: process.env.PEXELS_API_KEY,
+      YOUTUBE_API_URL: process.env.YOUTUBE_API_URL,
+      YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
     },
   },
 };

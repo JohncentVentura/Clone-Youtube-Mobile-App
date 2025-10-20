@@ -1,23 +1,40 @@
 import { createStackNavigator } from "@react-navigation/stack";
+import { View } from "react-native";
+import { HeaderContainer } from "../components/ContainerComponents";
+import {
+  HeaderArrowBackIcon,
+  HeaderNotificationsIcon,
+  HeaderSearchIcon,
+  HeaderShareScreenIcon,
+} from "../components/IconComponents";
 import { HeaderTitleText } from "../components/TextComponents";
-import { HeaderArrowBackIcon } from "../components/IconComponents";
-import { useTheme } from "../context/ThemeContext";
 import YouScreen from "../screens/YouScreen";
+import { styles } from "../styles/styles";
 
 const Stack = createStackNavigator();
 
-export default function YouStack({ navigation }) {
-  const { colors } = useTheme();
-
+export default function YouStack() {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: { backgroundColor: colors.bg },
-        headerLeft: () => <HeaderArrowBackIcon navigation={navigation} />,
-        headerTitle: () => <HeaderTitleText>You</HeaderTitleText>,
-      }}
-    >
-      <Stack.Screen name="You" component={YouScreen} />
+    <Stack.Navigator>
+      <Stack.Screen
+        name="You"
+        component={YouScreen}
+        options={({ navigation }) => {
+          return {
+            header: () => (
+              <HeaderContainer>
+                <HeaderArrowBackIcon navigation={navigation} />
+                <HeaderTitleText>You</HeaderTitleText>
+                <View style={styles.headerRightIconsContainer}>
+                  <HeaderShareScreenIcon />
+                  <HeaderNotificationsIcon navigation={navigation} />
+                  <HeaderSearchIcon navigation={navigation} />
+                </View>
+              </HeaderContainer>
+            ),
+          };
+        }}
+      />
     </Stack.Navigator>
   );
 }

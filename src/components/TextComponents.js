@@ -2,7 +2,6 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { useTheme } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
-import { iconSizes } from "./../styles/theme";
 
 export function BaseText({ style, children, ...rest }) {
   const { colors, fontSizes } = useTheme();

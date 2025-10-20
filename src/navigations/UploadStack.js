@@ -1,23 +1,39 @@
 import { createStackNavigator } from "@react-navigation/stack";
+import { View } from "react-native";
+import { HeaderContainer } from "../components/ContainerComponents";
+import {
+  HeaderArrowBackIcon,
+  HeaderNotificationsIcon,
+  HeaderSearchIcon,
+  HeaderShareScreenIcon,
+} from "../components/IconComponents";
 import { HeaderTitleText } from "../components/TextComponents";
-import { HeaderArrowBackIcon } from "../components/IconComponents";
-import { useTheme } from "../context/ThemeContext";
 import UploadScreen from "../screens/UploadScreen";
-
+import { styles } from "../styles/styles";
 const Stack = createStackNavigator();
 
-export default function UploadStack({ navigation }) {
-  const { colors } = useTheme();
-
+export default function UploadStack() {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: { backgroundColor: colors.bg },
-        headerLeft: () => <HeaderArrowBackIcon navigation={navigation} />,
-        headerTitle: () => <HeaderTitleText>Upload</HeaderTitleText>,
-      }}
-    >
-      <Stack.Screen name="Upload" component={UploadScreen} />
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Upload"
+        component={UploadScreen}
+        options={({ navigation }) => {
+          return {
+            header: () => (
+              <HeaderContainer>
+                <HeaderArrowBackIcon navigation={navigation} />
+                <HeaderTitleText>Upload</HeaderTitleText>
+                <View style={styles.headerRightIconsContainer}>
+                  <HeaderShareScreenIcon />
+                  <HeaderNotificationsIcon navigation={navigation} />
+                  <HeaderSearchIcon navigation={navigation} />
+                </View>
+              </HeaderContainer>
+            ),
+          };
+        }}
+      />
     </Stack.Navigator>
   );
 }

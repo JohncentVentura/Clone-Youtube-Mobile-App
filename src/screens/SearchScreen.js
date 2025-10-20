@@ -20,7 +20,7 @@ export default function SearchScreen({ navigation }) {
   const insets = useSafeAreaInsets();
   const { setShowAlertClearSearchHistory, setShowAlertRemoveSearchItem } =
     useUI();
-  const { setGlobalSearch, searchHistory, setRemovingSearchItem } = useSearch();
+  const { setGlobalHomeSearch, searchHistory, setRemovingSearchItem } = useSearch();
   const { colors, fontSizes, iconSizes } = useTheme();
   const scrollToTopRef = useRef(null);
 
@@ -37,7 +37,7 @@ export default function SearchScreen({ navigation }) {
           <BasePressable
             style={{paddingVertical: 12,}}
             onPress={() => {
-              setGlobalSearch("");
+              setGlobalHomeSearch("");
               navigation.push("SearchResultScreen", { search: item.text });
             }}
             delayLongPress={300}
@@ -76,7 +76,7 @@ export default function SearchScreen({ navigation }) {
               <ArrowUpLeftIcon
                 style={{ marginLeft: 12 }}
                 onPress={() => {
-                  setGlobalSearch(item.text);
+                  setGlobalHomeSearch(item.text);
                 }}
               />
             </View>

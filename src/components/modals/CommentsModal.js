@@ -7,7 +7,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useTheme } from "../../context/ThemeContext";
-import { navigate } from "../../navigations/NavigationService";
+import { navigate } from "../../navigations/NavigationConfig";
 import { styles } from "../../styles/styles";
 import { ColumnScrollView, RowScrollView } from "../ContainerComponents";
 import {
@@ -86,7 +86,6 @@ export default function CommentsModal({
             left: 0,
             right: 0,
             bottom: 0,
-
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             height: "67%",
@@ -168,7 +167,7 @@ export default function CommentsModal({
                 }}
               >
                 <RippleButton
-                  roundSize={6}
+                  rippleSize={6}
                   onPress={() => console.log("Comment Like Press")}
                 >
                   <LikeIcon size={iconSizes.xs2} />
@@ -178,14 +177,14 @@ export default function CommentsModal({
                 </BaseText>
                 <RippleButton
                   style={{ marginLeft: 20 }}
-                  roundSize={6}
+                  rippleSize={6}
                   onPress={() => console.log("Comment Dislike Press")}
                 >
                   <DislikeIcon size={iconSizes.xs2} />
                 </RippleButton>
                 <RippleButton
                   style={{ marginLeft: 24 }}
-                  roundSize={6}
+                  rippleSize={6}
                   onPress={() => console.log("Comment Messages Press")}
                 >
                   <MessageTextIcon size={iconSizes.xs} />
@@ -194,7 +193,7 @@ export default function CommentsModal({
             </View>
             <RippleButton
               style={{ marginLeft: "auto", marginTop: 6 }}
-              roundSize={4}
+              rippleSize={4}
             >
               <DotVerticalIcon size={iconSizes.sm} />
             </RippleButton>
