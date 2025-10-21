@@ -2,55 +2,61 @@ import { createContext, useContext, useState } from "react";
 const UIContext = createContext();
 
 export function UIProvider({ children }) {
-  //#region Alert
-  const [showAlertClearSearchHistory, setShowAlertClearSearchHistory] =
-    useState(false);
-  const [showAlertRemoveSearchItem, setShowAlertRemoveSearchItem] =
-    useState(false);
-  //#endregion
-
-  //#region Main
-  const [showMainTabBarModal, setShowMainTabBarModal] = useState(true);
-  //#endregion
-
-  //#region Modals
   const [modalVideoData, setModalVideoData] = useState({});
-  const [showModalChannelHeader, setShowModalChannelHeader] = useState(false);
-  const [showModalFlatListVideoItem, setShowModalFlatListVideoItem] =
+  const [showChannelHeaderModal, setShowChannelHeaderModal] = useState(false);
+  const [showClearSearchHistoryModal, setShowClearSearchHistoryModal] =
     useState(false);
-  const [showModalNotifHeader, setShowModalNotifHeader] = useState(false);
-  const [showModalNotifItem, setShowModalNotifItem] = useState(false);
-  const [showModalSearchResultHeader, setShowModalSearchResultHeader] =
+  const [showFlatListVideoItemModal, setShowFlatListVideoItemModal] =
     useState(false);
-  const [showModalShareScreen, setShowModalShareScreen] = useState(false);
-  const [showModalVideoComment, setShowModalVideoComment] = useState(false);
-  //#endregion
+  const [showHomeCommentsItemModal, setShowHomeCommentsItemModal] =
+    useState(false);
+  const [showHomeCommentsModal, setShowHomeCommentsModal] = useState(false);
+  const [showHomeCommentsProfileModal, setShowHomeCommentsProfileModal] =
+    useState(false);
+  const [
+    showHomeCommentsProfileItemModal,
+    setShowHomeCommentsProfileItemModal,
+  ] = useState(false);
+  const [showMainTabBarModal, setShowMainTabBarModal] = useState(true);
+  const [showNotifHeaderModal, setShowNotifHeaderModal] = useState(false);
+  const [showNotifItemModal, setShowNotifItemModal] = useState(false);
+  const [showRemoveSearchItemModal, setShowRemoveSearchItemModal] =
+    useState(false);
+  const [showSearchResultHeaderModal, setShowSearchResultHeaderModal] =
+    useState(false);
+  const [showShareScreenModal, setShowShareScreenModal] = useState(false);
 
   return (
     <UIContext.Provider
       value={{
-        showMainTabBarModal,
-        setShowMainTabBarModal,
-        showAlertClearSearchHistory,
-        setShowAlertClearSearchHistory,
-        showAlertRemoveSearchItem,
-        setShowAlertRemoveSearchItem,
         modalVideoData,
         setModalVideoData,
-        showModalChannelHeader,
-        setShowModalChannelHeader,
-        showModalFlatListVideoItem,
-        setShowModalFlatListVideoItem,
-        showModalNotifHeader,
-        setShowModalNotifHeader,
-        showModalNotifItem,
-        setShowModalNotifItem,
-        showModalSearchResultHeader,
-        setShowModalSearchResultHeader,
-        showModalShareScreen,
-        setShowModalShareScreen,
-        showModalVideoComment,
-        setShowModalVideoComment,
+        showChannelHeaderModal,
+        setShowChannelHeaderModal,
+        showClearSearchHistoryModal,
+        setShowClearSearchHistoryModal,
+        showFlatListVideoItemModal,
+        setShowFlatListVideoItemModal,
+        showHomeCommentsModal,
+        setShowHomeCommentsModal,
+        showHomeCommentsItemModal,
+        setShowHomeCommentsItemModal,
+        showHomeCommentsProfileModal,
+        setShowHomeCommentsProfileModal,
+        showHomeCommentsProfileItemModal,
+        setShowHomeCommentsProfileItemModal,
+        showMainTabBarModal,
+        setShowMainTabBarModal,
+        showNotifHeaderModal,
+        setShowNotifHeaderModal,
+        showNotifItemModal,
+        setShowNotifItemModal,
+        showRemoveSearchItemModal,
+        setShowRemoveSearchItemModal,
+        showSearchResultHeaderModal,
+        setShowSearchResultHeaderModal,
+        showShareScreenModal,
+        setShowShareScreenModal,
       }}
     >
       {children}

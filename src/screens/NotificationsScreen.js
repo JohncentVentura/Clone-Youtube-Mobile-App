@@ -15,7 +15,7 @@ import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
 
 export default function NotificationsScreen({ navigation }) {
-  const { setShowModalNotifItem } = useUI();
+  const { setShowNotifItemModal } = useUI();
   const { colors, fontSizes } = useTheme();
   const scrollToTopRef = useRef(null);
   const [newQuery, setNewQuery] = useState("food");
@@ -55,7 +55,7 @@ export default function NotificationsScreen({ navigation }) {
           navigation={navigation}
           query={newQuery}
           videoData={item}
-          setVisible={setShowModalNotifItem}
+          setVisible={setShowNotifItemModal}
         />
       ))}
       <BaseText
@@ -76,7 +76,7 @@ export default function NotificationsScreen({ navigation }) {
           navigation={navigation}
           query={oldQuery}
           videoData={item}
-          setVisible={setShowModalNotifItem}
+          setVisible={setShowNotifItemModal}
         />
       ))}
     </ScreenScrollView>

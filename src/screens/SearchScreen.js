@@ -18,7 +18,7 @@ import { styles } from "../styles/styles";
 
 export default function SearchScreen({ navigation }) {
   const insets = useSafeAreaInsets();
-  const { setShowAlertClearSearchHistory, setShowAlertRemoveSearchItem } =
+  const { setShowClearSearchHistoryModal, setShowRemoveSearchItemModal } =
     useUI();
   const { setGlobalHomeSearch, searchHistory, setRemovingSearchItem } = useSearch();
   const { colors, fontSizes, iconSizes } = useTheme();
@@ -43,7 +43,7 @@ export default function SearchScreen({ navigation }) {
             delayLongPress={300}
             onLongPress={() => {
               setRemovingSearchItem(item);
-              setShowAlertRemoveSearchItem(true);
+              setShowRemoveSearchItemModal(true);
             }}
           >
             <View
@@ -89,7 +89,7 @@ export default function SearchScreen({ navigation }) {
                 marginBottom: insets.bottom + 8,
                 opacity: pressed ? 0.5 : 1,
               })}
-              onPress={() => setShowAlertClearSearchHistory(true)}
+              onPress={() => setShowClearSearchHistoryModal(true)}
             >
               <BaseText
                 style={{

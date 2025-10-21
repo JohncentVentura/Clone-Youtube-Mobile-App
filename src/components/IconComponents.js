@@ -117,12 +117,12 @@ export function HeaderSearchIcon({ style, navigation, ...rest }) {
 }
 
 export function HeaderShareScreenIcon({ style, ...rest }) {
-  const { setShowModalShareScreen } = useUI();
+  const { setShowShareScreenModal } = useUI();
 
   return (
     <RippleButton
       style={[styles.headerRightIcon, style]}
-      onPress={() => setShowModalShareScreen(true)}
+      onPress={() => setShowShareScreenModal(true)}
       {...rest}
     >
       <ShareScreenIcon />
@@ -180,6 +180,10 @@ export function DotVerticalIcon({ ...rest }) {
 
 export function DownloadIcon({ ...rest }) {
   return <BaseIcon IconComponent={Octicons} name="download" {...rest} />;
+}
+
+export function ExclamationCircleIcon({ ...rest }) {
+  return <BaseIcon IconComponent={AntDesign} name="exclamation-circle" {...rest} />;
 }
 
 export function EyeInvisbleIcon({ ...rest }) {
@@ -276,6 +280,12 @@ export function NotInterestedIcon({ ...rest }) {
 
 export function PlayNextInQueueIcon({ ...rest }) {
   return <BaseIcon IconComponent={MaterialIcons} name="queue" {...rest} />;
+}
+
+export function QuestionCircleIcon({ ...rest }) {
+  return (
+    <BaseIcon IconComponent={FontAwesome5} name="question-circle" {...rest} />
+  );
 }
 
 export function RemixIcon({ ...rest }) {

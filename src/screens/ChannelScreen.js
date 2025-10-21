@@ -22,20 +22,18 @@ export default function ChannelScreen({ route }) {
           alignItems: "center",
         }}
       >
-        <Pressable>
-          <ChannelProfileImage
-            style={{
-              height: "100%",
-              flex: 1,
-              justifyContent: "flex-start",
-              alignItems: "flex-start",
-            }}
-            source={{ uri: videoData.picture }}
-            onPress={() => {
-              console.log("ChannelScreenProfileImage pressed");
-            }}
-          />
-        </Pressable>
+        <ChannelProfileImage
+          style={{
+            height: "100%",
+            flex: 1,
+            justifyContent: "flex-start",
+            alignItems: "flex-start",
+          }}
+          source={{ uri: videoData.picture }}
+          onPress={() => {
+            console.log("ChannelProfileImage pressed");
+          }}
+        />
         <View style={{ flex: 4, marginLeft: 8 }}>
           <BaseText
             style={{

@@ -1,22 +1,25 @@
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 import Modal from "react-native-modal";
 import { useTheme } from "../../context/ThemeContext";
 import {
   DontRecommendChannelIcon,
+  ExclamationCircleIcon,
   EyeInvisbleIcon,
   InformationIcon,
   NotificationsOffIcon,
   NotInterestedIcon,
   PlayNextInQueueIcon,
+  QuestionCircleIcon,
   ReportIcon,
   SaveIcon,
   SaveToWatchLaterIcon,
   ShareIcon,
   ShareScreenIcon,
 } from "../IconComponents";
+import { BasePressable } from "../PressableComponents";
 import { BaseText } from "../TextComponents";
 
-function SwipeDownModal({ showModal, setShowModal, items = [], children }) {
+export function SwipeDownModal({ style, showModal, setShowModal, children }) {
   const { colors } = useTheme();
   const modalBorderRadius = 12;
 
@@ -37,11 +40,14 @@ function SwipeDownModal({ showModal, setShowModal, items = [], children }) {
       }}
     >
       <View
-        style={{
-          borderRadius: modalBorderRadius,
-          width: "100%",
-          backgroundColor: colors.bg,
-        }}
+        style={[
+          {
+            borderRadius: modalBorderRadius,
+            width: "100%",
+            backgroundColor: colors.bg,
+          },
+          style,
+        ]}
       >
         {/*Handle Bar*/}
         <View
@@ -55,37 +61,44 @@ function SwipeDownModal({ showModal, setShowModal, items = [], children }) {
           }}
         />
         {children}
-        {items.map((item, index) => {
-          return (
-            <Pressable
-              key={index + item.name}
-              onPress={item.onPress}
-              style={({ pressed }) => [
-                {
-                  borderBottomLeftRadius:
-                    index === items.length - 1 ? modalBorderRadius : 0,
-                  borderBottomRightRadius:
-                    index === items.length - 1 ? modalBorderRadius : 0,
-                  //children means this modal has a header
-                  paddingLeft: children ? 30 : 20,
-                  paddingVertical: 12,
-                  backgroundColor: pressed
-                    ? colors.bgInteractive
-                    : "transparent",
-                  flexDirection: "row",
-                  alignItems: "center",
-                },
-              ]}
-            >
-              {item.icon ? <item.icon /> : null}
-              <BaseText style={{ marginLeft: 24, flexShrink: 1 }}>
-                {item.name}
-              </BaseText>
-            </Pressable>
-          );
-        })}
       </View>
     </Modal>
+  );
+}
+
+function SwipeDownListModal({ showModal, setShowModal, items = [], children }) {
+  const modalBorderRadius = 12;
+
+  return (
+    <SwipeDownModal showModal={showModal} setShowModal={setShowModal}>
+      {children}
+      {items.map((item, index) => {
+        return (
+          <BasePressable
+            key={index + item.name}
+            onPress={item.onPress}
+            style={[
+              {
+                borderBottomLeftRadius:
+                  index === items.length - 1 ? modalBorderRadius : 0,
+                borderBottomRightRadius:
+                  index === items.length - 1 ? modalBorderRadius : 0,
+                //children means this modal has a header
+                paddingLeft: children ? 30 : 20,
+                paddingVertical: 12,
+                flexDirection: "row",
+                alignItems: "center",
+              },
+            ]}
+          >
+            {item.icon ? <item.icon /> : null}
+            <BaseText style={{ marginLeft: 24, flexShrink: 1 }}>
+              {item.name}
+            </BaseText>
+          </BasePressable>
+        );
+      })}
+    </SwipeDownModal>
   );
 }
 
@@ -130,7 +143,7 @@ export function FlatListVideoItemModal({ showModal, setShowModal }) {
   ];
 
   return (
-    <SwipeDownModal
+    <SwipeDownListModal
       showModal={showModal}
       setShowModal={setShowModal}
       items={modalItems}
@@ -164,7 +177,7 @@ export function NotificationsItemModal({ showModal, setShowModal }) {
   ];
 
   return (
-    <SwipeDownModal
+    <SwipeDownListModal
       showModal={showModal}
       setShowModal={setShowModal}
       items={modalItems}
@@ -188,7 +201,7 @@ export function ShareScreenModal({ showModal, setShowModal }) {
   ];
 
   return (
-    <SwipeDownModal
+    <SwipeDownListModal
       showModal={showModal}
       setShowModal={setShowModal}
       items={modalItems}
@@ -202,6 +215,52 @@ export function ShareScreenModal({ showModal, setShowModal }) {
       >
         Select a device
       </BaseText>
-    </SwipeDownModal>
+    </SwipeDownListModal>
+  );
+}
+
+export function HomeCommentsItemModal({ showModal, setShowModal }) {
+  const modalItems = [
+    {
+      name: "Share",
+      icon: ShareIcon,
+      onPress: () => console.log("Share pressed"),
+    },
+    {
+      name: "Report",
+      icon: ReportIcon,
+      onPress: () => console.log("Report pressed"),
+    },
+  ];
+
+  return (
+    <SwipeDownListModal
+      showModal={showModal}
+      setShowModal={setShowModal}
+      items={modalItems}
+    />
+  );
+}
+
+export function HomeCommentsProfileItemModal({ showModal, setShowModal }) {
+  const modalItems = [
+    {
+      name: "Learn more about this feature",
+      icon: QuestionCircleIcon,
+      onPress: () => console.log("Learn more about this feature pressed"),
+    },
+    {
+      name: "Send feedback",
+      icon: ExclamationCircleIcon,
+      onPress: () => console.log("Send feedback pressed"),
+    },
+  ];
+
+  return (
+    <SwipeDownListModal
+      showModal={showModal}
+      setShowModal={setShowModal}
+      items={modalItems}
+    />
   );
 }

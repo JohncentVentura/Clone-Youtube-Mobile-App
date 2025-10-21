@@ -1,9 +1,10 @@
 import { Pressable, View } from "react-native";
 import Modal from "react-native-modal";
 import { useTheme } from "../../context/ThemeContext";
+import { BasePressable } from "../PressableComponents";
 import { BaseText } from "../TextComponents";
 
-function TopRightModal({ showModal, setShowModal, items = [] }) {
+function TopRightListModal({ showModal, setShowModal, items = [] }) {
   const { colors } = useTheme();
 
   return (
@@ -23,17 +24,16 @@ function TopRightModal({ showModal, setShowModal, items = [] }) {
       <View style={{ backgroundColor: colors.bg }}>
         {items.map((item, index) => {
           return (
-            <Pressable
+            <BasePressable
               key={index + item.name}
               onPress={item.onPress}
-              style={({ pressed }) => ({
+              style={{
                 paddingHorizontal: 14,
                 paddingVertical: 12,
-                backgroundColor: pressed ? colors.bgInteractive : "transparent",
-              })}
+              }}
             >
               <BaseText style={{ flexShrink: 1 }}>{item.name}</BaseText>
-            </Pressable>
+            </BasePressable>
           );
         })}
       </View>
@@ -70,7 +70,7 @@ export function ChannelHeaderModal({ showModal, setShowModal }) {
   ];
 
   return (
-    <TopRightModal
+    <TopRightListModal
       showModal={showModal}
       setShowModal={setShowModal}
       items={modalItems}
@@ -99,7 +99,7 @@ export function NotificationsHeaderModal({ showModal, setShowModal }) {
   ];
 
   return (
-    <TopRightModal
+    <TopRightListModal
       showModal={showModal}
       setShowModal={setShowModal}
       items={modalItems}
@@ -120,7 +120,7 @@ export function SearchResultHeaderModal({ showModal, setShowModal }) {
   ];
 
   return (
-    <TopRightModal
+    <TopRightListModal
       showModal={showModal}
       setShowModal={setShowModal}
       items={modalItems}

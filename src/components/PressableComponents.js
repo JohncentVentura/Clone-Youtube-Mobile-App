@@ -281,7 +281,7 @@ export function SmallIconTextButton({ style, Icon, text, ...rest }) {
   return (
     <AnimatedPressable
       style={[
-        styles.iconTextButton,
+        styles.smallIconTextButton,
         animatedStyle,
         { backgroundColor: colors.bgSecondary },
         style,
@@ -308,14 +308,14 @@ export function SmallIconTextButton({ style, Icon, text, ...rest }) {
   );
 }
 
-export function TabButton({ style, selected, children, ...rest }) {
+export function TabButton({ style, isFirstTab, selected, children, ...rest }) {
   const { colors } = useTheme();
 
   return (
     <Pressable
       style={[
         {
-          marginLeft: 8,
+          marginLeft: isFirstTab ? 0 : 8,
           borderRadius: 8,
           paddingHorizontal: 12,
           paddingVertical: 6,

@@ -5,7 +5,7 @@ const screenHeight = Dimensions.get("window").height * 1; //Multiply by 1 to get
 const screenHorizontalSpacing = 16;
 
 export const styles = StyleSheet.create({
-  /******************************Main & Headers******************************/
+  //#region Main & Headers
   mainBottomTab: {
     borderTopWidth: 2,
     width: "20%",
@@ -23,7 +23,8 @@ export const styles = StyleSheet.create({
   headerRightIcon: {
     marginLeft: 24,
   },
-  /******************************Screen******************************/
+  //#endregion
+  //#region Screen
   screenContainer: {
     position: "relative",
     width: screenWidth,
@@ -35,15 +36,14 @@ export const styles = StyleSheet.create({
   screenPadLeft: {
     paddingLeft: screenHorizontalSpacing,
   },
-  screenPadRight: {
-    paddingRight: screenHorizontalSpacing,
-  },
-  /******************************Videos******************************/
+  //#endregion
+  //#region Videos
   videoView: {
     width: screenWidth,
     height: screenHeight * 0.25,
   },
-  /******************************Buttons******************************/
+  //#endregion
+  //#region Buttons
   baseButton: {
     borderRadius: 99,
     paddingHorizontal: 14,
@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  iconTextButton: {
+  smallIconTextButton: {
     borderRadius: 99,
     paddingHorizontal: 12,
     paddingVertical: 6,
@@ -66,4 +66,5 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  
 });

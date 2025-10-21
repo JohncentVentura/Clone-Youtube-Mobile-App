@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { PanResponder, Pressable, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  PanResponder,
+  Pressable,
+  StyleSheet,
+  View,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -7,60 +14,98 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useTheme } from "../../context/ThemeContext";
+import { useUI } from "../../context/UIContext";
+import { useSetPexelsDataVideos } from "../../hooks/usePexelsData";
 import { navigate } from "../../navigations/NavigationConfig";
 import { styles } from "../../styles/styles";
 import { ColumnScrollView, RowScrollView } from "../ContainerComponents";
 import {
+  ArrowBackIcon,
   CloseIcon,
   DislikeIcon,
   DotVerticalIcon,
   LikeIcon,
   MessageTextIcon,
 } from "../IconComponents";
-import { MainVideoCommentImage } from "../ImageComponents";
+import {
+  CommentsProfileSmallImage,
+  CommentsProfileLargeImage,
+} from "../ImageComponents";
 import { RippleButton, BasePressable, TabButton } from "../PressableComponents";
 import { BaseText } from "../TextComponents";
+import { SwipeDownModal } from "./SwipeDownModals";
 
-export default function CommentsModal({
-  videoData,
-  setShowModalVideoComment,
-}) {
-  const { colors, fontSizes, iconSizes } = useTheme();
+export function HomeCommentsModal() {
+  const insets = useSafeAreaInsets();
+  const { colors, fontSizes } = useTheme();
+  const { modalVideoData, setShowHomeCommentsModal } =
+    useUI();
+  const [commentVideos, setCommentVideos] = useState([]);
+  const [isVideosLoading, setIsVideosLoading] = useState(true);
 
-  const translateY = useSharedValue("100%");
-  const backdropOpacity = useSharedValue(0);
+  const [isACommentSelected, setIsACommentSelected] = useState(false);
+  const [commentSelectedQuery, setCommentSelectedQuery] = useState(
+    modalVideoData.query
+  );
+  const [commentSelectedVideos, setCommentSelectedVideos] = useState([]);
+
+  const backdropOpacityValue = useSharedValue(0);
+  const translateYValue = useSharedValue("100%");
+
+  useSetPexelsDataVideos({
+    query: modalVideoData.query,
+    queryResults: 6,
+    setVideos: (videos) => {
+      setCommentVideos(videos);
+      setIsVideosLoading(false);
+    },
+    dependecies: [modalVideoData],
+  });
+
+  useSetPexelsDataVideos({
+    query: commentSelectedQuery,
+    queryResults: 6,
+    setVideos: (videos) => {
+      setCommentSelectedVideos(videos);
+      setIsVideosLoading(false);
+    },
+    dependecies: [commentSelectedQuery],
+  });
 
   //Open modal
   useEffect(() => {
-    translateY.value = withTiming(0, { duration: 250 });
-    backdropOpacity.value = withTiming(0.5, { duration: 250 });
+    backdropOpacityValue.value = withTiming(0.5, { duration: 250 });
+    translateYValue.value = withTiming(0, { duration: 250 });
   }, []);
 
-  //Close modal
   const closeModal = () => {
-    translateY.value = withTiming("100%", { duration: 250 });
-    backdropOpacity.value = withTiming(0, { duration: 250 }, (finished) => {
-      if (finished) runOnJS(setShowModalVideoComment)(false);
-    });
+    backdropOpacityValue.value = withTiming(
+      0,
+      { duration: 250 },
+      (finished) => {
+        if (finished) runOnJS(setShowHomeCommentsModal)(false);
+      }
+    );
+    translateYValue.value = withTiming("100%", { duration: 250 });
   };
 
-  const backdropStyle = useAnimatedStyle(() => ({
-    opacity: backdropOpacity.value,
+  const backdropOpacityStyle = useAnimatedStyle(() => ({
+    opacity: backdropOpacityValue.value,
   }));
 
   const translateYStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: translateY.value }],
+    transform: [{ translateY: translateYValue.value }],
   }));
 
   const panResponder = PanResponder.create({
-    onMoveShouldSetPanResponder: (_, gesture) => gesture.dy > 5, // start when dragging down
-    onPanResponderMove: (_, gesture) => {
-      if (gesture.dy > 0) translateY.value = gesture.dy; // move sheet
+    onMoveShouldSetPanResponder: (e, gesture) => gesture.dy > 5, // start when dragging down
+    onPanResponderMove: (e, gesture) => {
+      if (gesture.dy > 0) translateYValue.value = gesture.dy; // move sheet
     },
-    onPanResponderRelease: (_, gesture) => {
-      // close if dragged far enough or fast
-      if (gesture.dy > 120 || gesture.vy > 0.6) closeModal();
-      else translateY.value = withTiming(0, { duration: 200 }); // snap back up
+    onPanResponderRelease: (e, gesture) => {
+      if (gesture.dy > 120 || gesture.vy > 0.6)
+        closeModal(); // close if dragged far enough or fast
+      else translateYValue.value = withTiming(0, { duration: 200 }); // snap back up
     },
   });
 
@@ -71,7 +116,7 @@ export default function CommentsModal({
         style={[
           StyleSheet.absoluteFillObject,
           { backgroundColor: "black" },
-          backdropStyle,
+          backdropOpacityStyle,
         ]}
       >
         <Pressable onPress={closeModal} style={StyleSheet.absoluteFillObject} />
@@ -106,134 +151,301 @@ export default function CommentsModal({
             alignSelf: "center",
           }}
         />
-        <View
-          style={[
-            styles.screenPadHorizontal,
-            {
-              marginTop: 8,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            },
-          ]}
-        >
-          <BaseText style={{ fontSize: fontSizes.xl, fontWeight: "bold" }}>
-            Comments
-          </BaseText>
-          <CloseIcon onPress={closeModal} />
-        </View>
-        <SortOrderTabBar />
-        <View
-          style={{
-            marginTop: 16,
-            width: "100%",
-            height: 1,
-            backgroundColor: colors.borderSecondary,
-          }}
-        />
-        <ColumnScrollView style={{ marginTop: 8 }}>
-          <BasePressable
-            style={[
-              styles.screenPadHorizontal,
-              {
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "flex-start",
-              },
-            ]}
-          >
-            <MainVideoCommentImage
-              style={{ marginTop: 10 }}
-              source={{ uri: videoData.picture }}
-              onPress={() => {
-                navigate("ChannelScreen", { videoData: videoData });
-                closeModal();
-              }}
-            />
-            <View style={{ marginLeft: 14, marginTop: 8, flexShrink: 1 }}>
-              <BaseText
-                style={{ fontSize: fontSizes.xs, color: colors.textSecondary }}
-              >
-                {videoData.channelTag} • {videoData.uploadedDate} ago
-              </BaseText>
-              <BaseText style={{ marginTop: 2, fontSize: fontSizes.xs }}>
-                {videoData.commentsDescription}
-              </BaseText>
-              <View
-                style={{
-                  marginTop: 10,
+
+        {isVideosLoading ? (
+          <ActivityIndicator style={{ flex: 1 }} size="large" />
+        ) : !isACommentSelected ? (
+          <>
+            <View
+              style={[
+                styles.screenPadHorizontal,
+                {
+                  marginTop: 8,
                   flexDirection: "row",
+                  justifyContent: "space-between",
                   alignItems: "center",
+                },
+              ]}
+            >
+              <BaseText style={{ fontSize: fontSizes.xl, fontWeight: "bold" }}>
+                Comments
+              </BaseText>
+              <CloseIcon onPress={closeModal} />
+            </View>
+            <SortOrderTabBar />
+            <ColumnScrollView style={{ marginBottom: insets.bottom }}>
+              {commentVideos.map((item, index) => (
+                <HomeCommentItem
+                  key={index}
+                  videoData={item}
+                  setIsACommentSelected={setIsACommentSelected}
+                  setCommentSelectedQuery={setCommentSelectedQuery}
+                />
+              ))}
+            </ColumnScrollView>
+          </>
+        ) : (
+          <>
+            <View
+              style={[
+                styles.screenPadHorizontal,
+                {
+                  marginTop: 8,
+                  borderBottomWidth: 1,
+                  borderBottomColor: colors.borderSecondary,
+                  paddingBottom: 12,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                },
+              ]}
+            >
+              <ArrowBackIcon onPress={() => setIsACommentSelected(false)} />
+              <BaseText
+                style={{
+                  marginLeft: 16,
+                  fontSize: fontSizes.xl,
+                  fontWeight: "bold",
                 }}
               >
-                <RippleButton
-                  rippleSize={6}
-                  onPress={() => console.log("Comment Like Press")}
-                >
-                  <LikeIcon size={iconSizes.xs2} />
-                </RippleButton>
-                <BaseText style={{ marginLeft: 8, fontSize: fontSizes.xs }}>
-                  {videoData.likes}
-                </BaseText>
-                <RippleButton
-                  style={{ marginLeft: 20 }}
-                  rippleSize={6}
-                  onPress={() => console.log("Comment Dislike Press")}
-                >
-                  <DislikeIcon size={iconSizes.xs2} />
-                </RippleButton>
-                <RippleButton
-                  style={{ marginLeft: 24 }}
-                  rippleSize={6}
-                  onPress={() => console.log("Comment Messages Press")}
-                >
-                  <MessageTextIcon size={iconSizes.xs} />
-                </RippleButton>
-              </View>
+                Return
+              </BaseText>
+              <CloseIcon style={{ marginLeft: "auto" }} onPress={closeModal} />
             </View>
-            <RippleButton
-              style={{ marginLeft: "auto", marginTop: 6 }}
-              rippleSize={4}
-            >
-              <DotVerticalIcon size={iconSizes.sm} />
-            </RippleButton>
-          </BasePressable>
-        </ColumnScrollView>
+            <ColumnScrollView style={{ marginBottom: insets.bottom }}>
+              {commentSelectedVideos.map((item, index) => (
+                <HomeCommentItem
+                  key={index}
+                  style={{ marginLeft: index * 12 }}
+                  videoData={item}
+                />
+              ))}
+            </ColumnScrollView>
+          </>
+        )}
       </Animated.View>
     </>
   );
 }
 
-const defaultQuery = "all";
-function SortOrderTabBar({ navigation, setQuery }) {
-  const { colors } = useTheme();
-  const [selected, setSelected] = useState(defaultQuery);
-
-  const handleSelectedQuery = (query) => {
-    if (selected === query) {
-      if (query !== defaultQuery) {
-        setSelected(defaultQuery);
-      }
-    } else {
-      setSelected(query);
-    }
-  };
+export function HomeCommentsProfileModal({ showModal, setShowModal }) {
+  const { colors, fontSizes } = useTheme();
+  const {
+    modalVideoData,
+    setShowHomeCommentsModal,
+    setShowHomeCommentsProfileModal,
+    setShowHomeCommentsProfileItemModal,
+  } = useUI();
 
   return (
-    <RowScrollView style={[styles.screenPadHorizontal, { marginTop: 24 }]}>
-      <TabButton
-        style={{ marginLeft: 0 }}
-        selected={selected === defaultQuery}
-        onPress={() => handleSelectedQuery(defaultQuery)}
+    <SwipeDownModal
+      style={{ paddingHorizontal: 16, paddingBottom: 10 }}
+      showModal={showModal}
+      setShowModal={setShowModal}
+    >
+      <View
+        style={{
+          flexDirection: "row",
+
+          alignItems: "flex-start",
+        }}
       >
-        Top
-      </TabButton>
-      <TabButton
-        selected={selected === "Music"}
-        onPress={() => handleSelectedQuery("Music")}
+        <CommentsProfileLargeImage
+          style={{ marginTop: 4 }}
+          source={{ uri: modalVideoData.picture }}
+          onPress={() => {
+            setShowHomeCommentsModal(false);
+            setShowHomeCommentsProfileModal(false);
+            navigate("ChannelScreen", { videoData: modalVideoData });
+          }}
+        />
+        <View style={{ marginLeft: 16, flexShrink: 1 }}>
+          <BaseText
+            style={{
+              fontSize: fontSizes.xl2,
+              fontWeight: "bold",
+            }}
+          >
+            {modalVideoData.channelName}
+          </BaseText>
+          <BaseText
+            style={{
+              marginTop: 4,
+              fontSize: fontSizes.xs,
+              fontWeight: "medium",
+            }}
+          >
+            {modalVideoData.channelTag}
+          </BaseText>
+          <BaseText
+            style={{
+              marginTop: 4,
+              fontSize: fontSizes.xs,
+              color: colors.textSecondary,
+            }}
+          >
+            Joined {modalVideoData.channelJoinedDate} •{" "}
+            {modalVideoData.channelSubscribers} subscribers
+          </BaseText>
+        </View>
+        <RippleButton
+          style={{ marginLeft: "auto" }}
+          onPress={() => setShowHomeCommentsProfileItemModal(true)}
+        >
+          <DotVerticalIcon />
+        </RippleButton>
+      </View>
+      <Pressable
+        style={({ pressed }) => [
+          styles.wideButton,
+          {
+            marginTop: 12,
+            backgroundColor: colors.bgSecondary,
+            opacity: pressed ? 0.5 : 1,
+          },
+        ]}
+        onPress={() => {
+          setShowHomeCommentsModal(false);
+          setShowHomeCommentsProfileModal(false);
+          navigate("ChannelScreen", { videoData: modalVideoData });
+        }}
       >
-        Newest
-      </TabButton>
+        <BaseText style={{ fontWeight: "medium" }}>View Channel</BaseText>
+      </Pressable>
+    </SwipeDownModal>
+  );
+}
+
+function SortOrderTabBar() {
+  const { colors } = useTheme();
+  const defaultQuery = "all";
+  const [selected, setSelected] = useState(defaultQuery);
+  const selectableTabs = [
+    { label: "Top", query: defaultQuery },
+    { label: "New", query: "New" },
+  ];
+
+  const handleSelected = (query) =>
+    setSelected((prev) =>
+      prev === query && query !== defaultQuery ? defaultQuery : query
+    );
+
+  return (
+    <RowScrollView
+      style={[
+        styles.screenPadHorizontal,
+        {
+          marginTop: 16,
+          borderBottomWidth: 1,
+          borderBottomColor: colors.borderSecondary,
+          paddingBottom: 8,
+          width: "100%",
+          height: 60,
+        },
+      ]}
+    >
+      {selectableTabs.map((item, index) => {
+        return (
+          <TabButton
+            key={index}
+            isFirstTab={index === 0}
+            selected={selected === item.query}
+            onPress={() => handleSelected(item.query)}
+          >
+            {item.label}
+          </TabButton>
+        );
+      })}
     </RowScrollView>
+  );
+}
+
+function HomeCommentItem({
+  style,
+  videoData,
+  setIsACommentSelected,
+  setCommentSelectedQuery,
+}) {
+  const { colors, fontSizes, iconSizes } = useTheme();
+  const {
+    setModalVideoData,
+    setShowHomeCommentsProfileModal,
+    setShowHomeCommentsItemModal,
+  } = useUI();
+
+  return (
+    <BasePressable
+      style={[
+        styles.screenPadHorizontal,
+        {
+          paddingVertical: 10,
+          flexDirection: "row",
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
+        },
+        style,
+      ]}
+      onPress={() => {
+        setCommentSelectedQuery?.(videoData.title);
+        setIsACommentSelected?.(true);
+      }}
+    >
+      <CommentsProfileSmallImage
+        style={{ marginTop: 10 }}
+        source={{ uri: videoData.picture }}
+        onPress={() => {
+          setModalVideoData(videoData);
+          setShowHomeCommentsProfileModal(true);
+        }}
+      />
+      <View style={{ marginLeft: 14, marginTop: 8, flexShrink: 1 }}>
+        <BaseText
+          style={{ fontSize: fontSizes.xs, color: colors.textSecondary }}
+        >
+          {videoData.channelTag} • {videoData.uploadedDate}
+        </BaseText>
+        <BaseText style={{ marginTop: 2, fontSize: fontSizes.xs }}>
+          {videoData.commentsDescription}
+        </BaseText>
+        <View
+          style={{
+            marginTop: 10,
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <RippleButton
+            rippleSize={6}
+            onPress={() => console.log("Comment Like Press")}
+          >
+            <LikeIcon size={iconSizes.xs2} />
+          </RippleButton>
+          <BaseText style={{ marginLeft: 8, fontSize: fontSizes.xs }}>
+            {videoData.likes}
+          </BaseText>
+          <RippleButton
+            style={{ marginLeft: 20 }}
+            rippleSize={6}
+            onPress={() => console.log("Comment Dislike Press")}
+          >
+            <DislikeIcon size={iconSizes.xs2} />
+          </RippleButton>
+          <RippleButton
+            style={{ marginLeft: 24 }}
+            rippleSize={6}
+            onPress={() => console.log("Comment Messages Press")}
+          >
+            <MessageTextIcon size={iconSizes.xs} />
+          </RippleButton>
+        </View>
+      </View>
+      <RippleButton
+        style={{ marginLeft: "auto", marginTop: 6 }}
+        rippleSize={4}
+        onPress={() => setShowHomeCommentsItemModal(true)}
+      >
+        <DotVerticalIcon size={iconSizes.xs} />
+      </RippleButton>
+    </BasePressable>
   );
 }

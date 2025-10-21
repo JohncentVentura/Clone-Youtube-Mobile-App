@@ -3,12 +3,17 @@ import { useState } from "react";
 import { View } from "react-native";
 import { HeaderContainer } from "../components/ContainerComponents";
 import {
-  ClearSearchHistoryAlert,
-  RemoveSearchItemAlert,
-} from "../components/alerts/QuestionAlerts";
-import CommentsModal from "../components/modals/CommentsModal";
+  ClearSearchHistoryModal,
+  RemoveSearchItemModal,
+} from "../components/modals/QuestionModals";
+import {
+  HomeCommentsModal,
+  HomeCommentsProfileModal,
+} from "../components/modals/CommentsModal";
 import {
   FlatListVideoItemModal,
+  HomeCommentsItemModal,
+  HomeCommentsProfileItemModal,
   NotificationsItemModal,
   ShareScreenModal,
 } from "../components/modals/SwipeDownModals";
@@ -43,17 +48,15 @@ const Stack = createStackNavigator();
 
 export default function YoutubeHomeStack() {
   const {
-    modalVideoData,
-    setShowModalChannelHeader,
-    setShowModalNotifHeader,
-    setShowModalSearchResultHeader,
-    showModalVideoComment,
-    setShowModalVideoComment,
+    setShowChannelHeaderModal,
+    setShowNotifHeaderModal,
+    setShowSearchResultHeaderModal,
+    showHomeCommentsModal,
   } = useUI();
 
   return (
     <>
-      {getModalComponents()}
+      {renderModalComponents()}
 
       <Stack.Navigator id="YoutubeHomeStack">
         <Stack.Screen
@@ -80,7 +83,7 @@ export default function YoutubeHomeStack() {
           options={({ navigation }) => {
             return {
               header: () => (
-                <HeaderContainer >
+                <HeaderContainer>
                   <HeaderArrowBackIcon onPress={() => navigation.pop()} />
                 </HeaderContainer>
               ),
@@ -99,7 +102,7 @@ export default function YoutubeHomeStack() {
                     <HeaderShareScreenIcon />
                     <HeaderSearchIcon navigation={navigation} />
                     <HeaderDotVerticalIcon
-                      onPress={() => setShowModalChannelHeader(true)}
+                      onPress={() => setShowChannelHeaderModal(true)}
                     />
                   </View>
                 </HeaderContainer>
@@ -120,7 +123,7 @@ export default function YoutubeHomeStack() {
                     <HeaderShareScreenIcon />
                     <HeaderSearchIcon navigation={navigation} />
                     <HeaderDotVerticalIcon
-                      onPress={() => setShowModalNotifHeader(true)}
+                      onPress={() => setShowNotifHeaderModal(true)}
                     />
                   </View>
                 </HeaderContainer>
@@ -197,7 +200,7 @@ export default function YoutubeHomeStack() {
                     <HeaderMicIcon style={{ marginLeft: 16 }} />
                     <HeaderShareScreenIcon />
                     <HeaderDotVerticalIcon
-                      onPress={() => setShowModalSearchResultHeader(true)}
+                      onPress={() => setShowSearchResultHeaderModal(true)}
                     />
                   </View>
                 </HeaderContainer>
@@ -234,76 +237,92 @@ export default function YoutubeHomeStack() {
         />
       </Stack.Navigator>
 
-      {showModalVideoComment && (
-        <CommentsModal
-          videoData={modalVideoData}
-          setShowModalVideoComment={setShowModalVideoComment}
-        />
-      )}
+      {showHomeCommentsModal && <HomeCommentsModal />}
     </>
   );
 }
 
-function getModalComponents() {
+function renderModalComponents() {
   const {
-    showAlertClearSearchHistory,
-    setShowAlertClearSearchHistory,
-    showAlertRemoveSearchItem,
-    setShowAlertRemoveSearchItem,
-    showModalChannelHeader,
-    setShowModalChannelHeader,
-    showModalFlatListVideoItem,
-    setShowModalFlatListVideoItem,
-    showModalNotifHeader,
-    setShowModalNotifHeader,
-    showModalNotifItem,
-    setShowModalNotifItem,
-    showModalSearchResultHeader,
-    setShowModalSearchResultHeader,
-    showModalShareScreen,
-    setShowModalShareScreen,
+    showChannelHeaderModal,
+    setShowChannelHeaderModal,
+    showClearSearchHistoryModal,
+    setShowClearSearchHistoryModal,
+    showFlatListVideoItemModal,
+    setShowFlatListVideoItemModal,
+    showHomeCommentsItemModal,
+    setShowHomeCommentsItemModal,
+    showHomeCommentsProfileModal,
+    setShowHomeCommentsProfileModal,
+    showHomeCommentsProfileItemModal,
+    setShowHomeCommentsProfileItemModal,
+    showNotifHeaderModal,
+    setShowNotifHeaderModal,
+    showRemoveSearchItemModal,
+    setShowRemoveSearchItemModal,
+    showNotifItemModal,
+    setShowNotifItemModal,
+    showSearchResultHeaderModal,
+    setShowSearchResultHeaderModal,
+    showShareScreenModal,
+    setShowShareScreenModal,
   } = useUI();
 
   return (
     <>
-      <ClearSearchHistoryAlert
-        showAlert={showAlertClearSearchHistory}
-        setShowAlert={setShowAlertClearSearchHistory}
-      />
-
-      <RemoveSearchItemAlert
-        showAlert={showAlertRemoveSearchItem}
-        setShowAlert={setShowAlertRemoveSearchItem}
+      <ClearSearchHistoryModal
+        showModal={showClearSearchHistoryModal}
+        setShowModal={setShowClearSearchHistoryModal}
       />
 
       <ChannelHeaderModal
-        showModal={showModalChannelHeader}
-        setShowModal={setShowModalChannelHeader}
+        showModal={showChannelHeaderModal}
+        setShowModal={setShowChannelHeaderModal}
       />
 
       <FlatListVideoItemModal
-        showModal={showModalFlatListVideoItem}
-        setShowModal={setShowModalFlatListVideoItem}
+        showModal={showFlatListVideoItemModal}
+        setShowModal={setShowFlatListVideoItemModal}
+      />
+
+      <HomeCommentsItemModal
+        showModal={showHomeCommentsItemModal}
+        setShowModal={setShowHomeCommentsItemModal}
+      />
+
+      <HomeCommentsProfileModal
+        showModal={showHomeCommentsProfileModal}
+        setShowModal={setShowHomeCommentsProfileModal}
+      />
+
+      <HomeCommentsProfileItemModal
+        showModal={showHomeCommentsProfileItemModal}
+        setShowModal={setShowHomeCommentsProfileItemModal}
       />
 
       <NotificationsHeaderModal
-        showModal={showModalNotifHeader}
-        setShowModal={setShowModalNotifHeader}
+        showModal={showNotifHeaderModal}
+        setShowModal={setShowNotifHeaderModal}
       />
 
       <NotificationsItemModal
-        showModal={showModalNotifItem}
-        setShowModal={setShowModalNotifItem}
+        showModal={showNotifItemModal}
+        setShowModal={setShowNotifItemModal}
+      />
+      
+      <RemoveSearchItemModal
+        showModal={showRemoveSearchItemModal}
+        setShowModal={setShowRemoveSearchItemModal}
       />
 
       <SearchResultHeaderModal
-        showModal={showModalSearchResultHeader}
-        setShowModal={setShowModalSearchResultHeader}
+        showModal={showSearchResultHeaderModal}
+        setShowModal={setShowSearchResultHeaderModal}
       />
 
       <ShareScreenModal
-        showModal={showModalShareScreen}
-        setShowModal={setShowModalShareScreen}
+        showModal={showShareScreenModal}
+        setShowModal={setShowShareScreenModal}
       />
     </>
   );

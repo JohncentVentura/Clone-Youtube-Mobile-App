@@ -28,6 +28,32 @@ export function ChannelProfileImage({ source, ...rest }) {
   );
 }
 
+export function CommentsProfileLargeImage({ source, ...rest }) {
+  return (
+    <Pressable {...rest}>
+      <Image
+        style={[{ borderRadius: 99, width: 60, height: 60 }]}
+        resizeMode={"stretch"}
+        source={source}
+        alt="ChannelProfileImage"
+      />
+    </Pressable>
+  );
+}
+
+export function CommentsProfileSmallImage({ source, ...rest }) {
+  return (
+    <Pressable {...rest}>
+      <Image
+        style={[{ borderRadius: 99, width: 30, height: 30 }]}
+        resizeMode={"stretch"}
+        source={source}
+        alt="MainVideoCommentImage"
+      />
+    </Pressable>
+  );
+}
+
 export function FlatListChannelImage({ source, ...rest }) {
   return (
     <Pressable {...rest}>
@@ -56,19 +82,6 @@ export function HeaderYoutubeLogoImage({ style, ...rest }) {
       }
       {...rest}
     />
-  );
-}
-
-export function MainVideoCommentImage({ source, ...rest }) {
-  return (
-    <Pressable {...rest}>
-      <Image
-        style={[{ borderRadius: 99, width: 30, height: 30 }]}
-        resizeMode={"stretch"}
-        source={source}
-        alt="MainVideoCommentImage"
-      />
-    </Pressable>
   );
 }
 

@@ -4,14 +4,14 @@ import { useSearch } from "../../context/SearchContext";
 import { useTheme } from "../../context/ThemeContext";
 import { BaseText } from "../TextComponents";
 
-function QuestionAlert({ showAlert, setShowAlert, children }) {
+function QuestionModal({ showModal, setShowModal, children }) {
   const { colors } = useTheme();
 
   return (
     <Modal
-      isVisible={showAlert}
-      onBackdropPress={() => setShowAlert(false)} //Modal backdrop area
-      onRequestClose={() => setShowAlert(false)} //Android back button
+      isVisible={showModal}
+      onBackdropPress={() => setShowModal(false)} //Modal backdrop area
+      onRequestClose={() => setShowModal(false)} //Android back button
       animationIn="fadeIn"
       animationOut="fadeOut"
       style={{
@@ -34,13 +34,13 @@ function QuestionAlert({ showAlert, setShowAlert, children }) {
   );
 }
 
-export function RemoveSearchItemAlert({ showAlert, setShowAlert }) {
+export function RemoveSearchItemModal({ showModal, setShowModal }) {
   const { colors, fontSizes } = useTheme();
   const { removingSearchItem, setRemovingSearchItem, removeSearchHistoryItem } =
     useSearch();
 
   return (
-    <QuestionAlert showAlert={showAlert} setShowAlert={setShowAlert}>
+    <QuestionModal showModal={showModal} setShowModal={setShowModal}>
       <BaseText
         style={{
           fontSize: fontSizes.xl,
@@ -58,7 +58,7 @@ export function RemoveSearchItemAlert({ showAlert, setShowAlert }) {
           alignItems: "center",
         }}
       >
-        <Pressable onPress={() => setShowAlert(false)}>
+        <Pressable onPress={() => setShowModal(false)}>
           <BaseText style={{ color: colors.primary }}>Cancel</BaseText>
         </Pressable>
         <Pressable
@@ -66,22 +66,22 @@ export function RemoveSearchItemAlert({ showAlert, setShowAlert }) {
           onPress={() => {
             removeSearchHistoryItem(removingSearchItem.text);
             setRemovingSearchItem("");
-            setShowAlert(false);
+            setShowModal(false);
           }}
         >
           <BaseText style={{ color: colors.primary }}>Remove</BaseText>
         </Pressable>
       </View>
-    </QuestionAlert>
+    </QuestionModal>
   );
 }
 
-export function ClearSearchHistoryAlert({ showAlert, setShowAlert }) {
+export function ClearSearchHistoryModal({ showModal, setShowModal }) {
   const { colors } = useTheme();
   const { clearSearchHistory } = useSearch();
 
   return (
-    <QuestionAlert showAlert={showAlert} setShowAlert={setShowAlert}>
+    <QuestionModal showModal={showModal} setShowModal={setShowModal}>
       <BaseText style={{ fontWeight: "medium" }}>
         Clear all search history?
       </BaseText>
@@ -93,19 +93,19 @@ export function ClearSearchHistoryAlert({ showAlert, setShowAlert }) {
           alignItems: "center",
         }}
       >
-        <Pressable onPress={() => setShowAlert(false)}>
+        <Pressable onPress={() => setShowModal(false)}>
           <BaseText style={{ color: colors.primary }}>Cancel</BaseText>
         </Pressable>
         <Pressable
           style={{ marginLeft: 48 }}
           onPress={() => {
             clearSearchHistory();
-            setShowAlert(false);
+            setShowModal(false);
           }}
         >
           <BaseText style={{ color: colors.primary }}>Clear</BaseText>
         </Pressable>
       </View>
-    </QuestionAlert>
+    </QuestionModal>
   );
 }

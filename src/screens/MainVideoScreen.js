@@ -5,7 +5,6 @@ import {
   FlatListVideoItem,
   RowScrollView,
   ScreenContainer,
-  ColumnScrollView,
 } from "../components/ContainerComponents";
 import {
   DislikeIcon,
@@ -18,7 +17,7 @@ import {
 } from "../components/IconComponents";
 import {
   FlatListChannelImage,
-  MainVideoCommentImage,
+  CommentsProfileSmallImage,
 } from "../components/ImageComponents";
 import {
   BasePressable,
@@ -39,7 +38,7 @@ export default function MainVideoScreen({ navigation, route }) {
   const { colors, fontSizes, iconSizes } = useTheme();
   const scrollToTopRef = useRef(null);
   const [relatedVideos, setRelatedVideos] = useState([]);
-  const { setModalVideoData, setShowModalVideoComment } = useUI();
+  const { setModalVideoData, setShowHomeCommentsModal } = useUI();
 
   useHideBottomTabBarOnFocus();
   useScrollToTopOnFocus(scrollToTopRef);
@@ -182,7 +181,7 @@ export default function MainVideoScreen({ navigation, route }) {
                 >
                   <BasePressable
                     style={[
-                      styles.iconTextButton,
+                      styles.smallIconTextButton,
                       { backgroundColor: colors.bgSecondary },
                     ]}
                     onPress={() => console.log("Liked Press")}
@@ -208,7 +207,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   />
                   <BasePressable
                     style={[
-                      styles.iconTextButton,
+                      styles.smallIconTextButton,
                       { backgroundColor: colors.bgSecondary },
                     ]}
                     onPress={() => console.log("Disliked Press")}
@@ -260,7 +259,7 @@ export default function MainVideoScreen({ navigation, route }) {
                 }}
                 onPress={() => {
                   setModalVideoData(videoData);
-                  setShowModalVideoComment(true);
+                  setShowHomeCommentsModal(true);
                 }}
               >
                 <View
@@ -296,13 +295,11 @@ export default function MainVideoScreen({ navigation, route }) {
                     alignItems: "center",
                   }}
                 >
-                  <MainVideoCommentImage
-                    style={{ backgroundColor: "transparent" }}
+                  <CommentsProfileSmallImage
                     source={{ uri: videoData.picture }}
                     onPress={() => {
-                      navigation.navigate("ChannelScreen", {
-                        videoData: videoData,
-                      });
+                      setModalVideoData(videoData);
+                      setShowHomeCommentsModal(true);
                     }}
                   />
                   <BaseText

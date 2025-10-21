@@ -25,6 +25,7 @@ export async function fetchPexelsData(query = "home", queryResults = 3) {
 
     return data.videos.map((video) => ({
       id: video.id,
+      query: query,
       title: getPexelsUrlToTitle(video.url),
       description: video.url,
       video: video.video_files[0].link,
@@ -36,6 +37,7 @@ export async function fetchPexelsData(query = "home", queryResults = 3) {
       channelSubscribers: roundOffNumber(video.user.id),
       channelVideos: video.duration,
       channelDescription: video.url,
+      channelJoinedDate: randomTimeAgo(video.user.id),
       likes: video.duration,
       commentsCount: roundOffNumber(video.duration),
       commentsDescription: video.url,
@@ -77,12 +79,15 @@ function getPexelsTagUserName(url) {
 }
 
 function getPexelsUrlToTitle(url) {
-  const videoUrl = url;
-  const splitUrl = videoUrl.split("/");
+  const splitUrl = url.split("/");
   const slug = splitUrl[splitUrl.length - 2];
-  const videoTitle = slug.replace(/\d+/g, "").replace(/-+$/, ""); //remove all digits & last hyphen
+  const videoTitle = slug
+    .replace(/\d+/g, "")       // remove all digits
+    .replace(/-/g, " ")        // replace all hyphens with spaces
+    .trim();                   // remove leading/trailing spaces
   return videoTitle;
 }
+
 
 function randomTimeAgo(num) {
   if (uploadedDatesCache[num]) return uploadedDatesCache[num];
