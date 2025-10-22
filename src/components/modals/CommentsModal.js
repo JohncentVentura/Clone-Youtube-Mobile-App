@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  BackHandler,
   PanResponder,
   Pressable,
   StyleSheet,
@@ -8,7 +9,6 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, {
-  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -38,37 +38,30 @@ import { SwipeDownModal } from "./SwipeDownModals";
 export function HomeCommentsModal() {
   const insets = useSafeAreaInsets();
   const { colors, fontSizes } = useTheme();
-  const { modalVideoData, setShowHomeCommentsModal } =
-    useUI();
-  const [commentVideos, setCommentVideos] = useState([]);
-  const [isVideosLoading, setIsVideosLoading] = useState(true);
-
-  const [isACommentSelected, setIsACommentSelected] = useState(false);
+  const { modalVideoData, setShowHomeCommentsModal } = useUI();
   const [commentSelectedQuery, setCommentSelectedQuery] = useState(
     modalVideoData.query
   );
+  const [commentVideos, setCommentVideos] = useState([]);
   const [commentSelectedVideos, setCommentSelectedVideos] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [isACommentSelected, setIsACommentSelected] = useState(false);
   const backdropOpacityValue = useSharedValue(0);
   const translateYValue = useSharedValue("100%");
 
   useSetPexelsDataVideos({
     query: modalVideoData.query,
     queryResults: 6,
-    setVideos: (videos) => {
-      setCommentVideos(videos);
-      setIsVideosLoading(false);
-    },
+    setVideos: setCommentVideos,
+    setIsLoading,
     dependecies: [modalVideoData],
   });
 
   useSetPexelsDataVideos({
     query: commentSelectedQuery,
     queryResults: 6,
-    setVideos: (videos) => {
-      setCommentSelectedVideos(videos);
-      setIsVideosLoading(false);
-    },
+    setVideos: setCommentSelectedVideos,
+    setIsLoading,
     dependecies: [commentSelectedQuery],
   });
 
@@ -79,15 +72,37 @@ export function HomeCommentsModal() {
   }, []);
 
   const closeModal = () => {
-    backdropOpacityValue.value = withTiming(
-      0,
-      { duration: 250 },
-      (finished) => {
-        if (finished) runOnJS(setShowHomeCommentsModal)(false);
+    backdropOpacityValue.value = withTiming(0, { duration: 250 });
+    translateYValue.value = withTiming("100%", { duration: 250 });
+    setTimeout(() => {
+      setShowHomeCommentsModal(false);
+    }, 250);
+  };
+
+  //Close modal on back button press
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        closeModal();
+        return true; //Prevent default behavior
       }
     );
-    translateYValue.value = withTiming("100%", { duration: 250 });
-  };
+
+    return () => backHandler.remove(); //Cleanup when modal unmounts
+  }, []);
+
+  const panResponder = PanResponder.create({
+    onMoveShouldSetPanResponder: (e, gesture) => gesture.dy > 5, //Start when dragging down
+    onPanResponderMove: (e, gesture) => {
+      if (gesture.dy > 0) translateYValue.value = gesture.dy; //Move sheet
+    },
+    onPanResponderRelease: (e, gesture) => {
+      if (gesture.dy > 120 || gesture.vy > 0.6)
+        closeModal(); //Close if dragged far enough or fast
+      else translateYValue.value = withTiming(0, { duration: 200 }); //Snap back up
+    },
+  });
 
   const backdropOpacityStyle = useAnimatedStyle(() => ({
     opacity: backdropOpacityValue.value,
@@ -96,18 +111,6 @@ export function HomeCommentsModal() {
   const translateYStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: translateYValue.value }],
   }));
-
-  const panResponder = PanResponder.create({
-    onMoveShouldSetPanResponder: (e, gesture) => gesture.dy > 5, // start when dragging down
-    onPanResponderMove: (e, gesture) => {
-      if (gesture.dy > 0) translateYValue.value = gesture.dy; // move sheet
-    },
-    onPanResponderRelease: (e, gesture) => {
-      if (gesture.dy > 120 || gesture.vy > 0.6)
-        closeModal(); // close if dragged far enough or fast
-      else translateYValue.value = withTiming(0, { duration: 200 }); // snap back up
-    },
-  });
 
   return (
     <>
@@ -152,7 +155,7 @@ export function HomeCommentsModal() {
           }}
         />
 
-        {isVideosLoading ? (
+        {isLoading ? (
           <ActivityIndicator style={{ flex: 1 }} size="large" />
         ) : !isACommentSelected ? (
           <>

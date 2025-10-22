@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 import { ScreenScrollView } from "../components/ContainerComponents";
 import { DotVerticalIcon } from "../components/IconComponents";
 import {
@@ -22,21 +22,24 @@ export default function NotificationsScreen({ navigation }) {
   const [newVideos, setNewVideos] = useState([]);
   const [oldQuery, setOldQuery] = useState("sweets");
   const [oldVideos, setOldVideos] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useScrollToTopOnFocus(scrollToTopRef);
   useSetPexelsDataVideos({
     query: newQuery,
     queryResults: 4,
     setVideos: setNewVideos,
+    setIsLoading,
   });
   useSetPexelsDataVideos({
     query: oldQuery,
     queryResults: 4,
     setVideos: setOldVideos,
+    setIsLoading,
   });
 
   return (
-    <ScreenScrollView ref={scrollToTopRef}>
+    <ScreenScrollView ref={scrollToTopRef} isLoading={isLoading}>
       <BaseText
         style={[
           styles.screenPadLeft,

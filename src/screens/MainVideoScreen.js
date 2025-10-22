@@ -22,6 +22,7 @@ import {
 import {
   BasePressable,
   SmallIconTextButton,
+  SubscribeButton,
 } from "../components/PressableComponents";
 import { BaseText } from "../components/TextComponents";
 import { MainVideoView } from "../components/VideoComponents";
@@ -33,12 +34,14 @@ import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
 
 export default function MainVideoScreen({ navigation, route }) {
-  const { query, videoData } = route.params;
+  
   const insets = useSafeAreaInsets();
   const { colors, fontSizes, iconSizes } = useTheme();
+  const { setModalVideoData, setShowHomeCommentsModal } = useUI();
   const scrollToTopRef = useRef(null);
   const [relatedVideos, setRelatedVideos] = useState([]);
-  const { setModalVideoData, setShowHomeCommentsModal } = useUI();
+  const [isLoading, setIsLoading] = useState(true);
+  const { query, videoData } = route.params;
 
   useHideBottomTabBarOnFocus();
   useScrollToTopOnFocus(scrollToTopRef);
@@ -46,11 +49,12 @@ export default function MainVideoScreen({ navigation, route }) {
     query,
     queryResults: 5,
     setVideos: setRelatedVideos,
+    setIsLoading,
     dependecies: [query],
   });
 
   return (
-    <ScreenContainer>
+    <ScreenContainer isLoading={isLoading}>
       <FlatList
         ref={scrollToTopRef}
         data={relatedVideos}
@@ -146,26 +150,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     {videoData.channelSubscribers}
                   </BaseText>
                 </View>
-                <Pressable
-                  style={({ pressed }) => [
-                    styles.baseButton,
-                    {
-                      backgroundColor: colors.bgContrast,
-                      opacity: pressed ? 0.5 : 1,
-                    },
-                  ]}
-                >
-                  <BaseText
-                    style={{
-                      fontSize: fontSizes.xs,
-                      fontWeight: "medium",
-                      color: colors.textContrast,
-                    }}
-                    onPress={() => console.log("Subscribe Press")}
-                  >
-                    Subscribe
-                  </BaseText>
-                </Pressable>
+                <SubscribeButton/>
               </View>
 
               {/*Likes/Dislikes, share, & other buttons section*/}

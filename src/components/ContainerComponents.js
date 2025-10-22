@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Platform,
   Pressable,
@@ -17,7 +18,7 @@ import { RippleButton } from "./PressableComponents";
 import { BaseText } from "./TextComponents";
 import { FlatListVideoView } from "./VideoComponents";
 
-//#region View
+//#region Screen & Headers
 export function HeaderContainer({ style, children, ...rest }) {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
@@ -46,38 +47,52 @@ export function HeaderContainer({ style, children, ...rest }) {
   );
 }
 
-export function ScreenContainer({ style, children, ...rest }) {
+export function ScreenContainer({ style, isLoading, children, ...rest }) {
   const { colors } = useTheme();
 
-  return (
-    <View
-      style={[styles.screenContainer, { backgroundColor: colors.bg }, style]}
-      {...rest}
-    >
-      {children}
-    </View>
+  return isLoading ? (
+    <ActivityIndicator
+      style={{ backgroundColor: colors.bg, flex: 1 }}
+      size="large"
+    />
+  ) : (
+    <>
+      <View
+        style={[styles.screenContainer, { backgroundColor: colors.bg }, style]}
+        {...rest}
+      >
+        {children}
+      </View>
+    </>
+  );
+}
+
+export function ScreenScrollView({ style, isLoading, children, ...rest }) {
+  const { colors } = useTheme();
+
+  return isLoading ? (
+    <ActivityIndicator
+      style={{ backgroundColor: colors.bg, flex: 1 }}
+      size="large"
+    />
+  ) : (
+    <>
+      <ScrollView
+        style={[styles.screenContainer, { backgroundColor: colors.bg }, style]}
+        contentContainerStyle={StyleSheet.create({
+          alignItems: "flex-start",
+        })}
+        showsVerticalScrollIndicator={false}
+        {...rest}
+      >
+        {children}
+      </ScrollView>
+    </>
   );
 }
 //#endregion
 
 //#region ScrollView
-export function ScreenScrollView({ style, children, ...rest }) {
-  const { colors } = useTheme();
-
-  return (
-    <ScrollView
-      style={[styles.screenContainer, { backgroundColor: colors.bg }, style]}
-      contentContainerStyle={StyleSheet.create({
-        alignItems: "flex-start",
-      })}
-      showsVerticalScrollIndicator={false}
-      {...rest}
-    >
-      {children}
-    </ScrollView>
-  );
-}
-
 export function ColumnScrollView({ children, ...rest }) {
   return (
     <ScrollView
@@ -111,10 +126,30 @@ export function RowScrollView({ style, children, ...rest }) {
 //#endregion
 
 //#region FlatList & Item
-export function AutoPlayVideoFlatList({ navigation, query, data, ...rest }) {
+export function AutoPlayVideoFlatList({
+  isLoading,
+  navigation,
+  query,
+  data,
+  ...rest
+}) {
+  const { colors } = useTheme();
   const [autoPlayVideoId, setAutoPlayVideoId] = useState(null);
+  const onViewableItemsChanged = useRef(({ viewableItems }) => {
+    if (viewableItems.length > 0) {
+      setAutoPlayVideoId(viewableItems[0].item.id);
+    }
+  });
+  const viewabilityConfig = useRef({
+    viewAreaCoveragePercentThreshold: 50,
+  });
 
-  return (
+  return isLoading ? (
+    <ActivityIndicator
+      style={{ backgroundColor: colors.bg, flex: 1 }}
+      size="large"
+    />
+  ) : (
     <FlatList
       data={data}
       keyExtractor={(item, index) => index + item.id}
@@ -128,20 +163,8 @@ export function AutoPlayVideoFlatList({ navigation, query, data, ...rest }) {
           />
         );
       }}
-      onViewableItemsChanged={
-        //useRef for same reference each render, called whenever visible items changes (scrolled) & get the first visible item
-        useRef(({ viewableItems }) => {
-          if (viewableItems.length > 0) {
-            setAutoPlayVideoId(viewableItems[0].item.id);
-          }
-        }).current
-      }
-      viewabilityConfig={
-        //useRef for same reference each render, threshold of item in the screen to be count as visible
-        useRef({
-          viewAreaCoveragePercentThreshold: 50,
-        }).current
-      }
+      onViewableItemsChanged={onViewableItemsChanged.current}
+      viewabilityConfig={viewabilityConfig.current}
       {...rest}
     />
   );

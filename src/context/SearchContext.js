@@ -8,6 +8,7 @@ const SEARCH_HISTORY_KEY = "SearchHistoryKey";
 export function SearchProvider({ children }) {
   const [globalHomeSearch, setGlobalHomeSearch] = useState("");
   const [searchHistory, setSearchHistory] = useState([]);
+  const [isSearchHistoryLoading, setIsSearchHistoryLoading] = useState(true);
   const [removingSearchItem, setRemovingSearchItem] = useState("");
 
   useEffect(() => {
@@ -20,6 +21,8 @@ export function SearchProvider({ children }) {
         if (loadedSearchHistory) {
           setSearchHistory(JSON.parse(loadedSearchHistory));
         }
+
+        setIsSearchHistoryLoading(false);
       } catch (e) {
         console.log("SearchContext.js failed to load search history: ", e);
       }
@@ -81,8 +84,11 @@ export function SearchProvider({ children }) {
         globalHomeSearch,
         setGlobalHomeSearch,
         searchHistory,
+        isSearchHistoryLoading,
+        setIsSearchHistoryLoading,
         removingSearchItem,
         setRemovingSearchItem,
+
         handleSearch,
         removeSearchHistoryItem,
         clearSearchHistory,

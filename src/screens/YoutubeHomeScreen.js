@@ -12,58 +12,58 @@ import { useSetPexelsDataVideos } from "../hooks/usePexelsData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
 
-const defaultQuery = "Humans";
-
 export default function YoutubeHomeScreen({ navigation }) {
   const scrollToTopRef = useRef(null);
-  const [query, setQuery] = useState(defaultQuery);
+  const [query, setQuery] = useState("Humans");
   const [homeVideos, setHomeVideos] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useScrollToTopOnFocus(scrollToTopRef);
   useSetPexelsDataVideos({
     query,
     queryResults: 5,
     setVideos: setHomeVideos,
+    setIsLoading,
     dependecies: [query],
   });
 
   return (
     <ScreenContainer>
+      <TopQueryTabBar
+        navigation={navigation}
+        query={query}
+        setQuery={setQuery}
+      />
       <AutoPlayVideoFlatList
+        style={{ marginTop: 6 }}
         ref={scrollToTopRef}
+        isLoading={isLoading}
         navigation={navigation}
         query={query}
         data={homeVideos}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={
-          <TopQueryTabBar navigation={navigation} setQuery={setQuery} />
-        }
       />
     </ScreenContainer>
   );
 }
 
-function TopQueryTabBar({ navigation, setQuery }) {
+function TopQueryTabBar({ navigation, query, setQuery }) {
   const { colors } = useTheme();
-  const [selected, setSelected] = useState(defaultQuery);
   const selectableTabs = [
-    { label: "All", query: defaultQuery },
+    { label: "All", query: "Humans" },
     { label: "Music", query: "Music" },
     { label: "Nature", query: "Nature" },
     { label: "City", query: "City" },
   ];
 
-  const handleSelected = (query) => {
-    setSelected((prev) => {
-      const newQuery =
-        prev === query && query !== defaultQuery ? defaultQuery : query;
-      setQuery(newQuery);
-      return newQuery;
-    });
+  const handleSelected = (newQuery) => {
+    setQuery((prevQuery) =>
+      prevQuery === newQuery && newQuery !== "Humans" ? "Humans" : newQuery
+    );
   };
 
   return (
-    <RowScrollView style={[styles.screenPadHorizontal, { marginBottom: 10 }]}>
+    <RowScrollView style={[styles.screenPadHorizontal, { minHeight: 40 }]}>
       <Pressable
         style={({ pressed }) => ({
           marginRight: 8,
@@ -81,7 +81,7 @@ function TopQueryTabBar({ navigation, setQuery }) {
         return (
           <TabButton
             key={index}
-            selected={selected === item.query}
+            selected={query === item.query}
             onPress={() => handleSelected(item.query)}
           >
             {item.label}

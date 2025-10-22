@@ -9,7 +9,7 @@ export async function fetchPexelsData(query = "home", queryResults = 3) {
     const url = `${PEXELS_API_URL}/search?query=${encodeURIComponent(
       query
     )}&per_page=${queryResults}`;
-    
+
     const res = await fetch(url, {
       headers: { Authorization: PEXELS_API_KEY },
     });
@@ -43,7 +43,57 @@ export async function fetchPexelsData(query = "home", queryResults = 3) {
       commentsDescription: video.url,
     }));
   } catch (error) {
-    console.error("Pexels API error:", error.message || error);
+    console.error("fetchPexelsData error:", error.message || error);
+    return [];
+  }
+}
+
+export async function fetchPexelsShortsData(query = "home", queryResults = 3) {
+  try {
+    const url = `${PEXELS_API_URL}/search?query=${encodeURIComponent(
+      query
+    )} shorts&per_page=${queryResults * 2}`;
+
+    const res = await fetch(url, {
+      headers: { Authorization: PEXELS_API_KEY },
+    });
+
+    if (!res.ok) {
+      const text = await res.text().catch(() => "");
+      throw new Error(`HTTP ${res.status}: ${text}`);
+    }
+
+    const data = await res.json().catch(() => {
+      throw new Error("Invalid JSON from Pexels");
+    });
+
+    //Filter videos that are portrait / vertical (Shorts-style)
+    const shortVideos = data.videos.filter((video) => {
+      const file = video.video_files?.[0];
+      return file && file.height > file.width;
+    });
+
+    return shortVideos.map((video) => ({
+      id: video.id,
+      query,
+      title: getPexelsUrlToTitle(video.url),
+      description: video.url,
+      video: video.video_files[0].link,
+      picture: video.video_pictures[0].picture,
+      views: roundOffNumber(video.id),
+      uploadedDate: randomTimeAgo(video.video_pictures[0].id),
+      channelName: video.user.name,
+      channelTag: "@" + getPexelsTagUserName(video.user.url),
+      channelSubscribers: roundOffNumber(video.user.id),
+      channelVideos: video.duration,
+      channelDescription: video.url,
+      channelJoinedDate: randomTimeAgo(video.user.id),
+      likes: video.duration,
+      commentsCount: roundOffNumber(video.duration),
+      commentsDescription: video.url,
+    }));
+  } catch (error) {
+    console.error("fetchPexelsShortVideos error:", error.message || error);
     return [];
   }
 }
@@ -52,16 +102,51 @@ export function useSetPexelsDataVideos({
   query,
   queryResults,
   setVideos,
+  setIsLoading,
   dependecies = [],
 }) {
   useEffect(() => {
     let isMounted = true;
+    setIsLoading?.(true);
 
     (async function () {
-      const data = await fetchPexelsData(query, queryResults);
+      try {
+        const data = await fetchPexelsData(query, queryResults);
+        if (isMounted) {
+          setVideos(data);
+        }
+      } catch (error) {
+        console.error("useSetPexelsDataVideos error:", error);
+      } finally {
+        if (isMounted) setIsLoading?.(false); // 💫 end loading
+      }
+    })();
 
-      if (isMounted) {
-        setVideos(data);
+    return () => (isMounted = false);
+  }, dependecies);
+}
+
+export function useSetPexelsDataShortsVideos({
+  query,
+  queryResults,
+  setVideos,
+  setIsLoading,
+  dependecies = [],
+}) {
+  useEffect(() => {
+    let isMounted = true;
+    setIsLoading?.(true);
+
+    (async function () {
+      try {
+        const data = await fetchPexelsShortsData(query, queryResults);
+        if (isMounted) {
+          setVideos(data);
+        }
+      } catch (error) {
+        console.error("useSetPexelsDataVideos error:", error);
+      } finally {
+        if (isMounted) setIsLoading?.(false); // 💫 end loading
       }
     })();
 
@@ -82,12 +167,11 @@ function getPexelsUrlToTitle(url) {
   const splitUrl = url.split("/");
   const slug = splitUrl[splitUrl.length - 2];
   const videoTitle = slug
-    .replace(/\d+/g, "")       // remove all digits
-    .replace(/-/g, " ")        // replace all hyphens with spaces
-    .trim();                   // remove leading/trailing spaces
+    .replace(/\d+/g, "") // remove all digits
+    .replace(/-/g, " ") // replace all hyphens with spaces
+    .trim(); // remove leading/trailing spaces
   return videoTitle;
 }
-
 
 function randomTimeAgo(num) {
   if (uploadedDatesCache[num]) return uploadedDatesCache[num];

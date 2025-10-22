@@ -308,6 +308,35 @@ export function SmallIconTextButton({ style, Icon, text, ...rest }) {
   );
 }
 
+export function SubscribeButton({ style, ...rest }) {
+  const { colors, fontSizes } = useTheme();
+
+  return (
+    <Pressable
+      style={({ pressed }) => [
+        styles.baseButton,
+        {
+          backgroundColor: colors.bgContrast,
+          opacity: pressed ? 0.5 : 1,
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      <BaseText
+        style={{
+          fontSize: fontSizes.xs,
+          fontWeight: "medium",
+          color: colors.textContrast,
+        }}
+        onPress={() => console.log("Subscribe Press")}
+      >
+        Subscribe
+      </BaseText>
+    </Pressable>
+  );
+}
+
 export function TabButton({ style, isFirstTab, selected, children, ...rest }) {
   const { colors } = useTheme();
 

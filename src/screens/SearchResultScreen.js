@@ -8,22 +8,23 @@ import { useSetPexelsDataVideos } from "../hooks/usePexelsData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 
 export default function SearchResultScreen({ navigation, route }) {
-  const { search } = route.params;
-  const { colors } = useTheme();
   const scrollToTopRef = useRef(null);
+  const { search } = route.params;
   const [searchInput, setSearchInput] = useState(search);
   const [searchVideos, setSearchVideos] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useScrollToTopOnFocus(scrollToTopRef);
   useSetPexelsDataVideos({
     query: searchInput,
     queryResults: 6,
     setVideos: setSearchVideos,
+    setIsLoading,
     dependecies: [searchInput],
   });
 
   return (
-    <ScreenContainer>
+    <ScreenContainer isLoading={isLoading}>
       <AutoPlayVideoFlatList
         navigation={navigation}
         query={searchInput}

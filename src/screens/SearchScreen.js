@@ -18,24 +18,25 @@ import { styles } from "../styles/styles";
 
 export default function SearchScreen({ navigation }) {
   const insets = useSafeAreaInsets();
+  const { setGlobalHomeSearch, searchHistory, isSearchHistoryLoading, setRemovingSearchItem } =
+    useSearch();
+  const { colors, fontSizes, iconSizes } = useTheme();
   const { setShowClearSearchHistoryModal, setShowRemoveSearchItemModal } =
     useUI();
-  const { setGlobalHomeSearch, searchHistory, setRemovingSearchItem } = useSearch();
-  const { colors, fontSizes, iconSizes } = useTheme();
   const scrollToTopRef = useRef(null);
 
   useHideBottomTabBarOnFocus();
   useScrollToTopOnFocus(scrollToTopRef);
 
   return (
-    <ScreenContainer>
+    <ScreenContainer isLoading={isSearchHistoryLoading}>
       <FlatList
         data={searchHistory}
         ref={scrollToTopRef}
         keyExtractor={(item, index) => index + item.text}
         renderItem={({ item }) => (
           <BasePressable
-            style={{paddingVertical: 12,}}
+            style={{ paddingVertical: 12 }}
             onPress={() => {
               setGlobalHomeSearch("");
               navigation.push("SearchResultScreen", { search: item.text });

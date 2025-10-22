@@ -15,7 +15,7 @@ const Stack = createStackNavigator();
 
 export default function ShortsStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen
         name="ShortsScreen"
         component={ShortsScreen}

@@ -309,7 +309,7 @@ function renderModalComponents() {
         showModal={showNotifItemModal}
         setShowModal={setShowNotifItemModal}
       />
-      
+
       <RemoveSearchItemModal
         showModal={showRemoveSearchItemModal}
         setShowModal={setShowRemoveSearchItemModal}
