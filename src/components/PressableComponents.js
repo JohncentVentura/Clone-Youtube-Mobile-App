@@ -1,12 +1,15 @@
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useEffect } from "react";
 import { Pressable, StyleSheet } from "react-native";
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
   useSharedValue,
+  withDelay,
   withTiming,
 } from "react-native-reanimated";
 import { useTheme } from "../context/ThemeContext";
+import { useUI } from "../context/UIContext";
 import { styles } from "../styles/styles";
 import { BaseText } from "./TextComponents";
 
@@ -230,6 +233,7 @@ export function BasePressable({ style, children, ...rest }) {
 export function RippleButton({ style, rippleSize = 10, children, ...rest }) {
   const { colors } = useTheme();
   const sharedValue = useSharedValue(0);
+  const opacityValue = useSharedValue(0);
   const { backgroundColor, ...restStyle } = StyleSheet.flatten(style) || {};
   const animatedStyle = useAnimatedStyle(() => ({
     backgroundColor: interpolateColor(
@@ -238,16 +242,26 @@ export function RippleButton({ style, rippleSize = 10, children, ...rest }) {
       [backgroundColor ?? colors.bg, colors.bgInteractive]
     ),
     transform: [{ scale: sharedValue.value }],
+    opacity: opacityValue.value,
   }));
 
   return (
     <Pressable
-      style={[{ justifyContent: "center", alignItems: "center" }, restStyle]}
+      style={[
+        {
+          //backgroundColor: colors.primary,
+          justifyContent: "center",
+          alignItems: "center",
+        },
+        restStyle,
+      ]}
       onPressIn={() => {
         sharedValue.value = withTiming(1, { duration: 100 });
+        opacityValue.value = withTiming(0.5, { duration: 0 });
       }}
       onPressOut={() => {
         sharedValue.value = withTiming(0, { duration: 400 });
+        opacityValue.value = withTiming(0, { duration: 400 });
       }}
       {...rest}
     >
@@ -267,6 +281,102 @@ export function RippleButton({ style, rippleSize = 10, children, ...rest }) {
       />
       {children}
     </Pressable>
+  );
+}
+
+export function PlayShortsButton({ style, isPlaying, ...rest }) {
+  const { colors, iconSizes } = useTheme();
+  const { isShortsVideoPlaying } = useUI();
+  const transformValue = useSharedValue(0);
+  const opacityValue = useSharedValue(0);
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: transformValue.value }],
+    opacity: opacityValue.value,
+  }));
+
+  return (
+    <AnimatedPressable
+      style={[
+        { justifyContent: "center", alignItems: "center" },
+        StyleSheet.absoluteFill,
+        style,
+      ]}
+      onPressIn={() => {
+        transformValue.value = withTiming(1, { duration: 100 });
+        opacityValue.value = withTiming(1, { duration: 100 });
+      }}
+      onPressOut={() => {
+        transformValue.value = withDelay(250, withTiming(0, { duration: 300 }));
+        opacityValue.value = withDelay(250, withTiming(0, { duration: 300 }));
+      }}
+      {...rest}
+    >
+      <Animated.View
+        style={[
+          {
+            borderRadius: 99,
+            height: 88,
+            width: 88,
+            backgroundColor: colors.bgSecondary,
+            justifyContent: "center",
+            alignItems: "center",
+          },
+          animatedStyle,
+        ]}
+      >
+        {isShortsVideoPlaying ? (
+          <FontAwesome
+            name="play"
+            size={iconSizes.xl2}
+            color={colors.iconPrimary}
+          />
+        ) : (
+          <FontAwesome
+            name="pause"
+            size={iconSizes.xl2}
+            color={colors.iconPrimary}
+          />
+        )}
+      </Animated.View>
+    </AnimatedPressable>
+  );
+}
+
+export function ShortsIconTextButton({ style, Icon, text, ...rest }) {
+  const { colors, fontSizes, iconSizes } = useTheme();
+  const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+  const sharedValue = useSharedValue(1);
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: sharedValue.value }],
+  }));
+
+  return (
+    <AnimatedPressable
+      style={[
+        styles.baseButton,
+        animatedStyle,
+        { backgroundColor: colors.transparentBlack, flexDirection: "row" },
+        style,
+      ]}
+      onPressIn={() => {
+        sharedValue.value = withTiming(0.9, { duration: 100 });
+      }}
+      onPressOut={() => {
+        sharedValue.value = withTiming(1, { duration: 400 });
+      }}
+      {...rest}
+    >
+      <AnimatedIcon size={iconSizes.sm} />
+      <AnimatedText
+        style={{
+          paddingLeft: 4,
+          fontWeight: "medium",
+          color: colors.white,
+        }}
+      >
+        {text}
+      </AnimatedText>
+    </AnimatedPressable>
   );
 }
 
@@ -310,30 +420,42 @@ export function SmallIconTextButton({ style, Icon, text, ...rest }) {
 
 export function SubscribeButton({ style, ...rest }) {
   const { colors, fontSizes } = useTheme();
+  const sharedValue = useSharedValue(1);
+  const { backgroundColor, ...restStyle } = StyleSheet.flatten(style) || {};
+  const animatedOpacity = useAnimatedStyle(() => ({
+    opacity: sharedValue.value,
+  }));
 
   return (
-    <Pressable
-      style={({ pressed }) => [
+    <AnimatedPressable
+      style={[
+        { backgroundColor: backgroundColor || colors.bgContrast },
         styles.baseButton,
-        {
-          backgroundColor: colors.bgContrast,
-          opacity: pressed ? 0.5 : 1,
-        },
-        style,
+        animatedOpacity,
+        restStyle,
       ]}
+      onPressIn={() => {
+        sharedValue.value = withTiming(0.5, { duration: 0 });
+      }}
+      onPressOut={() => {
+        sharedValue.value = withTiming(1, { duration: 400 });
+      }}
       {...rest}
     >
       <BaseText
         style={{
           fontSize: fontSizes.xs,
           fontWeight: "medium",
-          color: colors.textContrast,
+          color:
+            backgroundColor === colors.white
+              ? colors.black
+              : colors.textContrast,
         }}
         onPress={() => console.log("Subscribe Press")}
       >
         Subscribe
       </BaseText>
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 

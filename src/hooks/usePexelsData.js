@@ -52,7 +52,7 @@ export async function fetchPexelsShortsData(query = "home", queryResults = 3) {
   try {
     const url = `${PEXELS_API_URL}/search?query=${encodeURIComponent(
       query
-    )} shorts&per_page=${queryResults * 2}`;
+    )} shorts&per_page=${queryResults * 3}`;
 
     const res = await fetch(url, {
       headers: { Authorization: PEXELS_API_KEY },
@@ -83,7 +83,7 @@ export async function fetchPexelsShortsData(query = "home", queryResults = 3) {
       views: roundOffNumber(video.id),
       uploadedDate: randomTimeAgo(video.video_pictures[0].id),
       channelName: video.user.name,
-      channelTag: "@" + getPexelsTagUserName(video.user.url),
+      channelTag: "@" + shortenText(getPexelsTagUserName(video.user.url), 16),
       channelSubscribers: roundOffNumber(video.user.id),
       channelVideos: video.duration,
       channelDescription: video.url,
@@ -204,4 +204,10 @@ function roundOffNumber(num) {
   } else if (num < 1_000_000_000_000) {
     return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "B";
   }
+}
+
+function shortenText(text, maxLength = 100) {
+  if (typeof text !== "string") return "";
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength).trim() + "...";
 }

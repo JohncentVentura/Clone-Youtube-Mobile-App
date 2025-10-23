@@ -1,6 +1,7 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Entypo from "@expo/vector-icons/Entypo";
 import Feather from "@expo/vector-icons/Feather";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -64,31 +65,54 @@ export function InactiveYouIcon({ ...rest }) {
 //#endregion
 
 //#region Header Icons
-export function HeaderArrowBackIcon({ navigation, ...rest }) {
+export function HeaderArrowBackIcon({ navigation, size, color, ...rest }) {
+  const { colors, iconSizes } = useTheme();
+
   return (
     <RippleButton onPress={() => navigation.goBack()} {...rest}>
-      <ArrowBackIcon />
+      <ArrowBackIcon
+        size={size || iconSizes.base}
+        color={color || colors.iconPrimary}
+      />
     </RippleButton>
   );
 }
 
-export function HeaderDotVerticalIcon({ style, ...rest }) {
+export function HeaderDotVerticalIcon({ style, size, color, ...rest }) {
+  const { colors, iconSizes } = useTheme();
+
   return (
     <RippleButton style={[styles.headerRightIcon, style]} {...rest}>
-      <DotVerticalIcon />
+      <DotVerticalIcon
+        size={size || iconSizes.base}
+        color={color || colors.iconPrimary}
+      />
     </RippleButton>
   );
 }
 
-export function HeaderMicIcon({ style, ...rest }) {
+export function HeaderMicIcon({ style, size, color, ...rest }) {
+  const { colors, iconSizes } = useTheme();
+
   return (
     <RippleButton style={[styles.headerRightIcon, style]} {...rest}>
-      <MicIcon />
+      <MicIcon
+        size={size || iconSizes.base}
+        color={color || colors.iconPrimary}
+      />
     </RippleButton>
   );
 }
 
-export function HeaderNotificationsIcon({ style, navigation, ...rest }) {
+export function HeaderNotificationsIcon({
+  style,
+  navigation,
+  size,
+  color,
+  ...rest
+}) {
+  const { colors, iconSizes } = useTheme();
+
   return (
     <RippleButton
       style={[styles.headerRightIcon, style]}
@@ -97,12 +121,17 @@ export function HeaderNotificationsIcon({ style, navigation, ...rest }) {
       }}
       {...rest}
     >
-      <NotificationsIcon />
+      <NotificationsIcon
+        size={size || iconSizes.base}
+        color={color || colors.iconPrimary}
+      />
     </RippleButton>
   );
 }
 
-export function HeaderSearchIcon({ style, navigation, ...rest }) {
+export function HeaderSearchIcon({ style, navigation, size, color, ...rest }) {
+  const { colors, iconSizes } = useTheme();
+
   return (
     <RippleButton
       style={[styles.headerRightIcon, style]}
@@ -111,12 +140,16 @@ export function HeaderSearchIcon({ style, navigation, ...rest }) {
       }}
       {...rest}
     >
-      <SearchIcon />
+      <SearchIcon
+        size={size || iconSizes.base}
+        color={color || colors.iconPrimary}
+      />
     </RippleButton>
   );
 }
 
-export function HeaderShareScreenIcon({ style, ...rest }) {
+export function HeaderShareScreenIcon({ style, size, color, ...rest }) {
+  const { colors, iconSizes } = useTheme();
   const { setShowShareScreenModal } = useUI();
 
   return (
@@ -125,7 +158,10 @@ export function HeaderShareScreenIcon({ style, ...rest }) {
       onPress={() => setShowShareScreenModal(true)}
       {...rest}
     >
-      <ShareScreenIcon />
+      <ShareScreenIcon
+        size={size || iconSizes.base}
+        color={color || colors.iconPrimary}
+      />
     </RippleButton>
   );
 }
@@ -183,7 +219,9 @@ export function DownloadIcon({ ...rest }) {
 }
 
 export function ExclamationCircleIcon({ ...rest }) {
-  return <BaseIcon IconComponent={AntDesign} name="exclamation-circle" {...rest} />;
+  return (
+    <BaseIcon IconComponent={AntDesign} name="exclamation-circle" {...rest} />
+  );
 }
 
 export function EyeInvisbleIcon({ ...rest }) {
@@ -276,6 +314,14 @@ export function NotificationsOffIcon({ ...rest }) {
 
 export function NotInterestedIcon({ ...rest }) {
   return <BaseIcon IconComponent={MaterialIcons} name="block" {...rest} />;
+}
+
+export function PauseIcon({ ...rest }) {
+  return <BaseIcon IconComponent={FontAwesome} name="pause" {...rest} />;
+}
+
+export function PlayIcon({ ...rest }) {
+  return <BaseIcon IconComponent={FontAwesome} name="play" {...rest} />;
 }
 
 export function PlayNextInQueueIcon({ ...rest }) {

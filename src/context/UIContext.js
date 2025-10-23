@@ -4,6 +4,7 @@ const UIContext = createContext();
 
 export function UIProvider({ children }) {
   const [modalVideoData, setModalVideoData] = useState({});
+  const [isShortsVideoPlaying, setIsShortsVideoPlaying] = useState(true);
   const [showChannelHeaderModal, setShowChannelHeaderModal] = useState(false);
   const [showClearSearchHistoryModal, setShowClearSearchHistoryModal] =
     useState(false);
@@ -32,6 +33,8 @@ export function UIProvider({ children }) {
       value={{
         modalVideoData,
         setModalVideoData,
+        isShortsVideoPlaying,
+        setIsShortsVideoPlaying,
         showChannelHeaderModal,
         setShowChannelHeaderModal,
         showClearSearchHistoryModal,

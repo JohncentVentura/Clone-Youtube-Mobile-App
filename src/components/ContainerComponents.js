@@ -29,6 +29,7 @@ export function HeaderContainer({ style, children, ...rest }) {
         styles.screenPadHorizontal,
         {
           paddingTop: insets.top,
+          width: "100%",
           height:
             Platform.OS === "android"
               ? insets.top + 56 //Android header height

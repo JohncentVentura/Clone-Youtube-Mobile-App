@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from "react-native";
 
-const screenWidth = Dimensions.get("window").width * 1; //Multiply by 1 to get 100%
-const screenHeight = Dimensions.get("window").height * 1; //Multiply by 1 to get 100%
+export const screenWidth = Dimensions.get("window").width * 1; //Multiply by 1 to get 100%
+export const screenHeight = Dimensions.get("window").height * 1; //Multiply by 1 to get 100%
 const screenHorizontalSpacing = 16;
 
 export const styles = StyleSheet.create({
@@ -43,8 +43,8 @@ export const styles = StyleSheet.create({
     height: screenHeight * 0.25,
   },
   shortsVideoView: {
-    width: screenWidth,
-    height: "100%",
+    width: screenWidth ,
+    height: screenHeight ,
   },
   //#endregion
   //#region Buttons
