@@ -1,6 +1,6 @@
 import { Image, Pressable } from "react-native";
 import { useTheme } from "../context/ThemeContext";
-import { imagePaths } from "../styles/paths";
+import { imagePaths } from "../utils/constants";
 
 export function ChannelCoverImage({ source, ...rest }) {
   return (

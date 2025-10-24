@@ -2,26 +2,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useState } from "react";
 import { View } from "react-native";
 import { HeaderContainer } from "../components/ContainerComponents";
-import {
-  ClearSearchHistoryModal,
-  RemoveSearchItemModal,
-} from "../components/modals/QuestionModals";
-import {
-  HomeCommentsModal,
-  HomeCommentsProfileModal,
-} from "../components/modals/CommentsModal";
-import {
-  FlatListVideoItemModal,
-  HomeCommentsItemModal,
-  HomeCommentsProfileItemModal,
-  NotificationsItemModal,
-  ShareScreenModal,
-} from "../components/modals/SwipeDownModals";
-import {
-  ChannelHeaderModal,
-  NotificationsHeaderModal,
-  SearchResultHeaderModal,
-} from "../components/modals/TopRightModals";
+import { HomeCommentsModal } from "../components/modals/CommentsModal";
 import {
   HeaderArrowBackIcon,
   HeaderDotVerticalIcon,
@@ -56,8 +37,6 @@ export default function YoutubeHomeStack() {
 
   return (
     <>
-      {renderModalComponents()}
-
       <Stack.Navigator id="YoutubeHomeStack">
         <Stack.Screen
           name="YoutubeHomeScreen"
@@ -148,7 +127,9 @@ export default function YoutubeHomeStack() {
                   <TextInputView
                     autoFocus={true}
                     value={globalHomeSearch ? globalHomeSearch : searchInput}
-                    onChangeText={setSearchInput}
+                    onChangeText={
+                      globalHomeSearch ? setGlobalHomeSearch : setSearchInput
+                    }
                     onSubmitEditing={() => {
                       handleSearch({
                         navigation,
@@ -238,92 +219,6 @@ export default function YoutubeHomeStack() {
       </Stack.Navigator>
 
       {showHomeCommentsModal && <HomeCommentsModal />}
-    </>
-  );
-}
-
-function renderModalComponents() {
-  const {
-    showChannelHeaderModal,
-    setShowChannelHeaderModal,
-    showClearSearchHistoryModal,
-    setShowClearSearchHistoryModal,
-    showFlatListVideoItemModal,
-    setShowFlatListVideoItemModal,
-    showHomeCommentsItemModal,
-    setShowHomeCommentsItemModal,
-    showHomeCommentsProfileModal,
-    setShowHomeCommentsProfileModal,
-    showHomeCommentsProfileItemModal,
-    setShowHomeCommentsProfileItemModal,
-    showNotifHeaderModal,
-    setShowNotifHeaderModal,
-    showRemoveSearchItemModal,
-    setShowRemoveSearchItemModal,
-    showNotifItemModal,
-    setShowNotifItemModal,
-    showSearchResultHeaderModal,
-    setShowSearchResultHeaderModal,
-    showShareScreenModal,
-    setShowShareScreenModal,
-  } = useUI();
-
-  return (
-    <>
-      <ClearSearchHistoryModal
-        showModal={showClearSearchHistoryModal}
-        setShowModal={setShowClearSearchHistoryModal}
-      />
-
-      <ChannelHeaderModal
-        showModal={showChannelHeaderModal}
-        setShowModal={setShowChannelHeaderModal}
-      />
-
-      <FlatListVideoItemModal
-        showModal={showFlatListVideoItemModal}
-        setShowModal={setShowFlatListVideoItemModal}
-      />
-
-      <HomeCommentsItemModal
-        showModal={showHomeCommentsItemModal}
-        setShowModal={setShowHomeCommentsItemModal}
-      />
-
-      <HomeCommentsProfileModal
-        showModal={showHomeCommentsProfileModal}
-        setShowModal={setShowHomeCommentsProfileModal}
-      />
-
-      <HomeCommentsProfileItemModal
-        showModal={showHomeCommentsProfileItemModal}
-        setShowModal={setShowHomeCommentsProfileItemModal}
-      />
-
-      <NotificationsHeaderModal
-        showModal={showNotifHeaderModal}
-        setShowModal={setShowNotifHeaderModal}
-      />
-
-      <NotificationsItemModal
-        showModal={showNotifItemModal}
-        setShowModal={setShowNotifItemModal}
-      />
-
-      <RemoveSearchItemModal
-        showModal={showRemoveSearchItemModal}
-        setShowModal={setShowRemoveSearchItemModal}
-      />
-
-      <SearchResultHeaderModal
-        showModal={showSearchResultHeaderModal}
-        setShowModal={setShowSearchResultHeaderModal}
-      />
-
-      <ShareScreenModal
-        showModal={showShareScreenModal}
-        setShowModal={setShowShareScreenModal}
-      />
     </>
   );
 }

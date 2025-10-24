@@ -366,10 +366,11 @@ export function ShortsIconTextButton({ style, Icon, text, ...rest }) {
       }}
       {...rest}
     >
-      <AnimatedIcon size={iconSizes.sm} />
+      <AnimatedIcon size={iconSizes.xs2} color={colors.white}/>
       <AnimatedText
         style={{
-          paddingLeft: 4,
+          marginLeft: 6,
+          fontSize: fontSizes.sm,
           fontWeight: "medium",
           color: colors.white,
         }}

@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useEffect, useContext, useState } from "react";
-import { fetchPexelsData } from "../hooks/usePexelsData";
+import { fetchMainVideoData } from "../api/mainVideoApi";
 
 const SearchContext = createContext();
 const SEARCH_HISTORY_KEY = "SearchHistoryKey";
@@ -36,7 +36,7 @@ export function SearchProvider({ children }) {
     }
 
     try {
-      const data = await fetchPexelsData(searchInput, 1);
+      const data = await fetchMainVideoData(searchInput, 1);
       const searchedItem = { text: searchInput, picture: data[0].picture };
 
       if (!searchHistory.some((item) => item.text === searchInput)) {

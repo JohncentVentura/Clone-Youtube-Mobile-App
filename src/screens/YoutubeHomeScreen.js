@@ -8,7 +8,7 @@ import {
 import { CompassIcon } from "../components/IconComponents";
 import { TabButton } from "../components/PressableComponents";
 import { useTheme } from "../context/ThemeContext";
-import { useSetPexelsDataVideos } from "../hooks/usePexelsData";
+import { useSetMainVideoData } from "../hooks/useSetVideoData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
 
@@ -19,7 +19,7 @@ export default function YoutubeHomeScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useScrollToTopOnFocus(scrollToTopRef);
-  useSetPexelsDataVideos({
+  useSetMainVideoData({
     query,
     queryResults: 5,
     setVideos: setHomeVideos,

@@ -3,7 +3,7 @@ import { FlatList } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ScreenContainer } from "../components/ContainerComponents";
 import { ShortsVideoView } from "../components/VideoComponents";
-import { useSetPexelsDataShortsVideos } from "../hooks/usePexelsData";
+import { useSetShortsVideoData } from "../hooks/useSetVideoData";
 import { screenHeight } from "../styles/styles";
 
 export default function ShortsScreen({ navigation }) {
@@ -12,8 +12,6 @@ export default function ShortsScreen({ navigation }) {
   const [shortsVideos, setShortsVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [autoPlayVideoId, setAutoPlayVideoId] = useState(null);
-
-  const flatListRef = useRef(null);
   const onViewableItemsChanged = useRef(({ viewableItems }) => {
     if (viewableItems.length > 0) {
       setAutoPlayVideoId(viewableItems[0].item.id);
@@ -23,7 +21,7 @@ export default function ShortsScreen({ navigation }) {
     viewAreaCoveragePercentThreshold: 50,
   });
 
-  useSetPexelsDataShortsVideos({
+  useSetShortsVideoData({
     query,
     queryResults: 5,
     setVideos: setShortsVideos,
@@ -34,11 +32,11 @@ export default function ShortsScreen({ navigation }) {
   return (
     <ScreenContainer isLoading={isLoading}>
       <FlatList
-        ref={flatListRef}
         data={shortsVideos}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item, index) => "ShortsScreen_" + index + item.id}
         renderItem={({ item }) => (
           <ShortsVideoView
+            setQuery={setQuery}
             navigation={navigation}
             videoData={item}
             autoPlayVideoId={item.id === autoPlayVideoId}

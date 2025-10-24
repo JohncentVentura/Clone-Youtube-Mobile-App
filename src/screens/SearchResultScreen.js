@@ -4,7 +4,7 @@ import {
   ScreenContainer,
 } from "../components/ContainerComponents";
 import { useTheme } from "../context/ThemeContext";
-import { useSetPexelsDataVideos } from "../hooks/usePexelsData";
+import { useSetMainVideoData } from "../hooks/useSetVideoData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 
 export default function SearchResultScreen({ navigation, route }) {
@@ -15,7 +15,7 @@ export default function SearchResultScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useScrollToTopOnFocus(scrollToTopRef);
-  useSetPexelsDataVideos({
+  useSetMainVideoData({
     query: searchInput,
     queryResults: 6,
     setVideos: setSearchVideos,

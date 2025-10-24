@@ -29,7 +29,7 @@ import { MainVideoView } from "../components/VideoComponents";
 import { useTheme } from "../context/ThemeContext";
 import { useUI } from "../context/UIContext";
 import { useHideBottomTabBarOnFocus } from "../hooks/useHideBottomTabBarOnFocus";
-import { useSetPexelsDataVideos } from "../hooks/usePexelsData";
+import { useSetMainVideoData } from "../hooks/useSetVideoData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
 
@@ -45,7 +45,7 @@ export default function MainVideoScreen({ navigation, route }) {
 
   useHideBottomTabBarOnFocus();
   useScrollToTopOnFocus(scrollToTopRef);
-  useSetPexelsDataVideos({
+  useSetMainVideoData({
     query,
     queryResults: 5,
     setVideos: setRelatedVideos,

@@ -1,8 +1,7 @@
 import { useVideoPlayer, VideoView } from "expo-video";
-import { useState } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { RowScrollView } from "../components/ContainerComponents";
 import {
   DislikeIcon,
   HeaderDotVerticalIcon,
@@ -22,7 +21,10 @@ import {
 import { BaseText } from "../components/TextComponents";
 import { useTheme } from "../context/ThemeContext";
 import { useUI } from "../context/UIContext";
-import { usePlayVideoOnFocus } from "../hooks/usePlayVideoOnFocus";
+import {
+  usePlayMainVideoOnFocus,
+  usePlayShortsVideoOnFocus,
+} from "../hooks/usePlayVideoOnFocus";
 import { styles } from "../styles/styles";
 
 export function FlatListVideoView({
@@ -35,7 +37,7 @@ export function FlatListVideoView({
     player.loop = true;
   });
 
-  usePlayVideoOnFocus({ videoPlayer, autoPlayVideoId });
+  usePlayMainVideoOnFocus({ videoPlayer, autoPlayVideoId });
 
   return (
     <VideoView
@@ -53,7 +55,7 @@ export function MainVideoView({ style, videoData, ...rest }) {
     player.loop = true;
   });
 
-  usePlayVideoOnFocus({ videoPlayer, autoPlayVideoId: videoData.id });
+  usePlayMainVideoOnFocus({ videoPlayer, autoPlayVideoId: videoData.id });
 
   return (
     <VideoView
@@ -68,6 +70,7 @@ export function MainVideoView({ style, videoData, ...rest }) {
 
 export function ShortsVideoView({
   style,
+  setQuery,
   navigation,
   videoData,
   autoPlayVideoId,
@@ -75,20 +78,31 @@ export function ShortsVideoView({
 }) {
   const insets = useSafeAreaInsets();
   const { colors, fontSizes } = useTheme();
-  const { isShortsVideoPlaying, setIsShortsVideoPlaying } = useUI();
+  const {
+    isShortsVideoPlaying,
+    setIsShortsVideoPlaying,
+    setModalVideoData,
+    setShowHomeCommentsModal,
+  } = useUI();
+  const [isPlaying, setIsPlaying] = useState(isShortsVideoPlaying);
+
   const videoPlayer = useVideoPlayer(videoData.video, (player) => {
     player.loop = true;
   });
 
-  usePlayVideoOnFocus({ videoPlayer, autoPlayVideoId });
+  useEffect(() => {
+    if (isPlaying) {
+      setIsShortsVideoPlaying(true);
+    } else {
+      setIsShortsVideoPlaying(false);
+    }
+  }, [isPlaying]);
+
+  usePlayShortsVideoOnFocus({ videoPlayer, autoPlayVideoId, setIsPlaying });
 
   const togglePlay = () => {
-    if (isShortsVideoPlaying) {
-      videoPlayer.pause();
-    } else {
-      videoPlayer.play();
-    }
-    setIsShortsVideoPlaying(!isShortsVideoPlaying);
+    isPlaying ? videoPlayer.pause() : videoPlayer.play();
+    setIsPlaying(!isPlaying);
   };
 
   return (
@@ -124,31 +138,43 @@ export function ShortsVideoView({
           StyleSheet.absoluteFill,
         ]}
       >
-        <RowScrollView
-          style={[styles.screenPadHorizontal, { flexDirection: "row" }]}
+        <ScrollView
+          style={[styles.screenPadHorizontal, { flexGrow: 0 }]}
+          contentContainerStyle={StyleSheet.create({
+            flexDirection: "row",
+            alignItems: "center",
+          })}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
         >
-          {!isShortsVideoPlaying && (
+          {!isPlaying && (
             <>
-              <ShortsIconTextButton Icon={MessageTextIcon} text="Movies" />
+              <ShortsIconTextButton
+                Icon={MessageTextIcon}
+                text="Movies"
+                onPress={() => setQuery("Movies")}
+              />
               <ShortsIconTextButton
                 style={{ marginLeft: 8 }}
                 Icon={MessageTextIcon}
                 text="Sea"
+                onPress={() => setQuery("Sea")}
               />
               <ShortsIconTextButton
                 style={{ marginLeft: 8 }}
                 Icon={MessageTextIcon}
                 text="Farm"
+                onPress={() => setQuery("Farm")}
               />
               <ShortsIconTextButton
                 style={{ marginLeft: 8, marginRight: 32 }}
                 Icon={MessageTextIcon}
                 text="Shopping"
+                onPress={() => setQuery("Shopping")}
               />
             </>
           )}
-        </RowScrollView>
-
+        </ScrollView>
         <View
           style={[
             styles.screenPadLeft,
@@ -160,7 +186,14 @@ export function ShortsVideoView({
         >
           <View style={{ width: "80%", alignSelf: "flex-end" }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <CommentsProfileSmallImage source={{ uri: videoData.picture }} />
+              <CommentsProfileSmallImage
+                source={{ uri: videoData.picture }}
+                onPress={() => {
+                  navigation.navigate("ChannelScreen", {
+                    videoData: videoData,
+                  });
+                }}
+              />
               <BaseText
                 style={{
                   marginLeft: 10,
@@ -187,27 +220,30 @@ export function ShortsVideoView({
           </View>
 
           <View style={{ width: "15%", alignItems: "center" }}>
-            <ShortsButton
+            <ShortsVerticalButton
               Icon={LikeIcon}
               text={videoData.likes}
               onPress={() => console.log("Shorts Like Press")}
             />
-            <ShortsButton
+            <ShortsVerticalButton
               Icon={DislikeIcon}
               text="Dislike"
               onPress={() => console.log("Shorts Dislike Press")}
             />
-            <ShortsButton
+            <ShortsVerticalButton
               Icon={MessageTextIcon}
               text={videoData.commentsCount}
-              onPress={() => console.log("Shorts Comments Press")}
+              onPress={() => {
+                setModalVideoData(videoData);
+                setShowHomeCommentsModal(true);
+              }}
             />
-            <ShortsButton
+            <ShortsVerticalButton
               Icon={ShareIcon}
               text="Share"
               onPress={() => console.log("Shorts Share Press")}
             />
-            <ShortsButton
+            <ShortsVerticalButton
               Icon={RemixIcon}
               text="Remix"
               onPress={() => console.log("Shorts Remix Press")}
@@ -223,7 +259,7 @@ export function ShortsVideoView({
   );
 }
 
-function ShortsButton({ style, Icon, text, ...rest }) {
+function ShortsVerticalButton({ style, Icon, text, ...rest }) {
   const { colors, fontSizes, iconSizes } = useTheme();
 
   return (
