@@ -1,54 +1,69 @@
 import { useIsFocused } from "@react-navigation/native";
-import { useEffect } from "react";
-import { useUI } from "../context/UIContext";
+import { useEffect, useRef } from "react";
 
-export function usePlayMainVideoOnFocus({ videoPlayer, autoPlayVideoId }) {
+//Safe guard to ensure player isn't released before calling methods
+function safeCall(player, method, ...args) {
+  if (!player || typeof player[method] !== "function") return;
+  try {
+    player[method](...args);
+  } catch (e) {
+    if (!/released|unloaded/i.test(e.message)) {
+      console.log(`VideoPlayer.${method} error:`, e.message);
+    }
+  }
+}
+
+export function usePlayMainVideoOnFocus({
+  videoPlayer,
+  videoDataId,
+  autoPlayVideoId,
+}) {
   const isFocused = useIsFocused();
+  const mounted = useRef(true);
+  const isVideoAutoPlaying = videoDataId === autoPlayVideoId;
 
   useEffect(() => {
-    if (!isFocused && !autoPlayVideoId) {
-      videoPlayer.pause();
-    } else if (isFocused && autoPlayVideoId) {
-      videoPlayer.play();
+    mounted.current = true;
+    if (!videoPlayer) return;
+
+    if (isFocused && isVideoAutoPlaying) {
+      safeCall(videoPlayer, "play");
     } else {
-      videoPlayer.pause();
+      safeCall(videoPlayer, "pause");
     }
 
     return () => {
-      try {
-        videoPlayer.dispose?.();
-      } catch (e) {
-        console.log("usePlayMainVideoOnFocus error:", e.message);
-      }
+      mounted.current = false;
+      safeCall(videoPlayer, "pause");
     };
-  }, [isFocused, autoPlayVideoId]);
+  }, [isFocused, videoDataId, autoPlayVideoId]);
 }
 
 export function usePlayShortsVideoOnFocus({
   videoPlayer,
+  videoDataId,
   autoPlayVideoId,
   setIsPlaying,
 }) {
   const isFocused = useIsFocused();
-  const { setIsShortsVideoPlaying } = useUI();
+  const mounted = useRef(true);
+  const isVideoAutoPlaying = videoDataId === autoPlayVideoId;
 
   useEffect(() => {
-    if (isFocused && autoPlayVideoId) {
-      videoPlayer.play();
+    mounted.current = true;
+    if (!videoPlayer) return;
+
+    if (isFocused && isVideoAutoPlaying) {
+      safeCall(videoPlayer, "play");
       setIsPlaying(true);
-      //setIsShortsVideoPlaying(true);
     } else {
-      videoPlayer.pause();
+      safeCall(videoPlayer, "pause");
       setIsPlaying(false);
-      //setIsShortsVideoPlaying(false);
     }
 
     return () => {
-      try {
-        videoPlayer.dispose?.();
-      } catch (e) {
-        console.log("usePlayShortsVideoOnFocus error:", e.message);
-      }
+      mounted.current = false;
+      safeCall(videoPlayer, "pause");
     };
-  }, [isFocused, autoPlayVideoId]);
+  }, [isFocused, videoDataId, autoPlayVideoId]);
 }

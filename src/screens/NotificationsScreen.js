@@ -10,7 +10,7 @@ import { BasePressable, RippleButton } from "../components/PressableComponents";
 import { BaseText } from "../components/TextComponents";
 import { useTheme } from "../context/ThemeContext";
 import { useUI } from "../context/UIContext";
-import { useSetMainVideoData } from "../hooks/useSetVideoData";
+import { useSetVideoData } from "../hooks/useSetVideoData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
 
@@ -25,13 +25,13 @@ export default function NotificationsScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useScrollToTopOnFocus(scrollToTopRef);
-  useSetMainVideoData({
+  useSetVideoData({
     query: newQuery,
     queryResults: 4,
     setVideos: setNewVideos,
     setIsLoading,
   });
-  useSetMainVideoData({
+  useSetVideoData({
     query: oldQuery,
     queryResults: 4,
     setVideos: setOldVideos,

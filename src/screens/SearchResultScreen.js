@@ -1,11 +1,10 @@
 import { useRef, useState } from "react";
 import {
-  AutoPlayVideoFlatList,
+  MainVideoFlatList,
   ScreenContainer,
 } from "../components/ContainerComponents";
-import { useTheme } from "../context/ThemeContext";
-import { useSetMainVideoData } from "../hooks/useSetVideoData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
+import { useSetVideoData } from "../hooks/useSetVideoData";
 
 export default function SearchResultScreen({ navigation, route }) {
   const scrollToTopRef = useRef(null);
@@ -15,17 +14,17 @@ export default function SearchResultScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useScrollToTopOnFocus(scrollToTopRef);
-  useSetMainVideoData({
+  useSetVideoData({
     query: searchInput,
     queryResults: 6,
     setVideos: setSearchVideos,
     setIsLoading,
-    dependecies: [searchInput],
+    dependencies: [searchInput],
   });
 
   return (
     <ScreenContainer isLoading={isLoading}>
-      <AutoPlayVideoFlatList
+      <MainVideoFlatList
         navigation={navigation}
         query={searchInput}
         data={searchVideos}

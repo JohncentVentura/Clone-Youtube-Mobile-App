@@ -15,7 +15,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useTheme } from "../../context/ThemeContext";
 import { useUI } from "../../context/UIContext";
-import { useSetMainVideoData } from "../../hooks/useSetVideoData";
+import { useSetVideoData } from "../../hooks/useSetVideoData";
 import { navigate } from "../../navigations/NavigationConfig";
 import { styles } from "../../styles/styles";
 import { ColumnScrollView, RowScrollView } from "../ContainerComponents";
@@ -49,20 +49,20 @@ export function HomeCommentsModal() {
   const backdropOpacityValue = useSharedValue(0);
   const translateYValue = useSharedValue("100%");
 
-  useSetMainVideoData({
+  useSetVideoData({
     query: modalVideoData.query,
     queryResults: 6,
     setVideos: setCommentVideos,
     setIsLoading,
-    dependecies: [modalVideoData],
+    dependencies: [modalVideoData],
   });
 
-  useSetMainVideoData({
+  useSetVideoData({
     query: commentSelectedQuery,
     queryResults: 6,
     setVideos: setCommentSelectedVideos,
     setIsLoading,
-    dependecies: [commentSelectedQuery],
+    dependencies: [commentSelectedQuery],
   });
 
   //Open modal

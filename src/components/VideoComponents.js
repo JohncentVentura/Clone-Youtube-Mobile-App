@@ -27,17 +27,16 @@ import {
 } from "../hooks/usePlayVideoOnFocus";
 import { styles } from "../styles/styles";
 
-export function FlatListVideoView({
-  style,
-  videoData,
-  autoPlayVideoId,
-  ...rest
-}) {
+export function MainVideoView({ style, videoData, autoPlayVideoId, ...rest }) {
   const videoPlayer = useVideoPlayer(videoData.video, (player) => {
     player.loop = true;
   });
 
-  usePlayMainVideoOnFocus({ videoPlayer, autoPlayVideoId });
+  usePlayMainVideoOnFocus({
+    videoPlayer,
+    videoDataId: videoData.id,
+    autoPlayVideoId: autoPlayVideoId,
+  });
 
   return (
     <VideoView
@@ -45,24 +44,6 @@ export function FlatListVideoView({
       resizeMode="stretch"
       player={videoPlayer}
       nativeControls={false}
-      {...rest}
-    />
-  );
-}
-
-export function MainVideoView({ style, videoData, ...rest }) {
-  const videoPlayer = useVideoPlayer(videoData.video, (player) => {
-    player.loop = true;
-  });
-
-  usePlayMainVideoOnFocus({ videoPlayer, autoPlayVideoId: videoData.id });
-
-  return (
-    <VideoView
-      style={[styles.mainVideoView, style]}
-      resizeMode="stretch"
-      player={videoPlayer}
-      nativeControls={true}
       {...rest}
     />
   );
@@ -98,7 +79,12 @@ export function ShortsVideoView({
     }
   }, [isPlaying]);
 
-  usePlayShortsVideoOnFocus({ videoPlayer, autoPlayVideoId, setIsPlaying });
+  usePlayShortsVideoOnFocus({
+    videoPlayer,
+    videoDataId: videoData.id,
+    autoPlayVideoId,
+    setIsPlaying,
+  });
 
   const togglePlay = () => {
     isPlaying ? videoPlayer.pause() : videoPlayer.play();

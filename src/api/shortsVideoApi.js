@@ -9,14 +9,21 @@ import {
 
 const { PEXELS_API_URL, PEXELS_API_KEY } = Constants.expoConfig.extra;
 
-export async function fetchShortsVideoData(query = "home", queryResults = 3) {
+const queryResultsMultiplier = 3;
+
+export async function fetchShortsVideoData({
+  query = "debug",
+  queryResults = 3,
+  signal,
+}) {
   try {
     const url = `${PEXELS_API_URL}/search?query=${encodeURIComponent(
       query
-    )} shorts&per_page=${queryResults * 3}`;
+    )} shorts&per_page=${queryResults * queryResultsMultiplier}`;
 
     const res = await fetch(url, {
       headers: { Authorization: PEXELS_API_KEY },
+      signal,
     });
 
     if (!res.ok) {
@@ -28,7 +35,7 @@ export async function fetchShortsVideoData(query = "home", queryResults = 3) {
       throw new Error("Invalid JSON from Pexels");
     });
 
-    //Filter videos that are portrait / vertical (Shorts-style)
+    //Filter videos that are portrait (Shorts-style)
     const shortVideos = data.videos.filter((video) => {
       const file = video.video_files?.[0];
       return file && file.height > file.width;
@@ -36,7 +43,7 @@ export async function fetchShortsVideoData(query = "home", queryResults = 3) {
 
     return shortVideos.map((video) => ({
       id: video.id,
-      query,
+      query: query,
       title: urlToVideoTitle(video.url),
       description: video.url,
       video: video.video_files[0].link,
@@ -54,7 +61,7 @@ export async function fetchShortsVideoData(query = "home", queryResults = 3) {
       commentsDescription: video.url,
     }));
   } catch (error) {
-    console.error("fetchShortsVideoData error:", error.message || error);
+    console.error("fetchShortsVideoData error: ", error);
     return [];
   }
 }

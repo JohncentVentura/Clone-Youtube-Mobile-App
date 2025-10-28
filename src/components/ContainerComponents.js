@@ -11,12 +11,15 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "../context/ThemeContext";
 import { useUI } from "../context/UIContext";
-import { styles } from "../styles/styles";
+import { screenHeight, styles } from "../styles/styles";
 import { DotVerticalIcon } from "./IconComponents";
-import { FlatListChannelImage } from "./ImageComponents";
+import {
+  FlatListChannelImage,
+  MainVideoThumbnailImage,
+} from "./ImageComponents";
 import { RippleButton } from "./PressableComponents";
 import { BaseText } from "./TextComponents";
-import { FlatListVideoView } from "./VideoComponents";
+import { MainVideoView, ShortsVideoView } from "./VideoComponents";
 
 //#region Screen & Headers
 export function HeaderContainer({ style, children, ...rest }) {
@@ -126,15 +129,127 @@ export function RowScrollView({ style, children, ...rest }) {
 }
 //#endregion
 
-//#region FlatList & Item
-export function AutoPlayVideoFlatList({
-  isLoading,
+//#region FlatList
+export function MainVideoFlatList({
+  style,
+  isLoading = false,
+  isAutoPlayingVideo = true,
+  data,
   navigation,
   query,
-  data,
   ...rest
 }) {
-  const { colors } = useTheme();
+  const inset = useSafeAreaInsets();
+  const { colors, fontSizes } = useTheme();
+  const { setShowFlatListVideoItemModal } = useUI();
+  const [autoPlayVideoId, setAutoPlayVideoId] = useState(null);
+  const onViewableItemsChanged = useRef(({ viewableItems }) => {
+    if (isAutoPlayingVideo && viewableItems.length > 0) {
+      setAutoPlayVideoId(viewableItems[0].item.id);
+    }
+  });
+  const viewabilityConfig = useRef({
+    viewAreaCoveragePercentThreshold: 50,
+  });
+
+  return isLoading ? (
+    <ActivityIndicator style={{ flex: 1 }} size="large" />
+  ) : (
+    <FlatList
+      //*
+      initialNumToRender={1}
+      maxToRenderPerBatch={1}
+      windowSize={2}
+      //*/
+      showsVerticalScrollIndicator={false}
+      onViewableItemsChanged={onViewableItemsChanged.current}
+      viewabilityConfig={viewabilityConfig.current}
+      style={style}
+      data={data}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item, index }) => {
+        return (
+          <View
+            style={[
+              {
+                marginBottom: 32,
+                paddingBottom: index === data.length - 1 ? inset.bottom : 0,
+              },
+            ]}
+          >
+            <Pressable
+              onPress={() => {
+                navigation.push("MainVideoScreen", {
+                  query: query,
+                  videoData: item,
+                });
+              }}
+            >
+              {isAutoPlayingVideo ? (
+                <MainVideoView
+                  videoData={item}
+                  autoPlayVideoId={autoPlayVideoId}
+                />
+              ) : (
+                <MainVideoThumbnailImage source={{ uri: item.picture }} />
+              )}
+            </Pressable>
+            <View
+              style={[
+                styles.screenPadHorizontal,
+                {
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "flex-start",
+                },
+              ]}
+            >
+              <FlatListChannelImage
+                style={{ marginTop: 10 }}
+                source={{ uri: item.picture }}
+                onPress={() => {
+                  navigation.navigate("ChannelScreen", {
+                    query: query,
+                    videoData: item,
+                  });
+                }}
+              />
+              <View style={{ marginLeft: 14, marginTop: 8, flexShrink: 1 }}>
+                <BaseText
+                  style={{
+                    fontSize: fontSizes.lg,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {item.title}
+                </BaseText>
+                <BaseText
+                  style={{
+                    marginTop: 4,
+                    fontSize: fontSizes.xs,
+                    color: colors.textSecondary,
+                  }}
+                >
+                  {item.channelName} • {item.views} views • {item.uploadedDate}
+                </BaseText>
+              </View>
+              <RippleButton
+                style={{ marginLeft: "auto", marginTop: 6 }}
+                rippleSize={4}
+                onPress={() => setShowFlatListVideoItemModal(true)}
+              >
+                <DotVerticalIcon />
+              </RippleButton>
+            </View>
+          </View>
+        );
+      }}
+      {...rest}
+    />
+  );
+}
+
+export function ShortsVideoFlatList({ style, data, navigation, setQuery }) {
   const [autoPlayVideoId, setAutoPlayVideoId] = useState(null);
   const onViewableItemsChanged = useRef(({ viewableItems }) => {
     if (viewableItems.length > 0) {
@@ -145,106 +260,38 @@ export function AutoPlayVideoFlatList({
     viewAreaCoveragePercentThreshold: 50,
   });
 
-  return isLoading ? (
-    <ActivityIndicator
-      style={{ backgroundColor: colors.bg, flex: 1 }}
-      size="large"
-    />
-  ) : (
+  return (
     <FlatList
-      data={data}
-      keyExtractor={(item, index) => index + item.id}
-      renderItem={({ item }) => {
-        return (
-          <FlatListVideoItem
-            navigation={navigation}
-            query={query}
-            videoData={item}
-            autoPlayVideoId={item.id === autoPlayVideoId}
-          />
-        );
-      }}
+      //*
+      pagingEnabled
+      snapToInterval={screenHeight}
+      decelerationRate="normal"
+      scrollEventThrottle={16}
+      initialNumToRender={1}
+      maxToRenderPerBatch={1}
+      removeClippedSubviews={true}
+      windowSize={2}
+      getItemLayout={(_, index) => ({
+        length: screenHeight,
+        offset: screenHeight * index,
+        index,
+      })}
+      //*/
+      showsVerticalScrollIndicator={false}
+      style={style}
       onViewableItemsChanged={onViewableItemsChanged.current}
       viewabilityConfig={viewabilityConfig.current}
-      {...rest}
-    />
-  );
-}
-
-export function FlatListVideoItem({
-  style,
-  navigation,
-  query,
-  videoData,
-  autoPlayVideoId,
-}) {
-  const { setShowFlatListVideoItemModal } = useUI();
-  const { colors, fontSizes } = useTheme();
-
-  return (
-    <View style={[{ marginBottom: 32 }, style]}>
-      <Pressable
-        onPress={() => {
-          navigation.push("MainVideoScreen", {
-            query: query,
-            videoData: videoData,
-          });
-        }}
-      >
-        <FlatListVideoView
-          videoData={videoData}
+      data={data}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => (
+        <ShortsVideoView
+          setQuery={setQuery}
+          navigation={navigation}
+          videoData={item}
           autoPlayVideoId={autoPlayVideoId}
         />
-      </Pressable>
-      <View
-        style={[
-          styles.screenPadHorizontal,
-          {
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            alignItems: "flex-start",
-          },
-        ]}
-      >
-        <FlatListChannelImage
-          style={{ marginTop: 10 }}
-          source={{ uri: videoData.picture }}
-          onPress={() => {
-            navigation.navigate("ChannelScreen", {
-              query: query,
-              videoData: videoData,
-            });
-          }}
-        />
-        <View style={{ marginLeft: 14, marginTop: 8, flexShrink: 1 }}>
-          <BaseText
-            style={{
-              fontSize: fontSizes.lg,
-              fontWeight: "bold",
-            }}
-          >
-            {videoData.title}
-          </BaseText>
-          <BaseText
-            style={{
-              marginTop: 4,
-              fontSize: fontSizes.xs,
-              color: colors.textSecondary,
-            }}
-          >
-            {videoData.channelName} • {videoData.views} views •{" "}
-            {videoData.uploadedDate}
-          </BaseText>
-        </View>
-        <RippleButton
-          style={{ marginLeft: "auto", marginTop: 6 }}
-          rippleSize={4}
-          onPress={() => setShowFlatListVideoItemModal(true)}
-        >
-          <DotVerticalIcon />
-        </RippleButton>
-      </View>
-    </View>
+      )}
+    />
   );
 }
 //#endregion

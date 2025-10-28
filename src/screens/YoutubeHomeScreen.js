@@ -1,14 +1,14 @@
 import { useRef, useState } from "react";
 import { Pressable } from "react-native";
 import {
-  AutoPlayVideoFlatList,
+  MainVideoFlatList,
   RowScrollView,
   ScreenContainer,
 } from "../components/ContainerComponents";
 import { CompassIcon } from "../components/IconComponents";
 import { TabButton } from "../components/PressableComponents";
 import { useTheme } from "../context/ThemeContext";
-import { useSetMainVideoData } from "../hooks/useSetVideoData";
+import { useSetVideoData } from "../hooks/useSetVideoData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
 
@@ -19,12 +19,12 @@ export default function YoutubeHomeScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useScrollToTopOnFocus(scrollToTopRef);
-  useSetMainVideoData({
+  useSetVideoData({
     query,
     queryResults: 5,
     setVideos: setHomeVideos,
     setIsLoading,
-    dependecies: [query],
+    dependencies: [query],
   });
 
   return (
@@ -34,14 +34,13 @@ export default function YoutubeHomeScreen({ navigation }) {
         query={query}
         setQuery={setQuery}
       />
-      <AutoPlayVideoFlatList
+      <MainVideoFlatList
         style={{ marginTop: 6 }}
-        ref={scrollToTopRef}
         isLoading={isLoading}
+        data={homeVideos}
         navigation={navigation}
         query={query}
-        data={homeVideos}
-        showsVerticalScrollIndicator={false}
+        ref={scrollToTopRef}
       />
     </ScreenContainer>
   );

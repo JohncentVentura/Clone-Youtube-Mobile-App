@@ -8,7 +8,11 @@ import {
 
 const { PEXELS_API_URL, PEXELS_API_KEY } = Constants.expoConfig.extra;
 
-export async function fetchMainVideoData(query = "home", queryResults = 3) {
+export async function fetchMainVideoData({
+  query = "debug",
+  queryResults = 3,
+  signal,
+}) {
   try {
     const url = `${PEXELS_API_URL}/search?query=${encodeURIComponent(
       query
@@ -16,6 +20,7 @@ export async function fetchMainVideoData(query = "home", queryResults = 3) {
 
     const res = await fetch(url, {
       headers: { Authorization: PEXELS_API_KEY },
+      signal,
     });
 
     if (!res.ok) {
@@ -47,7 +52,7 @@ export async function fetchMainVideoData(query = "home", queryResults = 3) {
       commentsDescription: video.url,
     }));
   } catch (error) {
-    console.error("fetchMainVideoData error:", error.message || error);
+    console.error("fetchMainVideoData error: ", error);
     return [];
   }
 }

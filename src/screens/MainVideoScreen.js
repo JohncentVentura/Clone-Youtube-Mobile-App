@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
-import { FlatList, Pressable, View } from "react-native";
+import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
-  FlatListVideoItem,
+  MainVideoFlatList,
   RowScrollView,
   ScreenContainer,
 } from "../components/ContainerComponents";
@@ -29,40 +29,44 @@ import { MainVideoView } from "../components/VideoComponents";
 import { useTheme } from "../context/ThemeContext";
 import { useUI } from "../context/UIContext";
 import { useHideBottomTabBarOnFocus } from "../hooks/useHideBottomTabBarOnFocus";
-import { useSetMainVideoData } from "../hooks/useSetVideoData";
+import { useSetVideoData } from "../hooks/useSetVideoData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
 
 export default function MainVideoScreen({ navigation, route }) {
-  
-  const insets = useSafeAreaInsets();
+  const { query, videoData } = route.params;
+
   const { colors, fontSizes, iconSizes } = useTheme();
   const { setModalVideoData, setShowHomeCommentsModal } = useUI();
   const scrollToTopRef = useRef(null);
   const [relatedVideos, setRelatedVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { query, videoData } = route.params;
 
   useHideBottomTabBarOnFocus();
   useScrollToTopOnFocus(scrollToTopRef);
-  useSetMainVideoData({
+  useSetVideoData({
     query,
     queryResults: 5,
     setVideos: setRelatedVideos,
     setIsLoading,
-    dependecies: [query],
+    dependencies: [query],
   });
 
   return (
     <ScreenContainer isLoading={isLoading}>
-      <FlatList
-        ref={scrollToTopRef}
+      <MainVideoFlatList
+        isAutoPlayingVideo={false}
         data={relatedVideos}
-        keyExtractor={(item) => item.id.toString()}
-        showsVerticalScrollIndicator={false}
+        navigation={navigation}
+        query={query}
+        ref={scrollToTopRef}
         ListHeaderComponent={
           <>
-            <MainVideoView videoData={videoData} />
+            <MainVideoView
+              videoData={videoData}
+              autoPlayVideoId={videoData.id}
+              nativeControls={true}
+            />
             <View style={[styles.screenPadHorizontal, { marginBottom: 16 }]}>
               <BaseText
                 style={{
@@ -150,7 +154,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     {videoData.channelSubscribers}
                   </BaseText>
                 </View>
-                <SubscribeButton/>
+                <SubscribeButton />
               </View>
 
               {/*Likes/Dislikes, share, & other buttons section*/}
@@ -301,17 +305,6 @@ export default function MainVideoScreen({ navigation, route }) {
             </View>
           </>
         }
-        renderItem={({ item, index }) => (
-          <FlatListVideoItem
-            style={{
-              paddingBottom:
-                index === relatedVideos.length - 1 && insets.bottom,
-            }}
-            navigation={navigation}
-            query={query}
-            videoData={item}
-          />
-        )}
       />
     </ScreenContainer>
   );

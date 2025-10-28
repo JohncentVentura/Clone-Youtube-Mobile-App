@@ -2,58 +2,45 @@ import { useEffect } from "react";
 import { fetchMainVideoData } from "../api/mainVideoApi";
 import { fetchShortsVideoData } from "../api/shortsVideoApi";
 
-export function useSetMainVideoData({
+export const videoDataType = {
+  main: "main",
+  shorts: "shorts",
+};
+
+export function useSetVideoData({
+  videoDataType = "main",
   query,
   queryResults,
   setVideos,
   setIsLoading,
-  dependecies = [],
+  dependencies = [],
 }) {
   useEffect(() => {
+    const controller = new AbortController();
+    const { signal } = controller;
+
     let isMounted = true;
     setIsLoading?.(true);
 
     (async function () {
       try {
-        const data = await fetchMainVideoData(query, queryResults);
-        if (isMounted) {
-          setVideos(data);
-        }
-      } catch (error) {
-        console.error("useSetPexelsDataVideos error:", error);
+        const data =
+          videoDataType === "shorts"
+            ? await fetchShortsVideoData({ query, queryResults, signal })
+            : await fetchMainVideoData({ query, queryResults, signal });
+
+        if (isMounted) setVideos(data);
+      } catch (err) {
+        console.error("useSetVideoData error:", err);
       } finally {
-        if (isMounted) setIsLoading?.(false); // 💫 end loading
+        if (isMounted) setIsLoading?.(false);
       }
     })();
 
-    return () => (isMounted = false);
-  }, dependecies);
-}
-
-export function useSetShortsVideoData({
-  query,
-  queryResults,
-  setVideos,
-  setIsLoading,
-  dependecies = [],
-}) {
-  useEffect(() => {
-    let isMounted = true;
-    setIsLoading?.(true);
-
-    (async function () {
-      try {
-        const data = await fetchShortsVideoData(query, queryResults);
-        if (isMounted) {
-          setVideos(data);
-        }
-      } catch (error) {
-        console.error("useSetPexelsDataVideos error:", error);
-      } finally {
-        if (isMounted) setIsLoading?.(false); // 💫 end loading
-      }
-    })();
-
-    return () => (isMounted = false);
-  }, dependecies);
+    return () => {
+      isMounted = false;
+      setVideos([]);
+      controller.abort();
+    };
+  }, dependencies);
 }

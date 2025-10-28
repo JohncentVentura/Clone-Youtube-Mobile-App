@@ -1,5 +1,6 @@
 import { Image, Pressable } from "react-native";
 import { useTheme } from "../context/ThemeContext";
+import { styles } from "../styles/styles";
 import { imagePaths } from "../utils/constants";
 
 export function ChannelCoverImage({ source, ...rest }) {
@@ -81,6 +82,17 @@ export function HeaderYoutubeLogoImage({ style, ...rest }) {
           : imagePaths.youtubeLogoDarkMode
       }
       {...rest}
+    />
+  );
+}
+
+export function MainVideoThumbnailImage({ source, ...rest }) {
+  return (
+    <Image
+      style={styles.mainVideoView}
+      resizeMode={"stretch"}
+      source={source}
+      alt="MainVideoThumbnail"
     />
   );
 }
