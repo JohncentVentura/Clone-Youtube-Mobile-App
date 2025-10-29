@@ -9,16 +9,16 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Octicons from "@expo/vector-icons/Octicons";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
-import { useTheme } from "../context/ThemeContext";
-import { useUI } from "../context/UIContext";
+import { useThemeContext } from "../context/ThemeContext";
+import { useUIContext } from "../context/UIContext";
 import { styles } from "../styles/styles";
 import { RippleButton } from "./PressableComponents";
 
 export function BaseIcon({ IconComponent, ...rest }) {
-  const { colors, iconSizes } = useTheme();
+  const { ctxColors, ctxIconSizes } = useThemeContext();
 
   return (
-    <IconComponent size={iconSizes.base} color={colors.iconPrimary} {...rest} />
+    <IconComponent size={ctxIconSizes.base} color={ctxColors.iconPrimary} {...rest} />
   );
 }
 
@@ -66,39 +66,39 @@ export function InactiveYouIcon({ ...rest }) {
 
 //#region Header Icons
 export function HeaderArrowBackIcon({ navigation, size, color, ...rest }) {
-  const { colors, iconSizes } = useTheme();
+  const { ctxColors, ctxIconSizes } = useThemeContext();
 
   return (
     <RippleButton onPress={() => navigation.goBack()} {...rest}>
       <ArrowBackIcon
-        size={size || iconSizes.base}
-        color={color || colors.iconPrimary}
+        size={size || ctxIconSizes.base}
+        color={color || ctxColors.iconPrimary}
       />
     </RippleButton>
   );
 }
 
 export function HeaderDotVerticalIcon({ style, size, color, ...rest }) {
-  const { colors, iconSizes } = useTheme();
+  const { ctxColors, ctxIconSizes } = useThemeContext();
 
   return (
     <RippleButton style={[styles.headerRightIcon, style]} {...rest}>
       <DotVerticalIcon
-        size={size || iconSizes.base}
-        color={color || colors.iconPrimary}
+        size={size || ctxIconSizes.base}
+        color={color || ctxColors.iconPrimary}
       />
     </RippleButton>
   );
 }
 
 export function HeaderMicIcon({ style, size, color, ...rest }) {
-  const { colors, iconSizes } = useTheme();
+  const { ctxColors, ctxIconSizes } = useThemeContext();
 
   return (
     <RippleButton style={[styles.headerRightIcon, style]} {...rest}>
       <MicIcon
-        size={size || iconSizes.base}
-        color={color || colors.iconPrimary}
+        size={size || ctxIconSizes.base}
+        color={color || ctxColors.iconPrimary}
       />
     </RippleButton>
   );
@@ -111,7 +111,7 @@ export function HeaderNotificationsIcon({
   color,
   ...rest
 }) {
-  const { colors, iconSizes } = useTheme();
+  const { ctxColors, ctxIconSizes } = useThemeContext();
 
   return (
     <RippleButton
@@ -122,15 +122,15 @@ export function HeaderNotificationsIcon({
       {...rest}
     >
       <NotificationsIcon
-        size={size || iconSizes.base}
-        color={color || colors.iconPrimary}
+        size={size || ctxIconSizes.base}
+        color={color || ctxColors.iconPrimary}
       />
     </RippleButton>
   );
 }
 
 export function HeaderSearchIcon({ style, navigation, size, color, ...rest }) {
-  const { colors, iconSizes } = useTheme();
+  const { ctxColors, ctxIconSizes } = useThemeContext();
 
   return (
     <RippleButton
@@ -141,26 +141,26 @@ export function HeaderSearchIcon({ style, navigation, size, color, ...rest }) {
       {...rest}
     >
       <SearchIcon
-        size={size || iconSizes.base}
-        color={color || colors.iconPrimary}
+        size={size || ctxIconSizes.base}
+        color={color || ctxColors.iconPrimary}
       />
     </RippleButton>
   );
 }
 
 export function HeaderShareScreenIcon({ style, size, color, ...rest }) {
-  const { colors, iconSizes } = useTheme();
-  const { setShowShareScreenModal } = useUI();
+  const { ctxColors, ctxIconSizes } = useThemeContext();
+  const { ctxSetShareScreenModal } = useUIContext();
 
   return (
     <RippleButton
       style={[styles.headerRightIcon, style]}
-      onPress={() => setShowShareScreenModal(true)}
+      onPress={() => ctxSetShareScreenModal(true)}
       {...rest}
     >
       <ShareScreenIcon
-        size={size || iconSizes.base}
-        color={color || colors.iconPrimary}
+        size={size || ctxIconSizes.base}
+        color={color || ctxColors.iconPrimary}
       />
     </RippleButton>
   );

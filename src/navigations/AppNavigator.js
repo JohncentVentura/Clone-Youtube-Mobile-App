@@ -3,15 +3,11 @@ import { useFonts } from "expo-font";
 import { useState } from "react";
 import { ActivityIndicator } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import {
-  ClearSearchHistoryModal,
-  RemoveSearchItemModal,
-} from "../components/modals/QuestionModals";
 import { HomeCommentsProfileModal } from "../components/modals/CommentsModal";
 import {
-  FlatListVideoItemModal,
   HomeCommentsItemModal,
   HomeCommentsProfileItemModal,
+  MainVideoItemModal,
   NotificationsItemModal,
   ShareScreenModal,
 } from "../components/modals/SwipeDownModals";
@@ -20,13 +16,17 @@ import {
   NotificationsHeaderModal,
   SearchResultHeaderModal,
 } from "../components/modals/TopRightModals";
-import { SearchProvider } from "../context/SearchContext";
-import { ThemeProvider } from "../context/ThemeContext";
-import { UIProvider, useUI } from "../context/UIContext";
+import {
+  ClearSearchHistoryModal,
+  RemoveSearchItemModal,
+} from "../components/modals/QuestionModals";
+import { SearchContextProvider } from "../context/SearchContext";
+import { ThemeContextProvider } from "../context/ThemeContext";
+import { UIContextProvider, useUIContext } from "../context/UIContext";
 import { fontPaths } from "../utils/constants";
-import { navigationRef } from "./NavigationConfig";
 import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
+import { navigationRef } from "./NavigationConfig";
 
 export default function AppNavigator() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -42,101 +42,91 @@ export default function AppNavigator() {
 
   return (
     <SafeAreaProvider>
-      <SearchProvider>
-        <ThemeProvider>
-          <UIProvider>
+      <SearchContextProvider>
+        <ThemeContextProvider>
+          <UIContextProvider>
             <NavigationContainer ref={navigationRef}>
               {isLoggedIn ? <MainNavigator /> : <AuthNavigator />}
               <GlobalModals />
             </NavigationContainer>
-          </UIProvider>
-        </ThemeProvider>
-      </SearchProvider>
+          </UIContextProvider>
+        </ThemeContextProvider>
+      </SearchContextProvider>
     </SafeAreaProvider>
   );
 }
 
 function GlobalModals() {
   const {
-    showChannelHeaderModal,
-    setShowChannelHeaderModal,
-    showClearSearchHistoryModal,
-    setShowClearSearchHistoryModal,
-    showFlatListVideoItemModal,
-    setShowFlatListVideoItemModal,
-    showHomeCommentsItemModal,
-    setShowHomeCommentsItemModal,
-    showHomeCommentsProfileModal,
-    setShowHomeCommentsProfileModal,
-    showHomeCommentsProfileItemModal,
-    setShowHomeCommentsProfileItemModal,
-    showNotifHeaderModal,
-    setShowNotifHeaderModal,
-    showRemoveSearchItemModal,
-    setShowRemoveSearchItemModal,
-    showNotifItemModal,
-    setShowNotifItemModal,
-    showSearchResultHeaderModal,
-    setShowSearchResultHeaderModal,
-    showShareScreenModal,
-    setShowShareScreenModal,
-  } = useUI();
+    ctxChannelHeaderModal,
+    ctxSetChannelHeaderModal,
+    ctxClearSearchHistoryModal,
+    ctxSetClearSearchHistoryModal,
+    ctxHomeCommentsItemModal,
+    ctxSetHomeCommentsItemModal,
+    ctxHomeCommentsProfileModal,
+    ctxSetHomeCommentsProfileModal,
+    ctxHomeCommentsProfileItemModal,
+    ctxSetHomeCommentsProfileItemModal,
+    ctxMainVideoItemModal,
+    ctxSetMainVideoItemModal,
+    ctxNotifHeaderModal,
+    ctxSetNotifHeaderModal,
+    ctxNotifItemModal,
+    ctxSetNotifItemModal,
+    ctxRemoveSearchItemModal,
+    ctxSetRemoveSearchItemModal,
+    ctxSearchResultHeaderModal,
+    ctxSetSearchResultHeaderModal,
+    ctxShareScreenModal,
+    ctxSetShareScreenModal,
+  } = useUIContext();
 
   return (
     <>
-      <ClearSearchHistoryModal
-        showModal={showClearSearchHistoryModal}
-        setShowModal={setShowClearSearchHistoryModal}
-      />
-
       <ChannelHeaderModal
-        showModal={showChannelHeaderModal}
-        setShowModal={setShowChannelHeaderModal}
+        isVisible={ctxChannelHeaderModal}
+        setIsVisible={ctxSetChannelHeaderModal}
       />
-
-      <FlatListVideoItemModal
-        showModal={showFlatListVideoItemModal}
-        setShowModal={setShowFlatListVideoItemModal}
+      <ClearSearchHistoryModal
+        isVisible={ctxClearSearchHistoryModal}
+        setIsVisible={ctxSetClearSearchHistoryModal}
       />
-
       <HomeCommentsItemModal
-        showModal={showHomeCommentsItemModal}
-        setShowModal={setShowHomeCommentsItemModal}
+        isVisible={ctxHomeCommentsItemModal}
+        setIsVisible={ctxSetHomeCommentsItemModal}
       />
-
       <HomeCommentsProfileModal
-        showModal={showHomeCommentsProfileModal}
-        setShowModal={setShowHomeCommentsProfileModal}
+        isVisible={ctxHomeCommentsProfileModal}
+        setIsVisible={ctxSetHomeCommentsProfileModal}
       />
-
       <HomeCommentsProfileItemModal
-        showModal={showHomeCommentsProfileItemModal}
-        setShowModal={setShowHomeCommentsProfileItemModal}
+        isVisible={ctxHomeCommentsProfileItemModal}
+        setIsVisible={ctxSetHomeCommentsProfileItemModal}
       />
-
+      <MainVideoItemModal
+        isVisible={ctxMainVideoItemModal}
+        setIsVisible={ctxSetMainVideoItemModal}
+      />
       <NotificationsHeaderModal
-        showModal={showNotifHeaderModal}
-        setShowModal={setShowNotifHeaderModal}
+        isVisible={ctxNotifHeaderModal}
+        setIsVisible={ctxSetNotifHeaderModal}
       />
-
       <NotificationsItemModal
-        showModal={showNotifItemModal}
-        setShowModal={setShowNotifItemModal}
+        isVisible={ctxNotifItemModal}
+        setIsVisible={ctxSetNotifItemModal}
       />
-
       <RemoveSearchItemModal
-        showModal={showRemoveSearchItemModal}
-        setShowModal={setShowRemoveSearchItemModal}
+        isVisible={ctxRemoveSearchItemModal}
+        setIsVisible={ctxSetRemoveSearchItemModal}
       />
-
       <SearchResultHeaderModal
-        showModal={showSearchResultHeaderModal}
-        setShowModal={setShowSearchResultHeaderModal}
+        isVisible={ctxSearchResultHeaderModal}
+        setIsVisible={ctxSetSearchResultHeaderModal}
       />
-
       <ShareScreenModal
-        showModal={showShareScreenModal}
-        setShowModal={setShowShareScreenModal}
+        isVisible={ctxShareScreenModal}
+        setIsVisible={ctxSetShareScreenModal}
       />
     </>
   );

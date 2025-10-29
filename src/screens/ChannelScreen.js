@@ -5,11 +5,11 @@ import {
   ChannelProfileImage,
 } from "../components/ImageComponents";
 import { BaseText } from "../components/TextComponents";
-import { useTheme } from "../context/ThemeContext";
+import { useThemeContext } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
 
 export default function ChannelScreen({ route }) {
-  const { colors, fontSizes } = useTheme();
+  const { ctxColors, ctxFontSizes } = useThemeContext();
   const { videoData } = route.params;
 
   return (
@@ -37,7 +37,7 @@ export default function ChannelScreen({ route }) {
         <View style={{ flex: 4, marginLeft: 8 }}>
           <BaseText
             style={{
-              fontSize: fontSizes.xl2,
+              fontSize: ctxFontSizes.xl2,
               fontWeight: "bold",
             }}
           >
@@ -46,7 +46,7 @@ export default function ChannelScreen({ route }) {
           <BaseText
             style={{
               marginTop: 4,
-              fontSize: fontSizes.xs,
+              fontSize: ctxFontSizes.xs,
               fontWeight: "medium",
             }}
           >
@@ -55,8 +55,8 @@ export default function ChannelScreen({ route }) {
           <BaseText
             style={{
               marginTop: 4,
-              fontSize: fontSizes.xs,
-              color: colors.textSecondary,
+              fontSize: ctxFontSizes.xs,
+              color: ctxColors.textSecondary,
             }}
           >
             {videoData.channelSubscribers} subscribers •{" "}
@@ -67,8 +67,8 @@ export default function ChannelScreen({ route }) {
       <BaseText
         style={{
           marginTop: 12,
-          fontSize: fontSizes.xs,
-          color: colors.textSecondary,
+          fontSize: ctxFontSizes.xs,
+          color: ctxColors.textSecondary,
         }}
       >
         {videoData.channelDescription}
@@ -77,7 +77,7 @@ export default function ChannelScreen({ route }) {
         <BaseText
           style={{
             fontWeight: "medium",
-            fontSize: fontSizes.xs,
+            fontSize: ctxFontSizes.xs,
           }}
           onPress={() => {
             console.log("...more press");
@@ -91,13 +91,13 @@ export default function ChannelScreen({ route }) {
           styles.wideButton,
           {
             marginTop: 12,
-            backgroundColor: colors.bgContrast,
+            backgroundColor: ctxColors.bgContrast,
             opacity: pressed ? 0.5 : 1,
           },
         ]}
         onPress={() => console.log("Subscribe pressed")}
       >
-        <BaseText style={{ fontWeight: "medium", color: colors.textContrast }}>
+        <BaseText style={{ fontWeight: "medium", color: ctxColors.textContrast }}>
           Subscribe
         </BaseText>
       </Pressable>

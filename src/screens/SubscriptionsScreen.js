@@ -1,11 +1,11 @@
 import { View } from "react-native";
 import { ScreenContainer } from "../components/ContainerComponents";
 import { BaseText } from "../components/TextComponents";
-import { useTheme } from "../context/ThemeContext";
+import { useThemeContext } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
 
 export default function SubscriptionsScreen() {
-  const { colors } = useTheme();
+  const { ctxColors } = useThemeContext();
 
   return (
     <ScreenContainer>

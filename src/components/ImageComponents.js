@@ -1,5 +1,5 @@
 import { Image, Pressable } from "react-native";
-import { useTheme } from "../context/ThemeContext";
+import { useThemeContext } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
 import { imagePaths } from "../utils/constants";
 
@@ -36,7 +36,7 @@ export function CommentsProfileLargeImage({ source, ...rest }) {
         style={[{ borderRadius: 99, width: 60, height: 60 }]}
         resizeMode={"stretch"}
         source={source}
-        alt="ChannelProfileImage"
+        alt="CommentsProfileLargeImage"
       />
     </Pressable>
   );
@@ -49,27 +49,14 @@ export function CommentsProfileSmallImage({ source, ...rest }) {
         style={[{ borderRadius: 99, width: 30, height: 30 }]}
         resizeMode={"stretch"}
         source={source}
-        alt="MainVideoCommentImage"
-      />
-    </Pressable>
-  );
-}
-
-export function FlatListChannelImage({ source, ...rest }) {
-  return (
-    <Pressable {...rest}>
-      <Image
-        style={[{ borderRadius: 99, width: 40, height: 40 }]}
-        resizeMode={"stretch"}
-        source={source}
-        alt="FlatListChannelImage"
+        alt="CommentsProfileSmallImage"
       />
     </Pressable>
   );
 }
 
 export function HeaderYoutubeLogoImage({ style, ...rest }) {
-  const { colorScheme } = useTheme();
+  const { ctxColorScheme } = useThemeContext();
 
   return (
     <Image
@@ -77,7 +64,7 @@ export function HeaderYoutubeLogoImage({ style, ...rest }) {
       resizeMode={"stretch"}
       alt="HeaderYoutubeLogoImage"
       source={
-        colorScheme === "light"
+        ctxColorScheme === "light"
           ? imagePaths.youtubeLogoLightMode
           : imagePaths.youtubeLogoDarkMode
       }
@@ -86,13 +73,26 @@ export function HeaderYoutubeLogoImage({ style, ...rest }) {
   );
 }
 
+export function MainVideoChannelImage({ source, ...rest }) {
+  return (
+    <Pressable {...rest}>
+      <Image
+        style={[{ borderRadius: 99, width: 40, height: 40 }]}
+        resizeMode={"stretch"}
+        source={source}
+        alt="MainVideoChannelImage"
+      />
+    </Pressable>
+  );
+}
+
 export function MainVideoThumbnailImage({ source, ...rest }) {
   return (
     <Image
-      style={styles.mainVideoView}
+      style={styles.mainVideo}
       resizeMode={"stretch"}
       source={source}
-      alt="MainVideoThumbnail"
+      alt="MainVideoThumbnailImage"
     />
   );
 }

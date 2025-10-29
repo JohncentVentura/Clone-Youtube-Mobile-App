@@ -8,15 +8,15 @@ import {
 } from "../components/ImageComponents";
 import { BasePressable, RippleButton } from "../components/PressableComponents";
 import { BaseText } from "../components/TextComponents";
-import { useTheme } from "../context/ThemeContext";
-import { useUI } from "../context/UIContext";
+import { useThemeContext } from "../context/ThemeContext";
+import { useUIContext } from "../context/UIContext";
 import { useSetVideoData } from "../hooks/useSetVideoData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
 
 export default function NotificationsScreen({ navigation }) {
-  const { setShowNotifItemModal } = useUI();
-  const { colors, fontSizes } = useTheme();
+  const { ctxSetNotifItemModal } = useUIContext();
+  const { ctxColors, ctxFontSizes } = useThemeContext();
   const scrollToTopRef = useRef(null);
   const [newQuery, setNewQuery] = useState("food");
   const [newVideos, setNewVideos] = useState([]);
@@ -45,8 +45,8 @@ export default function NotificationsScreen({ navigation }) {
           styles.screenPadLeft,
           {
             marginBottom: 6,
-            fontSize: fontSizes.sm,
-            color: colors.textSecondary,
+            fontSize: ctxFontSizes.sm,
+            color: ctxColors.textSecondary,
           },
         ]}
       >
@@ -58,7 +58,7 @@ export default function NotificationsScreen({ navigation }) {
           navigation={navigation}
           query={newQuery}
           videoData={item}
-          setVisible={setShowNotifItemModal}
+          setVisible={ctxSetNotifItemModal}
         />
       ))}
       <BaseText
@@ -66,8 +66,8 @@ export default function NotificationsScreen({ navigation }) {
           styles.screenPadLeft,
           {
             marginVertical: 6,
-            fontSize: fontSizes.sm,
-            color: colors.textSecondary,
+            fontSize: ctxFontSizes.sm,
+            color: ctxColors.textSecondary,
           },
         ]}
       >
@@ -79,7 +79,7 @@ export default function NotificationsScreen({ navigation }) {
           navigation={navigation}
           query={oldQuery}
           videoData={item}
-          setVisible={setShowNotifItemModal}
+          setVisible={ctxSetNotifItemModal}
         />
       ))}
     </ScreenScrollView>
@@ -87,7 +87,7 @@ export default function NotificationsScreen({ navigation }) {
 }
 
 function NotificationItem({ navigation, query, videoData, setVisible }) {
-  const { colors, fontSizes, iconSizes } = useTheme();
+  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
 
   return (
     <BasePressable
@@ -128,14 +128,14 @@ function NotificationItem({ navigation, query, videoData, setVisible }) {
             flexShrink: 1,
           }}
         >
-          <BaseText style={{ fontSize: fontSizes.sm, fontWeight: "bold" }}>
+          <BaseText style={{ fontSize: ctxFontSizes.sm, fontWeight: "bold" }}>
             {videoData.channelName}
           </BaseText>
-          <BaseText style={{ fontSize: fontSizes.sm }}>
+          <BaseText style={{ fontSize: ctxFontSizes.sm }}>
             {videoData.description}
           </BaseText>
           <BaseText
-            style={{ fontSize: fontSizes.xs, color: colors.textSecondary }}
+            style={{ fontSize: ctxFontSizes.xs, color: ctxColors.textSecondary }}
           >
             {videoData.uploadedDate}
           </BaseText>
@@ -159,7 +159,7 @@ function NotificationItem({ navigation, query, videoData, setVisible }) {
             setVisible(true);
           }}
         >
-          <DotVerticalIcon size={iconSizes.sm} />
+          <DotVerticalIcon size={ctxIconSizes.sm} />
         </RippleButton>
       </View>
     </BasePressable>

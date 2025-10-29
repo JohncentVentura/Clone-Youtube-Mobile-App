@@ -7,7 +7,6 @@ import {
 import { useSetVideoData } from "../hooks/useSetVideoData";
 
 export default function ShortsScreen({ navigation }) {
-  const insets = useSafeAreaInsets();
   const [query, setQuery] = useState("Road");
   const [shortsVideos, setShortsVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

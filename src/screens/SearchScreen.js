@@ -9,42 +9,46 @@ import {
 import { SearchHistoryThumbnailImage } from "../components/ImageComponents";
 import { BaseText } from "../components/TextComponents";
 import { BasePressable } from "../components/PressableComponents";
-import { useSearch } from "../context/SearchContext";
-import { useTheme } from "../context/ThemeContext";
-import { useUI } from "../context/UIContext";
+import { useSearchContext } from "../context/SearchContext";
+import { useThemeContext } from "../context/ThemeContext";
+import { useUIContext } from "../context/UIContext";
 import { useHideBottomTabBarOnFocus } from "../hooks/useHideBottomTabBarOnFocus";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
 
 export default function SearchScreen({ navigation }) {
   const insets = useSafeAreaInsets();
-  const { setGlobalHomeSearch, searchHistory, isSearchHistoryLoading, setRemovingSearchItem } =
-    useSearch();
-  const { colors, fontSizes, iconSizes } = useTheme();
-  const { setShowClearSearchHistoryModal, setShowRemoveSearchItemModal } =
-    useUI();
+  const {
+    ctxSetSearchInput,
+    ctxSearchHistory,
+    ctxIsSearchHistoryLoading,
+    ctxSetRemoveSearchText,
+  } = useSearchContext();
+  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
+  const { ctxSetClearSearchHistoryModal, ctxSetRemoveSearchItemModal } =
+    useUIContext();
   const scrollToTopRef = useRef(null);
 
   useHideBottomTabBarOnFocus();
   useScrollToTopOnFocus(scrollToTopRef);
 
   return (
-    <ScreenContainer isLoading={isSearchHistoryLoading}>
+    <ScreenContainer isLoading={ctxIsSearchHistoryLoading}>
       <FlatList
-        data={searchHistory}
+        data={ctxSearchHistory}
         ref={scrollToTopRef}
         keyExtractor={(item, index) => index + item.text}
         renderItem={({ item }) => (
           <BasePressable
             style={{ paddingVertical: 12 }}
             onPress={() => {
-              setGlobalHomeSearch("");
+              ctxSetSearchInput("");
               navigation.push("SearchResultScreen", { search: item.text });
             }}
             delayLongPress={300}
             onLongPress={() => {
-              setRemovingSearchItem(item);
-              setShowRemoveSearchItemModal(true);
+              ctxSetRemoveSearchText(item.text);
+              ctxSetRemoveSearchItemModal(true);
             }}
           >
             <View
@@ -59,7 +63,7 @@ export default function SearchScreen({ navigation }) {
             >
               <ClockRotateLeftIcon
                 style={{ marginLeft: 4 }}
-                size={iconSizes.xs}
+                size={ctxIconSizes.xs}
               />
               <BaseText
                 style={{
@@ -77,25 +81,25 @@ export default function SearchScreen({ navigation }) {
               <ArrowUpLeftIcon
                 style={{ marginLeft: 12 }}
                 onPress={() => {
-                  setGlobalHomeSearch(item.text);
+                  ctxSetSearchInput(item.text);
                 }}
               />
             </View>
           </BasePressable>
         )}
         ListFooterComponent={
-          searchHistory.length > 0 ? (
+          ctxSearchHistory.length > 0 ? (
             <Pressable
               style={({ pressed }) => ({
                 marginBottom: insets.bottom + 8,
                 opacity: pressed ? 0.5 : 1,
               })}
-              onPress={() => setShowClearSearchHistoryModal(true)}
+              onPress={() => ctxSetClearSearchHistoryModal(true)}
             >
               <BaseText
                 style={{
-                  fontSize: fontSizes.sm,
-                  color: colors.textSecondary,
+                  fontSize: ctxFontSizes.sm,
+                  color: ctxColors.textSecondary,
                   textAlign: "center",
                 }}
               >

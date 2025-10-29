@@ -16,7 +16,7 @@ import {
   ShareIcon,
 } from "../components/IconComponents";
 import {
-  FlatListChannelImage,
+  MainVideoChannelImage,
   CommentsProfileSmallImage,
 } from "../components/ImageComponents";
 import {
@@ -26,8 +26,8 @@ import {
 } from "../components/PressableComponents";
 import { BaseText } from "../components/TextComponents";
 import { MainVideoView } from "../components/VideoComponents";
-import { useTheme } from "../context/ThemeContext";
-import { useUI } from "../context/UIContext";
+import { useThemeContext } from "../context/ThemeContext";
+import { useUIContext } from "../context/UIContext";
 import { useHideBottomTabBarOnFocus } from "../hooks/useHideBottomTabBarOnFocus";
 import { useSetVideoData } from "../hooks/useSetVideoData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
@@ -36,8 +36,8 @@ import { styles } from "../styles/styles";
 export default function MainVideoScreen({ navigation, route }) {
   const { query, videoData } = route.params;
 
-  const { colors, fontSizes, iconSizes } = useTheme();
-  const { setModalVideoData, setShowHomeCommentsModal } = useUI();
+  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
+  const { ctxSetModalVideoData, ctxSetHomeCommentsModal } = useUIContext();
   const scrollToTopRef = useRef(null);
   const [relatedVideos, setRelatedVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -71,7 +71,7 @@ export default function MainVideoScreen({ navigation, route }) {
               <BaseText
                 style={{
                   marginTop: 4,
-                  fontSize: fontSizes.xl,
+                  fontSize: ctxFontSizes.xl,
                   fontWeight: "bold",
                 }}
               >
@@ -82,8 +82,8 @@ export default function MainVideoScreen({ navigation, route }) {
               <View style={{ marginTop: 4, flexDirection: "row" }}>
                 <BaseText
                   style={{
-                    fontSize: fontSizes.xs,
-                    color: colors.textSecondary,
+                    fontSize: ctxFontSizes.xs,
+                    color: ctxColors.textSecondary,
                   }}
                 >
                   {videoData.views} views
@@ -91,8 +91,8 @@ export default function MainVideoScreen({ navigation, route }) {
                 <BaseText
                   style={{
                     marginLeft: 8,
-                    fontSize: fontSizes.xs,
-                    color: colors.textSecondary,
+                    fontSize: ctxFontSizes.xs,
+                    color: ctxColors.textSecondary,
                   }}
                 >
                   {videoData.uploadedDate}
@@ -100,7 +100,7 @@ export default function MainVideoScreen({ navigation, route }) {
                 <BaseText
                   style={{
                     marginLeft: 8,
-                    fontSize: fontSizes.xs,
+                    fontSize: ctxFontSizes.xs,
                     fontWeight: "medium",
                   }}
                   onPress={() => {
@@ -126,7 +126,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     alignItems: "center",
                   }}
                 >
-                  <FlatListChannelImage
+                  <MainVideoChannelImage
                     source={{ uri: videoData.picture }}
                     onPress={() => {
                       console.log("Channel Image Pressed");
@@ -138,7 +138,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   <BaseText
                     style={{
                       marginLeft: 8,
-                      fontSize: fontSizes.sm,
+                      fontSize: ctxFontSizes.sm,
                       fontWeight: "medium",
                     }}
                   >
@@ -147,8 +147,8 @@ export default function MainVideoScreen({ navigation, route }) {
                   <BaseText
                     style={{
                       marginLeft: 8,
-                      fontSize: fontSizes.xs,
-                      color: colors.textSecondary,
+                      fontSize: ctxFontSizes.xs,
+                      color: ctxColors.textSecondary,
                     }}
                   >
                     {videoData.channelSubscribers}
@@ -163,7 +163,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   style={{
                     borderRadius: 99,
                     height: 30,
-                    backgroundColor: colors.bgSecondary,
+                    backgroundColor: ctxColors.bgSecondary,
                     flexDirection: "row",
                     alignItems: "center",
                   }}
@@ -171,15 +171,15 @@ export default function MainVideoScreen({ navigation, route }) {
                   <BasePressable
                     style={[
                       styles.smallIconTextButton,
-                      { backgroundColor: colors.bgSecondary },
+                      { backgroundColor: ctxColors.bgSecondary },
                     ]}
                     onPress={() => console.log("Liked Press")}
                   >
-                    <LikeIcon size={iconSizes.xs2} />
+                    <LikeIcon size={ctxIconSizes.xs2} />
                     <BaseText
                       style={{
                         paddingLeft: 8,
-                        fontSize: fontSizes.xs,
+                        fontSize: ctxFontSizes.xs,
                         fontWeight: "medium",
                       }}
                     >
@@ -191,17 +191,17 @@ export default function MainVideoScreen({ navigation, route }) {
                     style={{
                       width: 1,
                       height: "50%",
-                      backgroundColor: colors.borderPrimary,
+                      backgroundColor: ctxColors.borderPrimary,
                     }}
                   />
                   <BasePressable
                     style={[
                       styles.smallIconTextButton,
-                      { backgroundColor: colors.bgSecondary },
+                      { backgroundColor: ctxColors.bgSecondary },
                     ]}
                     onPress={() => console.log("Disliked Press")}
                   >
-                    <DislikeIcon size={iconSizes.xs2} />
+                    <DislikeIcon size={ctxIconSizes.xs2} />
                   </BasePressable>
                 </View>
 
@@ -244,11 +244,11 @@ export default function MainVideoScreen({ navigation, route }) {
                   borderRadius: 8,
                   paddingHorizontal: 12,
                   paddingTop: 8,
-                  backgroundColor: colors.bgSecondary,
+                  backgroundColor: ctxColors.bgSecondary,
                 }}
                 onPress={() => {
-                  setModalVideoData(videoData);
-                  setShowHomeCommentsModal(true);
+                  ctxSetModalVideoData(videoData);
+                  ctxSetHomeCommentsModal(true);
                 }}
               >
                 <View
@@ -260,7 +260,7 @@ export default function MainVideoScreen({ navigation, route }) {
                 >
                   <BaseText
                     style={{
-                      fontSize: fontSizes.sm,
+                      fontSize: ctxFontSizes.sm,
                       fontWeight: "medium",
                     }}
                   >
@@ -269,8 +269,8 @@ export default function MainVideoScreen({ navigation, route }) {
                   <BaseText
                     style={{
                       marginLeft: 10,
-                      fontSize: fontSizes.xs,
-                      color: colors.textSecondary,
+                      fontSize: ctxFontSizes.xs,
+                      color: ctxColors.textSecondary,
                     }}
                   >
                     {videoData.commentsCount}
@@ -287,14 +287,14 @@ export default function MainVideoScreen({ navigation, route }) {
                   <CommentsProfileSmallImage
                     source={{ uri: videoData.picture }}
                     onPress={() => {
-                      setModalVideoData(videoData);
-                      setShowHomeCommentsModal(true);
+                      ctxSetModalVideoData(videoData);
+                      ctxSetHomeCommentsModal(true);
                     }}
                   />
                   <BaseText
                     style={{
                       marginLeft: 10,
-                      fontSize: fontSizes.xs,
+                      fontSize: ctxFontSizes.xs,
                       flex: 1,
                     }}
                   >

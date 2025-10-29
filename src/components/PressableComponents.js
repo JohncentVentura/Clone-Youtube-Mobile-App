@@ -8,8 +8,8 @@ import Animated, {
   withDelay,
   withTiming,
 } from "react-native-reanimated";
-import { useTheme } from "../context/ThemeContext";
-import { useUI } from "../context/UIContext";
+import { useThemeContext } from "../context/ThemeContext";
+import { useUIContext } from "../context/UIContext";
 import { styles } from "../styles/styles";
 import { BaseText } from "./TextComponents";
 
@@ -18,7 +18,7 @@ const AnimatedText = Animated.createAnimatedComponent(BaseText);
 
 //#region Main Nav
 export function BottomTabBarIconTab({ style, isActiveRoute, Icon, ...rest }) {
-  const { colors } = useTheme();
+  const { ctxColors } = useThemeContext();
   const AnimatedIcon = Animated.createAnimatedComponent(Icon);
   const backgroundValue = useSharedValue(0);
   const foregroundValue = useSharedValue(isActiveRoute ? 1 : 0);
@@ -26,28 +26,28 @@ export function BottomTabBarIconTab({ style, isActiveRoute, Icon, ...rest }) {
     backgroundColor: interpolateColor(
       backgroundValue.value,
       [0, 1],
-      [colors.bg, colors.bgInteractive]
+      [ctxColors.bg, ctxColors.bgInteractive]
     ),
   }));
   const animatedBorder = useAnimatedStyle(() => ({
     borderTopColor: interpolateColor(
       foregroundValue.value,
       [0, 1],
-      [colors.borderSecondary, colors.primary]
+      [ctxColors.borderSecondary, ctxColors.primary]
     ),
   }));
   const animatedIconWrapper = useAnimatedStyle(() => ({
     backgroundColor: interpolateColor(
       foregroundValue.value,
       [0, 1],
-      [colors.bgSecondary, colors.primary]
+      [ctxColors.bgSecondary, ctxColors.primary]
     ),
   }));
   const animatedIcon = useAnimatedStyle(() => ({
     color: interpolateColor(
       foregroundValue.value,
       [0, 1],
-      [colors.iconSecondary, colors.iconContrast]
+      [ctxColors.iconSecondary, ctxColors.iconContrast]
     ),
   }));
 
@@ -86,7 +86,7 @@ export function BottomTabBarIconTextTab({
   label,
   ...rest
 }) {
-  const { colors, fontSizes } = useTheme();
+  const { ctxColors, ctxFontSizes } = useThemeContext();
   const AnimatedIcon = Animated.createAnimatedComponent(Icon);
   const backgroundValue = useSharedValue(0);
   const foregroundValue = useSharedValue(isActiveRoute ? 1 : 0);
@@ -94,28 +94,28 @@ export function BottomTabBarIconTextTab({
     backgroundColor: interpolateColor(
       backgroundValue.value,
       [0, 1],
-      [colors.bg, colors.bgInteractive]
+      [ctxColors.bg, ctxColors.bgInteractive]
     ),
   }));
   const animatedBorder = useAnimatedStyle(() => ({
     borderTopColor: interpolateColor(
       foregroundValue.value,
       [0, 1],
-      [colors.borderSecondary, colors.primary]
+      [ctxColors.borderSecondary, ctxColors.primary]
     ),
   }));
   const animatedIcon = useAnimatedStyle(() => ({
     color: interpolateColor(
       foregroundValue.value,
       [0, 1],
-      [colors.iconSecondary, colors.primary]
+      [ctxColors.iconSecondary, ctxColors.primary]
     ),
   }));
   const animatedText = useAnimatedStyle(() => ({
     color: interpolateColor(
       foregroundValue.value,
       [0, 1],
-      [colors.textSecondary, colors.textPrimary]
+      [ctxColors.textSecondary, ctxColors.textPrimary]
     ),
   }));
 
@@ -143,7 +143,7 @@ export function BottomTabBarIconTextTab({
         style={[
           animatedText,
           {
-            fontSize: fontSizes.xs2,
+            fontSize: ctxFontSizes.xs2,
             fontWeight: "medium",
           },
         ]}
@@ -154,28 +154,28 @@ export function BottomTabBarIconTextTab({
   );
 }
 export function DrawerPressable({ style, Icon, iconColor, label, ...rest }) {
-  const { colors, iconSizes } = useTheme();
+  const { ctxColors, ctxIconSizes } = useThemeContext();
   const AnimatedIcon = Animated.createAnimatedComponent(Icon);
   const sharedValue = useSharedValue(0);
   const animatedPressable = useAnimatedStyle(() => ({
     backgroundColor: interpolateColor(
       sharedValue.value,
       [0, 1],
-      [colors.bg, colors.primary]
+      [ctxColors.bg, ctxColors.primary]
     ),
   }));
   const animatedIcon = useAnimatedStyle(() => ({
     color: interpolateColor(
       sharedValue.value,
       [0, 1],
-      [iconColor || colors.iconPrimary, colors.iconContrast]
+      [iconColor || ctxColors.iconPrimary, ctxColors.iconContrast]
     ),
   }));
   const animatedText = useAnimatedStyle(() => ({
     color: interpolateColor(
       sharedValue.value,
       [0, 1],
-      [colors.textPrimary, colors.textContrast]
+      [ctxColors.textPrimary, ctxColors.textContrast]
     ),
   }));
 
@@ -190,7 +190,7 @@ export function DrawerPressable({ style, Icon, iconColor, label, ...rest }) {
       }}
       {...rest}
     >
-      <AnimatedIcon size={iconSizes.lg} style={animatedIcon} />
+      <AnimatedIcon size={ctxIconSizes.lg} style={animatedIcon} />
       <AnimatedText style={[animatedText, { marginLeft: 18 }]}>
         {label}
       </AnimatedText>
@@ -201,14 +201,14 @@ export function DrawerPressable({ style, Icon, iconColor, label, ...rest }) {
 
 //#region Pressable
 export function BasePressable({ style, children, ...rest }) {
-  const { colors } = useTheme();
+  const { ctxColors } = useThemeContext();
   const sharedValue = useSharedValue(0);
   const { backgroundColor, ...restStyle } = StyleSheet.flatten(style) || {};
   const animatedBackgroundColor = useAnimatedStyle(() => ({
     backgroundColor: interpolateColor(
       sharedValue.value,
       [0, 1],
-      [backgroundColor ?? colors.bg, colors.bgInteractive]
+      [backgroundColor ?? ctxColors.bg, ctxColors.bgInteractive]
     ),
   }));
 
@@ -231,7 +231,7 @@ export function BasePressable({ style, children, ...rest }) {
 
 //#region Buttons
 export function RippleButton({ style, rippleSize = 10, children, ...rest }) {
-  const { colors } = useTheme();
+  const { ctxColors } = useThemeContext();
   const sharedValue = useSharedValue(0);
   const opacityValue = useSharedValue(0);
   const { backgroundColor, ...restStyle } = StyleSheet.flatten(style) || {};
@@ -239,7 +239,7 @@ export function RippleButton({ style, rippleSize = 10, children, ...rest }) {
     backgroundColor: interpolateColor(
       sharedValue.value,
       [0, 1],
-      [backgroundColor ?? colors.bg, colors.bgInteractive]
+      [backgroundColor ?? ctxColors.bg, ctxColors.bgInteractive]
     ),
     transform: [{ scale: sharedValue.value }],
     opacity: opacityValue.value,
@@ -249,7 +249,7 @@ export function RippleButton({ style, rippleSize = 10, children, ...rest }) {
     <Pressable
       style={[
         {
-          //backgroundColor: colors.primary,
+          //backgroundColor: ctxColors.primary,
           justifyContent: "center",
           alignItems: "center",
         },
@@ -285,8 +285,8 @@ export function RippleButton({ style, rippleSize = 10, children, ...rest }) {
 }
 
 export function PlayShortsButton({ style, isPlaying, ...rest }) {
-  const { colors, iconSizes } = useTheme();
-  const { isShortsVideoPlaying } = useUI();
+  const { ctxColors, ctxIconSizes } = useThemeContext();
+  const { ctxIsShortsVideoPlaying } = useUIContext();
   const transformValue = useSharedValue(0);
   const opacityValue = useSharedValue(0);
   const animatedStyle = useAnimatedStyle(() => ({
@@ -317,24 +317,24 @@ export function PlayShortsButton({ style, isPlaying, ...rest }) {
             borderRadius: 99,
             height: 88,
             width: 88,
-            backgroundColor: colors.bgSecondary,
+            backgroundColor: ctxColors.bgSecondary,
             justifyContent: "center",
             alignItems: "center",
           },
           animatedStyle,
         ]}
       >
-        {isShortsVideoPlaying ? (
+        {ctxIsShortsVideoPlaying ? (
           <FontAwesome
             name="play"
-            size={iconSizes.xl2}
-            color={colors.iconPrimary}
+            size={ctxIconSizes.xl2}
+            color={ctxColors.iconPrimary}
           />
         ) : (
           <FontAwesome
             name="pause"
-            size={iconSizes.xl2}
-            color={colors.iconPrimary}
+            size={ctxIconSizes.xl2}
+            color={ctxColors.iconPrimary}
           />
         )}
       </Animated.View>
@@ -343,7 +343,7 @@ export function PlayShortsButton({ style, isPlaying, ...rest }) {
 }
 
 export function ShortsIconTextButton({ style, Icon, text, ...rest }) {
-  const { colors, fontSizes, iconSizes } = useTheme();
+  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
   const AnimatedIcon = Animated.createAnimatedComponent(Icon);
   const sharedValue = useSharedValue(1);
   const animatedStyle = useAnimatedStyle(() => ({
@@ -355,7 +355,7 @@ export function ShortsIconTextButton({ style, Icon, text, ...rest }) {
       style={[
         styles.baseButton,
         animatedStyle,
-        { backgroundColor: colors.transparentBlack, flexDirection: "row" },
+        { backgroundColor: ctxColors.transparentBlack, flexDirection: "row" },
         style,
       ]}
       onPressIn={() => {
@@ -366,13 +366,13 @@ export function ShortsIconTextButton({ style, Icon, text, ...rest }) {
       }}
       {...rest}
     >
-      <AnimatedIcon size={iconSizes.xs2} color={colors.white}/>
+      <AnimatedIcon size={ctxIconSizes.xs2} color={ctxColors.white}/>
       <AnimatedText
         style={{
           marginLeft: 6,
-          fontSize: fontSizes.sm,
+          fontSize: ctxFontSizes.sm,
           fontWeight: "medium",
-          color: colors.white,
+          color: ctxColors.white,
         }}
       >
         {text}
@@ -382,7 +382,7 @@ export function ShortsIconTextButton({ style, Icon, text, ...rest }) {
 }
 
 export function SmallIconTextButton({ style, Icon, text, ...rest }) {
-  const { colors, fontSizes, iconSizes } = useTheme();
+  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
   const AnimatedIcon = Animated.createAnimatedComponent(Icon);
   const sharedValue = useSharedValue(1);
   const animatedStyle = useAnimatedStyle(() => ({
@@ -394,7 +394,7 @@ export function SmallIconTextButton({ style, Icon, text, ...rest }) {
       style={[
         styles.smallIconTextButton,
         animatedStyle,
-        { backgroundColor: colors.bgSecondary },
+        { backgroundColor: ctxColors.bgSecondary },
         style,
       ]}
       onPressIn={() => {
@@ -405,11 +405,11 @@ export function SmallIconTextButton({ style, Icon, text, ...rest }) {
       }}
       {...rest}
     >
-      <AnimatedIcon size={iconSizes.xs2} />
+      <AnimatedIcon size={ctxIconSizes.xs2} />
       <AnimatedText
         style={{
           paddingLeft: 4,
-          fontSize: fontSizes.xs,
+          fontSize: ctxFontSizes.xs,
           fontWeight: "medium",
         }}
       >
@@ -420,7 +420,7 @@ export function SmallIconTextButton({ style, Icon, text, ...rest }) {
 }
 
 export function SubscribeButton({ style, ...rest }) {
-  const { colors, fontSizes } = useTheme();
+  const { ctxColors, ctxFontSizes } = useThemeContext();
   const sharedValue = useSharedValue(1);
   const { backgroundColor, ...restStyle } = StyleSheet.flatten(style) || {};
   const animatedOpacity = useAnimatedStyle(() => ({
@@ -430,7 +430,7 @@ export function SubscribeButton({ style, ...rest }) {
   return (
     <AnimatedPressable
       style={[
-        { backgroundColor: backgroundColor || colors.bgContrast },
+        { backgroundColor: backgroundColor || ctxColors.bgContrast },
         styles.baseButton,
         animatedOpacity,
         restStyle,
@@ -445,12 +445,12 @@ export function SubscribeButton({ style, ...rest }) {
     >
       <BaseText
         style={{
-          fontSize: fontSizes.xs,
+          fontSize: ctxFontSizes.xs,
           fontWeight: "medium",
           color:
-            backgroundColor === colors.white
-              ? colors.black
-              : colors.textContrast,
+            backgroundColor === ctxColors.white
+              ? ctxColors.black
+              : ctxColors.textContrast,
         }}
         onPress={() => console.log("Subscribe Press")}
       >
@@ -461,7 +461,7 @@ export function SubscribeButton({ style, ...rest }) {
 }
 
 export function TabButton({ style, isFirstTab, selected, children, ...rest }) {
-  const { colors } = useTheme();
+  const { ctxColors } = useThemeContext();
 
   return (
     <Pressable
@@ -471,14 +471,14 @@ export function TabButton({ style, isFirstTab, selected, children, ...rest }) {
           borderRadius: 8,
           paddingHorizontal: 12,
           paddingVertical: 6,
-          backgroundColor: selected ? colors.bgContrast : colors.bgSecondary,
+          backgroundColor: selected ? ctxColors.bgContrast : ctxColors.bgSecondary,
         },
         style,
       ]}
       {...rest}
     >
       <BaseText
-        style={{ color: selected ? colors.textContrast : colors.textPrimary }}
+        style={{ color: selected ? ctxColors.textContrast : ctxColors.textPrimary }}
       >
         {children}
       </BaseText>
@@ -489,20 +489,20 @@ export function TabButton({ style, isFirstTab, selected, children, ...rest }) {
 
 /*
 export function AnimatedTabButton({ style, selected, children, ...rest }) {
-  const { colors } = useTheme();
+  const { ctxColors } = useTheme();
   const sharedValue = useSharedValue(selected ? 1 : 0);
   const animatedBackgroundColor = useAnimatedStyle(() => ({
     backgroundColor: interpolateColor(
       sharedValue.value,
       [0, 1],
-      [colors.bgSecondary, colors.bgContrast]
+      [ctxColors.bgSecondary, ctxColors.bgContrast]
     ),
   }));
   const animatedForegroundColor = useAnimatedStyle(() => ({
     color: interpolateColor(
       sharedValue.value,
       [0, 1],
-      [colors.textPrimary, colors.textContrast]
+      [ctxColors.textPrimary, ctxColors.textContrast]
     ),
   }));
 

@@ -11,9 +11,9 @@ import {
 } from "../components/IconComponents";
 import { HomeCommentsModal } from "../components/modals/CommentsModal";
 import { BaseText, TextInputView } from "../components/TextComponents";
-import { useSearch } from "../context/SearchContext";
-import { useTheme } from "../context/ThemeContext";
-import { useUI } from "../context/UIContext";
+import { useSearchContext } from "../context/SearchContext";
+import { useThemeContext } from "../context/ThemeContext";
+import { useUIContext } from "../context/UIContext";
 import ChannelScreen from "../screens/ChannelScreen";
 import SearchScreen from "../screens/SearchScreen";
 import SearchResultScreen from "../screens/SearchResultScreen";
@@ -23,13 +23,13 @@ import { styles } from "../styles/styles";
 const Stack = createStackNavigator();
 
 export default function ShortsStack() {
-  const { colors, fontSizes } = useTheme();
+  const { ctxColors, ctxFontSizes } = useThemeContext();
   const {
-    isShortsVideoPlaying,
-    setShowChannelHeaderModal,
-    setShowSearchResultHeaderModal,
-    showHomeCommentsModal,
-  } = useUI();
+    ctxIsShortsVideoPlaying,
+    ctxSetChannelHeaderModal,
+    ctxSetSearchResultHeaderModal,
+    ctxHomeCommentsModal,
+  } = useUIContext();
 
   return (
     <>
@@ -48,26 +48,26 @@ export default function ShortsStack() {
                     backgroundColor: "transparent",
                   }}
                 >
-                  {!isShortsVideoPlaying && (
+                  {!ctxIsShortsVideoPlaying && (
                     <BaseText
                       style={{
-                        fontSize: fontSizes.xl2,
+                        fontSize: ctxFontSizes.xl2,
                         fontWeight: "bold",
-                        color: colors.white,
+                        color: ctxColors.white,
                       }}
                     >
                       Shorts
                     </BaseText>
                   )}
                   <View style={[styles.headerRightIconsContainer]}>
-                    <HeaderShareScreenIcon color={colors.white} />
+                    <HeaderShareScreenIcon color={ctxColors.white} />
                     <HeaderSearchIcon
-                      color={colors.white}
+                      color={ctxColors.white}
                       navigation={navigation}
                     />
                     <HeaderDotVerticalIcon
                       style={[styles.headerRightIcon]}
-                      color={colors.white}
+                      color={ctxColors.white}
                     />
                   </View>
                 </HeaderContainer>
@@ -80,8 +80,8 @@ export default function ShortsStack() {
           component={SearchScreen}
           options={({ navigation, route }) => ({
             header: () => {
-              const { globalHomeSearch, setGlobalHomeSearch, handleSearch } =
-                useSearch();
+              const { ctxSearchInput, ctxSetSearchInput, ctxHandleSearch } =
+                useSearchContext();
               const [searchInput, setSearchInput] = useState(
                 route.params.search
               );
@@ -91,21 +91,21 @@ export default function ShortsStack() {
                   <HeaderArrowBackIcon navigation={navigation} />
                   <TextInputView
                     autoFocus={true}
-                    value={globalHomeSearch ? globalHomeSearch : searchInput}
+                    value={ctxSearchInput ? ctxSearchInput : searchInput}
                     onChangeText={
-                      globalHomeSearch ? setGlobalHomeSearch : setSearchInput
+                      ctxSearchInput ? ctxSetSearchInput : setSearchInput
                     }
                     onSubmitEditing={() => {
-                      handleSearch({
+                      ctxHandleSearch({
                         navigation,
-                        searchInput: globalHomeSearch
-                          ? globalHomeSearch
+                        searchInput: ctxSearchInput
+                          ? ctxSearchInput
                           : searchInput,
                       });
-                      setGlobalHomeSearch("");
+                      ctxSetSearchInput("");
                     }}
                     setClearButton={() => {
-                      setGlobalHomeSearch("");
+                      ctxSetSearchInput("");
                       setSearchInput("");
                     }}
                   />
@@ -146,7 +146,7 @@ export default function ShortsStack() {
                     <HeaderMicIcon style={{ marginLeft: 16 }} />
                     <HeaderShareScreenIcon />
                     <HeaderDotVerticalIcon
-                      onPress={() => setShowSearchResultHeaderModal(true)}
+                      onPress={() => ctxSetSearchResultHeaderModal(true)}
                     />
                   </View>
                 </HeaderContainer>
@@ -166,7 +166,7 @@ export default function ShortsStack() {
                     <HeaderShareScreenIcon />
                     <HeaderSearchIcon navigation={navigation} />
                     <HeaderDotVerticalIcon
-                      onPress={() => setShowChannelHeaderModal(true)}
+                      onPress={() => ctxSetChannelHeaderModal(true)}
                     />
                   </View>
                 </HeaderContainer>
@@ -176,7 +176,7 @@ export default function ShortsStack() {
         />
       </Stack.Navigator>
 
-      {showHomeCommentsModal && <HomeCommentsModal />}
+      {ctxHomeCommentsModal && <HomeCommentsModal />}
     </>
   );
 }

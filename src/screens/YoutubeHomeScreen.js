@@ -7,7 +7,7 @@ import {
 } from "../components/ContainerComponents";
 import { CompassIcon } from "../components/IconComponents";
 import { TabButton } from "../components/PressableComponents";
-import { useTheme } from "../context/ThemeContext";
+import { useThemeContext } from "../context/ThemeContext";
 import { useSetVideoData } from "../hooks/useSetVideoData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
@@ -47,7 +47,7 @@ export default function YoutubeHomeScreen({ navigation }) {
 }
 
 function TopQueryTabBar({ navigation, query, setQuery }) {
-  const { colors } = useTheme();
+  const { ctxColors } = useThemeContext();
   const selectableTabs = [
     { label: "All", query: "Humans" },
     { label: "Music", query: "Music" },
@@ -69,7 +69,7 @@ function TopQueryTabBar({ navigation, query, setQuery }) {
           borderRadius: 4,
           paddingHorizontal: 10,
           paddingVertical: 4,
-          backgroundColor: colors.bgSecondary,
+          backgroundColor: ctxColors.bgSecondary,
           opacity: pressed ? 0.5 : 1,
         })}
         onPress={() => navigation.getParent("MainNavigator")?.openDrawer()}

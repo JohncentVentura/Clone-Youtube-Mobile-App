@@ -19,8 +19,8 @@ import {
   SubscribeButton,
 } from "../components/PressableComponents";
 import { BaseText } from "../components/TextComponents";
-import { useTheme } from "../context/ThemeContext";
-import { useUI } from "../context/UIContext";
+import { useThemeContext } from "../context/ThemeContext";
+import { useUIContext } from "../context/UIContext";
 import {
   usePlayMainVideoOnFocus,
   usePlayShortsVideoOnFocus,
@@ -40,7 +40,7 @@ export function MainVideoView({ style, videoData, autoPlayVideoId, ...rest }) {
 
   return (
     <VideoView
-      style={[styles.mainVideoView, style]}
+      style={[styles.mainVideo, style]}
       resizeMode="stretch"
       player={videoPlayer}
       nativeControls={false}
@@ -58,14 +58,14 @@ export function ShortsVideoView({
   ...rest
 }) {
   const insets = useSafeAreaInsets();
-  const { colors, fontSizes } = useTheme();
+  const { ctxColors, ctxFontSizes } = useThemeContext();
   const {
-    isShortsVideoPlaying,
-    setIsShortsVideoPlaying,
-    setModalVideoData,
-    setShowHomeCommentsModal,
-  } = useUI();
-  const [isPlaying, setIsPlaying] = useState(isShortsVideoPlaying);
+    ctxIsShortsVideoPlaying,
+    ctxSetIsShortsVideoPlaying,
+    ctxSetModalVideoData,
+    ctxSetHomeCommentsModal,
+  } = useUIContext();
+  const [isPlaying, setIsPlaying] = useState(ctxIsShortsVideoPlaying);
 
   const videoPlayer = useVideoPlayer(videoData.video, (player) => {
     player.loop = true;
@@ -73,9 +73,9 @@ export function ShortsVideoView({
 
   useEffect(() => {
     if (isPlaying) {
-      setIsShortsVideoPlaying(true);
+      ctxSetIsShortsVideoPlaying(true);
     } else {
-      setIsShortsVideoPlaying(false);
+      ctxSetIsShortsVideoPlaying(false);
     }
   }, [isPlaying]);
 
@@ -94,7 +94,7 @@ export function ShortsVideoView({
   return (
     <View
       style={[
-        styles.shortsVideoView,
+        styles.shortsVideo,
         {
           flex: 1,
           justifyContent: "center",
@@ -184,20 +184,20 @@ export function ShortsVideoView({
                 style={{
                   marginLeft: 10,
                   fontWeight: "medium",
-                  color: colors.white,
+                  color: ctxColors.white,
                 }}
               >
                 {videoData.channelTag}
               </BaseText>
               <SubscribeButton
-                style={{ marginLeft: 10, backgroundColor: colors.white }}
+                style={{ marginLeft: 10, backgroundColor: ctxColors.white }}
               />
             </View>
             <BaseText
               style={{
                 marginTop: 6,
-                fontSize: fontSizes.sm,
-                color: colors.white,
+                fontSize: ctxFontSizes.sm,
+                color: ctxColors.white,
                 flexShrink: 1,
               }}
             >
@@ -220,8 +220,8 @@ export function ShortsVideoView({
               Icon={MessageTextIcon}
               text={videoData.commentsCount}
               onPress={() => {
-                setModalVideoData(videoData);
-                setShowHomeCommentsModal(true);
+                ctxSetModalVideoData(videoData);
+                ctxSetHomeCommentsModal(true);
               }}
             />
             <ShortsVerticalButton
@@ -246,7 +246,7 @@ export function ShortsVideoView({
 }
 
 function ShortsVerticalButton({ style, Icon, text, ...rest }) {
-  const { colors, fontSizes, iconSizes } = useTheme();
+  const { ctxColors, ctxFontSizes } = useThemeContext();
 
   return (
     <RippleButton
@@ -254,8 +254,8 @@ function ShortsVerticalButton({ style, Icon, text, ...rest }) {
       rippleSize={4}
       {...rest}
     >
-      <Icon style={{ color: colors.white }} />
-      <BaseText style={{ color: colors.white, fontSize: fontSizes.sm }}>
+      <Icon style={{ color: ctxColors.white }} />
+      <BaseText style={{ color: ctxColors.white, fontSize: ctxFontSizes.sm }}>
         {text}
       </BaseText>
     </RippleButton>

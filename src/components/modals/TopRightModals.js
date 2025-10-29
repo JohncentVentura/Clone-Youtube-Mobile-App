@@ -1,17 +1,17 @@
 import { Pressable, View } from "react-native";
 import Modal from "react-native-modal";
-import { useTheme } from "../../context/ThemeContext";
+import { useThemeContext } from "../../context/ThemeContext";
 import { BasePressable } from "../PressableComponents";
 import { BaseText } from "../TextComponents";
 
-function TopRightListModal({ showModal, setShowModal, items = [] }) {
-  const { colors } = useTheme();
+function TopRightListModal({ isVisible, setIsVisible, items = [] }) {
+  const { ctxColors } = useThemeContext();
 
   return (
     <Modal
-      isVisible={showModal}
-      onBackdropPress={() => setShowModal(false)} //Modal backdrop area
-      onRequestClose={() => setShowModal(false)} //Android back button
+      isVisible={isVisible}
+      onBackdropPress={() => setIsVisible(false)} //Modal backdrop area
+      onRequestClose={() => setIsVisible(false)} //Android back button
       animationIn="fadeInDown"
       animationOut="fadeOutUp"
       style={{
@@ -21,7 +21,7 @@ function TopRightListModal({ showModal, setShowModal, items = [] }) {
         alignItems: "flex-end",
       }}
     >
-      <View style={{ backgroundColor: colors.bg }}>
+      <View style={{ backgroundColor: ctxColors.bg }}>
         {items.map((item, index) => {
           return (
             <BasePressable
@@ -41,7 +41,7 @@ function TopRightListModal({ showModal, setShowModal, items = [] }) {
   );
 }
 
-export function ChannelHeaderModal({ showModal, setShowModal }) {
+export function ChannelHeaderModal({ isVisible, setIsVisible }) {
   const modalItems = [
     {
       name: "Share",
@@ -71,14 +71,14 @@ export function ChannelHeaderModal({ showModal, setShowModal }) {
 
   return (
     <TopRightListModal
-      showModal={showModal}
-      setShowModal={setShowModal}
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
       items={modalItems}
     />
   );
 }
 
-export function NotificationsHeaderModal({ showModal, setShowModal }) {
+export function NotificationsHeaderModal({ isVisible, setIsVisible }) {
   const modalItems = [
     {
       name: "Settings",
@@ -100,14 +100,14 @@ export function NotificationsHeaderModal({ showModal, setShowModal }) {
 
   return (
     <TopRightListModal
-      showModal={showModal}
-      setShowModal={setShowModal}
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
       items={modalItems}
     />
   );
 }
 
-export function SearchResultHeaderModal({ showModal, setShowModal }) {
+export function SearchResultHeaderModal({ isVisible, setIsVisible }) {
   const modalItems = [
     {
       name: "Search filters",
@@ -121,8 +121,8 @@ export function SearchResultHeaderModal({ showModal, setShowModal }) {
 
   return (
     <TopRightListModal
-      showModal={showModal}
-      setShowModal={setShowModal}
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
       items={modalItems}
     />
   );

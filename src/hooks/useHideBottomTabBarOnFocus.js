@@ -1,14 +1,14 @@
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
-import { useUI } from "../context/UIContext";
+import { useUIContext } from "../context/UIContext";
 
 export function useHideBottomTabBarOnFocus() {
-  const { setShowMainTabBarModal } = useUI();
+  const { ctxSetMainBottomTabBar } = useUIContext();
 
   useFocusEffect(
     useCallback(() => {
-      setShowMainTabBarModal(false);
-      return () => setShowMainTabBarModal(true);
+      ctxSetMainBottomTabBar(false);
+      return () => ctxSetMainBottomTabBar(true);
     }, [])
   );
 }

@@ -8,3 +8,5 @@ export const imagePaths = {
   youtubeLogoDarkMode: require("../assets/images/youtube-logo-dark-mode.png"),
   youtubeLogoLightMode: require("../assets/images/youtube-logo-light-mode.png"),
 };
+
+export const searchHistoryKey = "SearchHistoryKey";

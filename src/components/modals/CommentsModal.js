@@ -13,8 +13,8 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { useTheme } from "../../context/ThemeContext";
-import { useUI } from "../../context/UIContext";
+import { useThemeContext } from "../../context/ThemeContext";
+import { useUIContext } from "../../context/UIContext";
 import { useSetVideoData } from "../../hooks/useSetVideoData";
 import { navigate } from "../../navigations/NavigationConfig";
 import { styles } from "../../styles/styles";
@@ -37,10 +37,10 @@ import { SwipeDownModal } from "./SwipeDownModals";
 
 export function HomeCommentsModal() {
   const insets = useSafeAreaInsets();
-  const { colors, fontSizes } = useTheme();
-  const { modalVideoData, setShowHomeCommentsModal } = useUI();
+  const { ctxColors, ctxFontSizes } = useThemeContext();
+  const { ctxModalVideoData, ctxSetHomeCommentsModal } = useUIContext();
   const [commentSelectedQuery, setCommentSelectedQuery] = useState(
-    modalVideoData.query
+    ctxModalVideoData.query
   );
   const [commentVideos, setCommentVideos] = useState([]);
   const [commentSelectedVideos, setCommentSelectedVideos] = useState([]);
@@ -50,11 +50,11 @@ export function HomeCommentsModal() {
   const translateYValue = useSharedValue("100%");
 
   useSetVideoData({
-    query: modalVideoData.query,
+    query: ctxModalVideoData.query,
     queryResults: 6,
     setVideos: setCommentVideos,
     setIsLoading,
-    dependencies: [modalVideoData],
+    dependencies: [ctxModalVideoData],
   });
 
   useSetVideoData({
@@ -75,7 +75,7 @@ export function HomeCommentsModal() {
     backdropOpacityValue.value = withTiming(0, { duration: 250 });
     translateYValue.value = withTiming("100%", { duration: 250 });
     setTimeout(() => {
-      setShowHomeCommentsModal(false);
+      ctxSetHomeCommentsModal(false);
     }, 250);
   };
 
@@ -137,7 +137,7 @@ export function HomeCommentsModal() {
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             height: "67%",
-            backgroundColor: colors.bg,
+            backgroundColor: ctxColors.bg,
           },
           translateYStyle,
         ]}
@@ -150,7 +150,7 @@ export function HomeCommentsModal() {
             borderRadius: 99,
             width: 50,
             height: 5,
-            backgroundColor: colors.borderSecondary,
+            backgroundColor: ctxColors.borderSecondary,
             alignSelf: "center",
           }}
         />
@@ -170,7 +170,9 @@ export function HomeCommentsModal() {
                 },
               ]}
             >
-              <BaseText style={{ fontSize: fontSizes.xl, fontWeight: "bold" }}>
+              <BaseText
+                style={{ fontSize: ctxFontSizes.xl, fontWeight: "bold" }}
+              >
                 Comments
               </BaseText>
               <CloseIcon onPress={closeModal} />
@@ -195,7 +197,7 @@ export function HomeCommentsModal() {
                 {
                   marginTop: 8,
                   borderBottomWidth: 1,
-                  borderBottomColor: colors.borderSecondary,
+                  borderBottomColor: ctxColors.borderSecondary,
                   paddingBottom: 12,
                   flexDirection: "row",
                   justifyContent: "space-between",
@@ -207,7 +209,7 @@ export function HomeCommentsModal() {
               <BaseText
                 style={{
                   marginLeft: 16,
-                  fontSize: fontSizes.xl,
+                  fontSize: ctxFontSizes.xl,
                   fontWeight: "bold",
                 }}
               >
@@ -231,69 +233,63 @@ export function HomeCommentsModal() {
   );
 }
 
-export function HomeCommentsProfileModal({ showModal, setShowModal }) {
-  const { colors, fontSizes } = useTheme();
+export function HomeCommentsProfileModal({ isVisible, setIsVisible }) {
+  const { ctxColors, ctxFontSizes } = useThemeContext();
   const {
-    modalVideoData,
-    setShowHomeCommentsModal,
-    setShowHomeCommentsProfileModal,
-    setShowHomeCommentsProfileItemModal,
-  } = useUI();
+    ctxModalVideoData,
+    ctxSetHomeCommentsModal,
+    ctxSetHomeCommentsProfileModal,
+    ctxSetHomeCommentsProfileItemModal,
+  } = useUIContext();
 
   return (
     <SwipeDownModal
       style={{ paddingHorizontal: 16, paddingBottom: 10 }}
-      showModal={showModal}
-      setShowModal={setShowModal}
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
     >
-      <View
-        style={{
-          flexDirection: "row",
-
-          alignItems: "flex-start",
-        }}
-      >
+      <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
         <CommentsProfileLargeImage
           style={{ marginTop: 4 }}
-          source={{ uri: modalVideoData.picture }}
+          source={{ uri: ctxModalVideoData.picture }}
           onPress={() => {
-            setShowHomeCommentsModal(false);
-            setShowHomeCommentsProfileModal(false);
-            navigate("ChannelScreen", { videoData: modalVideoData });
+            ctxSetHomeCommentsModal(false);
+            ctxSetHomeCommentsProfileModal(false);
+            navigate("ChannelScreen", { videoData: ctxModalVideoData });
           }}
         />
         <View style={{ marginLeft: 16, flexShrink: 1 }}>
           <BaseText
             style={{
-              fontSize: fontSizes.xl2,
+              fontSize: ctxFontSizes.xl2,
               fontWeight: "bold",
             }}
           >
-            {modalVideoData.channelName}
+            {ctxModalVideoData.channelName}
           </BaseText>
           <BaseText
             style={{
               marginTop: 4,
-              fontSize: fontSizes.xs,
+              fontSize: ctxFontSizes.xs,
               fontWeight: "medium",
             }}
           >
-            {modalVideoData.channelTag}
+            {ctxModalVideoData.channelTag}
           </BaseText>
           <BaseText
             style={{
               marginTop: 4,
-              fontSize: fontSizes.xs,
-              color: colors.textSecondary,
+              fontSize: ctxFontSizes.xs,
+              color: ctxColors.textSecondary,
             }}
           >
-            Joined {modalVideoData.channelJoinedDate} •{" "}
-            {modalVideoData.channelSubscribers} subscribers
+            Joined {ctxModalVideoData.channelJoinedDate} •{" "}
+            {ctxModalVideoData.channelSubscribers} subscribers
           </BaseText>
         </View>
         <RippleButton
           style={{ marginLeft: "auto" }}
-          onPress={() => setShowHomeCommentsProfileItemModal(true)}
+          onPress={() => ctxSetHomeCommentsProfileItemModal(true)}
         >
           <DotVerticalIcon />
         </RippleButton>
@@ -303,14 +299,14 @@ export function HomeCommentsProfileModal({ showModal, setShowModal }) {
           styles.wideButton,
           {
             marginTop: 12,
-            backgroundColor: colors.bgSecondary,
+            backgroundColor: ctxColors.bgSecondary,
             opacity: pressed ? 0.5 : 1,
           },
         ]}
         onPress={() => {
-          setShowHomeCommentsModal(false);
-          setShowHomeCommentsProfileModal(false);
-          navigate("ChannelScreen", { videoData: modalVideoData });
+          ctxSetHomeCommentsModal(false);
+          ctxSetHomeCommentsProfileModal(false);
+          navigate("ChannelScreen", { videoData: ctxModalVideoData });
         }}
       >
         <BaseText style={{ fontWeight: "medium" }}>View Channel</BaseText>
@@ -320,7 +316,7 @@ export function HomeCommentsProfileModal({ showModal, setShowModal }) {
 }
 
 function SortOrderTabBar() {
-  const { colors } = useTheme();
+  const { ctxColors } = useThemeContext();
   const defaultQuery = "all";
   const [selected, setSelected] = useState(defaultQuery);
   const selectableTabs = [
@@ -340,7 +336,7 @@ function SortOrderTabBar() {
         {
           marginTop: 16,
           borderBottomWidth: 1,
-          borderBottomColor: colors.borderSecondary,
+          borderBottomColor: ctxColors.borderSecondary,
           paddingBottom: 8,
           width: "100%",
           height: 60,
@@ -369,12 +365,12 @@ function HomeCommentItem({
   setIsACommentSelected,
   setCommentSelectedQuery,
 }) {
-  const { colors, fontSizes, iconSizes } = useTheme();
+  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
   const {
-    setModalVideoData,
-    setShowHomeCommentsProfileModal,
-    setShowHomeCommentsItemModal,
-  } = useUI();
+    ctxSetModalVideoData,
+    ctxSetHomeCommentsProfileModal,
+    ctxSetHomeCommentsItemModal,
+  } = useUIContext();
 
   return (
     <BasePressable
@@ -397,17 +393,17 @@ function HomeCommentItem({
         style={{ marginTop: 10 }}
         source={{ uri: videoData.picture }}
         onPress={() => {
-          setModalVideoData(videoData);
-          setShowHomeCommentsProfileModal(true);
+          ctxSetModalVideoData(videoData);
+          ctxSetHomeCommentsProfileModal(true);
         }}
       />
       <View style={{ marginLeft: 14, marginTop: 8, flexShrink: 1 }}>
         <BaseText
-          style={{ fontSize: fontSizes.xs, color: colors.textSecondary }}
+          style={{ fontSize: ctxFontSizes.xs, color: ctxColors.textSecondary }}
         >
           {videoData.channelTag} • {videoData.uploadedDate}
         </BaseText>
-        <BaseText style={{ marginTop: 2, fontSize: fontSizes.xs }}>
+        <BaseText style={{ marginTop: 2, fontSize: ctxFontSizes.xs }}>
           {videoData.commentsDescription}
         </BaseText>
         <View
@@ -421,9 +417,9 @@ function HomeCommentItem({
             rippleSize={6}
             onPress={() => console.log("Comment Like Press")}
           >
-            <LikeIcon size={iconSizes.xs2} />
+            <LikeIcon size={ctxIconSizes.xs2} />
           </RippleButton>
-          <BaseText style={{ marginLeft: 8, fontSize: fontSizes.xs }}>
+          <BaseText style={{ marginLeft: 8, fontSize: ctxFontSizes.xs }}>
             {videoData.likes}
           </BaseText>
           <RippleButton
@@ -431,23 +427,23 @@ function HomeCommentItem({
             rippleSize={6}
             onPress={() => console.log("Comment Dislike Press")}
           >
-            <DislikeIcon size={iconSizes.xs2} />
+            <DislikeIcon size={ctxIconSizes.xs2} />
           </RippleButton>
           <RippleButton
             style={{ marginLeft: 24 }}
             rippleSize={6}
             onPress={() => console.log("Comment Messages Press")}
           >
-            <MessageTextIcon size={iconSizes.xs} />
+            <MessageTextIcon size={ctxIconSizes.xs} />
           </RippleButton>
         </View>
       </View>
       <RippleButton
         style={{ marginLeft: "auto", marginTop: 6 }}
         rippleSize={4}
-        onPress={() => setShowHomeCommentsItemModal(true)}
+        onPress={() => ctxSetHomeCommentsItemModal(true)}
       >
-        <DotVerticalIcon size={iconSizes.xs} />
+        <DotVerticalIcon size={ctxIconSizes.xs} />
       </RippleButton>
     </BasePressable>
   );

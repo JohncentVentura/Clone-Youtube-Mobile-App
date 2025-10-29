@@ -32,8 +32,8 @@ import {
   DrawerPressable,
 } from "../components/PressableComponents";
 import { DrawerFooterText } from "../components/TextComponents";
-import { useTheme } from "../context/ThemeContext";
-import { useUI } from "../context/UIContext";
+import { useThemeContext } from "../context/ThemeContext";
+import { useUIContext } from "../context/UIContext";
 import { styles } from "../styles/styles";
 import ShortsStack from "./ShortsStack";
 import SubscriptionsStack from "./SubscriptionsStack";
@@ -133,7 +133,7 @@ export const bottomTabItems = (HomeComponent = YoutubeHomeStack) => [
     component: ShortsStack,
     activeIcon: ActiveShortsIcon,
     inactiveIcon: InactiveShortsIcon,
-    activeLabel: "or Trunks?",
+    activeLabel: "Scrolling...",
     inactiveLabel: "Shorts",
   },
   {
@@ -146,7 +146,7 @@ export const bottomTabItems = (HomeComponent = YoutubeHomeStack) => [
     component: SubscriptionsStack,
     activeIcon: ActiveSubscriptionIcon,
     inactiveIcon: InactiveSubscriptionIcon,
-    activeLabel: "Please like &",
+    activeLabel: "Subscribing...",
     inactiveLabel: "Subscriptions",
   },
   {
@@ -161,7 +161,7 @@ export const bottomTabItems = (HomeComponent = YoutubeHomeStack) => [
 
 export default function MainNavigator() {
   const insets = useSafeAreaInsets();
-  const { colors } = useTheme();
+  const { ctxColors } = useThemeContext();
 
   return (
     <Drawer.Navigator
@@ -174,7 +174,7 @@ export default function MainNavigator() {
         <View
           style={{
             paddingTop: insets.top,
-            backgroundColor: colors.bg,
+            backgroundColor: ctxColors.bg,
             flex: 1,
             justifyContent: "space-between",
           }}
@@ -209,7 +209,7 @@ export default function MainNavigator() {
                         },
                       ]}
                       Icon={item.Icon}
-                      iconColor={isYoutubeSpecialRoute && colors.primary}
+                      iconColor={isYoutubeSpecialRoute && ctxColors.primary}
                       label={item.label}
                       onPress={() => props.navigation.navigate(item.route)}
                     />
@@ -255,8 +255,8 @@ export default function MainNavigator() {
 
 function MainBottomTabBar({ navigation }) {
   const insets = useSafeAreaInsets();
-  const { colors } = useTheme();
-  const { showMainTabBarModal } = useUI();
+  const { ctxColors } = useThemeContext();
+  const { ctxMainBottomTabBar } = useUIContext();
   const mainNavigator = navigation.getParent("MainNavigator");
 
   //Assign updated bottomTabItems so the HomeStack route of this tab uses the component of the currently selected Drawer route
@@ -268,16 +268,16 @@ function MainBottomTabBar({ navigation }) {
   return (
     <BottomTab.Navigator
       id="MainBottomTabBar"
-      key={colors.bg} //Force remount on theme change
+      key={ctxColors.bg} //Force remount on theme change
       screenOptions={{ headerShown: false }}
       tabBar={(props) => {
         return (
           <View
             style={{
-              display: showMainTabBarModal ? "flex" : "none",
+              display: ctxMainBottomTabBar ? "flex" : "none",
               paddingBottom: insets.bottom,
               height: insets.bottom + 49,
-              backgroundColor: colors.bg,
+              backgroundColor: ctxColors.bg,
               flexDirection: "row",
             }}
           >
@@ -319,7 +319,7 @@ function MainBottomTabBar({ navigation }) {
 }
 
 function DrawerDivider() {
-  const { colors } = useTheme();
+  const { ctxColors } = useThemeContext();
 
   return (
     <View
@@ -327,7 +327,7 @@ function DrawerDivider() {
         marginVertical: 8,
         width: "100%",
         height: 1,
-        backgroundColor: colors.borderSecondary,
+        backgroundColor: ctxColors.borderSecondary,
       }}
     />
   );

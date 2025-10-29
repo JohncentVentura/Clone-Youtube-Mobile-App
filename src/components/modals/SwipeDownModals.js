@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import Modal from "react-native-modal";
-import { useTheme } from "../../context/ThemeContext";
+import { useThemeContext } from "../../context/ThemeContext";
 import {
   DontRecommendChannelIcon,
   ExclamationCircleIcon,
@@ -19,16 +19,16 @@ import {
 import { BasePressable } from "../PressableComponents";
 import { BaseText } from "../TextComponents";
 
-export function SwipeDownModal({ style, showModal, setShowModal, children }) {
-  const { colors } = useTheme();
+export function SwipeDownModal({ style, isVisible, setIsVisible, children }) {
+  const { ctxColors } = useThemeContext();
   const modalBorderRadius = 12;
 
   return (
     <Modal
-      isVisible={showModal}
-      onBackdropPress={() => setShowModal(false)} //Modal backdrop area
-      onRequestClose={() => setShowModal(false)} //Android back button
-      onSwipeComplete={() => setShowModal(false)} //When swiped down
+      isVisible={isVisible}
+      onBackdropPress={() => setIsVisible(false)} //Modal backdrop area
+      onRequestClose={() => setIsVisible(false)} //Android back button
+      onSwipeComplete={() => setIsVisible(false)} //When swiped down
       swipeDirection="down"
       animationIn="slideInUp"
       animationOut="slideOutDown"
@@ -44,7 +44,7 @@ export function SwipeDownModal({ style, showModal, setShowModal, children }) {
           {
             borderRadius: modalBorderRadius,
             width: "100%",
-            backgroundColor: colors.bg,
+            backgroundColor: ctxColors.bg,
           },
           style,
         ]}
@@ -56,7 +56,7 @@ export function SwipeDownModal({ style, showModal, setShowModal, children }) {
             borderRadius: 99,
             width: 40,
             height: 4,
-            backgroundColor: colors.borderSecondary,
+            backgroundColor: ctxColors.borderSecondary,
             alignSelf: "center",
           }}
         />
@@ -66,11 +66,11 @@ export function SwipeDownModal({ style, showModal, setShowModal, children }) {
   );
 }
 
-function SwipeDownListModal({ showModal, setShowModal, items = [], children }) {
+function SwipeDownListModal({ isVisible, setIsVisible, items = [], children }) {
   const modalBorderRadius = 12;
 
   return (
-    <SwipeDownModal showModal={showModal} setShowModal={setShowModal}>
+    <SwipeDownModal isVisible={isVisible} setIsVisible={setIsVisible}>
       {children}
       {items.map((item, index) => {
         return (
@@ -102,7 +102,7 @@ function SwipeDownListModal({ showModal, setShowModal, items = [], children }) {
   );
 }
 
-export function FlatListVideoItemModal({ showModal, setShowModal }) {
+export function MainVideoItemModal({ isVisible, setIsVisible }) {
   const modalItems = [
     {
       name: "Play Next In Queue",
@@ -144,14 +144,14 @@ export function FlatListVideoItemModal({ showModal, setShowModal }) {
 
   return (
     <SwipeDownListModal
-      showModal={showModal}
-      setShowModal={setShowModal}
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
       items={modalItems}
     />
   );
 }
 
-export function NotificationsItemModal({ showModal, setShowModal }) {
+export function NotificationsItemModal({ isVisible, setIsVisible }) {
   const modalItems = [
     {
       name: "Save to Watch later",
@@ -178,15 +178,15 @@ export function NotificationsItemModal({ showModal, setShowModal }) {
 
   return (
     <SwipeDownListModal
-      showModal={showModal}
-      setShowModal={setShowModal}
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
       items={modalItems}
     />
   );
 }
 
-export function ShareScreenModal({ showModal, setShowModal }) {
-  const { fontSizes } = useTheme();
+export function ShareScreenModal({ isVisible, setIsVisible }) {
+  const { ctxFontSizes } = useThemeContext();
   const modalItems = [
     {
       name: "Link with TV code",
@@ -202,15 +202,15 @@ export function ShareScreenModal({ showModal, setShowModal }) {
 
   return (
     <SwipeDownListModal
-      showModal={showModal}
-      setShowModal={setShowModal}
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
       items={modalItems}
     >
       <BaseText
         style={{
           marginLeft: 12,
           marginVertical: 6,
-          fontSize: fontSizes.sm,
+          fontSize: ctxFontSizes.sm,
         }}
       >
         Select a device
@@ -219,7 +219,7 @@ export function ShareScreenModal({ showModal, setShowModal }) {
   );
 }
 
-export function HomeCommentsItemModal({ showModal, setShowModal }) {
+export function HomeCommentsItemModal({ isVisible, setIsVisible }) {
   const modalItems = [
     {
       name: "Share",
@@ -235,14 +235,14 @@ export function HomeCommentsItemModal({ showModal, setShowModal }) {
 
   return (
     <SwipeDownListModal
-      showModal={showModal}
-      setShowModal={setShowModal}
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
       items={modalItems}
     />
   );
 }
 
-export function HomeCommentsProfileItemModal({ showModal, setShowModal }) {
+export function HomeCommentsProfileItemModal({ isVisible, setIsVisible }) {
   const modalItems = [
     {
       name: "Learn more about this feature",
@@ -258,8 +258,8 @@ export function HomeCommentsProfileItemModal({ showModal, setShowModal }) {
 
   return (
     <SwipeDownListModal
-      showModal={showModal}
-      setShowModal={setShowModal}
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
       items={modalItems}
     />
   );

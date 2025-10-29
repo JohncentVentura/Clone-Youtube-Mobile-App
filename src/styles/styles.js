@@ -38,11 +38,11 @@ export const styles = StyleSheet.create({
   },
   //#endregion
   //#region Videos
-  mainVideoView: {
+  mainVideo: {
     width: screenWidth,
     height: screenHeight * 0.25,
   },
-  shortsVideoView: {
+  shortsVideo: {
     width: screenWidth ,
     height: screenHeight ,
   },

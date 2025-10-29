@@ -1,10 +1,10 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
-import { useTheme } from "../context/ThemeContext";
+import { useThemeContext } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
 
 export function BaseText({ style, children, ...rest }) {
-  const { colors, fontSizes } = useTheme();
+  const { ctxColors, ctxFontSizes } = useThemeContext();
   const { fontWeight, ...restStyle } = StyleSheet.flatten(style) || {};
 
   const fontFamily =
@@ -17,7 +17,7 @@ export function BaseText({ style, children, ...rest }) {
   return (
     <Text
       style={[
-        { fontSize: fontSizes.base, fontFamily, color: colors.textPrimary },
+        { fontSize: ctxFontSizes.base, fontFamily, color: ctxColors.textPrimary },
         restStyle,
       ]}
       {...rest}
@@ -28,11 +28,11 @@ export function BaseText({ style, children, ...rest }) {
 }
 
 export function DrawerFooterText({ style, children, ...rest }) {
-  const { colors, fontSizes } = useTheme();
+  const { ctxColors, ctxFontSizes } = useThemeContext();
 
   return (
     <BaseText
-      style={[{ fontSize: fontSizes.xs, color: colors.textSecondary }, style]}
+      style={[{ fontSize: ctxFontSizes.xs, color: ctxColors.textSecondary }, style]}
       {...rest}
     >
       {children}
@@ -41,7 +41,7 @@ export function DrawerFooterText({ style, children, ...rest }) {
 }
 
 export function HeaderTitleText({ style, children, ...rest }) {
-  const { fontSizes } = useTheme();
+  const { ctxFontSizes } = useThemeContext();
 
   return (
     <BaseText
@@ -49,7 +49,7 @@ export function HeaderTitleText({ style, children, ...rest }) {
         styles.headerCenter,
         {
           marginLeft: 12,
-          fontSize: fontSizes.xl,
+          fontSize: ctxFontSizes.xl,
           fontWeight: "medium",
         },
         style,
@@ -68,7 +68,7 @@ export function TextInputView({
   setClearButton,
   ...rest
 }) {
-  const { colors, fontSizes, iconSizes } = useTheme();
+  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
 
   return (
     <View style={[styles.headerCenter, { flex: 1 }, style]}>
@@ -76,13 +76,13 @@ export function TextInputView({
         style={{
           borderRadius: 99,
           paddingLeft: 14,
-          fontSize: fontSizes.base,
+          fontSize: ctxFontSizes.base,
           fontWeight: "medium",
-          backgroundColor: colors.bgSecondary,
-          color: colors.textSecondary,
+          backgroundColor: ctxColors.bgSecondary,
+          color: ctxColors.textSecondary,
         }}
         placeholder={placeholder}
-        placeholderTextColor={colors.textSecondary}
+        placeholderTextColor={ctxColors.textSecondary}
         returnKeyType={returnKeyType}
         {...rest}
       />
@@ -97,8 +97,8 @@ export function TextInputView({
       >
         <Ionicons
           name="close"
-          size={iconSizes.base}
-          color={colors.iconSecondary}
+          size={ctxIconSizes.base}
+          color={ctxColors.iconSecondary}
         />
       </Pressable>
     </View>

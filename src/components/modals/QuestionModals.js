@@ -1,17 +1,17 @@
 import { Pressable, View } from "react-native";
 import Modal from "react-native-modal";
-import { useSearch } from "../../context/SearchContext";
-import { useTheme } from "../../context/ThemeContext";
+import { useSearchContext } from "../../context/SearchContext";
+import { useThemeContext } from "../../context/ThemeContext";
 import { BaseText } from "../TextComponents";
 
-function QuestionModal({ showModal, setShowModal, children }) {
-  const { colors } = useTheme();
+function QuestionModal({ isVisible, setIsVisible, children }) {
+  const { ctxColors } = useThemeContext();
 
   return (
     <Modal
-      isVisible={showModal}
-      onBackdropPress={() => setShowModal(false)} //Modal backdrop area
-      onRequestClose={() => setShowModal(false)} //Android back button
+      isVisible={isVisible}
+      onBackdropPress={() => setIsVisible(false)} //Modal backdrop area
+      onRequestClose={() => setIsVisible(false)} //Android back button
       animationIn="fadeIn"
       animationOut="fadeOut"
       style={{
@@ -25,7 +25,7 @@ function QuestionModal({ showModal, setShowModal, children }) {
         style={{
           padding: 24,
           width: "80%",
-          backgroundColor: colors.bg,
+          backgroundColor: ctxColors.bg,
         }}
       >
         {children}
@@ -34,20 +34,20 @@ function QuestionModal({ showModal, setShowModal, children }) {
   );
 }
 
-export function RemoveSearchItemModal({ showModal, setShowModal }) {
-  const { colors, fontSizes } = useTheme();
-  const { removingSearchItem, setRemovingSearchItem, removeSearchHistoryItem } =
-    useSearch();
+export function RemoveSearchItemModal({ isVisible, setIsVisible }) {
+  const { ctxColors, ctxFontSizes } = useThemeContext();
+  const { ctxRemoveSearchText, ctxSetRemoveSearchText, ctxRemoveSearch } =
+    useSearchContext();
 
   return (
-    <QuestionModal showModal={showModal} setShowModal={setShowModal}>
+    <QuestionModal isVisible={isVisible} setIsVisible={setIsVisible}>
       <BaseText
         style={{
-          fontSize: fontSizes.xl,
+          fontSize: ctxFontSizes.xl,
           fontWeight: "medium",
         }}
       >
-        {removingSearchItem.text}
+        {ctxRemoveSearchText}
       </BaseText>
       <BaseText style={{ marginTop: 6 }}>Remove from search history?</BaseText>
       <View
@@ -58,30 +58,30 @@ export function RemoveSearchItemModal({ showModal, setShowModal }) {
           alignItems: "center",
         }}
       >
-        <Pressable onPress={() => setShowModal(false)}>
-          <BaseText style={{ color: colors.primary }}>Cancel</BaseText>
+        <Pressable onPress={() => setIsVisible(false)}>
+          <BaseText style={{ color: ctxColors.primary }}>Cancel</BaseText>
         </Pressable>
         <Pressable
           style={{ marginLeft: 48 }}
           onPress={() => {
-            removeSearchHistoryItem(removingSearchItem.text);
-            setRemovingSearchItem("");
-            setShowModal(false);
+            ctxRemoveSearch(ctxRemoveSearchText);
+            ctxSetRemoveSearchText("");
+            setIsVisible(false);
           }}
         >
-          <BaseText style={{ color: colors.primary }}>Remove</BaseText>
+          <BaseText style={{ color: ctxColors.primary }}>Remove</BaseText>
         </Pressable>
       </View>
     </QuestionModal>
   );
 }
 
-export function ClearSearchHistoryModal({ showModal, setShowModal }) {
-  const { colors } = useTheme();
-  const { clearSearchHistory } = useSearch();
+export function ClearSearchHistoryModal({ isVisible, setIsVisible }) {
+  const { ctxColors } = useThemeContext();
+  const { ctxClearSearchHistory } = useSearchContext();
 
   return (
-    <QuestionModal showModal={showModal} setShowModal={setShowModal}>
+    <QuestionModal isVisible={isVisible} setIsVisible={setIsVisible}>
       <BaseText style={{ fontWeight: "medium" }}>
         Clear all search history?
       </BaseText>
@@ -93,17 +93,17 @@ export function ClearSearchHistoryModal({ showModal, setShowModal }) {
           alignItems: "center",
         }}
       >
-        <Pressable onPress={() => setShowModal(false)}>
-          <BaseText style={{ color: colors.primary }}>Cancel</BaseText>
+        <Pressable onPress={() => setIsVisible(false)}>
+          <BaseText style={{ color: ctxColors.primary }}>Cancel</BaseText>
         </Pressable>
         <Pressable
           style={{ marginLeft: 48 }}
           onPress={() => {
-            clearSearchHistory();
-            setShowModal(false);
+            ctxClearSearchHistory();
+            setIsVisible(false);
           }}
         >
-          <BaseText style={{ color: colors.primary }}>Clear</BaseText>
+          <BaseText style={{ color: ctxColors.primary }}>Clear</BaseText>
         </Pressable>
       </View>
     </QuestionModal>

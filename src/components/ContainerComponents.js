@@ -9,12 +9,12 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useTheme } from "../context/ThemeContext";
-import { useUI } from "../context/UIContext";
+import { useThemeContext } from "../context/ThemeContext";
+import { useUIContext } from "../context/UIContext";
 import { screenHeight, styles } from "../styles/styles";
 import { DotVerticalIcon } from "./IconComponents";
 import {
-  FlatListChannelImage,
+  MainVideoChannelImage,
   MainVideoThumbnailImage,
 } from "./ImageComponents";
 import { RippleButton } from "./PressableComponents";
@@ -24,7 +24,7 @@ import { MainVideoView, ShortsVideoView } from "./VideoComponents";
 //#region Screen & Headers
 export function HeaderContainer({ style, children, ...rest }) {
   const insets = useSafeAreaInsets();
-  const { colors } = useTheme();
+  const { ctxColors } = useThemeContext();
 
   return (
     <View
@@ -37,7 +37,7 @@ export function HeaderContainer({ style, children, ...rest }) {
             Platform.OS === "android"
               ? insets.top + 56 //Android header height
               : insets.top + 44, //iOS header height
-          backgroundColor: colors.bg,
+          backgroundColor: ctxColors.bg,
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
@@ -52,17 +52,17 @@ export function HeaderContainer({ style, children, ...rest }) {
 }
 
 export function ScreenContainer({ style, isLoading, children, ...rest }) {
-  const { colors } = useTheme();
+  const { ctxColors } = useThemeContext();
 
   return isLoading ? (
     <ActivityIndicator
-      style={{ backgroundColor: colors.bg, flex: 1 }}
+      style={{ backgroundColor: ctxColors.bg, flex: 1 }}
       size="large"
     />
   ) : (
     <>
       <View
-        style={[styles.screenContainer, { backgroundColor: colors.bg }, style]}
+        style={[styles.screenContainer, { backgroundColor: ctxColors.bg }, style]}
         {...rest}
       >
         {children}
@@ -72,17 +72,17 @@ export function ScreenContainer({ style, isLoading, children, ...rest }) {
 }
 
 export function ScreenScrollView({ style, isLoading, children, ...rest }) {
-  const { colors } = useTheme();
+  const { ctxColors } = useThemeContext();
 
   return isLoading ? (
     <ActivityIndicator
-      style={{ backgroundColor: colors.bg, flex: 1 }}
+      style={{ backgroundColor: ctxColors.bg, flex: 1 }}
       size="large"
     />
   ) : (
     <>
       <ScrollView
-        style={[styles.screenContainer, { backgroundColor: colors.bg }, style]}
+        style={[styles.screenContainer, { backgroundColor: ctxColors.bg }, style]}
         contentContainerStyle={StyleSheet.create({
           alignItems: "flex-start",
         })}
@@ -140,8 +140,8 @@ export function MainVideoFlatList({
   ...rest
 }) {
   const inset = useSafeAreaInsets();
-  const { colors, fontSizes } = useTheme();
-  const { setShowFlatListVideoItemModal } = useUI();
+  const { ctxColors, ctxFontSizes } = useThemeContext();
+  const { ctxSetMainVideoItemModal } = useUIContext();
   const [autoPlayVideoId, setAutoPlayVideoId] = useState(null);
   const onViewableItemsChanged = useRef(({ viewableItems }) => {
     if (isAutoPlayingVideo && viewableItems.length > 0) {
@@ -156,7 +156,7 @@ export function MainVideoFlatList({
     <ActivityIndicator style={{ flex: 1 }} size="large" />
   ) : (
     <FlatList
-      //*
+      //*Testing this props
       initialNumToRender={1}
       maxToRenderPerBatch={1}
       windowSize={2}
@@ -169,14 +169,7 @@ export function MainVideoFlatList({
       keyExtractor={(item) => item.id}
       renderItem={({ item, index }) => {
         return (
-          <View
-            style={[
-              {
-                marginBottom: 32,
-                paddingBottom: index === data.length - 1 ? inset.bottom : 0,
-              },
-            ]}
-          >
+          <View style={[{ marginBottom: 32 }]}>
             <Pressable
               onPress={() => {
                 navigation.push("MainVideoScreen", {
@@ -204,7 +197,7 @@ export function MainVideoFlatList({
                 },
               ]}
             >
-              <FlatListChannelImage
+              <MainVideoChannelImage
                 style={{ marginTop: 10 }}
                 source={{ uri: item.picture }}
                 onPress={() => {
@@ -217,7 +210,7 @@ export function MainVideoFlatList({
               <View style={{ marginLeft: 14, marginTop: 8, flexShrink: 1 }}>
                 <BaseText
                   style={{
-                    fontSize: fontSizes.lg,
+                    fontSize: ctxFontSizes.lg,
                     fontWeight: "bold",
                   }}
                 >
@@ -226,8 +219,8 @@ export function MainVideoFlatList({
                 <BaseText
                   style={{
                     marginTop: 4,
-                    fontSize: fontSizes.xs,
-                    color: colors.textSecondary,
+                    fontSize: ctxFontSizes.xs,
+                    color: ctxColors.textSecondary,
                   }}
                 >
                   {item.channelName} • {item.views} views • {item.uploadedDate}
@@ -236,7 +229,7 @@ export function MainVideoFlatList({
               <RippleButton
                 style={{ marginLeft: "auto", marginTop: 6 }}
                 rippleSize={4}
-                onPress={() => setShowFlatListVideoItemModal(true)}
+                onPress={() => ctxSetMainVideoItemModal(true)}
               >
                 <DotVerticalIcon />
               </RippleButton>
@@ -262,7 +255,7 @@ export function ShortsVideoFlatList({ style, data, navigation, setQuery }) {
 
   return (
     <FlatList
-      //*
+      //*Testing this props
       pagingEnabled
       snapToInterval={screenHeight}
       decelerationRate="normal"

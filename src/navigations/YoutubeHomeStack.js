@@ -13,8 +13,8 @@ import {
 } from "../components/IconComponents";
 import { HeaderYoutubeLogoImage } from "../components/ImageComponents";
 import { HeaderTitleText, TextInputView } from "../components/TextComponents";
-import { useSearch } from "../context/SearchContext";
-import { useUI } from "../context/UIContext";
+import { useSearchContext } from "../context/SearchContext";
+import { useUIContext } from "../context/UIContext";
 import ChannelScreen from "../screens/ChannelScreen";
 import MainVideoScreen from "../screens/MainVideoScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
@@ -29,11 +29,11 @@ const Stack = createStackNavigator();
 
 export default function YoutubeHomeStack() {
   const {
-    setShowChannelHeaderModal,
-    setShowNotifHeaderModal,
-    setShowSearchResultHeaderModal,
-    showHomeCommentsModal,
-  } = useUI();
+    ctxSetChannelHeaderModal,
+    ctxSetNotifHeaderModal,
+    ctxSetSearchResultHeaderModal,
+    ctxHomeCommentsModal,
+  } = useUIContext();
 
   return (
     <>
@@ -81,7 +81,7 @@ export default function YoutubeHomeStack() {
                     <HeaderShareScreenIcon />
                     <HeaderSearchIcon navigation={navigation} />
                     <HeaderDotVerticalIcon
-                      onPress={() => setShowChannelHeaderModal(true)}
+                      onPress={() => ctxSetChannelHeaderModal(true)}
                     />
                   </View>
                 </HeaderContainer>
@@ -102,7 +102,7 @@ export default function YoutubeHomeStack() {
                     <HeaderShareScreenIcon />
                     <HeaderSearchIcon navigation={navigation} />
                     <HeaderDotVerticalIcon
-                      onPress={() => setShowNotifHeaderModal(true)}
+                      onPress={() => ctxSetNotifHeaderModal(true)}
                     />
                   </View>
                 </HeaderContainer>
@@ -115,8 +115,8 @@ export default function YoutubeHomeStack() {
           component={SearchScreen}
           options={({ navigation, route }) => ({
             header: () => {
-              const { globalHomeSearch, setGlobalHomeSearch, handleSearch } =
-                useSearch();
+              const { ctxSearchInput, ctxSetSearchInput, ctxHandleSearch } =
+                useSearchContext();
               const [searchInput, setSearchInput] = useState(
                 route.params.search
               );
@@ -126,21 +126,21 @@ export default function YoutubeHomeStack() {
                   <HeaderArrowBackIcon navigation={navigation} />
                   <TextInputView
                     autoFocus={true}
-                    value={globalHomeSearch ? globalHomeSearch : searchInput}
+                    value={ctxSearchInput ? ctxSearchInput : searchInput}
                     onChangeText={
-                      globalHomeSearch ? setGlobalHomeSearch : setSearchInput
+                      ctxSearchInput ? ctxSetSearchInput : setSearchInput
                     }
                     onSubmitEditing={() => {
-                      handleSearch({
+                      ctxHandleSearch({
                         navigation,
-                        searchInput: globalHomeSearch
-                          ? globalHomeSearch
+                        searchInput: ctxSearchInput
+                          ? ctxSearchInput
                           : searchInput,
                       });
-                      setGlobalHomeSearch("");
+                      ctxSetSearchInput("");
                     }}
                     setClearButton={() => {
-                      setGlobalHomeSearch("");
+                      ctxSetSearchInput("");
                       setSearchInput("");
                     }}
                   />
@@ -181,7 +181,7 @@ export default function YoutubeHomeStack() {
                     <HeaderMicIcon style={{ marginLeft: 16 }} />
                     <HeaderShareScreenIcon />
                     <HeaderDotVerticalIcon
-                      onPress={() => setShowSearchResultHeaderModal(true)}
+                      onPress={() => ctxSetSearchResultHeaderModal(true)}
                     />
                   </View>
                 </HeaderContainer>
@@ -218,7 +218,7 @@ export default function YoutubeHomeStack() {
         />
       </Stack.Navigator>
 
-      {showHomeCommentsModal && <HomeCommentsModal />}
+      {ctxHomeCommentsModal && <HomeCommentsModal />}
     </>
   );
 }
