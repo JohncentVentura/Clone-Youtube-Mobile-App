@@ -32,6 +32,7 @@ import { useHideBottomTabBarOnFocus } from "../hooks/useHideBottomTabBarOnFocus"
 import { useSetVideoData } from "../hooks/useSetVideoData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
+import { navPaths } from "../utils/constants";
 
 export default function MainVideoScreen({ navigation, route }) {
   const { query, videoData } = route.params;
@@ -130,7 +131,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     source={{ uri: videoData.picture }}
                     onPress={() => {
                       console.log("Channel Image Pressed");
-                      navigation.navigate("ChannelScreen", {
+                      navigation.navigate(navPaths.channelScreen, {
                         videoData: videoData,
                       });
                     }}

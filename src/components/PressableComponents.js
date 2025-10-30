@@ -11,6 +11,8 @@ import Animated, {
 import { useThemeContext } from "../context/ThemeContext";
 import { useUIContext } from "../context/UIContext";
 import { styles } from "../styles/styles";
+import { shortenText } from "../utils/utils";
+import { SubscribedChannelImage } from "./ImageComponents";
 import { BaseText } from "./TextComponents";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -198,7 +200,6 @@ export function DrawerPressable({ style, Icon, iconColor, label, ...rest }) {
   );
 }
 //#endregion
-
 //#region Pressable
 export function BasePressable({ style, children, ...rest }) {
   const { ctxColors } = useThemeContext();
@@ -228,7 +229,6 @@ export function BasePressable({ style, children, ...rest }) {
   );
 }
 //#endregion
-
 //#region Buttons
 export function RippleButton({ style, rippleSize = 10, children, ...rest }) {
   const { ctxColors } = useThemeContext();
@@ -284,7 +284,7 @@ export function RippleButton({ style, rippleSize = 10, children, ...rest }) {
   );
 }
 
-export function PlayShortsButton({ style, isPlaying, ...rest }) {
+export function PlayShortsButton({ style, ...rest }) {
   const { ctxColors, ctxIconSizes } = useThemeContext();
   const { ctxIsShortsVideoPlaying } = useUIContext();
   const transformValue = useSharedValue(0);
@@ -306,8 +306,8 @@ export function PlayShortsButton({ style, isPlaying, ...rest }) {
         opacityValue.value = withTiming(1, { duration: 100 });
       }}
       onPressOut={() => {
-        transformValue.value = withDelay(250, withTiming(0, { duration: 300 }));
-        opacityValue.value = withDelay(250, withTiming(0, { duration: 300 }));
+        transformValue.value = withDelay(250, withTiming(0, { duration: 200 }));
+        opacityValue.value = withDelay(250, withTiming(0, { duration: 200 }));
       }}
       {...rest}
     >
@@ -324,19 +324,11 @@ export function PlayShortsButton({ style, isPlaying, ...rest }) {
           animatedStyle,
         ]}
       >
-        {ctxIsShortsVideoPlaying ? (
-          <FontAwesome
-            name="play"
-            size={ctxIconSizes.xl2}
-            color={ctxColors.iconPrimary}
-          />
-        ) : (
-          <FontAwesome
-            name="pause"
-            size={ctxIconSizes.xl2}
-            color={ctxColors.iconPrimary}
-          />
-        )}
+        <FontAwesome
+          name={ctxIsShortsVideoPlaying ? "play" : "pause"}
+          size={ctxIconSizes.xl2}
+          color={ctxColors.iconPrimary}
+        />
       </Animated.View>
     </AnimatedPressable>
   );
@@ -366,7 +358,7 @@ export function ShortsIconTextButton({ style, Icon, text, ...rest }) {
       }}
       {...rest}
     >
-      <AnimatedIcon size={ctxIconSizes.xs2} color={ctxColors.white}/>
+      <AnimatedIcon size={ctxIconSizes.xs2} color={ctxColors.white} />
       <AnimatedText
         style={{
           marginLeft: 6,
@@ -459,8 +451,70 @@ export function SubscribeButton({ style, ...rest }) {
     </AnimatedPressable>
   );
 }
+//#endregion
+//#region Tabs
+export function ImageTextTabButton({
+  style,
+  isSelected,
+  selectedChannel,
+  imageSource,
+  text,
+  ...rest
+}) {
+  const { ctxColors, ctxFontSizes } = useThemeContext();
+  const backgroundValue = useSharedValue(0);
+  const opacityValue = useSharedValue(1);
+  const animatedStyle = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(
+      backgroundValue.value,
+      [0, 1],
+      [ctxColors.bg, ctxColors.bgInteractive]
+    ),
+    opacity: opacityValue.value,
+  }));
 
-export function TabButton({ style, isFirstTab, selected, children, ...rest }) {
+  useEffect(() => {
+    if (isSelected) {
+      backgroundValue.value = withTiming(1, { duration: 100 });
+      opacityValue.value = withTiming(1, { duration: 100 });
+    } else if (!isSelected && !selectedChannel) {
+      backgroundValue.value = withTiming(0, { duration: 400 });
+      opacityValue.value = withTiming(1, { duration: 400 });
+    } else if (!isSelected) {
+      backgroundValue.value = withTiming(0, { duration: 400 });
+      opacityValue.value = withTiming(0.5, { duration: 400 });
+    }
+  }, [selectedChannel]);
+
+  return (
+    <AnimatedPressable
+      style={[
+        animatedStyle,
+        {
+          paddingVertical: 16,
+          width: 70,
+          justifyContent: "center",
+          alignItems: "center",
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      <SubscribedChannelImage source={{ uri: imageSource }} />
+      <AnimatedText style={{ marginTop: 6, fontSize: ctxFontSizes.xs }}>
+        {shortenText(text, 8)}
+      </AnimatedText>
+    </AnimatedPressable>
+  );
+}
+
+export function TextTabButton({
+  style,
+  isFirstTab,
+  isSelected,
+  children,
+  ...rest
+}) {
   const { ctxColors } = useThemeContext();
 
   return (
@@ -471,14 +525,18 @@ export function TabButton({ style, isFirstTab, selected, children, ...rest }) {
           borderRadius: 8,
           paddingHorizontal: 12,
           paddingVertical: 6,
-          backgroundColor: selected ? ctxColors.bgContrast : ctxColors.bgSecondary,
+          backgroundColor: isSelected
+            ? ctxColors.bgContrast
+            : ctxColors.bgSecondary,
         },
         style,
       ]}
       {...rest}
     >
       <BaseText
-        style={{ color: selected ? ctxColors.textContrast : ctxColors.textPrimary }}
+        style={{
+          color: isSelected ? ctxColors.textContrast : ctxColors.textPrimary,
+        }}
       >
         {children}
       </BaseText>
@@ -486,48 +544,3 @@ export function TabButton({ style, isFirstTab, selected, children, ...rest }) {
   );
 }
 //#endregion
-
-/*
-export function AnimatedTabButton({ style, selected, children, ...rest }) {
-  const { ctxColors } = useTheme();
-  const sharedValue = useSharedValue(selected ? 1 : 0);
-  const animatedBackgroundColor = useAnimatedStyle(() => ({
-    backgroundColor: interpolateColor(
-      sharedValue.value,
-      [0, 1],
-      [ctxColors.bgSecondary, ctxColors.bgContrast]
-    ),
-  }));
-  const animatedForegroundColor = useAnimatedStyle(() => ({
-    color: interpolateColor(
-      sharedValue.value,
-      [0, 1],
-      [ctxColors.textPrimary, ctxColors.textContrast]
-    ),
-  }));
-
-  useEffect(() => {
-    sharedValue.value = withTiming(selected ? 1 : 0, {
-      duration: selected ? 250 : 500,
-    });
-  }, [selected]);
-
-  return (
-    <AnimatedPressable
-      style={[
-        animatedBackgroundColor,
-        {
-          marginLeft: 8,
-          borderRadius: 8,
-          paddingHorizontal: 12,
-          paddingVertical: 6,
-        },
-        style,
-      ]}
-      {...rest}
-    >
-      <AnimatedText style={animatedForegroundColor}>{children}</AnimatedText>
-    </AnimatedPressable>
-  );
-}
-*/

@@ -135,3 +135,14 @@ export function SearchHistoryThumbnailImage({ source, ...rest }) {
     </Pressable>
   );
 }
+
+export function SubscribedChannelImage({ style, source, ...rest }) {
+  return (
+    <Image
+      style={[{ borderRadius: 99, width: 45, height: 45 }, style]}
+      resizeMode={"stretch"}
+      source={source}
+      alt="SubscribedChannelImage"
+    />
+  );
+}

@@ -22,6 +22,7 @@ import SearchScreen from "../screens/SearchScreen";
 import SearchResultScreen from "../screens/SearchResultScreen";
 import YoutubeHomeScreen from "../screens/YoutubeHomeScreen";
 import { styles } from "../styles/styles";
+import { navPaths } from "../utils/constants";
 import YoutubeFlatListScreen from "../youtubeAPI/YoutubeFlatListScreen";
 import YoutubePlayerScreen from "../youtubeAPI/YoutubePlayerScreen";
 
@@ -39,7 +40,7 @@ export default function YoutubeHomeStack() {
     <>
       <Stack.Navigator id="YoutubeHomeStack">
         <Stack.Screen
-          name="YoutubeHomeScreen"
+          name={navPaths.youtubeHomeScreen}
           component={YoutubeHomeScreen}
           options={({ navigation }) => {
             return {
@@ -57,7 +58,7 @@ export default function YoutubeHomeStack() {
           }}
         />
         <Stack.Screen
-          name="MainVideoScreen"
+          name={navPaths.mainVideoScreen}
           component={MainVideoScreen}
           options={({ navigation }) => {
             return {
@@ -70,7 +71,7 @@ export default function YoutubeHomeStack() {
           }}
         />
         <Stack.Screen
-          name="ChannelScreen"
+          name={navPaths.channelScreen}
           component={ChannelScreen}
           options={({ navigation }) => {
             return {
@@ -90,7 +91,7 @@ export default function YoutubeHomeStack() {
           }}
         />
         <Stack.Screen
-          name="NotificationsScreen"
+          name={navPaths.notificationsScreen}
           component={NotificationsScreen}
           options={({ navigation }) => {
             return {
@@ -111,7 +112,7 @@ export default function YoutubeHomeStack() {
           }}
         />
         <Stack.Screen
-          name="SearchScreen"
+          name={navPaths.searchScreen}
           component={SearchScreen}
           options={({ navigation, route }) => ({
             header: () => {
@@ -151,7 +152,7 @@ export default function YoutubeHomeStack() {
           })}
         />
         <Stack.Screen
-          name="SearchResultScreen"
+          name={navPaths.searchResultScreen}
           component={SearchResultScreen}
           options={({ navigation, route }) => ({
             header: () => {
@@ -169,12 +170,12 @@ export default function YoutubeHomeStack() {
                   <TextInputView
                     value={searchInput}
                     onPress={() =>
-                      navigation.navigate("SearchScreen", {
+                      navigation.navigate(navPaths.searchScreen, {
                         search: searchInput,
                       })
                     }
                     setClearButton={() => {
-                      navigation.navigate("SearchScreen", { search: "" });
+                      navigation.navigate(navPaths.searchScreen, { search: "" });
                     }}
                   />
                   <View style={styles.headerRightIconsContainer}>

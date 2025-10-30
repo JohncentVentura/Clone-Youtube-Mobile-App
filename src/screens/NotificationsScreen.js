@@ -13,6 +13,7 @@ import { useUIContext } from "../context/UIContext";
 import { useSetVideoData } from "../hooks/useSetVideoData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
+import { navPaths } from "../utils/constants";
 
 export default function NotificationsScreen({ navigation }) {
   const { ctxSetNotifItemModal } = useUIContext();
@@ -115,7 +116,7 @@ function NotificationItem({ navigation, query, videoData, setVisible }) {
           }}
           source={{ uri: videoData.picture }}
           onPress={() => {
-            navigation.navigate("ChannelScreen", {
+            navigation.navigate(navPaths.channelScreen, {
               videoData: videoData,
               query: query,
             });

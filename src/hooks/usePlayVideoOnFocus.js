@@ -1,5 +1,6 @@
 import { useIsFocused } from "@react-navigation/native";
 import { useEffect, useRef } from "react";
+import { useUIContext } from "../context/UIContext";
 
 //Safe guard to ensure player isn't released before calling methods
 function safeCall(player, method, ...args) {
@@ -43,8 +44,8 @@ export function usePlayShortsVideoOnFocus({
   videoPlayer,
   videoDataId,
   autoPlayVideoId,
-  setIsPlaying,
 }) {
+  const { ctxSetIsShortsVideoPlaying } = useUIContext();
   const isFocused = useIsFocused();
   const mounted = useRef(true);
   const isVideoAutoPlaying = videoDataId === autoPlayVideoId;
@@ -54,11 +55,11 @@ export function usePlayShortsVideoOnFocus({
     if (!videoPlayer) return;
 
     if (isFocused && isVideoAutoPlaying) {
+      ctxSetIsShortsVideoPlaying(true);
       safeCall(videoPlayer, "play");
-      setIsPlaying(true);
-    } else {
+    } else if (!isFocused) {
+      ctxSetIsShortsVideoPlaying(false);
       safeCall(videoPlayer, "pause");
-      setIsPlaying(false);
     }
 
     return () => {

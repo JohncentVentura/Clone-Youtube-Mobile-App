@@ -12,6 +12,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useThemeContext } from "../context/ThemeContext";
 import { useUIContext } from "../context/UIContext";
 import { screenHeight, styles } from "../styles/styles";
+import { navPaths } from "../utils/constants";
 import { DotVerticalIcon } from "./IconComponents";
 import {
   MainVideoChannelImage,
@@ -201,7 +202,7 @@ export function MainVideoFlatList({
                 style={{ marginTop: 10 }}
                 source={{ uri: item.picture }}
                 onPress={() => {
-                  navigation.navigate("ChannelScreen", {
+                  navigation.navigate(navPaths.channelScreen, {
                     query: query,
                     videoData: item,
                   });

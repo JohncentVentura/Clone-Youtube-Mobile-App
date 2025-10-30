@@ -12,13 +12,18 @@ import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import { useThemeContext } from "../context/ThemeContext";
 import { useUIContext } from "../context/UIContext";
 import { styles } from "../styles/styles";
+import { navPaths } from "../utils/constants";
 import { RippleButton } from "./PressableComponents";
 
 export function BaseIcon({ IconComponent, ...rest }) {
   const { ctxColors, ctxIconSizes } = useThemeContext();
 
   return (
-    <IconComponent size={ctxIconSizes.base} color={ctxColors.iconPrimary} {...rest} />
+    <IconComponent
+      size={ctxIconSizes.base}
+      color={ctxColors.iconPrimary}
+      {...rest}
+    />
   );
 }
 
@@ -117,7 +122,7 @@ export function HeaderNotificationsIcon({
     <RippleButton
       style={[styles.headerRightIcon, style]}
       onPress={() => {
-        navigation.navigate("NotificationsScreen");
+        navigation.navigate(navPaths.notificationsScreen);
       }}
       {...rest}
     >
@@ -136,7 +141,7 @@ export function HeaderSearchIcon({ style, navigation, size, color, ...rest }) {
     <RippleButton
       style={[styles.headerRightIcon, style]}
       onPress={() => {
-        navigation.navigate("SearchScreen", { search: "" });
+        navigation.navigate(navPaths.searchScreen, { search: "" });
       }}
       {...rest}
     >

@@ -26,6 +26,7 @@ import {
   usePlayShortsVideoOnFocus,
 } from "../hooks/usePlayVideoOnFocus";
 import { styles } from "../styles/styles";
+import { navPaths } from "../utils/constants";
 
 export function MainVideoView({ style, videoData, autoPlayVideoId, ...rest }) {
   const videoPlayer = useVideoPlayer(videoData.video, (player) => {
@@ -65,30 +66,19 @@ export function ShortsVideoView({
     ctxSetModalVideoData,
     ctxSetHomeCommentsModal,
   } = useUIContext();
-  const [isPlaying, setIsPlaying] = useState(ctxIsShortsVideoPlaying);
-
   const videoPlayer = useVideoPlayer(videoData.video, (player) => {
     player.loop = true;
   });
-
-  useEffect(() => {
-    if (isPlaying) {
-      ctxSetIsShortsVideoPlaying(true);
-    } else {
-      ctxSetIsShortsVideoPlaying(false);
-    }
-  }, [isPlaying]);
 
   usePlayShortsVideoOnFocus({
     videoPlayer,
     videoDataId: videoData.id,
     autoPlayVideoId,
-    setIsPlaying,
   });
 
   const togglePlay = () => {
-    isPlaying ? videoPlayer.pause() : videoPlayer.play();
-    setIsPlaying(!isPlaying);
+    ctxIsShortsVideoPlaying ? videoPlayer.pause() : videoPlayer.play();
+    ctxSetIsShortsVideoPlaying(!ctxIsShortsVideoPlaying);
   };
 
   return (
@@ -133,7 +123,7 @@ export function ShortsVideoView({
           horizontal={true}
           showsHorizontalScrollIndicator={false}
         >
-          {!isPlaying && (
+          {!ctxIsShortsVideoPlaying && (
             <>
               <ShortsIconTextButton
                 Icon={MessageTextIcon}
@@ -175,7 +165,7 @@ export function ShortsVideoView({
               <CommentsProfileSmallImage
                 source={{ uri: videoData.picture }}
                 onPress={() => {
-                  navigation.navigate("ChannelScreen", {
+                  navigation.navigate(navPaths.channelScreen, {
                     videoData: videoData,
                   });
                 }}

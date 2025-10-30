@@ -9,8 +9,8 @@ import {
   HeaderSearchIcon,
   HeaderShareScreenIcon,
 } from "../components/IconComponents";
-import { HomeCommentsModal } from "../components/modals/CommentsModal";
 import { BaseText, TextInputView } from "../components/TextComponents";
+import { HomeCommentsModal } from "../components/modals/CommentsModal";
 import { useSearchContext } from "../context/SearchContext";
 import { useThemeContext } from "../context/ThemeContext";
 import { useUIContext } from "../context/UIContext";
@@ -19,6 +19,7 @@ import SearchScreen from "../screens/SearchScreen";
 import SearchResultScreen from "../screens/SearchResultScreen";
 import ShortsScreen from "../screens/ShortsScreen";
 import { styles } from "../styles/styles";
+import { navPaths } from "../utils/constants";
 
 const Stack = createStackNavigator();
 
@@ -35,7 +36,7 @@ export default function ShortsStack() {
     <>
       <Stack.Navigator>
         <Stack.Screen
-          name="ShortsScreen"
+          name={navPaths.shortsScreen}
           component={ShortsScreen}
           options={() => {
             return {
@@ -76,7 +77,27 @@ export default function ShortsStack() {
           }}
         />
         <Stack.Screen
-          name="SearchScreen"
+          name={navPaths.channelScreen}
+          component={ChannelScreen}
+          options={({ navigation }) => {
+            return {
+              header: () => (
+                <HeaderContainer>
+                  <HeaderArrowBackIcon navigation={navigation} />
+                  <View style={styles.headerRightIconsContainer}>
+                    <HeaderShareScreenIcon />
+                    <HeaderSearchIcon navigation={navigation} />
+                    <HeaderDotVerticalIcon
+                      onPress={() => ctxSetChannelHeaderModal(true)}
+                    />
+                  </View>
+                </HeaderContainer>
+              ),
+            };
+          }}
+        />
+        <Stack.Screen
+          name={navPaths.searchScreen}
           component={SearchScreen}
           options={({ navigation, route }) => ({
             header: () => {
@@ -116,7 +137,7 @@ export default function ShortsStack() {
           })}
         />
         <Stack.Screen
-          name="SearchResultScreen"
+          name={navPaths.searchResultScreen}
           component={SearchResultScreen}
           options={({ navigation, route }) => ({
             header: () => {
@@ -134,12 +155,14 @@ export default function ShortsStack() {
                   <TextInputView
                     value={searchInput}
                     onPress={() =>
-                      navigation.navigate("SearchScreen", {
+                      navigation.navigate(navPaths.searchScreen, {
                         search: searchInput,
                       })
                     }
                     setClearButton={() => {
-                      navigation.navigate("SearchScreen", { search: "" });
+                      navigation.navigate(navPaths.searchScreen, {
+                        search: "",
+                      });
                     }}
                   />
                   <View style={styles.headerRightIconsContainer}>
@@ -153,26 +176,6 @@ export default function ShortsStack() {
               );
             },
           })}
-        />
-        <Stack.Screen
-          name="ChannelScreen"
-          component={ChannelScreen}
-          options={({ navigation }) => {
-            return {
-              header: () => (
-                <HeaderContainer>
-                  <HeaderArrowBackIcon navigation={navigation} />
-                  <View style={styles.headerRightIconsContainer}>
-                    <HeaderShareScreenIcon />
-                    <HeaderSearchIcon navigation={navigation} />
-                    <HeaderDotVerticalIcon
-                      onPress={() => ctxSetChannelHeaderModal(true)}
-                    />
-                  </View>
-                </HeaderContainer>
-              ),
-            };
-          }}
         />
       </Stack.Navigator>
 

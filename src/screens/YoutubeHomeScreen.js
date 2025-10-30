@@ -6,11 +6,12 @@ import {
   ScreenContainer,
 } from "../components/ContainerComponents";
 import { CompassIcon } from "../components/IconComponents";
-import { TabButton } from "../components/PressableComponents";
+import { TextTabButton } from "../components/PressableComponents";
 import { useThemeContext } from "../context/ThemeContext";
 import { useSetVideoData } from "../hooks/useSetVideoData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
+import { navPaths } from "../utils/constants";
 
 export default function YoutubeHomeScreen({ navigation }) {
   const scrollToTopRef = useRef(null);
@@ -72,29 +73,31 @@ function TopQueryTabBar({ navigation, query, setQuery }) {
           backgroundColor: ctxColors.bgSecondary,
           opacity: pressed ? 0.5 : 1,
         })}
-        onPress={() => navigation.getParent("MainNavigator")?.openDrawer()}
+        onPress={() =>
+          navigation.getParent(navPaths.MainNavigator)?.openDrawer()
+        }
       >
         <CompassIcon />
       </Pressable>
       {selectableTabs.map((item, index) => {
         return (
-          <TabButton
+          <TextTabButton
             key={index}
-            selected={query === item.query}
+            isSelected={query === item.query}
             onPress={() => handleSelected(item.query)}
           >
             {item.label}
-          </TabButton>
+          </TextTabButton>
         );
       })}
-      <TabButton
+      <TextTabButton
         style={{ marginRight: 32 }}
         onPress={() => {
           navigation.navigate("YouTubeFlatListScreen");
         }}
       >
         (YouTube API)
-      </TabButton>
+      </TextTabButton>
     </RowScrollView>
   );
 }

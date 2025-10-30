@@ -18,6 +18,7 @@ import { useUIContext } from "../../context/UIContext";
 import { useSetVideoData } from "../../hooks/useSetVideoData";
 import { navigate } from "../../navigations/NavigationConfig";
 import { styles } from "../../styles/styles";
+import { navPaths } from "../../utils/constants";
 import { ColumnScrollView, RowScrollView } from "../ContainerComponents";
 import {
   ArrowBackIcon,
@@ -31,7 +32,7 @@ import {
   CommentsProfileSmallImage,
   CommentsProfileLargeImage,
 } from "../ImageComponents";
-import { RippleButton, BasePressable, TabButton } from "../PressableComponents";
+import { RippleButton, BasePressable, TextTabButton } from "../PressableComponents";
 import { BaseText } from "../TextComponents";
 import { SwipeDownModal } from "./SwipeDownModals";
 
@@ -255,7 +256,7 @@ export function HomeCommentsProfileModal({ isVisible, setIsVisible }) {
           onPress={() => {
             ctxSetHomeCommentsModal(false);
             ctxSetHomeCommentsProfileModal(false);
-            navigate("ChannelScreen", { videoData: ctxModalVideoData });
+            navigate(navPaths.channelScreen, { videoData: ctxModalVideoData });
           }}
         />
         <View style={{ marginLeft: 16, flexShrink: 1 }}>
@@ -306,7 +307,7 @@ export function HomeCommentsProfileModal({ isVisible, setIsVisible }) {
         onPress={() => {
           ctxSetHomeCommentsModal(false);
           ctxSetHomeCommentsProfileModal(false);
-          navigate("ChannelScreen", { videoData: ctxModalVideoData });
+          navigate(navPaths.channelScreen, { videoData: ctxModalVideoData });
         }}
       >
         <BaseText style={{ fontWeight: "medium" }}>View Channel</BaseText>
@@ -345,14 +346,14 @@ function SortOrderTabBar() {
     >
       {selectableTabs.map((item, index) => {
         return (
-          <TabButton
+          <TextTabButton
             key={index}
             isFirstTab={index === 0}
-            selected={selected === item.query}
+            isSelected={selected === item.query}
             onPress={() => handleSelected(item.query)}
           >
             {item.label}
-          </TabButton>
+          </TextTabButton>
         );
       })}
     </RowScrollView>
