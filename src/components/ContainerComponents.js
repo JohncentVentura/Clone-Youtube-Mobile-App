@@ -17,6 +17,7 @@ import { DotVerticalIcon } from "./IconComponents";
 import {
   MainVideoChannelImage,
   MainVideoThumbnailImage,
+  SubscribedShortsImage,
 } from "./ImageComponents";
 import { RippleButton } from "./PressableComponents";
 import { BaseText } from "./TextComponents";
@@ -63,7 +64,11 @@ export function ScreenContainer({ style, isLoading, children, ...rest }) {
   ) : (
     <>
       <View
-        style={[styles.screenContainer, { backgroundColor: ctxColors.bg }, style]}
+        style={[
+          styles.screenContainer,
+          { backgroundColor: ctxColors.bg },
+          style,
+        ]}
         {...rest}
       >
         {children}
@@ -83,7 +88,11 @@ export function ScreenScrollView({ style, isLoading, children, ...rest }) {
   ) : (
     <>
       <ScrollView
-        style={[styles.screenContainer, { backgroundColor: ctxColors.bg }, style]}
+        style={[
+          styles.screenContainer,
+          { backgroundColor: ctxColors.bg },
+          style,
+        ]}
         contentContainerStyle={StyleSheet.create({
           alignItems: "flex-start",
         })}
@@ -285,6 +294,34 @@ export function ShortsVideoFlatList({ style, data, navigation, setQuery }) {
           autoPlayVideoId={autoPlayVideoId}
         />
       )}
+    />
+  );
+}
+
+export function ShortsVideoGridFlatList({ data, navigation, query, ...rest }) {
+  return (
+    <FlatList
+      data={data}
+      keyExtractor={(item) => String(item.id)}
+      numColumns={2}
+      columnWrapperStyle={{
+        marginVertical: 4,
+        justifyContent: "space-between",
+      }}
+      renderItem={({ item }) => (
+        <SubscribedShortsImage
+          key={item.id}
+          data={item}
+          source={{ uri: item.picture }}
+          onPress={() => {
+            navigation.navigate(navPaths.shortsScreen, {
+              routeQuery: query,
+              videoData: item,
+            });
+          }}
+        />
+      )}
+      {...rest}
     />
   );
 }

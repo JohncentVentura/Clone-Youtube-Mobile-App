@@ -16,7 +16,7 @@ export async function fetchChannelData({
   try {
     const url = `${PEXELS_API_URL}/search?query=${encodeURIComponent(
       query
-    )}&per_page=${queryResults}`;
+    )}&per_page=${queryResults * 2}`;
 
     const res = await fetch(url, {
       headers: { Authorization: PEXELS_API_KEY },
@@ -39,6 +39,9 @@ export async function fetchChannelData({
         const name = video.user.name;
         if (seenChannels.has(name)) return false;
         seenChannels.add(name);
+        if (seenChannels.size > queryResults) {
+          return false;
+        }
         return true;
       })
       .map((video) => ({

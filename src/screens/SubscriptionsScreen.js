@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, View } from "react-native";
 import {
+  ShortsVideoGridFlatList,
   MainVideoFlatList,
   RowScrollView,
   ScreenContainer,
 } from "../components/ContainerComponents";
+import { InactiveYouIcon } from "../components/IconComponents";
 import {
   ImageTextTabButton,
   TextTabButton,
@@ -14,13 +16,22 @@ import { useThemeContext } from "../context/ThemeContext";
 import { useSetChannelData } from "../hooks/useSetChannelData";
 import { useSetVideoData } from "../hooks/useSetVideoData";
 import { styles } from "../styles/styles";
+import { navPaths } from "../utils/constants";
+
+const CONTENT_TYPES = {
+  ALL: "All",
+  VIDEOS: "Videos",
+  SHORTS: "Shorts",
+  POSTS: "Posts",
+};
 
 export default function SubscriptionsScreen({ navigation }) {
-  const { ctxColors } = useThemeContext();
+  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
   const [query, setQuery] = useState("Events");
   const [subscribedChannels, setSubscribedChannels] = useState([]);
   const [selectedChannel, setSelectedChannel] = useState("");
   const [subscribedVideos, setSubscribedVideos] = useState([]);
+  const [contentType, setContentType] = useState(CONTENT_TYPES.ALL);
   const [isLoading, setIsLoading] = useState(true);
 
   useSetChannelData({
@@ -30,9 +41,8 @@ export default function SubscriptionsScreen({ navigation }) {
     setIsLoading,
   });
 
-  //TODO: return videoData base from one channel
   useSetVideoData({
-    query: selectedChannel || query || "Events",
+    query: selectedChannel || query,
     queryResults: 5,
     setVideos: setSubscribedVideos,
     setIsLoading,
@@ -50,25 +60,83 @@ export default function SubscriptionsScreen({ navigation }) {
       </View>
 
       {!selectedChannel ? (
-        <TopQueryTabBar
+        <TopContentTypeTabBar
           style={{ marginTop: 4 }}
-          query={query}
-          setQuery={setQuery}
+          contentType={contentType}
+          setContentType={setContentType}
         />
       ) : (
-        <View>
-          <Pressable>
-            <BaseText>Subscribe</BaseText>
+        <View
+          style={[
+            {
+              marginTop: 4,
+              minHeight: 40,
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              alignItems: "center",
+            },
+            styles.screenPadHorizontal,
+          ]}
+        >
+          <Pressable
+            style={[
+              {
+                backgroundColor: ctxColors.bgSecondary,
+                flexDirection: "row",
+              },
+              styles.baseButton,
+            ]}
+            onPress={() => {
+              navigation.navigate(navPaths.channelScreen, {
+                query: selectedChannel,
+                videoData: subscribedChannels.find(
+                  (channel) => channel.channelName === selectedChannel
+                )
+              });
+            }}
+          >
+            <InactiveYouIcon size={ctxIconSizes.sm} />
+            <BaseText
+              style={{
+                marginLeft: 4,
+                fontWeight: "medium",
+                fontSize: ctxFontSizes.sm,
+              }}
+            >
+              Visit Channel
+            </BaseText>
           </Pressable>
         </View>
       )}
 
-      <MainVideoFlatList
-        style={{ marginTop: 6 }}
-        data={subscribedVideos}
-        navigation={navigation}
-        query={query}
-      />
+      {selectedChannel ? (
+        <MainVideoFlatList
+          style={{ marginTop: 10 }}
+          isLoading={isLoading}
+          data={subscribedVideos}
+          navigation={navigation}
+          query={selectedChannel}
+        />
+      ) : contentType === CONTENT_TYPES.ALL ? (
+        <MainVideoFlatList
+          style={{ marginTop: 10 }}
+          isLoading={isLoading}
+          data={subscribedVideos}
+          navigation={navigation}
+          query={selectedChannel}
+        />
+      ) : contentType === CONTENT_TYPES.VIDEOS ? (
+        <></>
+      ) : contentType === CONTENT_TYPES.SHORTS ? (
+        <ShortsVideoGridFlatList
+          style={[{ marginTop: 8 }, styles.screenPadHorizontal]}
+          data={subscribedVideos}
+          navigation={navigation}
+          query={selectedChannel}
+        />
+      ) : (
+        contentType === CONTENT_TYPES.POSTS && <></>
+      )}
     </ScreenContainer>
   );
 }
@@ -78,6 +146,7 @@ function SubscribedTabBar({
   subscribedChannels,
   selectedChannel,
   setSelectedChannel,
+  setSelectedChannelData,
 }) {
   const handleSelected = (newChannel) => {
     setSelectedChannel((prevChannel) =>
@@ -103,17 +172,19 @@ function SubscribedTabBar({
   );
 }
 
-function TopQueryTabBar({ style, query, setQuery }) {
+function TopContentTypeTabBar({ style, contentType, setContentType }) {
   const selectableTabs = [
-    { label: "All", query: "Events" },
-    { label: "Music", query: "Music" },
-    { label: "Nature", query: "Nature" },
-    { label: "City", query: "City" },
+    { label: CONTENT_TYPES.ALL, type: CONTENT_TYPES.ALL },
+    { label: CONTENT_TYPES.VIDEOS, type: CONTENT_TYPES.VIDEOS },
+    { label: CONTENT_TYPES.SHORTS, type: CONTENT_TYPES.SHORTS },
+    { label: CONTENT_TYPES.POSTS, type: CONTENT_TYPES.POSTS },
   ];
 
-  const handleSelected = (newQuery) => {
-    setQuery((prevQuery) =>
-      prevQuery === newQuery && newQuery !== "Events" ? "Events" : newQuery
+  const handleSelected = (newContent) => {
+    setContentType((prevContent) =>
+      prevContent === newContent && newContent !== CONTENT_TYPES.ALL
+        ? CONTENT_TYPES.ALL
+        : newContent
     );
   };
 
@@ -126,8 +197,8 @@ function TopQueryTabBar({ style, query, setQuery }) {
           <TextTabButton
             key={index}
             isFirstTab={index === 0}
-            isSelected={query === item.query}
-            onPress={() => handleSelected(item.query)}
+            isSelected={contentType === item.type}
+            onPress={() => handleSelected(item.type)}
           >
             {item.label}
           </TextTabButton>

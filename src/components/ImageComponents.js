@@ -1,7 +1,8 @@
-import { Image, Pressable } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useThemeContext } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
 import { imagePaths } from "../utils/constants";
+import { shortenText } from "../utils/utils";
 
 export function ChannelCoverImage({ source, ...rest }) {
   return (
@@ -136,6 +137,43 @@ export function SearchHistoryThumbnailImage({ source, ...rest }) {
   );
 }
 
+export function SubscribedShortsImage({ data, source, ...rest }) {
+  const { ctxColors, ctxFontSizes } = useThemeContext();
+
+  return (
+    <Pressable style={{ width: 175, height: 300 }} {...rest}>
+      <Image
+        style={{ borderRadius: 6, width: "100%", height: "100%" }}
+        resizeMode={"stretch"}
+        source={source}
+        alt="SubscribedShortsImage"
+      />
+      <View
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          padding: 8,
+          flexShrink: 1,
+        }}
+      >
+        <Text style={{ fontSize: ctxFontSizes.base, color: ctxColors.white }}>
+          {shortenText(data.title, 30)}
+        </Text>
+        <Text
+          style={{
+            marginTop: 4,
+            fontSize: ctxFontSizes.xs,
+            color: ctxColors.white,
+          }}
+        >
+          {data.views} Views
+        </Text>
+      </View>
+    </Pressable>
+  );
+}
+
 export function SubscribedChannelImage({ style, source, ...rest }) {
   return (
     <Image
@@ -143,6 +181,7 @@ export function SubscribedChannelImage({ style, source, ...rest }) {
       resizeMode={"stretch"}
       source={source}
       alt="SubscribedChannelImage"
+      {...rest}
     />
   );
 }

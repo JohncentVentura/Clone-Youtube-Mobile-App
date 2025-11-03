@@ -8,7 +8,6 @@ import {
 } from "../utils/utils";
 
 const { PEXELS_API_URL, PEXELS_API_KEY } = Constants.expoConfig.extra;
-
 const queryResultsMultiplier = 3;
 
 export async function fetchShortsVideoData({
