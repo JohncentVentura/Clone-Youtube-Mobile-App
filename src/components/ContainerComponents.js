@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
+  Image,
   Platform,
   Pressable,
   ScrollView,
@@ -22,6 +23,7 @@ import {
 import { RippleButton } from "./PressableComponents";
 import { BaseText } from "./TextComponents";
 import { MainVideoView, ShortsVideoView } from "./VideoComponents";
+
 
 //#region Screen & Headers
 export function HeaderContainer({ style, children, ...rest }) {
@@ -182,7 +184,7 @@ export function MainVideoFlatList({
           <View style={[{ marginBottom: 32 }]}>
             <Pressable
               onPress={() => {
-                navigation.push("MainVideoScreen", {
+                navigation.push(navPaths.mainVideoScreen, {
                   query: query,
                   videoData: item,
                 });
@@ -212,7 +214,7 @@ export function MainVideoFlatList({
                 source={{ uri: item.picture }}
                 onPress={() => {
                   navigation.navigate(navPaths.channelScreen, {
-                    query: query,
+                    
                     videoData: item,
                   });
                 }}
@@ -298,8 +300,15 @@ export function ShortsVideoFlatList({ style, data, navigation, setQuery }) {
   );
 }
 
-export function ShortsVideoGridFlatList({ data, navigation, query, ...rest }) {
-  return (
+export function ShortsVideoGridFlatList({
+  data,
+  isLoading,
+  navigation,
+  ...rest
+}) {
+  return isLoading ? (
+    <ActivityIndicator style={{ flex: 1 }} size="large" />
+  ) : (
     <FlatList
       data={data}
       keyExtractor={(item) => String(item.id)}
@@ -315,7 +324,6 @@ export function ShortsVideoGridFlatList({ data, navigation, query, ...rest }) {
           source={{ uri: item.picture }}
           onPress={() => {
             navigation.navigate(navPaths.shortsScreen, {
-              routeQuery: query,
               videoData: item,
             });
           }}

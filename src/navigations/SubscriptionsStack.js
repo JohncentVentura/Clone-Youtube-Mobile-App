@@ -12,7 +12,7 @@ import {
   HeaderShareScreenIcon,
 } from "../components/IconComponents";
 import { HeaderYoutubeLogoImage } from "../components/ImageComponents";
-import { HeaderTitleText, TextInputView } from "../components/TextComponents";
+import { BaseText, HeaderTitleText, TextInputView } from "../components/TextComponents";
 import { useThemeContext } from "../context/ThemeContext";
 import { useSearchContext } from "../context/SearchContext";
 import { useUIContext } from "../context/UIContext";

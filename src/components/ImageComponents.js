@@ -1,6 +1,6 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useThemeContext } from "../context/ThemeContext";
-import { styles } from "../styles/styles";
+import { screenWidth, styles } from "../styles/styles";
 import { imagePaths } from "../utils/constants";
 import { shortenText } from "../utils/utils";
 
@@ -137,6 +137,30 @@ export function SearchHistoryThumbnailImage({ source, ...rest }) {
   );
 }
 
+export function SubscribedChannelImage({ style, source, ...rest }) {
+  return (
+    <Image
+      style={[{ borderRadius: 99, width: 45, height: 45 }, style]}
+      resizeMode={"stretch"}
+      source={source}
+      alt="SubscribedChannelImage"
+      {...rest}
+    />
+  );
+}
+
+export function SubscribedPostImage({ style, source, ...rest }) {
+  return (
+    <Image
+      style={[{ borderRadius: 8 }, style]}
+      resizeMode={"stretch"}
+      source={source}
+      alt="SubscribedPostImage"
+      {...rest}
+    />
+  );
+}
+
 export function SubscribedShortsImage({ data, source, ...rest }) {
   const { ctxColors, ctxFontSizes } = useThemeContext();
 
@@ -157,7 +181,13 @@ export function SubscribedShortsImage({ data, source, ...rest }) {
           flexShrink: 1,
         }}
       >
-        <Text style={{ fontSize: ctxFontSizes.base, color: ctxColors.white }}>
+        <Text
+          style={{
+            fontSize: ctxFontSizes.base,
+            fontWeight: "medium",
+            color: ctxColors.white,
+          }}
+        >
           {shortenText(data.title, 30)}
         </Text>
         <Text
@@ -171,17 +201,5 @@ export function SubscribedShortsImage({ data, source, ...rest }) {
         </Text>
       </View>
     </Pressable>
-  );
-}
-
-export function SubscribedChannelImage({ style, source, ...rest }) {
-  return (
-    <Image
-      style={[{ borderRadius: 99, width: 45, height: 45 }, style]}
-      resizeMode={"stretch"}
-      source={source}
-      alt="SubscribedChannelImage"
-      {...rest}
-    />
   );
 }

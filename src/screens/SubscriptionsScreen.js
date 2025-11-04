@@ -5,8 +5,10 @@ import {
   MainVideoFlatList,
   RowScrollView,
   ScreenContainer,
+  ColumnScrollView,
 } from "../components/ContainerComponents";
 import { InactiveYouIcon } from "../components/IconComponents";
+import PostComponent from "../components/PostComponent";
 import {
   ImageTextTabButton,
   TextTabButton,
@@ -29,8 +31,9 @@ export default function SubscriptionsScreen({ navigation }) {
   const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
   const [query, setQuery] = useState("Events");
   const [subscribedChannels, setSubscribedChannels] = useState([]);
-  const [selectedChannel, setSelectedChannel] = useState("");
-  const [subscribedVideos, setSubscribedVideos] = useState([]);
+  const [selectedChannelName, setSelectedChannelName] = useState("");
+  const [subscribedMainVideos, setSubscribedMainVideos] = useState([]);
+  const [subscribedShortsVideos, setSubscribedShortsVideos] = useState([]);
   const [contentType, setContentType] = useState(CONTENT_TYPES.ALL);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -42,11 +45,20 @@ export default function SubscriptionsScreen({ navigation }) {
   });
 
   useSetVideoData({
-    query: selectedChannel || query,
+    query: selectedChannelName || query,
     queryResults: 5,
-    setVideos: setSubscribedVideos,
+    setVideos: setSubscribedMainVideos,
     setIsLoading,
-    dependencies: [query, selectedChannel],
+    dependencies: [selectedChannelName, query],
+  });
+
+  useSetVideoData({
+    videoDataType: "shorts",
+    query: selectedChannelName || query,
+    queryResults: 6,
+    setVideos: setSubscribedShortsVideos,
+    setIsLoading,
+    dependencies: [selectedChannelName, query],
   });
 
   return (
@@ -54,14 +66,14 @@ export default function SubscriptionsScreen({ navigation }) {
       <View>
         <SubscribedTabBar
           subscribedChannels={subscribedChannels}
-          selectedChannel={selectedChannel}
-          setSelectedChannel={setSelectedChannel}
+          selectedChannelName={selectedChannelName}
+          setSelectedChannelName={setSelectedChannelName}
         />
       </View>
 
-      {!selectedChannel ? (
+      {!selectedChannelName ? (
         <TopContentTypeTabBar
-          style={{ marginTop: 4 }}
+          style={{ marginTop: 4, marginBottom: 10 }}
           contentType={contentType}
           setContentType={setContentType}
         />
@@ -88,10 +100,9 @@ export default function SubscriptionsScreen({ navigation }) {
             ]}
             onPress={() => {
               navigation.navigate(navPaths.channelScreen, {
-                query: selectedChannel,
                 videoData: subscribedChannels.find(
-                  (channel) => channel.channelName === selectedChannel
-                )
+                  (channel) => channel.channelName === selectedChannelName
+                ),
               });
             }}
           >
@@ -109,33 +120,46 @@ export default function SubscriptionsScreen({ navigation }) {
         </View>
       )}
 
-      {selectedChannel ? (
+      {selectedChannelName ? (
         <MainVideoFlatList
           style={{ marginTop: 10 }}
           isLoading={isLoading}
-          data={subscribedVideos}
+          data={subscribedMainVideos}
           navigation={navigation}
-          query={selectedChannel}
+          query={selectedChannelName}
         />
       ) : contentType === CONTENT_TYPES.ALL ? (
+        <></>
+      ) : contentType === CONTENT_TYPES.VIDEOS ? (
         <MainVideoFlatList
           style={{ marginTop: 10 }}
           isLoading={isLoading}
-          data={subscribedVideos}
+          data={subscribedMainVideos}
           navigation={navigation}
-          query={selectedChannel}
+          query={query}
         />
-      ) : contentType === CONTENT_TYPES.VIDEOS ? (
-        <></>
       ) : contentType === CONTENT_TYPES.SHORTS ? (
         <ShortsVideoGridFlatList
           style={[{ marginTop: 8 }, styles.screenPadHorizontal]}
-          data={subscribedVideos}
+          isLoading={isLoading}
+          data={subscribedShortsVideos}
           navigation={navigation}
-          query={selectedChannel}
         />
       ) : (
-        contentType === CONTENT_TYPES.POSTS && <></>
+        contentType === CONTENT_TYPES.POSTS && (
+          <ColumnScrollView>
+            {subscribedMainVideos.map((item, index) => (
+              <PostComponent
+                key={index}
+                style={[{ marginTop: 8 }, styles.screenPadHorizontal]}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                navigation={navigation}
+                videoData={item}
+              />
+            ))}
+          </ColumnScrollView>
+        )
       )}
     </ScreenContainer>
   );
@@ -144,12 +168,11 @@ export default function SubscriptionsScreen({ navigation }) {
 function SubscribedTabBar({
   style,
   subscribedChannels,
-  selectedChannel,
-  setSelectedChannel,
-  setSelectedChannelData,
+  selectedChannelName,
+  setSelectedChannelName,
 }) {
   const handleSelected = (newChannel) => {
-    setSelectedChannel((prevChannel) =>
+    setSelectedChannelName((prevChannel) =>
       prevChannel === newChannel && newChannel !== "" ? "" : newChannel
     );
   };
@@ -160,8 +183,8 @@ function SubscribedTabBar({
         return (
           <ImageTextTabButton
             key={index}
-            isSelected={selectedChannel === item.channelName}
-            selectedChannel={selectedChannel}
+            isSelected={selectedChannelName === item.channelName}
+            selectedTabName={selectedChannelName}
             imageSource={item.picture}
             text={item.channelName}
             onPress={() => handleSelected(item.channelName)}

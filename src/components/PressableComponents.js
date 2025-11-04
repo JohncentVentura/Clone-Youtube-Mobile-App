@@ -456,7 +456,7 @@ export function SubscribeButton({ style, ...rest }) {
 export function ImageTextTabButton({
   style,
   isSelected,
-  selectedChannel,
+  selectedTabName,
   imageSource,
   text,
   ...rest
@@ -477,14 +477,14 @@ export function ImageTextTabButton({
     if (isSelected) {
       backgroundValue.value = withTiming(1, { duration: 100 });
       opacityValue.value = withTiming(1, { duration: 100 });
-    } else if (!isSelected && !selectedChannel) {
+    } else if (!isSelected && !selectedTabName) {
       backgroundValue.value = withTiming(0, { duration: 400 });
       opacityValue.value = withTiming(1, { duration: 400 });
     } else if (!isSelected) {
       backgroundValue.value = withTiming(0, { duration: 400 });
       opacityValue.value = withTiming(0.5, { duration: 400 });
     }
-  }, [selectedChannel]);
+  }, [selectedTabName]);
 
   return (
     <AnimatedPressable

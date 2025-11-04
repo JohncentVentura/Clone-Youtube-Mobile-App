@@ -6,8 +6,9 @@ import {
 } from "../components/ContainerComponents";
 import { useSetVideoData } from "../hooks/useSetVideoData";
 
-export default function ShortsScreen({ navigation }) {
-  const [query, setQuery] = useState("Road");
+export default function ShortsScreen({ navigation, route }) {
+  const videoData = route.params?.videoData;
+  const [query, setQuery] = useState(videoData?.title || "Road");
   const [shortsVideos, setShortsVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
