@@ -31,6 +31,7 @@ export function useSetVideoData({
 
         if (isMounted) setVideos(data);
       } catch (err) {
+        if (err.name === "AbortError") return; // ignore expected aborts
         console.error("useSetVideoData error:", err);
       } finally {
         if (isMounted) setIsLoading?.(false);

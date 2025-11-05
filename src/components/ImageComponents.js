@@ -161,11 +161,11 @@ export function SubscribedPostImage({ style, source, ...rest }) {
   );
 }
 
-export function SubscribedShortsImage({ data, source, ...rest }) {
+export function SubscribedShortsImage({ style, data, source, ...rest }) {
   const { ctxColors, ctxFontSizes } = useThemeContext();
 
   return (
-    <Pressable style={{ width: 175, height: 300 }} {...rest}>
+    <Pressable style={[{ marginBottom: 12, width: 175, height: 300 }, style]} {...rest}>
       <Image
         style={{ borderRadius: 6, width: "100%", height: "100%" }}
         resizeMode={"stretch"}

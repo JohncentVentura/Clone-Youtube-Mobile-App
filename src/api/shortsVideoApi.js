@@ -43,6 +43,7 @@ export async function fetchShortsVideoData({
     return shortVideos.map((video) => ({
       id: video.id,
       query: query,
+      type: "shortsVideo",
       title: urlToVideoTitle(video.url),
       description: video.url,
       video: video.video_files[0].link,
@@ -59,8 +60,9 @@ export async function fetchShortsVideoData({
       commentsCount: roundOffNumber(video.duration),
       commentsDescription: video.url,
     }));
-  } catch (error) {
-    console.error("fetchShortsVideoData error: ", error);
+  } catch (err) {
+    if (err.name === "AbortError") return [];
+    console.error("fetchShortsVideoData error:", err);
     return [];
   }
 }

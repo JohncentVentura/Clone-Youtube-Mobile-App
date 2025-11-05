@@ -4,6 +4,7 @@ import {
   MainVideoFlatList,
   RowScrollView,
   ScreenContainer,
+  MixedFeedFlatList,
 } from "../components/ContainerComponents";
 import { CompassIcon } from "../components/IconComponents";
 import { TextTabButton } from "../components/PressableComponents";
@@ -16,14 +17,23 @@ import { navPaths } from "../utils/constants";
 export default function YoutubeHomeScreen({ navigation }) {
   const scrollToTopRef = useRef(null);
   const [query, setQuery] = useState("Humans");
-  const [homeVideos, setHomeVideos] = useState([]);
+  const [homeMainVideos, setHomeMainVideos] = useState([]);
+  const [homeShortsVideos, setHomeShortsVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useScrollToTopOnFocus(scrollToTopRef);
   useSetVideoData({
     query,
     queryResults: 5,
-    setVideos: setHomeVideos,
+    setVideos: setHomeMainVideos,
+    setIsLoading,
+    dependencies: [query],
+  });
+  useSetVideoData({
+    type: "shorts",
+    query,
+    queryResults: 5,
+    setVideos: setHomeShortsVideos,
     setIsLoading,
     dependencies: [query],
   });
@@ -35,13 +45,36 @@ export default function YoutubeHomeScreen({ navigation }) {
         query={query}
         setQuery={setQuery}
       />
-      <MainVideoFlatList
-        style={{ marginTop: 6 }}
+
+      <MixedFeedFlatList
+        ref={scrollToTopRef}
+        style={{ marginTop: 8 }}
         isLoading={isLoading}
-        data={homeVideos}
+        setIsLoading={setIsLoading}
         navigation={navigation}
         query={query}
-        ref={scrollToTopRef}
+        mixedData={[
+          ...homeMainVideos.slice(0, 3).map((video) => ({
+            type: "mainVideo",
+            data: video,
+          })),
+          {
+            type: "shortsVideos",
+            data: homeShortsVideos,
+          },
+          ...homeMainVideos.slice(0, 1).map((video) => ({
+            type: "posts",
+            data: video,
+          })),
+          ...homeMainVideos.slice(3, 5).map((video) => ({
+            type: "mainVideo",
+            data: video,
+          })),
+          ...homeMainVideos.slice(1, 3).map((video) => ({
+            type: "posts",
+            data: video,
+          })),
+        ]}
       />
     </ScreenContainer>
   );

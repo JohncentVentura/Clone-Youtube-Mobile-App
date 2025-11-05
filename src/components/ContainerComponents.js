@@ -10,6 +10,7 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import PostComponent from "./PostComponent";
 import { useThemeContext } from "../context/ThemeContext";
 import { useUIContext } from "../context/UIContext";
 import { screenHeight, styles } from "../styles/styles";
@@ -23,7 +24,6 @@ import {
 import { RippleButton } from "./PressableComponents";
 import { BaseText } from "./TextComponents";
 import { MainVideoView, ShortsVideoView } from "./VideoComponents";
-
 
 //#region Screen & Headers
 export function HeaderContainer({ style, children, ...rest }) {
@@ -139,6 +139,47 @@ export function RowScrollView({ style, children, ...rest }) {
     </ScrollView>
   );
 }
+
+export function ShortsVideoGridScrollView({
+  style,
+  isLoading,
+  data,
+  navigation,
+  headerComponent,
+  ...rest
+}) {
+  return isLoading ? (
+    <ActivityIndicator style={{ flex: 1 }} size="large" />
+  ) : (
+    <ScrollView
+      style={[styles.screenPadHorizontal, { marginBottom: 16 }, style]}
+      showsVerticalScrollIndicator={false}
+      {...rest}
+    >
+      {headerComponent}
+      <View
+        style={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+        }}
+      >
+        {data.map((item) => (
+          <SubscribedShortsImage
+            key={item.id}
+            data={item}
+            source={{ uri: item.picture }}
+            onPress={() => {
+              navigation.navigate(navPaths.shortsScreen, {
+                videoData: item,
+              });
+            }}
+          />
+        ))}
+      </View>
+    </ScrollView>
+  );
+}
 //#endregion
 
 //#region FlatList
@@ -179,76 +220,16 @@ export function MainVideoFlatList({
       style={style}
       data={data}
       keyExtractor={(item) => item.id}
-      renderItem={({ item, index }) => {
-        return (
-          <View style={[{ marginBottom: 32 }]}>
-            <Pressable
-              onPress={() => {
-                navigation.push(navPaths.mainVideoScreen, {
-                  query: query,
-                  videoData: item,
-                });
-              }}
-            >
-              {isAutoPlayingVideo ? (
-                <MainVideoView
-                  videoData={item}
-                  autoPlayVideoId={autoPlayVideoId}
-                />
-              ) : (
-                <MainVideoThumbnailImage source={{ uri: item.picture }} />
-              )}
-            </Pressable>
-            <View
-              style={[
-                styles.screenPadHorizontal,
-                {
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
-                  alignItems: "flex-start",
-                },
-              ]}
-            >
-              <MainVideoChannelImage
-                style={{ marginTop: 10 }}
-                source={{ uri: item.picture }}
-                onPress={() => {
-                  navigation.navigate(navPaths.channelScreen, {
-                    
-                    videoData: item,
-                  });
-                }}
-              />
-              <View style={{ marginLeft: 14, marginTop: 8, flexShrink: 1 }}>
-                <BaseText
-                  style={{
-                    fontSize: ctxFontSizes.lg,
-                    fontWeight: "bold",
-                  }}
-                >
-                  {item.title}
-                </BaseText>
-                <BaseText
-                  style={{
-                    marginTop: 4,
-                    fontSize: ctxFontSizes.xs,
-                    color: ctxColors.textSecondary,
-                  }}
-                >
-                  {item.channelName} • {item.views} views • {item.uploadedDate}
-                </BaseText>
-              </View>
-              <RippleButton
-                style={{ marginLeft: "auto", marginTop: 6 }}
-                rippleSize={4}
-                onPress={() => ctxSetMainVideoItemModal(true)}
-              >
-                <DotVerticalIcon />
-              </RippleButton>
-            </View>
-          </View>
-        );
-      }}
+      renderItem={({ item, index }) => (
+        <MainVideoViewRenderItem
+          key={item.id}
+          item={item}
+          navigation={navigation}
+          query={query}
+          isAutoPlayingVideo={isAutoPlayingVideo}
+          autoPlayVideoId={autoPlayVideoId}
+        />
+      )}
       {...rest}
     />
   );
@@ -300,37 +281,160 @@ export function ShortsVideoFlatList({ style, data, navigation, setQuery }) {
   );
 }
 
-export function ShortsVideoGridFlatList({
-  data,
-  isLoading,
+export function MixedFeedFlatList({
+  style,
+  isLoading = false,
+  setIsLoading,
+  isAutoPlayingVideo = true,
+  mixedData,
   navigation,
+  query,
   ...rest
 }) {
-  return isLoading ? (
-    <ActivityIndicator style={{ flex: 1 }} size="large" />
-  ) : (
+  const [autoPlayVideoId, setAutoPlayVideoId] = useState(null);
+  const onViewableItemsChanged = useRef(({ viewableItems }) => {
+    if (isAutoPlayingVideo && viewableItems.length > 0) {
+      setAutoPlayVideoId(viewableItems[0].item.data.id);
+    }
+  });
+  const viewabilityConfig = useRef({
+    viewAreaCoveragePercentThreshold: 50,
+  });
+
+  return (
     <FlatList
-      data={data}
-      keyExtractor={(item) => String(item.id)}
-      numColumns={2}
-      columnWrapperStyle={{
-        marginVertical: 4,
-        justifyContent: "space-between",
+      //*Testing this props
+      initialNumToRender={1}
+      maxToRenderPerBatch={1}
+      windowSize={2}
+      //*/
+      showsVerticalScrollIndicator={false}
+      onViewableItemsChanged={onViewableItemsChanged.current}
+      viewabilityConfig={viewabilityConfig.current}
+      style={style}
+      data={mixedData}
+      keyExtractor={(item, index) => {
+        if (item.type === "mainVideo") return `${index}-${item.data.id}`;
+        if (item.type === "shortsVideos") return `${index}-shortsVideo`;
+        if (item.type === "posts") return `${index}-posts`;
+        return `${index}-unknown`;
       }}
-      renderItem={({ item }) => (
-        <SubscribedShortsImage
-          key={item.id}
-          data={item}
+      renderItem={({ item: mixedItem }) => {
+        if (mixedItem.type === "mainVideo") {
+          return (
+            <MainVideoViewRenderItem
+              item={mixedItem.data}
+              navigation={navigation}
+              query={query}
+              isAutoPlayingVideo={isAutoPlayingVideo}
+              autoPlayVideoId={autoPlayVideoId}
+            />
+          );
+        }
+
+        if (mixedItem.type === "shortsVideos") {
+          return (
+            <ShortsVideoGridScrollView
+              isLoading={isLoading}
+              data={mixedItem.data}
+              navigation={navigation}
+            />
+          );
+        }
+
+        if (mixedItem.type === "posts") {
+          return (
+            <PostComponent
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+              navigation={navigation}
+              videoData={mixedItem.data}
+            />
+          );
+        }
+
+        return null;
+      }}
+      {...rest}
+    />
+  );
+}
+//#endregion
+
+//#region FlatList renderItem
+export function MainVideoViewRenderItem({
+  item,
+  navigation,
+  query,
+  isAutoPlayingVideo,
+  autoPlayVideoId,
+}) {
+  const { ctxColors, ctxFontSizes } = useThemeContext();
+  const { ctxSetMainVideoItemModal } = useUIContext();
+
+  return (
+    <View style={[{ marginBottom: 32 }]}>
+      <Pressable
+        onPress={() => {
+          navigation.push(navPaths.mainVideoScreen, {
+            query: query,
+            videoData: item,
+          });
+        }}
+      >
+        {isAutoPlayingVideo ? (
+          <MainVideoView videoData={item} autoPlayVideoId={autoPlayVideoId} />
+        ) : (
+          <MainVideoThumbnailImage source={{ uri: item.picture }} />
+        )}
+      </Pressable>
+      <View
+        style={[
+          styles.screenPadHorizontal,
+          {
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            alignItems: "flex-start",
+          },
+        ]}
+      >
+        <MainVideoChannelImage
+          style={{ marginTop: 10 }}
           source={{ uri: item.picture }}
           onPress={() => {
-            navigation.navigate(navPaths.shortsScreen, {
+            navigation.navigate(navPaths.channelScreen, {
               videoData: item,
             });
           }}
         />
-      )}
-      {...rest}
-    />
+        <View style={{ marginLeft: 14, marginTop: 8, flexShrink: 1 }}>
+          <BaseText
+            style={{
+              fontSize: ctxFontSizes.lg,
+              fontWeight: "bold",
+            }}
+          >
+            {item.title}
+          </BaseText>
+          <BaseText
+            style={{
+              marginTop: 4,
+              fontSize: ctxFontSizes.xs,
+              color: ctxColors.textSecondary,
+            }}
+          >
+            {item.channelName} • {item.views} views • {item.uploadedDate}
+          </BaseText>
+        </View>
+        <RippleButton
+          style={{ marginLeft: "auto", marginTop: 6 }}
+          rippleSize={4}
+          onPress={() => ctxSetMainVideoItemModal(true)}
+        >
+          <DotVerticalIcon />
+        </RippleButton>
+      </View>
+    </View>
   );
 }
 //#endregion

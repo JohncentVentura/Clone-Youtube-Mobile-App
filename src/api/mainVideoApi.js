@@ -35,6 +35,7 @@ export async function fetchMainVideoData({
     return data.videos.map((video) => ({
       id: video.id,
       query: query,
+      type: "mainVideo",
       title: urlToVideoTitle(video.url),
       description: video.url,
       video: video.video_files[0].link,
@@ -52,6 +53,7 @@ export async function fetchMainVideoData({
       commentsDescription: video.url,
     }));
   } catch (error) {
+    if (error.name === "AbortError") return [];
     console.error("fetchMainVideoData error: ", error);
     return [];
   }

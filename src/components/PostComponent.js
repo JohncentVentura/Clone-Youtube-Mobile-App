@@ -16,7 +16,7 @@ import { BaseText } from "./TextComponents";
 import { useThemeContext } from "../context/ThemeContext";
 import { useUIContext } from "../context/UIContext";
 import { useSetImageData } from "../hooks/useImageData";
-import { screenWidth } from "../styles/styles";
+import { screenWidth, styles } from "../styles/styles";
 import { navPaths } from "../utils/constants";
 import { shortenText } from "../utils/utils";
 import { BasePressable, RippleButton } from "./PressableComponents";
@@ -41,12 +41,6 @@ export default function PostComponent({
     dependencies: [videoData.title],
   });
 
-  const images = [
-    "https://picsum.photos/500/300?1",
-    "https://picsum.photos/500/300?2",
-    "https://picsum.photos/500/300?3",
-  ];
-
   const handleScroll = (event) => {
     const index =
       Math.round(event.nativeEvent.contentOffset.x / screenWidth) + 1;
@@ -56,7 +50,7 @@ export default function PostComponent({
   return isLoading ? (
     <ActivityIndicator style={{ flex: 1 }} size="large" />
   ) : (
-    <View style={[{ paddingBottom: 24 }, style]}>
+    <View style={[styles.screenPadHorizontal, { paddingBottom: 16 }, style]}>
       <View
         style={{
           width: "100%",

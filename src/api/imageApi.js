@@ -35,8 +35,9 @@ export async function fetchImageData({
     return data.videos.map((video) => ({
       picture: video.video_pictures[0].picture,
     }));
-  } catch (error) {
-    console.error("fetchMainVideoData error: ", error);
+   } catch (err) {
+    if (err.name === "AbortError") return [];
+    console.error("fetchImageData error:", err);
     return [];
   }
 }

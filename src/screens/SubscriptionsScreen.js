@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Pressable, View } from "react-native";
 import {
-  ShortsVideoGridFlatList,
+  ShortsVideoGridScrollView,
   MainVideoFlatList,
   RowScrollView,
   ScreenContainer,
   ColumnScrollView,
+  MixedFeedFlatList,
 } from "../components/ContainerComponents";
 import { InactiveYouIcon } from "../components/IconComponents";
 import PostComponent from "../components/PostComponent";
@@ -55,7 +56,7 @@ export default function SubscriptionsScreen({ navigation }) {
   useSetVideoData({
     videoDataType: "shorts",
     query: selectedChannelName || query,
-    queryResults: 6,
+    queryResults: 8,
     setVideos: setSubscribedShortsVideos,
     setIsLoading,
     dependencies: [selectedChannelName, query],
@@ -73,7 +74,7 @@ export default function SubscriptionsScreen({ navigation }) {
 
       {!selectedChannelName ? (
         <TopContentTypeTabBar
-          style={{ marginTop: 4, marginBottom: 10 }}
+          style={{ marginTop: 4 }}
           contentType={contentType}
           setContentType={setContentType}
         />
@@ -121,37 +122,94 @@ export default function SubscriptionsScreen({ navigation }) {
       )}
 
       {selectedChannelName ? (
-        <MainVideoFlatList
-          style={{ marginTop: 10 }}
+        <MixedFeedFlatList
+          style={{ marginTop: 8 }}
           isLoading={isLoading}
-          data={subscribedMainVideos}
+          setIsLoading={setIsLoading}
           navigation={navigation}
-          query={selectedChannelName}
+          query={query}
+          mixedData={[
+            ...subscribedMainVideos.slice(0, 2).map((video) => ({
+              type: "mainVideo",
+              data: video,
+            })),
+            ...subscribedMainVideos.slice(0, 2).map((video) => ({
+              type: "posts",
+              data: video,
+            })),
+            {
+              type: "shortsVideos",
+              data: subscribedShortsVideos,
+            },
+            ...subscribedMainVideos.slice(2, 3).map((video) => ({
+              type: "posts",
+              data: video,
+            })),
+            ...subscribedMainVideos.slice(3, 5).map((video) => ({
+              type: "mainVideo",
+              data: video,
+            })),
+            ...subscribedMainVideos.slice(3, 5).map((video) => ({
+              type: "posts",
+              data: video,
+            })),
+          ]}
         />
       ) : contentType === CONTENT_TYPES.ALL ? (
-        <></>
+        <MixedFeedFlatList
+          style={{ marginTop: 8 }}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+          navigation={navigation}
+          query={query}
+          mixedData={[
+            ...subscribedMainVideos.slice(0, 1).map((video) => ({
+              type: "posts",
+              data: video,
+            })),
+            ...subscribedMainVideos.slice(0, 3).map((video) => ({
+              type: "mainVideo",
+              data: video,
+            })),
+            {
+              type: "shortsVideos",
+              data: subscribedShortsVideos,
+            },
+            ...subscribedMainVideos.slice(1, 2).map((video) => ({
+              type: "posts",
+              data: video,
+            })),
+            ...subscribedMainVideos.slice(3, 5).map((video) => ({
+              type: "mainVideo",
+              data: video,
+            })),
+            ...subscribedMainVideos.slice(2, 4).map((video) => ({
+              type: "posts",
+              data: video,
+            }))
+          ]}
+        />
       ) : contentType === CONTENT_TYPES.VIDEOS ? (
         <MainVideoFlatList
-          style={{ marginTop: 10 }}
+          style={{ marginTop: 8 }}
           isLoading={isLoading}
           data={subscribedMainVideos}
           navigation={navigation}
           query={query}
         />
       ) : contentType === CONTENT_TYPES.SHORTS ? (
-        <ShortsVideoGridFlatList
-          style={[{ marginTop: 8 }, styles.screenPadHorizontal]}
+        <ShortsVideoGridScrollView
+          style={{ marginTop: 8 }}
           isLoading={isLoading}
           data={subscribedShortsVideos}
           navigation={navigation}
         />
       ) : (
         contentType === CONTENT_TYPES.POSTS && (
-          <ColumnScrollView>
+          <ColumnScrollView style={{ marginTop: 8 }}>
             {subscribedMainVideos.map((item, index) => (
               <PostComponent
                 key={index}
-                style={[{ marginTop: 8 }, styles.screenPadHorizontal]}
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
                 navigation={navigation}
