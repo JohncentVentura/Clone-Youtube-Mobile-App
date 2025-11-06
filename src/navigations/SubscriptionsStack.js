@@ -12,10 +12,15 @@ import {
   HeaderShareScreenIcon,
 } from "../components/IconComponents";
 import { HeaderYoutubeLogoImage } from "../components/ImageComponents";
-import { BaseText, HeaderTitleText, TextInputView } from "../components/TextComponents";
+import {
+  BaseText,
+  HeaderTitleText,
+  TextInputView,
+} from "../components/TextComponents";
 import { useThemeContext } from "../context/ThemeContext";
 import { useSearchContext } from "../context/SearchContext";
 import { useUIContext } from "../context/UIContext";
+import AllSubscriptionsScreen from "../screens/AllSubscriptionsScreen";
 import ChannelScreen from "../screens/ChannelScreen";
 import MainVideoScreen from "../screens/MainVideoScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
@@ -194,6 +199,25 @@ export default function SubscriptionsStack() {
               );
             },
           })}
+        />
+        <Stack.Screen
+          name={navPaths.allSubscriptionsScreen}
+          component={AllSubscriptionsScreen}
+          options={({ navigation }) => {
+            return {
+              header: () => (
+                <HeaderContainer>
+                  <HeaderArrowBackIcon navigation={navigation} />
+                  <HeaderTitleText>All subscriptions</HeaderTitleText>
+                  <View style={styles.headerRightIconsContainer}>
+                    <HeaderShareScreenIcon />
+                    <HeaderSearchIcon navigation={navigation} />
+                    <HeaderDotVerticalIcon />
+                  </View>
+                </HeaderContainer>
+              ),
+            };
+          }}
         />
         <Stack.Screen
           name={navPaths.shortsScreen}

@@ -1,6 +1,6 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 import { useThemeContext } from "../context/ThemeContext";
-import { screenWidth, styles } from "../styles/styles";
+import { styles } from "../styles/styles";
 import { imagePaths } from "../utils/constants";
 import { shortenText } from "../utils/utils";
 

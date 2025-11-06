@@ -14,9 +14,11 @@ import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
 import { navPaths } from "../utils/constants";
 
+const defaultQuery = "Life";
+
 export default function YoutubeHomeScreen({ navigation }) {
   const scrollToTopRef = useRef(null);
-  const [query, setQuery] = useState("Humans");
+  const [query, setQuery] = useState(defaultQuery);
   const [homeMainVideos, setHomeMainVideos] = useState([]);
   const [homeShortsVideos, setHomeShortsVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -30,7 +32,7 @@ export default function YoutubeHomeScreen({ navigation }) {
     dependencies: [query],
   });
   useSetVideoData({
-    type: "shorts",
+    videoDataType: "shorts",
     query,
     queryResults: 5,
     setVideos: setHomeShortsVideos,
@@ -83,7 +85,7 @@ export default function YoutubeHomeScreen({ navigation }) {
 function TopQueryTabBar({ navigation, query, setQuery }) {
   const { ctxColors } = useThemeContext();
   const selectableTabs = [
-    { label: "All", query: "Humans" },
+    { label: "All", query: defaultQuery },
     { label: "Music", query: "Music" },
     { label: "Nature", query: "Nature" },
     { label: "City", query: "City" },
@@ -91,7 +93,7 @@ function TopQueryTabBar({ navigation, query, setQuery }) {
 
   const handleSelected = (newQuery) => {
     setQuery((prevQuery) =>
-      prevQuery === newQuery && newQuery !== "Humans" ? "Humans" : newQuery
+      prevQuery === newQuery && newQuery !== defaultQuery ? defaultQuery : newQuery
     );
   };
 

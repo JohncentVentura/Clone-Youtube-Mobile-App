@@ -11,6 +11,7 @@ import {
 import { InactiveYouIcon } from "../components/IconComponents";
 import PostComponent from "../components/PostComponent";
 import {
+  BasePressable,
   ImageTextTabButton,
   TextTabButton,
 } from "../components/PressableComponents";
@@ -40,7 +41,7 @@ export default function SubscriptionsScreen({ navigation }) {
 
   useSetChannelData({
     query,
-    queryResults: 10,
+    queryResults: 15,
     setData: setSubscribedChannels,
     setIsLoading,
   });
@@ -65,7 +66,9 @@ export default function SubscriptionsScreen({ navigation }) {
   return (
     <ScreenContainer>
       <View>
-        <SubscribedTabBar
+        <SubscribedChannelsTabBar
+          navigation={navigation}
+          query={query}
           subscribedChannels={subscribedChannels}
           selectedChannelName={selectedChannelName}
           setSelectedChannelName={setSelectedChannelName}
@@ -127,7 +130,7 @@ export default function SubscriptionsScreen({ navigation }) {
           isLoading={isLoading}
           setIsLoading={setIsLoading}
           navigation={navigation}
-          query={query}
+          query={selectedChannelName || query}
           mixedData={[
             ...subscribedMainVideos.slice(0, 2).map((video) => ({
               type: "mainVideo",
@@ -186,7 +189,7 @@ export default function SubscriptionsScreen({ navigation }) {
             ...subscribedMainVideos.slice(2, 4).map((video) => ({
               type: "posts",
               data: video,
-            }))
+            })),
           ]}
         />
       ) : contentType === CONTENT_TYPES.VIDEOS ? (
@@ -223,12 +226,16 @@ export default function SubscriptionsScreen({ navigation }) {
   );
 }
 
-function SubscribedTabBar({
+function SubscribedChannelsTabBar({
   style,
+  navigation,
+  query,
   subscribedChannels,
   selectedChannelName,
   setSelectedChannelName,
 }) {
+  const { ctxColors, ctxFontSizes } = useThemeContext();
+
   const handleSelected = (newChannel) => {
     setSelectedChannelName((prevChannel) =>
       prevChannel === newChannel && newChannel !== "" ? "" : newChannel
@@ -236,20 +243,60 @@ function SubscribedTabBar({
   };
 
   return (
-    <RowScrollView style={[{ marginHorizontal: 8 }, style]}>
-      {subscribedChannels.map((item, index) => {
-        return (
-          <ImageTextTabButton
-            key={index}
-            isSelected={selectedChannelName === item.channelName}
-            selectedTabName={selectedChannelName}
-            imageSource={item.picture}
-            text={item.channelName}
-            onPress={() => handleSelected(item.channelName)}
-          />
-        );
-      })}
-    </RowScrollView>
+    <View style={{ marginHorizontal: 8 }}>
+      <View
+        style={{
+          position: "absolute",
+          top: 0,
+          right: 0,
+          zIndex: 1,
+          width: "12%",
+          height: "100%",
+          backgroundColor: ctxColors.bg,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <BasePressable
+          style={{
+            borderRadius: 8,
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onPress={() =>
+            navigation.navigate(navPaths.allSubscriptionsScreen, {
+              subscribedChannels: subscribedChannels,
+            })
+          }
+        >
+          <BaseText
+            style={{
+              fontSize: ctxFontSizes.xs,
+              fontWeight: "medium",
+              color: ctxColors.primary,
+            }}
+          >
+            All
+          </BaseText>
+        </BasePressable>
+      </View>
+
+      <RowScrollView>
+        {subscribedChannels.map((item, index) => {
+          return (
+            <ImageTextTabButton
+              key={index}
+              isSelected={selectedChannelName === item.channelName}
+              selectedTabName={selectedChannelName}
+              imageSource={item.picture}
+              text={item.channelName}
+              onPress={() => handleSelected(item.channelName)}
+            />
+          );
+        })}
+      </RowScrollView>
+    </View>
   );
 }
 

@@ -36,20 +36,20 @@ export default function ChannelScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useSetVideoData({
-    query: videoData.title,
+    query: videoData.channelName,
     queryResults: 5,
     setVideos: setChannelMainVideos,
     setIsLoading,
-    dependencies: [videoData.title],
+    dependencies: [videoData.channelName],
   });
 
   useSetVideoData({
     videoDataType: "shorts",
-    query: videoData.title,
+    query: videoData.channelName,
     queryResults: 8,
     setVideos: setChannelShortsVideos,
     setIsLoading,
-    dependencies: [videoData.title],
+    dependencies: [videoData.channelName],
   });
 
   return (
@@ -60,7 +60,7 @@ export default function ChannelScreen({ navigation, route }) {
           isLoading={isLoading}
           setIsLoading={setIsLoading}
           navigation={navigation}
-          query={videoData.query}
+          query={videoData.channelName}
           ListHeaderComponent={
             <ChannelHeader
               style={styles.screenPadHorizontal}
@@ -98,7 +98,7 @@ export default function ChannelScreen({ navigation, route }) {
           isLoading={isLoading}
           data={channelMainVideos}
           navigation={navigation}
-          query={videoData.query}
+          query={videoData.channelName}
           ListHeaderComponent={
             <ChannelHeader
               style={styles.screenPadHorizontal}

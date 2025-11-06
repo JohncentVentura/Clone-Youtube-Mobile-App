@@ -12,7 +12,12 @@ import {
   HeaderShareScreenIcon,
 } from "../components/IconComponents";
 import { HeaderYoutubeLogoImage } from "../components/ImageComponents";
-import { HeaderTitleText, TextInputView } from "../components/TextComponents";
+import {
+  BaseText,
+  HeaderTitleText,
+  TextInputView,
+} from "../components/TextComponents";
+import { useThemeContext } from "../context/ThemeContext";
 import { useSearchContext } from "../context/SearchContext";
 import { useUIContext } from "../context/UIContext";
 import ChannelScreen from "../screens/ChannelScreen";
@@ -20,6 +25,7 @@ import MainVideoScreen from "../screens/MainVideoScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import SearchScreen from "../screens/SearchScreen";
 import SearchResultScreen from "../screens/SearchResultScreen";
+import ShortsScreen from "../screens/ShortsScreen";
 import YoutubeHomeScreen from "../screens/YoutubeHomeScreen";
 import { styles } from "../styles/styles";
 import { navPaths } from "../utils/constants";
@@ -29,7 +35,9 @@ import YoutubePlayerScreen from "../youtubeAPI/YoutubePlayerScreen";
 const Stack = createStackNavigator();
 
 export default function YoutubeHomeStack() {
+  const { ctxColors, ctxFontSizes } = useThemeContext();
   const {
+    ctxIsShortsVideoPlaying,
     ctxSetChannelHeaderModal,
     ctxSetNotifHeaderModal,
     ctxSetSearchResultHeaderModal,
@@ -175,7 +183,9 @@ export default function YoutubeHomeStack() {
                       })
                     }
                     setClearButton={() => {
-                      navigation.navigate(navPaths.searchScreen, { search: "" });
+                      navigation.navigate(navPaths.searchScreen, {
+                        search: "",
+                      });
                     }}
                   />
                   <View style={styles.headerRightIconsContainer}>
@@ -189,6 +199,47 @@ export default function YoutubeHomeStack() {
               );
             },
           })}
+        />
+        <Stack.Screen
+          name={navPaths.shortsScreen}
+          component={ShortsScreen}
+          options={() => {
+            return {
+              header: ({ navigation }) => (
+                <HeaderContainer
+                  style={{
+                    position: "absolute",
+                    top: 12,
+                    left: 0,
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  {!ctxIsShortsVideoPlaying && (
+                    <BaseText
+                      style={{
+                        fontSize: ctxFontSizes.xl2,
+                        fontWeight: "bold",
+                        color: ctxColors.white,
+                      }}
+                    >
+                      Shorts
+                    </BaseText>
+                  )}
+                  <View style={[styles.headerRightIconsContainer]}>
+                    <HeaderShareScreenIcon color={ctxColors.white} />
+                    <HeaderSearchIcon
+                      color={ctxColors.white}
+                      navigation={navigation}
+                    />
+                    <HeaderDotVerticalIcon
+                      style={[styles.headerRightIcon]}
+                      color={ctxColors.white}
+                    />
+                  </View>
+                </HeaderContainer>
+              ),
+            };
+          }}
         />
         {/*Experimental*/}
         <Stack.Screen

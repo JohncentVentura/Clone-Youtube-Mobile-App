@@ -257,6 +257,16 @@ export function InformationIcon({ ...rest }) {
   );
 }
 
+export function KeyboardArrowDownIcon({ ...rest }) {
+  return (
+    <BaseIcon
+      IconComponent={MaterialIcons}
+      name="keyboard-arrow-down"
+      {...rest}
+    />
+  );
+}
+
 export function LikeIcon({ ...rest }) {
   return <BaseIcon IconComponent={SimpleLineIcons} name="like" {...rest} />;
 }

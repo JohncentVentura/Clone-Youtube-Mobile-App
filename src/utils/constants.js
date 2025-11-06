@@ -11,6 +11,7 @@ export const imagePaths = {
 
 export const navPaths = {
   MainNavigator: "MainNavigator",
+  allSubscriptionsScreen: "AllSubscriptionsScreen",
   channelScreen: "ChannelScreen",
   mainVideoScreen: "MainVideoScreen",
   notificationsScreen: "NotificationsScreen",

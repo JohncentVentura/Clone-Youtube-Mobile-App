@@ -70,4 +70,11 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  smallButton: {
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    flexDirection: "row",
+    alignItems: "center",
+  },
 });

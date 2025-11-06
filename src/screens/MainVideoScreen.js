@@ -35,8 +35,8 @@ import { styles } from "../styles/styles";
 import { navPaths } from "../utils/constants";
 
 export default function MainVideoScreen({ navigation, route }) {
+  const inset = useSafeAreaInsets();
   const { query, videoData } = route.params;
-
   const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
   const { ctxSetModalVideoData, ctxSetHomeCommentsModal } = useUIContext();
   const scrollToTopRef = useRef(null);
@@ -56,6 +56,7 @@ export default function MainVideoScreen({ navigation, route }) {
   return (
     <ScreenContainer isLoading={isLoading}>
       <MainVideoFlatList
+        contentContainerStyle={{ paddingBottom: inset.bottom }}
         isAutoPlayingVideo={false}
         data={relatedVideos}
         navigation={navigation}
