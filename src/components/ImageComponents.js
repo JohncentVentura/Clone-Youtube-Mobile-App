@@ -1,8 +1,9 @@
-import { Image, Pressable, Text, View } from "react-native";
+import { Image, Pressable, View } from "react-native";
 import { useThemeContext } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
 import { imagePaths } from "../utils/constants";
 import { shortenText } from "../utils/utils";
+import { BaseText } from "./TextComponents";
 
 export function ChannelCoverImage({ source, ...rest }) {
   return (
@@ -165,7 +166,10 @@ export function SubscribedShortsImage({ style, data, source, ...rest }) {
   const { ctxColors, ctxFontSizes } = useThemeContext();
 
   return (
-    <Pressable style={[{ marginBottom: 12, width: 175, height: 300 }, style]} {...rest}>
+    <Pressable
+      style={[{ marginBottom: 12, width: 175, height: 300 }, style]}
+      {...rest}
+    >
       <Image
         style={{ borderRadius: 6, width: "100%", height: "100%" }}
         resizeMode={"stretch"}
@@ -181,16 +185,15 @@ export function SubscribedShortsImage({ style, data, source, ...rest }) {
           flexShrink: 1,
         }}
       >
-        <Text
+        <BaseText
           style={{
-            fontSize: ctxFontSizes.base,
             fontWeight: "medium",
             color: ctxColors.white,
           }}
         >
           {shortenText(data.title, 30)}
-        </Text>
-        <Text
+        </BaseText>
+        <BaseText
           style={{
             marginTop: 4,
             fontSize: ctxFontSizes.xs,
@@ -198,7 +201,7 @@ export function SubscribedShortsImage({ style, data, source, ...rest }) {
           }}
         >
           {data.views} Views
-        </Text>
+        </BaseText>
       </View>
     </Pressable>
   );

@@ -230,6 +230,38 @@ export function BasePressable({ style, children, ...rest }) {
 }
 //#endregion
 //#region Buttons
+export function OutlinedButton({ style, children, ...rest }) {
+  const { ctxColors } = useThemeContext();
+  const sharedValue = useSharedValue(1);
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: sharedValue.value }],
+  }));
+
+  return (
+    <AnimatedPressable
+      style={[
+        styles.smallIconTextButton,
+        animatedStyle,
+        {
+          borderWidth: 1,
+          borderColor: ctxColors.borderPrimary,
+          backgroundColor: "transparent",
+        },
+        style,
+      ]}
+      onPressIn={() => {
+        sharedValue.value = withTiming(0.9, { duration: 100 });
+      }}
+      onPressOut={() => {
+        sharedValue.value = withTiming(1, { duration: 400 });
+      }}
+      {...rest}
+    >
+      {children}
+    </AnimatedPressable>
+  );
+}
+
 export function RippleButton({ style, rippleSize = 10, children, ...rest }) {
   const { ctxColors } = useThemeContext();
   const sharedValue = useSharedValue(0);

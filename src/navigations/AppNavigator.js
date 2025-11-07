@@ -3,10 +3,10 @@ import { useFonts } from "expo-font";
 import { useState } from "react";
 import { ActivityIndicator } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { HomeCommentsProfileModal } from "../components/modals/CommentsModal";
+import { CommentsProfileModal } from "../components/modals/CommentsModal";
 import {
-  HomeCommentsItemModal,
-  HomeCommentsProfileItemModal,
+  CommentsItemModal,
+  CommentsProfileItemModal,
   MainVideoItemModal,
   NotificationsItemModal,
   ShareScreenModal,
@@ -27,6 +27,7 @@ import { fontPaths } from "../utils/constants";
 import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
 import { navigationRef } from "./NavigationConfig";
+
 
 export default function AppNavigator() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -62,12 +63,12 @@ function GlobalModals() {
     ctxSetChannelHeaderModal,
     ctxClearSearchHistoryModal,
     ctxSetClearSearchHistoryModal,
-    ctxHomeCommentsItemModal,
-    ctxSetHomeCommentsItemModal,
-    ctxHomeCommentsProfileModal,
-    ctxSetHomeCommentsProfileModal,
-    ctxHomeCommentsProfileItemModal,
-    ctxSetHomeCommentsProfileItemModal,
+    ctxCommentsItemModal,
+    ctxSetCommentsItemModal,
+    ctxCommentsProfileModal,
+    ctxSetCommentsProfileModal,
+    ctxCommentsProfileItemModal,
+    ctxSetCommentsProfileItemModal,
     ctxMainVideoItemModal,
     ctxSetMainVideoItemModal,
     ctxNotifHeaderModal,
@@ -92,17 +93,17 @@ function GlobalModals() {
         isVisible={ctxClearSearchHistoryModal}
         setIsVisible={ctxSetClearSearchHistoryModal}
       />
-      <HomeCommentsItemModal
-        isVisible={ctxHomeCommentsItemModal}
-        setIsVisible={ctxSetHomeCommentsItemModal}
+      <CommentsItemModal
+        isVisible={ctxCommentsItemModal}
+        setIsVisible={ctxSetCommentsItemModal}
       />
-      <HomeCommentsProfileModal
-        isVisible={ctxHomeCommentsProfileModal}
-        setIsVisible={ctxSetHomeCommentsProfileModal}
+      <CommentsProfileModal
+        isVisible={ctxCommentsProfileModal}
+        setIsVisible={ctxSetCommentsProfileModal}
       />
-      <HomeCommentsProfileItemModal
-        isVisible={ctxHomeCommentsProfileItemModal}
-        setIsVisible={ctxSetHomeCommentsProfileItemModal}
+      <CommentsProfileItemModal
+        isVisible={ctxCommentsProfileItemModal}
+        setIsVisible={ctxSetCommentsProfileItemModal}
       />
       <MainVideoItemModal
         isVisible={ctxMainVideoItemModal}

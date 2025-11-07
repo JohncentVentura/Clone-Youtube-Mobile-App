@@ -17,7 +17,11 @@ export function BaseText({ style, children, ...rest }) {
   return (
     <Text
       style={[
-        { fontSize: ctxFontSizes.base, fontFamily, color: ctxColors.textPrimary },
+        {
+          fontSize: ctxFontSizes.base,
+          fontFamily,
+          color: ctxColors.textPrimary,
+        },
         restStyle,
       ]}
       {...rest}
@@ -32,7 +36,10 @@ export function DrawerFooterText({ style, children, ...rest }) {
 
   return (
     <BaseText
-      style={[{ fontSize: ctxFontSizes.xs, color: ctxColors.textSecondary }, style]}
+      style={[
+        { fontSize: ctxFontSizes.xs, color: ctxColors.textSecondary },
+        style,
+      ]}
       {...rest}
     >
       {children}
@@ -102,5 +109,34 @@ export function TextInputView({
         />
       </Pressable>
     </View>
+  );
+}
+
+export function CommentTextInput({
+  style,
+  placeholder = "Add a comment or @mention",
+  returnKeyType = "go",
+  ...rest
+}) {
+  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
+
+  return (
+    <TextInput
+      style={[
+        {
+          borderRadius: 99,
+          paddingHorizontal: 8,
+          fontSize: ctxFontSizes.xs,
+          fontWeight: "medium",
+          backgroundColor: ctxColors.bgSecondary,
+          color: ctxColors.textSecondary,
+        },
+        style,
+      ]}
+      placeholder={placeholder}
+      placeholderTextColor={ctxColors.textSecondary}
+      returnKeyType={returnKeyType}
+      {...rest}
+    />
   );
 }

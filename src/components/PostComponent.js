@@ -29,7 +29,7 @@ export default function PostComponent({
   videoData,
 }) {
   const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
-  const { ctxSetModalVideoData, ctxSetHomeCommentsModal } = useUIContext();
+  const { ctxSetModalVideoData, ctxSetPostCommentsModal } = useUIContext();
   const [postedImages, setPostedImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(1);
 
@@ -115,7 +115,7 @@ export default function PostComponent({
             style={{ marginLeft: 16 }}
             onPress={() => {
               ctxSetModalVideoData(videoData);
-              ctxSetHomeCommentsModal(true);
+              ctxSetPostCommentsModal(true);
             }}
           >
             <MessageTextIcon size={ctxIconSizes.lg} />
@@ -136,7 +136,7 @@ export default function PostComponent({
         }}
         onPress={() => {
           ctxSetModalVideoData(videoData);
-          ctxSetHomeCommentsModal(true);
+          ctxSetPostCommentsModal(true);
         }}
       >
         <View
@@ -176,7 +176,7 @@ export default function PostComponent({
             source={{ uri: videoData.picture }}
             onPress={() => {
               ctxSetModalVideoData(videoData);
-              ctxSetHomeCommentsModal(true);
+              ctxSetPostCommentsModal(true);
             }}
           />
           <BaseText

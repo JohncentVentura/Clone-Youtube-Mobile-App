@@ -153,6 +153,19 @@ export function HeaderSearchIcon({ style, navigation, size, color, ...rest }) {
   );
 }
 
+export function HeaderSettingsIcon({ style, size, color, ...rest }) {
+  const { ctxColors, ctxIconSizes } = useThemeContext();
+
+  return (
+    <RippleButton style={[styles.headerRightIcon, style]} {...rest}>
+      <SettingsIcon
+        size={size || ctxIconSizes.base}
+        color={color || ctxColors.iconPrimary}
+      />
+    </RippleButton>
+  );
+}
+
 export function HeaderShareScreenIcon({ style, size, color, ...rest }) {
   const { ctxColors, ctxIconSizes } = useThemeContext();
   const { ctxSetShareScreenModal } = useUIContext();
@@ -173,6 +186,16 @@ export function HeaderShareScreenIcon({ style, size, color, ...rest }) {
 //#endregion
 
 //#region Menu Icons
+export function AccountBoxMultipleIcon({ ...rest }) {
+  return (
+    <BaseIcon
+      IconComponent={MaterialCommunityIcons}
+      name="account-box-multiple-outline"
+      {...rest}
+    />
+  );
+}
+
 export function ArrowBackIcon({ ...rest }) {
   return <BaseIcon IconComponent={Ionicons} name="arrow-back" {...rest} />;
 }
@@ -185,6 +208,10 @@ export function ClockRotateLeftIcon({ ...rest }) {
   return (
     <BaseIcon IconComponent={FontAwesome6} name="clock-rotate-left" {...rest} />
   );
+}
+
+export function ClockIcon({ ...rest }) {
+  return <BaseIcon IconComponent={Feather} name="clock" {...rest} />;
 }
 
 export function CloseIcon({ ...rest }) {
@@ -247,6 +274,26 @@ export function GamingIcon({ ...rest }) {
   );
 }
 
+export function GoogleIcon({ ...rest }) {
+  return (
+    <BaseIcon
+      IconComponent={Ionicons}
+      name="logo-google"
+      {...rest}
+    />
+  );
+}
+
+export function IncognitoIcon({ ...rest }) {
+  return (
+    <BaseIcon
+      IconComponent={MaterialCommunityIcons}
+      name="incognito"
+      {...rest}
+    />
+  );
+}
+
 export function InformationIcon({ ...rest }) {
   return (
     <BaseIcon
@@ -262,6 +309,16 @@ export function KeyboardArrowDownIcon({ ...rest }) {
     <BaseIcon
       IconComponent={MaterialIcons}
       name="keyboard-arrow-down"
+      {...rest}
+    />
+  );
+}
+
+export function KeyboardArrowRightIcon({ ...rest }) {
+  return (
+    <BaseIcon
+      IconComponent={MaterialIcons}
+      name="keyboard-arrow-right"
       {...rest}
     />
   );
@@ -373,6 +430,10 @@ export function SearchIcon({ ...rest }) {
   return <BaseIcon IconComponent={Ionicons} name="search" {...rest} />;
 }
 
+export function SettingsIcon({ ...rest }) {
+  return <BaseIcon IconComponent={Feather} name="settings" {...rest} />;
+}
+
 export function ShareIcon({ ...rest }) {
   return (
     <BaseIcon IconComponent={MaterialCommunityIcons} name="share" {...rest} />
@@ -387,6 +448,14 @@ export function ShareScreenIcon({ ...rest }) {
 
 export function SportsIcon({ ...rest }) {
   return <BaseIcon IconComponent={Ionicons} name="trophy-outline" {...rest} />;
+}
+
+export function StatsChartIcon({ ...rest }) {
+  return <BaseIcon IconComponent={Ionicons} name="stats-chart-sharp" {...rest} />;
+}
+
+export function VideoIcon({ ...rest }) {
+  return <BaseIcon IconComponent={Octicons} name="video" {...rest} />;
 }
 
 export function YoutubeKidsIcon({ ...rest }) {

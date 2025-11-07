@@ -1,4 +1,4 @@
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 import Modal from "react-native-modal";
 import { useThemeContext } from "../../context/ThemeContext";
 import { BasePressable } from "../PressableComponents";

@@ -125,7 +125,7 @@ export const bottomTabItems = (HomeComponent = YoutubeHomeStack) => [
     component: HomeComponent,
     activeIcon: ActiveHomeIcon,
     inactiveIcon: InactiveHomeIcon,
-    activeLabel: "Welcome",
+    activeLabel: "Welcoming...",
     inactiveLabel: "Home",
   },
   {
@@ -154,7 +154,7 @@ export const bottomTabItems = (HomeComponent = YoutubeHomeStack) => [
     component: YouStack,
     activeIcon: ActiveYouIcon,
     inactiveIcon: InactiveYouIcon,
-    activeLabel: "Who? M-Me?",
+    activeLabel: "Profiling...",
     inactiveLabel: "You",
   },
 ];

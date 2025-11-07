@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Pressable, View } from "react-native";
 import {
-  ShortsVideoGridScrollView,
+  ColumnScrollView,
   MainVideoFlatList,
+  MixedFeedFlatList,
   RowScrollView,
   ScreenContainer,
-  ColumnScrollView,
-  MixedFeedFlatList,
+  ShortsVideoGridScrollView,
 } from "../components/ContainerComponents";
 import { InactiveYouIcon } from "../components/IconComponents";
 import PostComponent from "../components/PostComponent";
@@ -72,6 +72,7 @@ export default function SubscriptionsScreen({ navigation }) {
           subscribedChannels={subscribedChannels}
           selectedChannelName={selectedChannelName}
           setSelectedChannelName={setSelectedChannelName}
+          setContentType={setContentType}
         />
       </View>
 
@@ -233,6 +234,7 @@ function SubscribedChannelsTabBar({
   subscribedChannels,
   selectedChannelName,
   setSelectedChannelName,
+  setContentType,
 }) {
   const { ctxColors, ctxFontSizes } = useThemeContext();
 
@@ -240,6 +242,7 @@ function SubscribedChannelsTabBar({
     setSelectedChannelName((prevChannel) =>
       prevChannel === newChannel && newChannel !== "" ? "" : newChannel
     );
+    setContentType(CONTENT_TYPES.ALL);
   };
 
   return (

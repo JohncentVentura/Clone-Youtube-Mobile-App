@@ -219,7 +219,7 @@ export function ShareScreenModal({ isVisible, setIsVisible }) {
   );
 }
 
-export function HomeCommentsItemModal({ isVisible, setIsVisible }) {
+export function CommentsItemModal({ isVisible, setIsVisible }) {
   const modalItems = [
     {
       name: "Share",
@@ -242,7 +242,7 @@ export function HomeCommentsItemModal({ isVisible, setIsVisible }) {
   );
 }
 
-export function HomeCommentsProfileItemModal({ isVisible, setIsVisible }) {
+export function CommentsProfileItemModal({ isVisible, setIsVisible }) {
   const modalItems = [
     {
       name: "Learn more about this feature",

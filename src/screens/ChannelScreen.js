@@ -28,7 +28,6 @@ const CONTENT_TYPES = {
 };
 
 export default function ChannelScreen({ navigation, route }) {
-  const { ctxColors, ctxFontSizes } = useThemeContext();
   const { videoData } = route.params;
   const [channelMainVideos, setChannelMainVideos] = useState([]);
   const [channelShortsVideos, setChannelShortsVideos] = useState([]);
