@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import {
-  MainVideoFlatList,
   ScreenContainer,
+  MainVideoFlatList,
 } from "../components/ContainerComponents";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { useSetVideoData } from "../hooks/useSetVideoData";

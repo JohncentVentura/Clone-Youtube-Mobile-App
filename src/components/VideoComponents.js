@@ -14,7 +14,7 @@ import {
 import { CommentsProfileSmallImage } from "../components/ImageComponents";
 import {
   RippleButton,
-  PlayShortsButton,
+  ShortsPlayButton,
   ShortsIconTextButton,
   SubscribeButton,
 } from "../components/PressableComponents";
@@ -102,7 +102,7 @@ export function ShortsVideoView({
         pointerEvents="none"
       />
 
-      <PlayShortsButton onPress={() => togglePlay()} />
+      <ShortsPlayButton onPress={() => togglePlay()} />
 
       <View
         style={[
@@ -180,7 +180,10 @@ export function ShortsVideoView({
                 {videoData.channelTag}
               </BaseText>
               <SubscribeButton
-                style={{ marginLeft: 10, backgroundColor: ctxColors.white }}
+                style={[
+                  { marginLeft: 10, backgroundColor: ctxColors.white },
+                  styles.baseButton,
+                ]}
               />
             </View>
             <BaseText

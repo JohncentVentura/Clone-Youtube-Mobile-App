@@ -70,11 +70,11 @@ export function InactiveYouIcon({ ...rest }) {
 //#endregion
 
 //#region Header Icons
-export function HeaderArrowBackIcon({ navigation, size, color, ...rest }) {
+export function HeaderArrowBackIcon({ navigation, onPress, size, color, ...rest }) {
   const { ctxColors, ctxIconSizes } = useThemeContext();
 
   return (
-    <RippleButton onPress={() => navigation.goBack()} {...rest}>
+    <RippleButton  onPress={onPress ? onPress : () => navigation.goBack()} {...rest}>
       <ArrowBackIcon
         size={size || ctxIconSizes.base}
         color={color || ctxColors.iconPrimary}
@@ -332,6 +332,10 @@ export function LiveIcon({ ...rest }) {
   return <BaseIcon IconComponent={MaterialIcons} name="live-tv" {...rest} />;
 }
 
+export function LockIcon({ ...rest }) {
+  return <BaseIcon IconComponent={SimpleLineIcons} name="lock" {...rest} />;
+}
+
 export function MessageTextIcon({ ...rest }) {
   return (
     <BaseIcon
@@ -443,6 +447,12 @@ export function ShareIcon({ ...rest }) {
 export function ShareScreenIcon({ ...rest }) {
   return (
     <BaseIcon IconComponent={MaterialIcons} name="connected-tv" {...rest} />
+  );
+}
+
+export function ShuffleIcon({ ...rest }) {
+  return (
+    <BaseIcon IconComponent={Entypo} name="shuffle" {...rest} />
   );
 }
 

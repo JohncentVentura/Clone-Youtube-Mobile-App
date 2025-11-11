@@ -16,12 +16,12 @@ import { navPaths } from "../utils/constants";
 import YoutubeFlatListScreen from "../youtubeAPI/YoutubeFlatListScreen";
 import YoutubePlayerScreen from "../youtubeAPI/YoutubePlayerScreen";
 import {
-  ChannelScreenStack,
-  MainVideoScreenStack,
-  NotificationsScreenStack,
-  SearchResultScreenStack,
-  SearchScreenStack,
-  ShortsScreenStack,
+  ChannelStackScreen,
+  MainVideoStackScreen,
+  NotificationsStackScreen,
+  SearchResultStackScreen,
+  SearchStackScreen,
+  ShortsStackScreen,
 } from "./NavigationConfig";
 
 const Stack = createStackNavigator();
@@ -50,12 +50,12 @@ export default function YoutubeHomeStack() {
             };
           }}
         />
-        {ChannelScreenStack()}
-        {MainVideoScreenStack()}
-        {NotificationsScreenStack()}
-        {SearchScreenStack()}
-        {SearchResultScreenStack()}
-        {ShortsScreenStack()}
+        {ChannelStackScreen()}
+        {MainVideoStackScreen()}
+        {NotificationsStackScreen()}
+        {SearchStackScreen()}
+        {SearchResultStackScreen()}
+        {ShortsStackScreen()}
         {/*Experimental*/}
         <Stack.Screen
           name="YouTubeFlatListScreen"

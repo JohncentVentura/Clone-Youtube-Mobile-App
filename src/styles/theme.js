@@ -1,7 +1,9 @@
 export const colorThemes = {
   light: {
     transparentBlack: "rgba(0, 0, 0, 0.5)",
+    transparentWhite: "rgba(255, 255, 255, 0.5)",
     black: "#000000ff",
+    green: "#2bb42dff",
     white: "#ffffff",
     primary: "#fe0032",
     bg: "#ffffff",
@@ -19,7 +21,9 @@ export const colorThemes = {
   },
   dark: {
     transparentBlack: "rgba(0, 0, 0, 0.5)",
+    transparentWhite: "rgba(255, 255, 255, 0.5)",
     black: "#000000ff",
+    green: "#2bb42dff",
     white: "#ffffff",
     primary: "#fe0032",
     bg: "#0f0f0f",

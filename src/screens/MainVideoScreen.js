@@ -21,7 +21,7 @@ import {
 } from "../components/ImageComponents";
 import {
   BasePressable,
-  SmallIconTextButton,
+  IconTextButton,
   SubscribeButton,
 } from "../components/PressableComponents";
 import { BaseText } from "../components/TextComponents";
@@ -156,7 +156,7 @@ export default function MainVideoScreen({ navigation, route }) {
                     {videoData.channelSubscribers}
                   </BaseText>
                 </View>
-                <SubscribeButton />
+                <SubscribeButton style={styles.baseButton} />
               </View>
 
               {/*Likes/Dislikes, share, & other buttons section*/}
@@ -172,7 +172,7 @@ export default function MainVideoScreen({ navigation, route }) {
                 >
                   <BasePressable
                     style={[
-                      styles.smallIconTextButton,
+                      styles.smallButton,
                       { backgroundColor: ctxColors.bgSecondary },
                     ]}
                     onPress={() => console.log("Liked Press")}
@@ -198,7 +198,7 @@ export default function MainVideoScreen({ navigation, route }) {
                   />
                   <BasePressable
                     style={[
-                      styles.smallIconTextButton,
+                      styles.smallButton,
                       { backgroundColor: ctxColors.bgSecondary },
                     ]}
                     onPress={() => console.log("Disliked Press")}
@@ -207,32 +207,32 @@ export default function MainVideoScreen({ navigation, route }) {
                   </BasePressable>
                 </View>
 
-                <SmallIconTextButton
-                  style={{ marginLeft: 8 }}
+                <IconTextButton
+                  style={[{ marginLeft: 8 }, styles.smallButton]}
                   Icon={ShareIcon}
                   text="Share"
                   onPress={() => console.log("Share Press")}
                 />
-                <SmallIconTextButton
-                  style={{ marginLeft: 8 }}
+                <IconTextButton
+                  style={[{ marginLeft: 8 }, styles.smallButton]}
                   Icon={RemixIcon}
                   text="Remix"
                   onPress={() => console.log("Remix Press")}
                 />
-                <SmallIconTextButton
-                  style={{ marginLeft: 8 }}
+                <IconTextButton
+                  style={[{ marginLeft: 8 }, styles.smallButton]}
                   Icon={DownloadIcon}
                   text="Download"
                   onPress={() => console.log("Download Press")}
                 />
-                <SmallIconTextButton
-                  style={{ marginLeft: 8 }}
+                <IconTextButton
+                  style={[{ marginLeft: 8 }, styles.smallButton]}
                   Icon={ReportIcon}
                   text="Report"
                   onPress={() => console.log("Report Press")}
                 />
-                <SmallIconTextButton
-                  style={{ marginLeft: 8 }}
+                <IconTextButton
+                  style={[{ marginLeft: 8 }, styles.smallButton]}
                   Icon={SaveIcon}
                   text="Save"
                   onPress={() => console.log("Save Press")}

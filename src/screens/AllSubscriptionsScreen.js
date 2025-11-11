@@ -45,7 +45,7 @@ export default function AllSubscriptionsScreen({ navigation, route }) {
               backgroundColor: ctxColors.bgSecondary,
               alignSelf: "flex-start",
             },
-            styles.smallButton,
+            styles.xtraSmallButton,
           ]}
           onPress={handleSortPress}
         >
@@ -90,7 +90,7 @@ export default function AllSubscriptionsScreen({ navigation, route }) {
             <BasePressable
               style={[
                 { backgroundColor: ctxColors.bgSecondary },
-                styles.smallButton,
+                styles.xtraSmallButton,
               ]}
             >
               <NotificationsIcon size={ctxIconSizes.xs} />

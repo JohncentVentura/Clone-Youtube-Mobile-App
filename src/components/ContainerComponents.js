@@ -1,7 +1,9 @@
+import { LinearGradient } from "expo-linear-gradient";
 import { useRef, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
+  Image,
   Platform,
   Pressable,
   ScrollView,
@@ -14,13 +16,14 @@ import { useThemeContext } from "../context/ThemeContext";
 import { useUIContext } from "../context/UIContext";
 import { screenHeight, styles } from "../styles/styles";
 import { navPaths } from "../utils/constants";
+import { ShortsVideoCard } from "./CardsComponents";
 import { DotVerticalIcon } from "./IconComponents";
 import {
   MainVideoChannelImage,
   MainVideoThumbnailImage,
-  SubscribedShortsImage,
+  
 } from "./ImageComponents";
-import { RippleButton } from "./PressableComponents";
+import { BasePressable, RippleButton } from "./PressableComponents";
 import { BaseText } from "./TextComponents";
 import { MainVideoView, ShortsVideoView } from "./VideoComponents";
 
@@ -106,7 +109,6 @@ export function ScreenScrollView({ style, isLoading, children, ...rest }) {
   );
 }
 //#endregion
-
 //#region ScrollView
 export function ColumnScrollView({ children, ...rest }) {
   return (
@@ -164,9 +166,9 @@ export function ShortsVideoGridScrollView({
         }}
       >
         {data.map((item) => (
-          <SubscribedShortsImage
+          <ShortsVideoCard
             key={item.id}
-            data={item}
+            videoData={item}
             source={{ uri: item.picture }}
             onPress={() => {
               navigation.navigate(navPaths.shortsScreen, {
@@ -180,7 +182,6 @@ export function ShortsVideoGridScrollView({
   );
 }
 //#endregion
-
 //#region FlatList
 export function MainVideoFlatList({
   style,
@@ -436,4 +437,91 @@ export function MainVideoViewRenderItem({
     </View>
   );
 }
+//#endregion
+
+//#region Others
+export function DrawerDivider() {
+  const { ctxColors } = useThemeContext();
+
+  return (
+    <View
+      style={{
+        marginVertical: 8,
+        width: "100%",
+        height: 1,
+        backgroundColor: ctxColors.borderSecondary,
+      }}
+    />
+  );
+}
+
+export function LinearGradientView({ style, colors, children, ...rest }) {
+  const { ctxColors } = useThemeContext();
+  const gradientColors = colors ?? [ctxColors.primary, ctxColors.bg];
+
+  return (
+    <LinearGradient
+      colors={gradientColors}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
+      style={[{ width: "100%", alignSelf: "stretch" }, style]}
+      {...rest}
+    >
+      {children}
+    </LinearGradient>
+  );
+}
+
+export function VideoHorizontalPreview({ style, userData, ...rest }) {
+  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
+
+  return (
+    <BasePressable
+      style={[
+        {
+          paddingVertical: 8,
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          backgroundColor: "transparent",
+        },
+        styles.screenPadHorizontal,
+        style,
+      ]}
+      {...rest}
+    >
+      <Image
+        style={[{ borderRadius: 8, width: 140, height: 80 }]}
+        resizeMode={"stretch"}
+        source={{ uri: userData?.picture }}
+        alt="UserPlaylistImage"
+      />
+      <View style={{ marginLeft: 12, flexShrink: 1 }}>
+        <BaseText style={{ fontWeight: "medium" }}>{userData?.title}</BaseText>
+        <BaseText
+          style={{
+            marginTop: 4,
+            fontSize: ctxFontSizes.xs,
+            olors: ctxColors.textSecondary,
+          }}
+        >
+          {userData?.channelName}
+        </BaseText>
+        <BaseText
+          style={{
+            marginTop: 2,
+            fontSize: ctxFontSizes.xs,
+            colors: ctxColors.textSecondary,
+          }}
+        >
+          {userData?.views} views • {userData?.uploadedDate}{" "}
+        </BaseText>
+      </View>
+      <RippleButton style={{ marginLeft: "auto", marginTop: 4 }} rippleSize={6}>
+        <DotVerticalIcon size={ctxIconSizes.xs2} />
+      </RippleButton>
+    </BasePressable>
+  );
+}
+
 //#endregion

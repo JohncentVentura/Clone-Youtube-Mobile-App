@@ -2,10 +2,10 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { HomeCommentsModal } from "../components/modals/CommentsModal";
 import { useUIContext } from "../context/UIContext";
 import {
-  ChannelScreenStack,
-  SearchScreenStack,
-  SearchResultScreenStack,
-  ShortsScreenStack,
+  ChannelStackScreen,
+  SearchStackScreen,
+  SearchResultStackScreen,
+  ShortsStackScreen,
 } from "./NavigationConfig";
 
 const Stack = createStackNavigator();
@@ -16,10 +16,10 @@ export default function ShortsStack() {
   return (
     <>
       <Stack.Navigator>
-        {ShortsScreenStack()}
-        {ChannelScreenStack()}
-        {SearchScreenStack()}
-        {SearchResultScreenStack()}
+        {ShortsStackScreen()}
+        {ChannelStackScreen()}
+        {SearchStackScreen()}
+        {SearchResultStackScreen()}
       </Stack.Navigator>
 
       {ctxHomeCommentsModal && <HomeCommentsModal />}

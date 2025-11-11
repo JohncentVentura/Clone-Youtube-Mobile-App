@@ -3,6 +3,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import React, { useMemo } from "react";
 import { Pressable, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { DrawerDivider } from "../components/ContainerComponents";
 import {
   ActiveHomeIcon,
   ActiveShortsIcon,
@@ -35,6 +36,8 @@ import { DrawerFooterText } from "../components/TextComponents";
 import { useThemeContext } from "../context/ThemeContext";
 import { useUIContext } from "../context/UIContext";
 import { styles } from "../styles/styles";
+import { navPaths } from "../utils/constants";
+import MoviesStack from "./drawer/MoviesStack";
 import ShortsStack from "./ShortsStack";
 import SubscriptionsStack from "./SubscriptionsStack";
 import UploadStack from "./UploadStack";
@@ -58,7 +61,7 @@ export const drawerItems = [
   },
   {
     route: "MoviesStack",
-    component: ShortsStack,
+    component: MoviesStack,
     Icon: MovieIcon,
     label: "Movies",
   },
@@ -90,7 +93,7 @@ export const drawerItems = [
     route: "CoursesStack",
     component: YoutubeHomeStack,
     Icon: CourseIcon,
-    label: "Courses",
+    label: "Learning",
   },
   {
     route: "FashionAndBeautyStack",
@@ -315,20 +318,5 @@ function MainBottomTabBar({ navigation }) {
         />
       ))}
     </BottomTab.Navigator>
-  );
-}
-
-function DrawerDivider() {
-  const { ctxColors } = useThemeContext();
-
-  return (
-    <View
-      style={{
-        marginVertical: 8,
-        width: "100%",
-        height: 1,
-        backgroundColor: ctxColors.borderSecondary,
-      }}
-    />
   );
 }

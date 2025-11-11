@@ -10,9 +10,13 @@ export const imagePaths = {
 };
 
 export const navPaths = {
+  //Stacks
+  youtubeHomeStack: "YoutubeHomeStack",
+  //Main Screens
   MainNavigator: "MainNavigator",
   allSubscriptionsScreen: "AllSubscriptionsScreen",
   channelScreen: "ChannelScreen",
+  likedVideosScreen: "LikedVideosScreen",
   mainVideoScreen: "MainVideoScreen",
   notificationsScreen: "NotificationsScreen",
   searchResultScreen: "SearchResultScreen",
@@ -20,8 +24,18 @@ export const navPaths = {
   shortsScreen: "ShortsScreen",
   subscriptionsScreen: "SubscriptionsScreen",
   uploadScreen: "UploadScreen",
+  watchLaterScreen: "WatchLaterScreen",
   youScreen: "YouScreen",
   youtubeHomeScreen: "YoutubeHomeScreen",
+  //Drawer Screens
+  musicScreen: "MusicScreen",
+  moviesScreen: "MoviesScreen",
+  liveScreen: "LiveScreen",
+  gamingScreen: "GamingScreen",
+  newsScreen: "NewsScreen",
+  sportsScreen: "SportsScreen",
+  learningScreen: "LearningScreen",
+  fashionAndBeautyScreen: "FashionAndBeautyScreen",
 };
 
 export const searchHistoryKey = "SearchHistoryKey";

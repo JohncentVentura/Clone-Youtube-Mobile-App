@@ -240,7 +240,7 @@ export function OutlinedButton({ style, children, ...rest }) {
   return (
     <AnimatedPressable
       style={[
-        styles.smallIconTextButton,
+        styles.smallButton,
         animatedStyle,
         {
           borderWidth: 1,
@@ -316,7 +316,46 @@ export function RippleButton({ style, rippleSize = 10, children, ...rest }) {
   );
 }
 
-export function PlayShortsButton({ style, ...rest }) {
+export function ShortsIconTextButton({ style, Icon, text, ...rest }) {
+  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
+  const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+  const sharedValue = useSharedValue(1);
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: sharedValue.value }],
+  }));
+
+  return (
+    <AnimatedPressable
+      style={[
+        styles.baseButton,
+        animatedStyle,
+        { backgroundColor: ctxColors.transparentBlack, flexDirection: "row" },
+        style,
+      ]}
+      onPressIn={() => {
+        sharedValue.value = withTiming(0.9, { duration: 100 });
+      }}
+      onPressOut={() => {
+        sharedValue.value = withTiming(1, { duration: 400 });
+      }}
+      {...rest}
+    >
+      <AnimatedIcon size={ctxIconSizes.xs2} color={ctxColors.white} />
+      <AnimatedText
+        style={{
+          marginLeft: 6,
+          fontSize: ctxFontSizes.sm,
+          fontWeight: "medium",
+          color: ctxColors.white,
+        }}
+      >
+        {text}
+      </AnimatedText>
+    </AnimatedPressable>
+  );
+}
+
+export function ShortsPlayButton({ style, ...rest }) {
   const { ctxColors, ctxIconSizes } = useThemeContext();
   const { ctxIsShortsVideoPlaying } = useUIContext();
   const transformValue = useSharedValue(0);
@@ -366,9 +405,8 @@ export function PlayShortsButton({ style, ...rest }) {
   );
 }
 
-export function ShortsIconTextButton({ style, Icon, text, ...rest }) {
-  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
-  const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+export function IconRoundedButton({ style, children, ...rest }) {
+  const { ctxColors } = useThemeContext();
   const sharedValue = useSharedValue(1);
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: sharedValue.value }],
@@ -377,9 +415,9 @@ export function ShortsIconTextButton({ style, Icon, text, ...rest }) {
   return (
     <AnimatedPressable
       style={[
-        styles.baseButton,
+        { backgroundColor: "transparent" },
+        styles.roundButton,
         animatedStyle,
-        { backgroundColor: ctxColors.transparentBlack, flexDirection: "row" },
         style,
       ]}
       onPressIn={() => {
@@ -390,22 +428,12 @@ export function ShortsIconTextButton({ style, Icon, text, ...rest }) {
       }}
       {...rest}
     >
-      <AnimatedIcon size={ctxIconSizes.xs2} color={ctxColors.white} />
-      <AnimatedText
-        style={{
-          marginLeft: 6,
-          fontSize: ctxFontSizes.sm,
-          fontWeight: "medium",
-          color: ctxColors.white,
-        }}
-      >
-        {text}
-      </AnimatedText>
+      {children}
     </AnimatedPressable>
   );
 }
 
-export function SmallIconTextButton({ style, Icon, text, ...rest }) {
+export function IconTextButton({ style, Icon, text, ...rest }) {
   const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
   const AnimatedIcon = Animated.createAnimatedComponent(Icon);
   const sharedValue = useSharedValue(1);
@@ -415,12 +443,7 @@ export function SmallIconTextButton({ style, Icon, text, ...rest }) {
 
   return (
     <AnimatedPressable
-      style={[
-        styles.smallIconTextButton,
-        animatedStyle,
-        { backgroundColor: ctxColors.bgSecondary },
-        style,
-      ]}
+      style={[animatedStyle, { backgroundColor: ctxColors.bgSecondary }, style]}
       onPressIn={() => {
         sharedValue.value = withTiming(0.9, { duration: 100 });
       }}
@@ -443,7 +466,7 @@ export function SmallIconTextButton({ style, Icon, text, ...rest }) {
   );
 }
 
-export function SubscribeButton({ style, ...rest }) {
+export function SubscribeButton({ style, fontSize, ...rest }) {
   const { ctxColors, ctxFontSizes } = useThemeContext();
   const sharedValue = useSharedValue(1);
   const { backgroundColor, ...restStyle } = StyleSheet.flatten(style) || {};
@@ -455,7 +478,6 @@ export function SubscribeButton({ style, ...rest }) {
     <AnimatedPressable
       style={[
         { backgroundColor: backgroundColor || ctxColors.bgContrast },
-        styles.baseButton,
         animatedOpacity,
         restStyle,
       ]}
@@ -469,7 +491,7 @@ export function SubscribeButton({ style, ...rest }) {
     >
       <BaseText
         style={{
-          fontSize: ctxFontSizes.xs,
+          fontSize: fontSize || ctxFontSizes.xs,
           fontWeight: "medium",
           color:
             backgroundColor === ctxColors.white

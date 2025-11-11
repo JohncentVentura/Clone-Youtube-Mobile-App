@@ -20,12 +20,12 @@ import SubscriptionsScreen from "../screens/SubscriptionsScreen";
 import { styles } from "../styles/styles";
 import { navPaths } from "../utils/constants";
 import {
-  ChannelScreenStack,
-  MainVideoScreenStack,
-  NotificationsScreenStack,
-  SearchResultScreenStack,
-  SearchScreenStack,
-  ShortsScreenStack,
+  ChannelStackScreen,
+  MainVideoStackScreen,
+  NotificationsStackScreen,
+  SearchResultStackScreen,
+  SearchStackScreen,
+  ShortsStackScreen,
 } from "./NavigationConfig";
 
 const Stack = createStackNavigator();
@@ -73,12 +73,12 @@ export default function SubscriptionsStack() {
             };
           }}
         />
-        {ChannelScreenStack()}
-        {MainVideoScreenStack()}
-        {NotificationsScreenStack()}
-        {SearchScreenStack()}
-        {SearchResultScreenStack()}
-        {ShortsScreenStack()}
+        {ChannelStackScreen()}
+        {MainVideoStackScreen()}
+        {NotificationsStackScreen()}
+        {SearchStackScreen()}
+        {SearchResultStackScreen()}
+        {ShortsStackScreen()}
       </Stack.Navigator>
 
       {ctxHomeCommentsModal && <HomeCommentsModal />}

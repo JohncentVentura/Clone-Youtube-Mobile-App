@@ -1,20 +1,22 @@
 import { useState } from "react";
 import { Pressable, View } from "react-native";
 import {
+  MainVideoFlatList,
+  MixedFeedFlatList,
   ScreenContainer,
   RowScrollView,
-  MixedFeedFlatList,
-  MainVideoFlatList,
   ShortsVideoGridScrollView,
   ColumnScrollView,
-  ScreenScrollView,
 } from "../components/ContainerComponents";
 import {
   ChannelCoverImage,
   ChannelProfileImage,
 } from "../components/ImageComponents";
 import PostComponent from "../components/PostComponent";
-import { TextTabButton } from "../components/PressableComponents";
+import {
+  SubscribeButton,
+  TextTabButton,
+} from "../components/PressableComponents";
 import { BaseText } from "../components/TextComponents";
 import { useThemeContext } from "../context/ThemeContext";
 import { useSetVideoData } from "../hooks/useSetVideoData";
@@ -261,24 +263,11 @@ function ChannelHeader({ style, videoData, contentType, setContentType }) {
           ...more
         </BaseText>
       </BaseText>
-      <Pressable
-        style={({ pressed }) => [
-          styles.wideButton,
-          {
-            marginTop: 12,
-            backgroundColor: ctxColors.bgContrast,
-            opacity: pressed ? 0.5 : 1,
-          },
-        ]}
+      <SubscribeButton
+        style={[{ marginTop: 12 }, styles.wideButton]}
+        fontSize={ctxFontSizes.sm}
         onPress={() => console.log("Subscribe pressed")}
-      >
-        <BaseText
-          style={{ fontWeight: "medium", color: ctxColors.textContrast }}
-        >
-          Subscribe
-        </BaseText>
-      </Pressable>
-
+      />
       <TopContentTypeTabBar
         style={{ marginVertical: 8 }}
         contentType={contentType}

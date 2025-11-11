@@ -21,6 +21,7 @@ import { useSearchContext } from "../context/SearchContext";
 import { useUIContext } from "../context/UIContext";
 import ChannelScreen from "../screens/ChannelScreen";
 import MainVideoScreen from "../screens/MainVideoScreen";
+import MoviesScreen from "../screens/drawers/MoviesScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import SearchScreen from "../screens/SearchScreen";
 import SearchResultScreen from "../screens/SearchResultScreen";
@@ -39,9 +40,8 @@ export function navigate(name, params) {
   }
 }
 //#endregion
-
-//#region Stack.Screen
-export function ChannelScreenStack() {
+//#region Main Screens
+export function ChannelStackScreen() {
   const { ctxSetChannelHeaderModal } = useUIContext();
 
   return (
@@ -66,7 +66,7 @@ export function ChannelScreenStack() {
   );
 }
 
-export function MainVideoScreenStack() {
+export function MainVideoStackScreen() {
   return (
     <Stack.Screen
       name={navPaths.mainVideoScreen}
@@ -82,7 +82,7 @@ export function MainVideoScreenStack() {
   );
 }
 
-export function NotificationsScreenStack() {
+export function NotificationsStackScreen() {
   const { ctxSetNotifHeaderModal } = useUIContext();
 
   return (
@@ -108,7 +108,7 @@ export function NotificationsScreenStack() {
   );
 }
 
-export function SearchScreenStack() {
+export function SearchStackScreen() {
   const { ctxSearchInput, ctxSetSearchInput, ctxHandleSearch } =
     useSearchContext();
 
@@ -150,7 +150,7 @@ export function SearchScreenStack() {
   );
 }
 
-export function SearchResultScreenStack() {
+export function SearchResultStackScreen() {
   const { ctxSetSearchResultHeaderModal } = useUIContext();
 
   return (
@@ -198,7 +198,7 @@ export function SearchResultScreenStack() {
   );
 }
 
-export function ShortsScreenStack() {
+export function ShortsStackScreen() {
   const { ctxIsShortsVideoPlaying } = useUIContext();
   const { ctxColors, ctxFontSizes } = useThemeContext();
 
@@ -237,6 +237,29 @@ export function ShortsScreenStack() {
                 style={[styles.headerRightIcon]}
                 color={ctxColors.white}
               />
+            </View>
+          </HeaderContainer>
+        ),
+      })}
+    />
+  );
+}
+//#endregion
+//#region Drawer Screens
+export function MoviesStackScreen() {
+  return (
+    <Stack.Screen
+      name={navPaths.moviesScreen}
+      component={MoviesScreen}
+      options={({ navigation }) => ({
+        header: () => (
+          <HeaderContainer>
+            <HeaderArrowBackIcon navigation={navigation} />
+            <HeaderTitleText>Movies</HeaderTitleText>
+            <View style={styles.headerRightIconsContainer}>
+              <HeaderShareScreenIcon />
+              <HeaderSearchIcon navigation={navigation} />
+              <HeaderDotVerticalIcon />
             </View>
           </HeaderContainer>
         ),

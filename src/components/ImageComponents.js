@@ -162,47 +162,15 @@ export function SubscribedPostImage({ style, source, ...rest }) {
   );
 }
 
-export function SubscribedShortsImage({ style, data, source, ...rest }) {
-  const { ctxColors, ctxFontSizes } = useThemeContext();
-
+export function UserPlaylistCoverImage({ source, ...rest }) {
   return (
-    <Pressable
-      style={[{ marginBottom: 12, width: 175, height: 300 }, style]}
-      {...rest}
-    >
+    <Pressable {...rest}>
       <Image
-        style={{ borderRadius: 6, width: "100%", height: "100%" }}
+        style={[{ borderRadius: 8, width: "100%", height: 200 }]}
         resizeMode={"stretch"}
         source={source}
-        alt="SubscribedShortsImage"
+        alt="UserPlaylistImage"
       />
-      <View
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          padding: 8,
-          flexShrink: 1,
-        }}
-      >
-        <BaseText
-          style={{
-            fontWeight: "medium",
-            color: ctxColors.white,
-          }}
-        >
-          {shortenText(data.title, 30)}
-        </BaseText>
-        <BaseText
-          style={{
-            marginTop: 4,
-            fontSize: ctxFontSizes.xs,
-            color: ctxColors.white,
-          }}
-        >
-          {data.views} Views
-        </BaseText>
-      </View>
     </Pressable>
   );
 }

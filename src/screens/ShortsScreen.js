@@ -1,9 +1,5 @@
 import { useState } from "react";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import {
-  ScreenContainer,
-  ShortsVideoFlatList,
-} from "../components/ContainerComponents";
+import { ScreenContainer, ShortsVideoFlatList } from "../components/ContainerComponents";
 import { useSetVideoData } from "../hooks/useSetVideoData";
 
 export default function ShortsScreen({ navigation, route }) {

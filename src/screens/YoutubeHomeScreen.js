@@ -1,10 +1,8 @@
 import { useRef, useState } from "react";
 import { Pressable } from "react-native";
-import {
-  MainVideoFlatList,
+import {MixedFeedFlatList,
   RowScrollView,
   ScreenContainer,
-  MixedFeedFlatList,
 } from "../components/ContainerComponents";
 import { CompassIcon } from "../components/IconComponents";
 import { TextTabButton } from "../components/PressableComponents";
@@ -93,7 +91,9 @@ function TopQueryTabBar({ navigation, query, setQuery }) {
 
   const handleSelected = (newQuery) => {
     setQuery((prevQuery) =>
-      prevQuery === newQuery && newQuery !== defaultQuery ? defaultQuery : newQuery
+      prevQuery === newQuery && newQuery !== defaultQuery
+        ? defaultQuery
+        : newQuery
     );
   };
 

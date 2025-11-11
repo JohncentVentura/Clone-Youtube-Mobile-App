@@ -43,23 +43,47 @@ export const styles = StyleSheet.create({
     height: screenHeight * 0.25,
   },
   shortsVideo: {
-    width: screenWidth ,
-    height: screenHeight ,
+    width: screenWidth,
+    height: screenHeight,
   },
   //#endregion
   //#region Buttons
-  baseButton: {
+  roundButton: {
     borderRadius: 99,
-    paddingHorizontal: 14,
+    paddingHorizontal: 8,
     paddingVertical: 8,
     justifyContent: "center",
     alignItems: "center",
   },
-  smallIconTextButton: {
+  xtraSmallButton: {
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  smallButton: {
     borderRadius: 99,
     paddingHorizontal: 12,
     paddingVertical: 6,
     flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  baseButton: {
+    borderRadius: 99,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  halfWideButton: {
+    borderRadius: 99,
+    paddingVertical: 10,
+    width: "49%",
+    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
   },
   wideButton: {
@@ -68,13 +92,6 @@ export const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center",
-  },
-  smallButton: {
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    flexDirection: "row",
     alignItems: "center",
   },
 });

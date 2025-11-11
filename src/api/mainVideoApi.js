@@ -39,6 +39,8 @@ export async function fetchMainVideoData({
       title: urlToVideoTitle(video.url),
       description: video.url,
       video: video.video_files[0].link,
+      videoWidth: video.video_files[0].width,
+      videoHeight: video.video_files[0].height,
       picture: video.video_pictures[0].picture,
       views: roundOffNumber(video.id),
       uploadedDate: randomTimeAgo(video.video_pictures[0].id),
