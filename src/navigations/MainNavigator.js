@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Pressable, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { DrawerDivider } from "../components/ContainerComponents";
@@ -38,6 +38,8 @@ import { useUIContext } from "../context/UIContext";
 import { styles } from "../styles/styles";
 import { navPaths } from "../utils/constants";
 import MoviesStack from "./drawer/MoviesStack";
+import MusicStack from "./drawer/MusicStack";
+import YoutubePremiumStack from "./drawer/YoutubePremiumStack";
 import ShortsStack from "./ShortsStack";
 import SubscriptionsStack from "./SubscriptionsStack";
 import UploadStack from "./UploadStack";
@@ -55,7 +57,7 @@ export const drawerItems = [
   },
   {
     route: "MusicStack",
-    component: YoutubeHomeStack,
+    component: MusicStack,
     Icon: MusicIcon,
     label: "Music",
   },
@@ -103,7 +105,7 @@ export const drawerItems = [
   },
   {
     route: "YoutubePremiumStack",
-    component: YoutubeHomeStack,
+    component: YoutubePremiumStack,
     Icon: YoutubePremiumIcon,
     label: "Youtube Premium",
   },
@@ -249,66 +251,59 @@ export default function MainNavigator() {
         <Drawer.Screen
           key={item.route}
           name={item.route}
-          component={MainBottomTabBar}
+          children={() => <MainBottomTabBar homeComponent={item.component} />}
         />
       ))}
     </Drawer.Navigator>
   );
 }
 
-function MainBottomTabBar({ navigation }) {
+function MainBottomTabBar({ homeComponent }) {
   const insets = useSafeAreaInsets();
   const { ctxColors } = useThemeContext();
   const { ctxMainBottomTabBar } = useUIContext();
-  const mainNavigator = navigation.getParent("MainNavigator");
 
   //Assign updated bottomTabItems so the HomeStack route of this tab uses the component of the currently selected Drawer route
-  const updatedTabItems = useMemo(
-    () => bottomTabItems(drawerItems[mainNavigator.getState().index].component),
-    [mainNavigator.getState().index]
-  );
+  const updatedTabItems = useMemo(() => bottomTabItems(homeComponent), [homeComponent]);
 
   return (
     <BottomTab.Navigator
-      id="MainBottomTabBar"
-      key={ctxColors.bg} //Force remount on theme change
+      key={homeComponent.name + ctxColors.bg} //Key changes force remount when drawer or theme changes
       screenOptions={{ headerShown: false }}
-      tabBar={(props) => {
-        return (
-          <View
-            style={{
-              display: ctxMainBottomTabBar ? "flex" : "none",
-              paddingBottom: insets.bottom,
-              height: insets.bottom + 49,
-              backgroundColor: ctxColors.bg,
-              flexDirection: "row",
-            }}
-          >
-            {updatedTabItems.map((item, index) => {
-              const isUploadRoute = updatedTabItems[2].route === item.route;
-              const isActiveRoute =
-                updatedTabItems[props.state.index].route === item.route;
+      tabBar={(props) => (
+        <View
+          style={{
+            display: ctxMainBottomTabBar ? "flex" : "none",
+            paddingBottom: insets.bottom,
+            height: insets.bottom + 49,
+            backgroundColor: ctxColors.bg,
+            flexDirection: "row",
+          }}
+        >
+          {updatedTabItems.map((item, index) => {
+            const isUploadRoute = updatedTabItems[2].route === item.route;
+            const isActiveRoute =
+              updatedTabItems[props.state.index].route === item.route;
 
-              return isUploadRoute ? (
-                <BottomTabBarIconTab
-                  key={index + item.route}
-                  isActiveRoute={isActiveRoute}
-                  Icon={item.Icon}
-                  onPress={() => props.navigation.navigate(item.route)}
-                />
-              ) : (
-                <BottomTabBarIconTextTab
-                  key={index + item.route}
-                  isActiveRoute={isActiveRoute}
-                  Icon={isActiveRoute ? item.activeIcon : item.inactiveIcon}
-                  label={isActiveRoute ? item.activeLabel : item.inactiveLabel}
-                  onPress={() => props.navigation.navigate(item.route)}
-                />
-              );
-            })}
-          </View>
-        );
-      }}
+            return isUploadRoute ? (
+              <BottomTabBarIconTab
+                key={index + item.route}
+                isActiveRoute={isActiveRoute}
+                Icon={item.Icon}
+                onPress={() => props.navigation.navigate(item.route)}
+              />
+            ) : (
+              <BottomTabBarIconTextTab
+                key={index + item.route}
+                isActiveRoute={isActiveRoute}
+                Icon={isActiveRoute ? item.activeIcon : item.inactiveIcon}
+                label={isActiveRoute ? item.activeLabel : item.inactiveLabel}
+                onPress={() => props.navigation.navigate(item.route)}
+              />
+            );
+          })}
+        </View>
+      )}
     >
       {updatedTabItems.map((item) => (
         <BottomTab.Screen

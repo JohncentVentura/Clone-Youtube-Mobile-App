@@ -220,7 +220,9 @@ export default function YouScreen({ navigation }) {
           <MovieIcon />
           <BaseText style={{ marginLeft: 16 }}>Your movies</BaseText>
         </UserIconTextPressable>
-        <UserIconTextPressable>
+        <UserIconTextPressable
+          onPress={() => navigation.navigate(navPaths.youtubePremiumScreen)}
+        >
           <YoutubePremiumIcon />
           <BaseText style={{ marginLeft: 16 }}>Get YouTube Premium</BaseText>
         </UserIconTextPressable>

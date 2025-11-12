@@ -7,21 +7,21 @@ import { useUIContext } from "../../context/UIContext";
 import {
   ChannelStackScreen,
   MainVideoStackScreen,
-  MoviesStackScreen,
   SearchResultStackScreen,
   SearchStackScreen,
   ShortsStackScreen,
+  YoutubePremiumStackScreen,
 } from "../NavigationConfig";
 
 const Stack = createStackNavigator();
 
-export default function MoviesStack() {
+export default function YoutubePremiumStack() {
   const { ctxHomeCommentsModal, ctxPostCommentsModal } = useUIContext();
 
   return (
     <>
       <Stack.Navigator>
-        {MoviesStackScreen()}
+        {YoutubePremiumStackScreen()}
         {ChannelStackScreen()}
         {MainVideoStackScreen()}
         {SearchStackScreen()}

@@ -75,11 +75,10 @@ export default function MoviesScreen({ navigation }) {
           Movies
         </BaseText>
       </View>
-
       <View
         style={[
           {
-            marginTop: 10,
+            marginTop: 16,
             width: "100%",
             fontSize: ctxFontSizes.lg,
             fontWeight: "bold",
@@ -97,7 +96,7 @@ export default function MoviesScreen({ navigation }) {
           <BaseText style={{ fontSize: ctxFontSizes.sm }}>View All</BaseText>
         </OutlinedButton>
       </View>
-      <RowScrollView style={{ marginTop: 8, marginBottom: 10 }}>
+      <RowScrollView style={{ marginTop: 12, marginBottom: 10 }}>
         {topMovies.map((videoData) => (
           <MoviesCard
             key={videoData.id}
@@ -116,7 +115,7 @@ export default function MoviesScreen({ navigation }) {
       <View
         style={[
           {
-            marginTop: 10,
+            marginTop: 4,
             width: "100%",
             fontSize: ctxFontSizes.lg,
             fontWeight: "bold",
@@ -134,7 +133,7 @@ export default function MoviesScreen({ navigation }) {
           <BaseText style={{ fontSize: ctxFontSizes.sm }}>View All</BaseText>
         </OutlinedButton>
       </View>
-      <RowScrollView style={{ marginTop: 8, marginBottom: 10 }}>
+      <RowScrollView style={{ marginTop: 12, marginBottom: 10 }}>
         {actionMovies.map((videoData) => (
           <MoviesCard
             key={videoData.id}
@@ -153,7 +152,7 @@ export default function MoviesScreen({ navigation }) {
       <View
         style={[
           {
-            marginTop: 10,
+            marginTop: 4,
             width: "100%",
             fontSize: ctxFontSizes.lg,
             fontWeight: "bold",
@@ -171,7 +170,7 @@ export default function MoviesScreen({ navigation }) {
           <BaseText style={{ fontSize: ctxFontSizes.sm }}>View All</BaseText>
         </OutlinedButton>
       </View>
-      <RowScrollView style={{ marginTop: 8, marginBottom: 10 }}>
+      <RowScrollView style={{ marginTop: 12, marginBottom: 10 }}>
         {romanceMovies.map((videoData) => (
           <MoviesCard
             key={videoData.id}
@@ -190,7 +189,7 @@ export default function MoviesScreen({ navigation }) {
       <View
         style={[
           {
-            marginTop: 10,
+            marginTop: 4,
             width: "100%",
             fontSize: ctxFontSizes.lg,
             fontWeight: "bold",
@@ -208,7 +207,7 @@ export default function MoviesScreen({ navigation }) {
           <BaseText style={{ fontSize: ctxFontSizes.sm }}>View All</BaseText>
         </OutlinedButton>
       </View>
-      <RowScrollView style={{ marginTop: 8, marginBottom: 24 }}>
+      <RowScrollView style={{ marginTop: 12, marginBottom: 24 }}>
         {horrorMovies.map((videoData) => (
           <MoviesCard
             key={videoData.id}

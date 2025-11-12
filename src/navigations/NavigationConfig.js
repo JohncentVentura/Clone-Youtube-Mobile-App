@@ -19,9 +19,11 @@ import {
 import { useThemeContext } from "../context/ThemeContext";
 import { useSearchContext } from "../context/SearchContext";
 import { useUIContext } from "../context/UIContext";
+import MoviesScreen from "../screens/drawers/MoviesScreen";
+import MusicScreen from "../screens/drawers/MusicScreen";
+import YoutubePremiumScreen from "../screens/drawers/YoutubePremiumScreen";
 import ChannelScreen from "../screens/ChannelScreen";
 import MainVideoScreen from "../screens/MainVideoScreen";
-import MoviesScreen from "../screens/drawers/MoviesScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import SearchScreen from "../screens/SearchScreen";
 import SearchResultScreen from "../screens/SearchResultScreen";
@@ -256,6 +258,49 @@ export function MoviesStackScreen() {
           <HeaderContainer>
             <HeaderArrowBackIcon navigation={navigation} />
             <HeaderTitleText>Movies</HeaderTitleText>
+            <View style={styles.headerRightIconsContainer}>
+              <HeaderShareScreenIcon />
+              <HeaderSearchIcon navigation={navigation} />
+              <HeaderDotVerticalIcon />
+            </View>
+          </HeaderContainer>
+        ),
+      })}
+    />
+  );
+}
+
+export function MusicStackScreen() {
+  return (
+    <Stack.Screen
+      name={navPaths.moviesScreen}
+      component={MusicScreen}
+      options={({ navigation }) => ({
+        header: () => (
+          <HeaderContainer>
+            <HeaderArrowBackIcon navigation={navigation} />
+            <HeaderTitleText>Music</HeaderTitleText>
+            <View style={styles.headerRightIconsContainer}>
+              <HeaderSearchIcon navigation={navigation} />
+              <HeaderDotVerticalIcon />
+            </View>
+          </HeaderContainer>
+        ),
+      })}
+    />
+  );
+}
+
+export function YoutubePremiumStackScreen() {
+  return (
+    <Stack.Screen
+      name={navPaths.youtubePremiumScreen}
+      component={YoutubePremiumScreen}
+      options={({ navigation }) => ({
+        header: () => (
+          <HeaderContainer>
+            <HeaderArrowBackIcon navigation={navigation} />
+            <HeaderTitleText>Get YouTube Premi...</HeaderTitleText>
             <View style={styles.headerRightIconsContainer}>
               <HeaderShareScreenIcon />
               <HeaderSearchIcon navigation={navigation} />

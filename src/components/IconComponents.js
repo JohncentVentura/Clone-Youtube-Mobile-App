@@ -4,6 +4,7 @@ import Feather from "@expo/vector-icons/Feather";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import Fontisto from "@expo/vector-icons/Fontisto";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -70,11 +71,38 @@ export function InactiveYouIcon({ ...rest }) {
 //#endregion
 
 //#region Header Icons
-export function HeaderArrowBackIcon({ navigation, onPress, size, color, ...rest }) {
+export function HeaderArrowBackIcon({
+  navigation,
+  onPress,
+  size,
+  color,
+  ...rest
+}) {
   const { ctxColors, ctxIconSizes } = useThemeContext();
 
+  function handleBackPress() {
+    if (onPress) return onPress();
+
+    try {
+      if (navigation.canGoBack()) {
+        navigation.goBack();
+        return;
+      }
+
+      const parentNav = navigation.getParent?.("MainNavigator");
+      if (parentNav) {
+        parentNav.navigate("YouTubeHomeStack");
+        return;
+      }
+
+      navigation.goBack();
+    } catch (e) {
+      console.warn("HeaderArrowBackIcon error:", e);
+    }
+  }
+
   return (
-    <RippleButton  onPress={onPress ? onPress : () => navigation.goBack()} {...rest}>
+    <RippleButton onPress={handleBackPress} {...rest}>
       <ArrowBackIcon
         size={size || ctxIconSizes.base}
         color={color || ctxColors.iconPrimary}
@@ -275,13 +303,7 @@ export function GamingIcon({ ...rest }) {
 }
 
 export function GoogleIcon({ ...rest }) {
-  return (
-    <BaseIcon
-      IconComponent={Ionicons}
-      name="logo-google"
-      {...rest}
-    />
-  );
+  return <BaseIcon IconComponent={Ionicons} name="logo-google" {...rest} />;
 }
 
 export function IncognitoIcon({ ...rest }) {
@@ -334,6 +356,14 @@ export function LiveIcon({ ...rest }) {
 
 export function LockIcon({ ...rest }) {
   return <BaseIcon IconComponent={SimpleLineIcons} name="lock" {...rest} />;
+}
+
+export function MembershipIndividualIcon({ ...rest }) {
+  return <BaseIcon IconComponent={Ionicons} name="person-outline" {...rest} />;
+}
+
+export function MembershipFamilyIcon({ ...rest }) {
+  return <BaseIcon IconComponent={Fontisto} name="persons" {...rest} />;
 }
 
 export function MessageTextIcon({ ...rest }) {
@@ -451,8 +481,22 @@ export function ShareScreenIcon({ ...rest }) {
 }
 
 export function ShuffleIcon({ ...rest }) {
+  return <BaseIcon IconComponent={Entypo} name="shuffle" {...rest} />;
+}
+
+export function PhoneSpeakerIcon({ ...rest }) {
   return (
-    <BaseIcon IconComponent={Entypo} name="shuffle" {...rest} />
+    <BaseIcon IconComponent={MaterialIcons} name="speaker-phone" {...rest} />
+  );
+}
+
+export function PhoneTextIcon({ ...rest }) {
+  return (
+    <BaseIcon
+      IconComponent={MaterialCommunityIcons}
+      name="cellphone-text"
+      {...rest}
+    />
   );
 }
 
@@ -461,7 +505,9 @@ export function SportsIcon({ ...rest }) {
 }
 
 export function StatsChartIcon({ ...rest }) {
-  return <BaseIcon IconComponent={Ionicons} name="stats-chart-sharp" {...rest} />;
+  return (
+    <BaseIcon IconComponent={Ionicons} name="stats-chart-sharp" {...rest} />
+  );
 }
 
 export function VideoIcon({ ...rest }) {

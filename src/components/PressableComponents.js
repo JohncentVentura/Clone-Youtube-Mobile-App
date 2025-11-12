@@ -230,6 +230,28 @@ export function BasePressable({ style, children, ...rest }) {
 }
 //#endregion
 //#region Buttons
+export function MinimizingButton({ style, children, ...rest }) {
+  const sharedValue = useSharedValue(1);
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: sharedValue.value }],
+  }));
+
+  return (
+    <AnimatedPressable
+      style={[styles.baseButton, animatedStyle, style]}
+      onPressIn={() => {
+        sharedValue.value = withTiming(0.9, { duration: 100 });
+      }}
+      onPressOut={() => {
+        sharedValue.value = withTiming(1, { duration: 400 });
+      }}
+      {...rest}
+    >
+      {children}
+    </AnimatedPressable>
+  );
+}
+
 export function OutlinedButton({ style, children, ...rest }) {
   const { ctxColors } = useThemeContext();
   const sharedValue = useSharedValue(1);

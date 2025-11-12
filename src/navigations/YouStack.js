@@ -22,6 +22,7 @@ import {
   SearchResultStackScreen,
   SearchStackScreen,
   ShortsStackScreen,
+  YoutubePremiumStackScreen,
 } from "./NavigationConfig";
 
 const Stack = createStackNavigator();
@@ -90,6 +91,7 @@ export default function YouStack() {
       {SearchStackScreen()}
       {SearchResultStackScreen()}
       {ShortsStackScreen()}
+      {YoutubePremiumStackScreen()}
     </Stack.Navigator>
   );
 }

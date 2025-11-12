@@ -7,7 +7,7 @@ import { useUIContext } from "../../context/UIContext";
 import {
   ChannelStackScreen,
   MainVideoStackScreen,
-  MoviesStackScreen,
+  MusicStackScreen,
   SearchResultStackScreen,
   SearchStackScreen,
   ShortsStackScreen,
@@ -15,13 +15,13 @@ import {
 
 const Stack = createStackNavigator();
 
-export default function MoviesStack() {
+export default function MusicStack() {
   const { ctxHomeCommentsModal, ctxPostCommentsModal } = useUIContext();
 
   return (
     <>
       <Stack.Navigator>
-        {MoviesStackScreen()}
+        {MusicStackScreen()}
         {ChannelStackScreen()}
         {MainVideoStackScreen()}
         {SearchStackScreen()}

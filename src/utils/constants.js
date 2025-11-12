@@ -7,6 +7,8 @@ export const fontPaths = {
 export const imagePaths = {
   youtubeLogoDarkMode: require("../assets/images/youtube-logo-dark-mode.png"),
   youtubeLogoLightMode: require("../assets/images/youtube-logo-light-mode.png"),
+  youtubePremiumLogoDarkMode: require("../assets/images/youtube-premium-logo-dark-mode.png"),
+  youtubePremiumLogoLightMode: require("../assets/images/youtube-premium-logo-light-mode.png"),
 };
 
 export const navPaths = {
@@ -36,6 +38,9 @@ export const navPaths = {
   sportsScreen: "SportsScreen",
   learningScreen: "LearningScreen",
   fashionAndBeautyScreen: "FashionAndBeautyScreen",
+  youtubePremiumScreen: "YoutubePremiumScreen",
+  youtubeMusicScreen: "YoutubeMusicScreen",
+  YoutubeKidsScreen: "YoutubeKidsScreen",
 };
 
 export const searchHistoryKey = "SearchHistoryKey";

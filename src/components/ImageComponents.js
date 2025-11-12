@@ -174,3 +174,21 @@ export function UserPlaylistCoverImage({ source, ...rest }) {
     </Pressable>
   );
 }
+
+export function YoutubePremiumLogoImage({ style, ...rest }) {
+  const { ctxColorScheme } = useThemeContext();
+
+  return (
+    <Image
+      style={[{ width: 250, height: 35 }, style]}
+      resizeMode={"stretch"}
+      alt="HeaderYoutubeLogoImage"
+      source={
+        ctxColorScheme === "light"
+          ? imagePaths.youtubePremiumLogoLightMode
+          : imagePaths.youtubePremiumLogoDarkMode
+      }
+      {...rest}
+    />
+  );
+}

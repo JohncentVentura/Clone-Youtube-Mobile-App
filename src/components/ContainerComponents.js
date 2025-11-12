@@ -21,7 +21,6 @@ import { DotVerticalIcon } from "./IconComponents";
 import {
   MainVideoChannelImage,
   MainVideoThumbnailImage,
-  
 } from "./ImageComponents";
 import { BasePressable, RippleButton } from "./PressableComponents";
 import { BaseText } from "./TextComponents";
@@ -81,7 +80,13 @@ export function ScreenContainer({ style, isLoading, children, ...rest }) {
   );
 }
 
-export function ScreenScrollView({ style, isLoading, children, ...rest }) {
+export function ScreenScrollView({
+  style,
+  contentContainerStyle,
+  isLoading,
+  children,
+  ...rest
+}) {
   const { ctxColors } = useThemeContext();
 
   return isLoading ? (
@@ -90,22 +95,17 @@ export function ScreenScrollView({ style, isLoading, children, ...rest }) {
       size="large"
     />
   ) : (
-    <>
-      <ScrollView
-        style={[
-          styles.screenContainer,
-          { backgroundColor: ctxColors.bg },
-          style,
-        ]}
-        contentContainerStyle={StyleSheet.create({
-          alignItems: "flex-start",
-        })}
-        showsVerticalScrollIndicator={false}
-        {...rest}
-      >
-        {children}
-      </ScrollView>
-    </>
+    <ScrollView
+      style={[styles.screenContainer, { backgroundColor: ctxColors.bg }, style]}
+      contentContainerStyle={StyleSheet.flatten([
+        { alignItems: "flex-start" }, // default
+        contentContainerStyle, // allow override
+      ])}
+      showsVerticalScrollIndicator={false}
+      {...rest}
+    >
+      {children}
+    </ScrollView>
   );
 }
 //#endregion
@@ -440,17 +440,20 @@ export function MainVideoViewRenderItem({
 //#endregion
 
 //#region Others
-export function DrawerDivider() {
+export function DrawerDivider({ style }) {
   const { ctxColors } = useThemeContext();
 
   return (
     <View
-      style={{
-        marginVertical: 8,
-        width: "100%",
-        height: 1,
-        backgroundColor: ctxColors.borderSecondary,
-      }}
+      style={[
+        {
+          marginVertical: 8,
+          width: "100%",
+          height: 1,
+          backgroundColor: ctxColors.borderSecondary,
+        },
+        style,
+      ]}
     />
   );
 }
