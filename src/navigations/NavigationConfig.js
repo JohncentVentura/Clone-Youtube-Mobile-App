@@ -19,11 +19,14 @@ import {
 import { useThemeContext } from "../context/ThemeContext";
 import { useSearchContext } from "../context/SearchContext";
 import { useUIContext } from "../context/UIContext";
+import GamingScreen from "../screens/drawers/GamingScreen";
+import LiveScreen from "../screens/drawers/LiveScreen";
 import MoviesScreen from "../screens/drawers/MoviesScreen";
 import MusicScreen from "../screens/drawers/MusicScreen";
 import YoutubePremiumScreen from "../screens/drawers/YoutubePremiumScreen";
 import ChannelScreen from "../screens/ChannelScreen";
 import MainVideoScreen from "../screens/MainVideoScreen";
+import MusicTrackScreen from "../screens/MusicTrackScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import SearchScreen from "../screens/SearchScreen";
 import SearchResultScreen from "../screens/SearchResultScreen";
@@ -248,6 +251,48 @@ export function ShortsStackScreen() {
 }
 //#endregion
 //#region Drawer Screens
+export function GamingStackScreen() {
+  return (
+    <Stack.Screen
+      name={navPaths.gamingScreen}
+      component={GamingScreen}
+      options={({ navigation }) => ({
+        header: () => (
+          <HeaderContainer>
+            <HeaderArrowBackIcon navigation={navigation} />
+            <HeaderTitleText>Gaming</HeaderTitleText>
+            <View style={styles.headerRightIconsContainer}>
+              <HeaderShareScreenIcon />
+              <HeaderSearchIcon navigation={navigation} />
+            </View>
+          </HeaderContainer>
+        ),
+      })}
+    />
+  );
+}
+
+export function LiveStackScreen() {
+  return (
+    <Stack.Screen
+      name={navPaths.liveScreen}
+      component={LiveScreen}
+      options={({ navigation }) => ({
+        header: () => (
+          <HeaderContainer>
+            <HeaderArrowBackIcon navigation={navigation} />
+            <HeaderTitleText>Live</HeaderTitleText>
+            <View style={styles.headerRightIconsContainer}>
+              <HeaderShareScreenIcon />
+              <HeaderSearchIcon navigation={navigation} />
+            </View>
+          </HeaderContainer>
+        ),
+      })}
+    />
+  );
+}
+
 export function MoviesStackScreen() {
   return (
     <Stack.Screen
@@ -273,13 +318,33 @@ export function MoviesStackScreen() {
 export function MusicStackScreen() {
   return (
     <Stack.Screen
-      name={navPaths.moviesScreen}
+      name={navPaths.musicScreen}
       component={MusicScreen}
       options={({ navigation }) => ({
         header: () => (
           <HeaderContainer>
             <HeaderArrowBackIcon navigation={navigation} />
             <HeaderTitleText>Music</HeaderTitleText>
+            <View style={styles.headerRightIconsContainer}>
+              <HeaderSearchIcon navigation={navigation} />
+              <HeaderDotVerticalIcon />
+            </View>
+          </HeaderContainer>
+        ),
+      })}
+    />
+  );
+}
+
+export function MusicTrackStackScreen() {
+  return (
+    <Stack.Screen
+      name={navPaths.musicTrackScreen}
+      component={MusicTrackScreen}
+      options={({ navigation }) => ({
+        header: () => (
+          <HeaderContainer>
+            <HeaderArrowBackIcon navigation={navigation} />
             <View style={styles.headerRightIconsContainer}>
               <HeaderSearchIcon navigation={navigation} />
               <HeaderDotVerticalIcon />

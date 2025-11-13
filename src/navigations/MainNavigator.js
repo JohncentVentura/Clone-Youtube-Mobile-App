@@ -37,6 +37,8 @@ import { useThemeContext } from "../context/ThemeContext";
 import { useUIContext } from "../context/UIContext";
 import { styles } from "../styles/styles";
 import { navPaths } from "../utils/constants";
+import GamingStack from "./drawer/GamingStack";
+import LiveStack from "./drawer/LiveStack";
 import MoviesStack from "./drawer/MoviesStack";
 import MusicStack from "./drawer/MusicStack";
 import YoutubePremiumStack from "./drawer/YoutubePremiumStack";
@@ -69,13 +71,13 @@ export const drawerItems = [
   },
   {
     route: "LiveStack",
-    component: YoutubeHomeStack,
+    component: LiveStack,
     Icon: LiveIcon,
     label: "Live",
   },
   {
     route: "GamingStack",
-    component: YoutubeHomeStack,
+    component: GamingStack,
     Icon: GamingIcon,
     label: "Gaming",
   },

@@ -33,6 +33,7 @@ import { useSetVideoData } from "../hooks/useSetVideoData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
 import { navPaths } from "../utils/constants";
+import { shortenText } from "../utils/utils";
 
 export default function MainVideoScreen({ navigation, route }) {
   const inset = useSafeAreaInsets();
@@ -144,7 +145,7 @@ export default function MainVideoScreen({ navigation, route }) {
                       fontWeight: "medium",
                     }}
                   >
-                    {videoData.channelName}
+                    {shortenText(videoData.channelName, 20)}
                   </BaseText>
                   <BaseText
                     style={{

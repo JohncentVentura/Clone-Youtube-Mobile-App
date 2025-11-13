@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { GamingCard, VideoHorizontalPreview } from "./CardsComponents";
 import PostComponent from "./PostComponent";
 import { useThemeContext } from "../context/ThemeContext";
 import { useUIContext } from "../context/UIContext";
@@ -124,6 +125,47 @@ export function ColumnScrollView({ children, ...rest }) {
   );
 }
 
+export function GamingCardRowScrollView({
+  style,
+  isLoading,
+  data,
+  navigation,
+  headerComponent,
+  ...rest
+}) {
+  return isLoading ? (
+    <ActivityIndicator style={{ flex: 1 }} size="large" />
+  ) : (
+    <>
+      {headerComponent}
+      <RowScrollView
+        style={[
+          { width: "100%", marginBottom: 16 },
+          styles.screenPadHorizontal,
+          style,
+        ]}
+        {...rest}
+      >
+        {data.map((videoData, index) => (
+          <GamingCard
+            key={index + videoData.id}
+            style={{
+              marginRight: index === data.length - 1 ? 16 : 0,
+            }}
+            videoData={videoData}
+            onPress={() =>
+              navigation.navigate(navPaths.mainVideoScreen, {
+                query: videoData.title,
+                videoData,
+              })
+            }
+          />
+        ))}
+      </RowScrollView>
+    </>
+  );
+}
+
 export function RowScrollView({ style, children, ...rest }) {
   return (
     <ScrollView
@@ -179,6 +221,40 @@ export function ShortsVideoGridScrollView({
         ))}
       </View>
     </ScrollView>
+  );
+}
+
+export function VideoHorizontalPreviewRowScrollView({
+  style,
+  isLoading,
+  data,
+  navigation,
+  headerComponent,
+  ...rest
+}) {
+  return isLoading ? (
+    <ActivityIndicator style={{ flex: 1 }} size="large" />
+  ) : (
+    <>
+      {headerComponent}
+      <ColumnScrollView
+        style={[{ width: "100%", marginBottom: 16 }, style]}
+        {...rest}
+      >
+        {data.map((videoData, index) => (
+          <VideoHorizontalPreview
+            key={index + videoData.id}
+            videoData={videoData}
+            onPress={() =>
+              navigation.navigate(navPaths.mainVideoScreen, {
+                query: videoData.title,
+                videoData,
+              })
+            }
+          />
+        ))}
+      </ColumnScrollView>
+    </>
   );
 }
 //#endregion
@@ -289,6 +365,7 @@ export function MixedFeedFlatList({
   mixedData,
   navigation,
   query,
+  headerComponent,
   ...rest
 }) {
   const [autoPlayVideoId, setAutoPlayVideoId] = useState(null);
@@ -328,6 +405,7 @@ export function MixedFeedFlatList({
               query={query}
               isAutoPlayingVideo={isAutoPlayingVideo}
               autoPlayVideoId={autoPlayVideoId}
+              headerComponent={mixedItem.headerComponent}
             />
           );
         }
@@ -338,6 +416,7 @@ export function MixedFeedFlatList({
               isLoading={isLoading}
               data={mixedItem.data}
               navigation={navigation}
+              headerComponent={mixedItem.headerComponent}
             />
           );
         }
@@ -349,6 +428,27 @@ export function MixedFeedFlatList({
               setIsLoading={setIsLoading}
               navigation={navigation}
               videoData={mixedItem.data}
+              headerComponent={mixedItem.headerComponent}
+            />
+          );
+        }
+
+        if (mixedItem.type === "gamingCards") {
+          return (
+            <GamingCardRowScrollView
+              data={mixedItem.data}
+              navigation={navigation}
+              headerComponent={mixedItem.headerComponent}
+            />
+          );
+        }
+
+        if (mixedItem.type === "videoHorizontalPreview") {
+          return (
+            <VideoHorizontalPreviewRowScrollView
+              data={mixedItem.data}
+              navigation={navigation}
+              headerComponent={mixedItem.headerComponent}
             />
           );
         }
@@ -474,57 +574,4 @@ export function LinearGradientView({ style, colors, children, ...rest }) {
     </LinearGradient>
   );
 }
-
-export function VideoHorizontalPreview({ style, userData, ...rest }) {
-  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
-
-  return (
-    <BasePressable
-      style={[
-        {
-          paddingVertical: 8,
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "flex-start",
-          backgroundColor: "transparent",
-        },
-        styles.screenPadHorizontal,
-        style,
-      ]}
-      {...rest}
-    >
-      <Image
-        style={[{ borderRadius: 8, width: 140, height: 80 }]}
-        resizeMode={"stretch"}
-        source={{ uri: userData?.picture }}
-        alt="UserPlaylistImage"
-      />
-      <View style={{ marginLeft: 12, flexShrink: 1 }}>
-        <BaseText style={{ fontWeight: "medium" }}>{userData?.title}</BaseText>
-        <BaseText
-          style={{
-            marginTop: 4,
-            fontSize: ctxFontSizes.xs,
-            olors: ctxColors.textSecondary,
-          }}
-        >
-          {userData?.channelName}
-        </BaseText>
-        <BaseText
-          style={{
-            marginTop: 2,
-            fontSize: ctxFontSizes.xs,
-            colors: ctxColors.textSecondary,
-          }}
-        >
-          {userData?.views} views • {userData?.uploadedDate}{" "}
-        </BaseText>
-      </View>
-      <RippleButton style={{ marginLeft: "auto", marginTop: 4 }} rippleSize={6}>
-        <DotVerticalIcon size={ctxIconSizes.xs2} />
-      </RippleButton>
-    </BasePressable>
-  );
-}
-
 //#endregion

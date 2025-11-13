@@ -16,6 +16,7 @@ import { useThemeContext } from "../context/ThemeContext";
 import { useUIContext } from "../context/UIContext";
 import { screenHeight, styles } from "../styles/styles";
 import { navPaths } from "../utils/constants";
+import { shortenText } from "../utils/utils";
 import { DotVerticalIcon } from "./IconComponents";
 import {
   MainVideoChannelImage,
@@ -24,7 +25,78 @@ import {
 import { BasePressable, RippleButton } from "./PressableComponents";
 import { BaseText } from "./TextComponents";
 import { MainVideoView, ShortsVideoView } from "./VideoComponents";
-import { shortenText } from "../utils/utils";
+
+export function GamingCard({ style, videoData, ...rest }) {
+  const { ctxColors, ctxFontSizes } = useThemeContext();
+  return (
+    <BasePressable style={[{ paddingHorizontal: 12, paddingBottom:8 }, style]} {...rest}>
+      <Image
+        style={{ borderRadius: 8, width: 140, height: 210 }}
+        resizeMode={"stretch"}
+        source={{ uri: videoData?.picture }}
+        alt="GamingCard"
+      />
+      <View style={{ width: 140, flexShrink: 1 }}>
+        <BaseText style={{ marginTop: 4, fontWeight: "medium" }}>
+          {shortenText(videoData?.title, 14)}
+        </BaseText>
+        <BaseText
+          style={{
+            marginTop: 4,
+            fontSize: ctxFontSizes.xs,
+            color: ctxColors.textSecondary,
+          }}
+        >
+          {videoData?.channelSubscribers} watching worldwide
+        </BaseText>
+      </View>
+    </BasePressable>
+  );
+}
+
+export function MusicTrackCard({ style, source, musicGenre, ...rest }) {
+  const { ctxColors, ctxFontSizes } = useThemeContext();
+  return (
+    <BasePressable
+      style={[
+        { paddingVertical: 12, flexDirection: "row", alignItems: "center" },
+        styles.screenPadHorizontal,
+        style,
+      ]}
+      {...rest}
+    >
+      <Image
+        style={{ borderRadius: 8, width: 150, height: 150 }}
+        resizeMode={"stretch"}
+        source={{ uri: source }}
+        alt="MoviesCard"
+      />
+      <View style={{ marginLeft: 16, flexShrink: 1 }}>
+        <BaseText style={{ fontSize: ctxFontSizes.lg, fontWeight: "medium" }}>
+          {musicGenre.title}
+        </BaseText>
+        <BaseText
+          style={{
+            marginTop: 4,
+            fontSize: ctxFontSizes.sm,
+            color: ctxColors.textSecondary,
+          }}
+        >
+          {musicGenre.description}
+        </BaseText>
+        <BaseText
+          style={{
+            marginTop: 4,
+            fontSize: ctxFontSizes.sm,
+            color: ctxColors.textSecondary,
+          }}
+        >
+          {musicGenre.tracks} tracks
+        </BaseText>
+      </View>
+    </BasePressable>
+  );
+}
 
 export function MoviesCard({ style, videoData, genre, ...rest }) {
   const { ctxColors, ctxFontSizes } = useThemeContext();
@@ -41,11 +113,21 @@ export function MoviesCard({ style, videoData, genre, ...rest }) {
           {shortenText(videoData?.title, 14)}
         </BaseText>
         <BaseText
-          style={{ marginTop: 4, fontSize: ctxFontSizes.xs, color: ctxColors.textSecondary }}
+          style={{
+            marginTop: 4,
+            fontSize: ctxFontSizes.xs,
+            color: ctxColors.textSecondary,
+          }}
         >
           {genre} • {videoData?.uploadedDate}
         </BaseText>
-        <BaseText style={{ marginTop: 2, fontSize: ctxFontSizes.xs, color: ctxColors.green }}>
+        <BaseText
+          style={{
+            marginTop: 2,
+            fontSize: ctxFontSizes.xs,
+            color: ctxColors.green,
+          }}
+        >
           Buy or rent
         </BaseText>
       </View>
@@ -105,7 +187,8 @@ export function VideoHorizontalPreview({ style, videoData, ...rest }) {
     <BasePressable
       style={[
         {
-          paddingVertical: 8,
+          width: "100%", 
+          paddingVertical: 12,
           flexDirection: "row",
           justifyContent: "center",
           alignItems: "flex-start",

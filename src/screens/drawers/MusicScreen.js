@@ -1,7 +1,10 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useRef, useState } from "react";
 import { Dimensions, FlatList, Image, StyleSheet, View } from "react-native";
-import { MoviesCard } from "../../components/CardsComponents";
+import {
+  MusicTrackCard,
+  VideoHorizontalPreview,
+} from "../../components/CardsComponents";
 import {
   DrawerDivider,
   ColumnScrollView,
@@ -30,22 +33,72 @@ import {
 } from "../../components/PressableComponents";
 import { BaseText } from "../../components/TextComponents";
 import { useThemeContext } from "../../context/ThemeContext";
+import { useScrollToTopOnFocus } from "../../hooks/useScrollToTopOnFocus";
+import { useSetImageData } from "../../hooks/useSetImageData";
 import { useSetVideoData } from "../../hooks/useSetVideoData";
-import { useSetChannelData } from "../../hooks/useSetChannelData";
 import { screenWidth, styles } from "../../styles/styles";
 import { navPaths } from "../../utils/constants";
 import { shortenText } from "../../utils/utils";
 
 export default function MusicScreen({ navigation }) {
   const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
+  const scrollToTopRef = useRef(null);
   const [musicVideos, setMusicVideos] = useState([]);
+  const [latestMusicVideos, setLatestMusicVideos] = useState([]);
+  const [musicGenrePictures, setMusicGenrePictures] = useState([]);
   const [musicChannel, setMusicChannel] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
+  let musicGenres = [
+    {
+      query: "Pop Music",
+      gradientColor: ["rgba(104, 164, 204, 1)", "rgba(150, 136, 115, 1)"],
+      title: "RELEASED",
+      description:
+        "The hottest new songs this week, served up fresh to you every friday",
+      tracks: 12,
+    },
+    {
+      query: "R&B Music",
+      gradientColor: ["rgba(148, 112, 168, 1)", "rgba(146, 113, 69, 1)"],
+      title: "The Short List",
+      description: "Check out the biggest trending tracks on YouTube Shorts.",
+      tracks: 9,
+    },
+    {
+      query: "Country Music",
+      gradientColor: ["rgba(67, 80, 91, 1)", "rgba(143, 104, 72, 1)"],
+      title: "Pop Before It Breaks",
+      description: "An essential preview of tomorrow's pop hits.",
+      tracks: 10,
+    },
+    {
+      query: "Rock Music",
+      gradientColor: ["rgba(63, 84, 177, 1)", "rgba(49, 50, 66, 1)"],
+      title: "Hashtag Hits",
+      description:
+        "Check out all the tracks that are buzzing right now on socials",
+      tracks: 8,
+    },
+  ];
+
+  useScrollToTopOnFocus(scrollToTopRef);
   useSetVideoData({
     query: "Music",
     queryResults: 5,
     setVideos: setMusicVideos,
+    setIsLoading,
+  });
+  useSetVideoData({
+    query: "Latest Music",
+    queryResults: 6,
+    setVideos: setLatestMusicVideos,
+    setIsLoading,
+  });
+  useSetImageData({
+    query: "Music Genres",
+    queryResults: 4,
+    setData: setMusicGenrePictures,
     setIsLoading,
   });
 
@@ -56,7 +109,7 @@ export default function MusicScreen({ navigation }) {
   }, [musicVideos]);
 
   return (
-    <ScreenScrollView isLoading={isLoading}>
+    <ScreenScrollView isLoading={isLoading} ref={scrollToTopRef}>
       <MusicCarousel musicVideos={musicVideos} />
       <View style={styles.screenPadHorizontal}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -96,10 +149,69 @@ export default function MusicScreen({ navigation }) {
             </BaseText>
           </OutlinedButton>
         </View>
-        <BaseText style={{ marginTop: 32, fontSize: ctxFontSizes.xl, fontWeight: "bold" }}>
+        <BaseText
+          style={{
+            marginTop: 32,
+            marginBottom: 16,
+            fontSize: ctxFontSizes.lg,
+            fontWeight: "bold",
+          }}
+        >
           New & Trending Songs
         </BaseText>
       </View>
+      {musicGenres.map((genre, index) => {
+        return (
+          <MusicTrackCard
+            key={index}
+            source={musicGenrePictures[index]?.picture}
+            musicGenre={genre}
+            onPress={() =>
+              navigation.navigate(navPaths.musicTrackScreen, {
+                query: genre.query,
+                gradientColor: genre.gradientColor,
+                title: genre.title,
+                description: genre.description,
+                tracks: genre.tracks,
+              })
+            }
+          />
+        );
+      })}
+      <View
+        style={[
+          { marginTop: 32, marginBottom: 16 },
+          styles.screenPadHorizontal,
+        ]}
+      >
+        <BaseText
+          style={{
+            fontSize: ctxFontSizes.lg,
+            fontWeight: "bold",
+          }}
+        >
+          New This Week
+        </BaseText>
+        <BaseText
+          style={{ fontSize: ctxFontSizes.sm, color: ctxColors.textSecondary }}
+        >
+          The hottest videos of this week
+        </BaseText>
+      </View>
+      {latestMusicVideos.map((videoData, index) => {
+        return (
+          <VideoHorizontalPreview
+            key={index}
+            videoData={videoData}
+            onPress={() =>
+              navigation.navigate(navPaths.mainVideoScreen, {
+                query: videoData.title,
+                videoData: videoData,
+              })
+            }
+          />
+        );
+      })}
     </ScreenScrollView>
   );
 }

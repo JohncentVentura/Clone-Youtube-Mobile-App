@@ -10,9 +10,14 @@ import {
   DownloadIcon,
   LockIcon,
   PlayIcon,
+  SaveIcon,
+  ShareIcon,
   ShuffleIcon,
 } from "../components/IconComponents";
-import { UserPlaylistCoverImage } from "../components/ImageComponents";
+import {
+  UserPlaylistCoverImage,
+  MusicTrackImage,
+} from "../components/ImageComponents";
 import {
   BasePressable,
   RippleButton,
@@ -25,66 +30,104 @@ import { useSetVideoData } from "../hooks/useSetVideoData";
 import { styles } from "../styles/styles";
 import { navPaths } from "../utils/constants";
 
-export default function WatchLaterScreen({ navigation, route }) {
-  const { userQuery, userWatchLaterDataCount } = route.params;
+export default function MusicTrackScreen({ navigation, route }) {
+  const { query, tracks, gradientColor, title, description } = route.params;
   const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
-  const [likedQuery, setLikedQuery] = useState(userQuery);
-  const [likedVideosCount, setLikedVideosCount] = useState(
-    userWatchLaterDataCount
-  );
-  const [likedVideos, setLikedVideos] = useState([]);
+  const [musicTracksCount, setMusicTracksCount] = useState(tracks);
+  const [musicTracks, setMusicTracks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useSetVideoData({
-    query: likedQuery,
-    queryResults: likedVideosCount,
-    setVideos: setLikedVideos,
+    query,
+    queryResults: musicTracksCount,
+    setVideos: setMusicTracks,
     setIsLoading,
   });
 
   return (
     <ScreenScrollView isLoading={isLoading}>
       <LinearGradientView
-        colors={["rgba(176, 190, 202, 1)", "rgba(46, 134, 178, 1)"]}
-        style={[{ paddingVertical: 18 }, styles.screenPadHorizontal]}
+        colors={gradientColor}
+        style={[{ paddingVertical: 16 }, styles.screenPadHorizontal]}
       >
-        <UserPlaylistCoverImage source={{ uri: likedVideos[0]?.picture }} />
+        <MusicTrackImage
+          style={{ alignSelf: "center" }}
+          source={{ uri: musicTracks[0]?.picture }}
+        />
         <BaseText
           style={{
             marginTop: 12,
-            fontSize: ctxFontSizes.xl2,
+            fontSize: ctxFontSizes.xl,
             fontWeight: "bold",
+            color: ctxColors.white,
           }}
         >
-          Watch Later
+          {title}
         </BaseText>
+
         <View
           style={{
+            marginTop: 12,
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
           }}
         >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <BaseText style={{ fontSize: ctxFontSizes.sm }}>
-              {likedVideosCount} videos
+          <View>
+            <BaseText
+              style={{
+                fontSize: ctxFontSizes.sm,
+                fontWeight: "bold",
+                color: ctxColors.white,
+              }}
+            >
+              YouTube Music
             </BaseText>
-            <LockIcon style={{ marginLeft: 12 }} size={ctxIconSizes.xs2} />
-            <BaseText style={{ marginLeft: 4, fontSize: ctxFontSizes.sm }}>
-              Private
+            <BaseText
+              style={{
+                fontSize: ctxFontSizes.xs,
+                color: ctxColors.transparentWhite,
+              }}
+            >
+              {musicTracksCount} videos
             </BaseText>
           </View>
-          <IconRoundedButton
-            style={{ backgroundColor: ctxColors.transparentWhite }}
-          >
-            <DownloadIcon size={ctxIconSizes.xs} />
-          </IconRoundedButton>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <IconRoundedButton
+              style={{ backgroundColor: ctxColors.transparentWhite }}
+            >
+              <SaveIcon size={ctxIconSizes.xs} />
+            </IconRoundedButton>
+            <IconRoundedButton
+              style={{
+                marginLeft: 8,
+                backgroundColor: ctxColors.transparentWhite,
+              }}
+            >
+              <DownloadIcon size={ctxIconSizes.xs} />
+            </IconRoundedButton>
+            <IconRoundedButton
+              style={{
+                marginLeft: 8,
+                backgroundColor: ctxColors.transparentWhite,
+              }}
+            >
+              <ShareIcon size={ctxIconSizes.xs} />
+            </IconRoundedButton>
+          </View>
         </View>
+
+        <BaseText
+          style={{
+            marginTop: 12,
+            fontSize: ctxFontSizes.xs,
+            fontWeight: "medium",
+            color: ctxColors.white,
+          }}
+        >
+          {description}
+        </BaseText>
+
         <View
           style={{
             marginTop: 16,
@@ -99,8 +142,8 @@ export default function WatchLaterScreen({ navigation, route }) {
             text="Play all"
             onPress={() =>
               navigation.navigate(navPaths.mainVideoScreen, {
-                query: likedVideos[0].title,
-                videoData: likedVideos[0],
+                query: musicTracks[0].title,
+                videoData: musicTracks[0],
               })
             }
           />
@@ -116,8 +159,8 @@ export default function WatchLaterScreen({ navigation, route }) {
         </View>
       </LinearGradientView>
 
-      <View style={{ paddingBottom: 8, width: "100%" }}>
-        {likedVideos.map((videoData, index) => {
+      <View style={{ marginTop: 10, paddingBottom: 8, width: "100%" }}>
+        {musicTracks.map((videoData, index) => {
           return (
             <VideoHorizontalPreview
               key={videoData.id}

@@ -95,6 +95,18 @@ export function MainVideoThumbnailImage({ source, ...rest }) {
       resizeMode={"stretch"}
       source={source}
       alt="MainVideoThumbnailImage"
+      {...rest}
+    />
+  );
+}
+export function MusicTrackImage({ style, source, ...rest }) {
+  return (
+    <Image
+      style={[{ borderRadius: 8, width: 175, height: 175 }, style]}
+      resizeMode={"stretch"}
+      source={source}
+      alt="MainVideoThumbnailImage"
+      {...rest}
     />
   );
 }

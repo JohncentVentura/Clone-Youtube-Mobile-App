@@ -1,5 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { MoviesCard } from "../../components/CardsComponents";
 import {
@@ -25,15 +25,18 @@ import {
 } from "../../components/PressableComponents";
 import { BaseText } from "../../components/TextComponents";
 import { useThemeContext } from "../../context/ThemeContext";
+import { useScrollToTopOnFocus } from "../../hooks/useScrollToTopOnFocus";
 import { useSetVideoData } from "../../hooks/useSetVideoData";
 import { styles } from "../../styles/styles";
 import { navPaths } from "../../utils/constants";
 
 export default function MoviesScreen({ navigation }) {
   const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
+  const scrollToTopRef = useRef(null);
   const [premiumVideos, setPremiumVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  useScrollToTopOnFocus(scrollToTopRef);
   useSetVideoData({
     query: "premium videos",
     queryResults: 4,
@@ -42,7 +45,7 @@ export default function MoviesScreen({ navigation }) {
   });
 
   return (
-    <ScreenScrollView isLoading={isLoading}>
+    <ScreenScrollView isLoading={isLoading} ref={scrollToTopRef}>
       <LinearGradientView
         style={[{ alignItems: "center" }, styles.screenPadHorizontal]}
         colors={[ctxColors.tintedRed, ctxColors.tintedBlue, ctxColors.bg]}
@@ -152,59 +155,75 @@ export default function MoviesScreen({ navigation }) {
         Icon={PhoneSpeakerIcon}
         text="Stream all the music you want to hear, ad-free on the YouTube Music app"
       />
-      <BaseText
+      <View
         style={{
           marginTop: 116,
-          fontSize: ctxFontSizes.xl2,
-          fontWeight: "bold",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        Pick a membership that fits you
-      </BaseText>
-      <MembershipCard
-        style={{ marginTop: 64 }}
-        TitleIcon={MembershipIndividualIcon}
-        titleText="Individual"
-        monthlyPrice="₱189.00/month"
-      >
-        <BaseText style={{ fontSize: ctxFontSizes.xs, color: ctxColors.blue }}>
-          Restricitons only.
-        </BaseText>
-      </MembershipCard>
-      <MembershipCard
-        style={{ marginTop: 32 }}
-        TitleIcon={MembershipFamilyIcon}
-        titleText="Individual"
-        monthlyPrice="₱379.00/month"
-      >
         <BaseText
-          style={{ fontSize: ctxFontSizes.xs, color: ctxColors.textSecondary }}
+          style={{
+            fontSize: ctxFontSizes.xl2,
+            fontWeight: "bold",
+          }}
         >
-          Add up to 5 family members (ages 13+) in your household.{" "}
+          Pick a membership that fits you
+        </BaseText>
+        <MembershipCard
+          style={{ marginTop: 64 }}
+          TitleIcon={MembershipIndividualIcon}
+          titleText="Individual"
+          monthlyPrice="₱189.00/month"
+        >
           <BaseText
             style={{ fontSize: ctxFontSizes.xs, color: ctxColors.blue }}
           >
-            Restrictions apply.
+            Restricitons only.
           </BaseText>
-        </BaseText>
-      </MembershipCard>
-      <MembershipCard
-        style={{ marginTop: 32, marginBottom: 32 }}
-        TitleIcon={CourseIcon}
-        titleText="Student"
-        monthlyPrice="₱115.00/month"
-      >
-        <BaseText
-          style={{ fontSize: ctxFontSizes.xs, color: ctxColors.textSecondary }}
+        </MembershipCard>
+        <MembershipCard
+          style={{ marginTop: 32 }}
+          TitleIcon={MembershipFamilyIcon}
+          titleText="Individual"
+          monthlyPrice="₱379.00/month"
         >
-          Eligible students only. Annual verifiication required.{" "}
           <BaseText
-            style={{ fontSize: ctxFontSizes.xs, color: ctxColors.blue }}
+            style={{
+              fontSize: ctxFontSizes.xs,
+              color: ctxColors.textSecondary,
+            }}
           >
-            Restrictions apply.
+            Add up to 5 family members (ages 13+) in your household.{" "}
+            <BaseText
+              style={{ fontSize: ctxFontSizes.xs, color: ctxColors.blue }}
+            >
+              Restrictions apply.
+            </BaseText>
           </BaseText>
-        </BaseText>
-      </MembershipCard>
+        </MembershipCard>
+        <MembershipCard
+          style={{ marginTop: 32, marginBottom: 32 }}
+          TitleIcon={CourseIcon}
+          titleText="Student"
+          monthlyPrice="₱115.00/month"
+        >
+          <BaseText
+            style={{
+              fontSize: ctxFontSizes.xs,
+              color: ctxColors.textSecondary,
+            }}
+          >
+            Eligible students only. Annual verifiication required.{" "}
+            <BaseText
+              style={{ fontSize: ctxFontSizes.xs, color: ctxColors.blue }}
+            >
+              Restrictions apply.
+            </BaseText>
+          </BaseText>
+        </MembershipCard>
+      </View>
     </ScreenScrollView>
   );
 }
@@ -243,7 +262,12 @@ export function MembershipCard({
 
   return (
     <LinearGradient
-      colors={[ctxColors.tintedRed, ctxColors.bg, ctxColors.bg, ctxColors.tintedBlue,  ]}
+      colors={[
+        ctxColors.tintedRed,
+        ctxColors.bg,
+        ctxColors.bg,
+        ctxColors.tintedBlue,
+      ]}
       start={{ x: 0, y: 0 }}
       end={{ x: 0, y: 1 }}
       style={[
@@ -271,7 +295,9 @@ export function MembershipCard({
           {titleText}
         </BaseText>
       </View>
-      <DrawerDivider style={{ marginTop: 8, backgroundColor: ctxColors.bgContrast }} />
+      <DrawerDivider
+        style={{ marginTop: 8, backgroundColor: ctxColors.bgContrast }}
+      />
       <BaseText
         style={{
           marginTop: 8,
@@ -302,7 +328,6 @@ export function MembershipCard({
       >
         <BaseText
           style={{
-            
             fontWeight: "medium",
             color: ctxColors.textContrast,
           }}

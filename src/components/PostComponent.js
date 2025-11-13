@@ -15,7 +15,7 @@ import {
 import { BaseText } from "./TextComponents";
 import { useThemeContext } from "../context/ThemeContext";
 import { useUIContext } from "../context/UIContext";
-import { useSetImageData } from "../hooks/useImageData";
+import { useSetImageData } from "../hooks/useSetImageData";
 import { screenWidth, styles } from "../styles/styles";
 import { navPaths } from "../utils/constants";
 import { shortenText } from "../utils/utils";

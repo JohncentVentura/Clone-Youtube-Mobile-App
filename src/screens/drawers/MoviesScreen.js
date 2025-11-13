@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { View } from "react-native";
 import { MoviesCard } from "../../components/CardsComponents";
 import {
@@ -10,19 +10,21 @@ import { MovieIcon } from "../../components/IconComponents";
 import { OutlinedButton } from "../../components/PressableComponents";
 import { BaseText } from "../../components/TextComponents";
 import { useThemeContext } from "../../context/ThemeContext";
+import { useScrollToTopOnFocus } from "../../hooks/useScrollToTopOnFocus";
 import { useSetVideoData } from "../../hooks/useSetVideoData";
 import { styles } from "../../styles/styles";
 import { navPaths } from "../../utils/constants";
 
 export default function MoviesScreen({ navigation }) {
   const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
-
+  const scrollToTopRef = useRef(null);
   const [topMovies, setTopMovies] = useState([]);
   const [actionMovies, setActionMovies] = useState([]);
   const [romanceMovies, setRomanceMovies] = useState([]);
   const [horrorMovies, setHorrorMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  useScrollToTopOnFocus(scrollToTopRef);
   useSetVideoData({
     query: "top movies",
     queryResults: 4,
@@ -49,11 +51,11 @@ export default function MoviesScreen({ navigation }) {
   });
 
   return (
-    <ScreenScrollView isLoading={isLoading}>
+    <ScreenScrollView isLoading={isLoading} ref={scrollToTopRef}>
       <View
         style={[
           { flexDirection: "row", alignItems: "center" },
-          styles.screenPadHorizontal,
+          styles.screenPadLeft,
         ]}
       >
         <View

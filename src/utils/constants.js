@@ -20,6 +20,7 @@ export const navPaths = {
   channelScreen: "ChannelScreen",
   likedVideosScreen: "LikedVideosScreen",
   mainVideoScreen: "MainVideoScreen",
+  musicTrackScreen: "MusicTrackScreen",
   notificationsScreen: "NotificationsScreen",
   searchResultScreen: "SearchResultScreen",
   searchScreen: "SearchScreen",
