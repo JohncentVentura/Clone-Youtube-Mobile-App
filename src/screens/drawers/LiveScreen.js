@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Dimensions, FlatList, Image, StyleSheet, View } from "react-native";
 import {
   MusicTrackCard,
-  VideoHorizontalPreview,
+  VideoHorizontalPreviewCard,
 } from "../../components/CardsComponents";
 import {
   DrawerDivider,
@@ -14,7 +14,7 @@ import {
 } from "../../components/ContainerComponents";
 import {
   ActiveSubscriptionIcon,
-  CourseIcon,
+  LearningIcon,
   LiveIcon,
   MembershipIndividualIcon,
   MembershipFamilyIcon,
@@ -34,6 +34,7 @@ import {
   SubscribeButton,
 } from "../../components/PressableComponents";
 import { BaseText } from "../../components/TextComponents";
+import { MainVideoView } from "../../components/VideoComponents";
 import { useThemeContext } from "../../context/ThemeContext";
 import { useScrollToTopOnFocus } from "../../hooks/useScrollToTopOnFocus";
 import { useSetImageData } from "../../hooks/useSetImageData";
@@ -144,7 +145,7 @@ export default function LiveScreen({ navigation }) {
       </View>
       {liveNowVideos.map((videoData, index) => {
         return (
-          <VideoHorizontalPreview
+          <VideoHorizontalPreviewCard
             key={index}
             videoData={videoData}
             onPress={() =>
@@ -184,7 +185,7 @@ export default function LiveScreen({ navigation }) {
       </View>
       {liveNewsVideos.map((videoData, index) => {
         return (
-          <VideoHorizontalPreview
+          <VideoHorizontalPreviewCard
             key={index}
             videoData={videoData}
             onPress={() =>
@@ -224,7 +225,7 @@ export default function LiveScreen({ navigation }) {
       </View>
       {liveGamingVideos.map((videoData, index) => {
         return (
-          <VideoHorizontalPreview
+          <VideoHorizontalPreviewCard
             key={index}
             videoData={videoData}
             onPress={() =>
@@ -264,7 +265,7 @@ export default function LiveScreen({ navigation }) {
       </View>
       {liveSportsVideos.map((videoData, index) => {
         return (
-          <VideoHorizontalPreview
+          <VideoHorizontalPreviewCard
             key={index}
             videoData={videoData}
             onPress={() =>

@@ -11,7 +11,7 @@ import {
 } from "../../components/ContainerComponents";
 import {
   ActiveSubscriptionIcon,
-  CourseIcon,
+  LearningIcon,
   MembershipIndividualIcon,
   MembershipFamilyIcon,
   PhoneSpeakerIcon,
@@ -205,7 +205,7 @@ export default function MoviesScreen({ navigation }) {
         </MembershipCard>
         <MembershipCard
           style={{ marginTop: 32, marginBottom: 32 }}
-          TitleIcon={CourseIcon}
+          TitleIcon={LearningIcon}
           titleText="Student"
           monthlyPrice="₱115.00/month"
         >

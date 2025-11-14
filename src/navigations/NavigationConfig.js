@@ -19,10 +19,14 @@ import {
 import { useThemeContext } from "../context/ThemeContext";
 import { useSearchContext } from "../context/SearchContext";
 import { useUIContext } from "../context/UIContext";
+import FashionAndBeautyScreen from "../screens/drawers/FashionAndBeautyScreen";
 import GamingScreen from "../screens/drawers/GamingScreen";
+import LearningScreen from "../screens/drawers/LearningScreen";
 import LiveScreen from "../screens/drawers/LiveScreen";
 import MoviesScreen from "../screens/drawers/MoviesScreen";
 import MusicScreen from "../screens/drawers/MusicScreen";
+import NewsScreen from "../screens/drawers/NewsScreen";
+import SportsScreen from "../screens/drawers/SportsScreen";
 import YoutubePremiumScreen from "../screens/drawers/YoutubePremiumScreen";
 import ChannelScreen from "../screens/ChannelScreen";
 import MainVideoScreen from "../screens/MainVideoScreen";
@@ -251,6 +255,27 @@ export function ShortsStackScreen() {
 }
 //#endregion
 //#region Drawer Screens
+export function FashionAndBeautyStackScreen() {
+  return (
+    <Stack.Screen
+      name={navPaths.fashionAndBeautyScreen}
+      component={FashionAndBeautyScreen}
+      options={({ navigation }) => ({
+        header: () => (
+          <HeaderContainer>
+            <HeaderArrowBackIcon navigation={navigation} />
+            <HeaderTitleText>Fashion & Beauty</HeaderTitleText>
+            <View style={styles.headerRightIconsContainer}>
+              <HeaderShareScreenIcon />
+              <HeaderSearchIcon navigation={navigation} />
+            </View>
+          </HeaderContainer>
+        ),
+      })}
+    />
+  );
+}
+
 export function GamingStackScreen() {
   return (
     <Stack.Screen
@@ -261,6 +286,27 @@ export function GamingStackScreen() {
           <HeaderContainer>
             <HeaderArrowBackIcon navigation={navigation} />
             <HeaderTitleText>Gaming</HeaderTitleText>
+            <View style={styles.headerRightIconsContainer}>
+              <HeaderShareScreenIcon />
+              <HeaderSearchIcon navigation={navigation} />
+            </View>
+          </HeaderContainer>
+        ),
+      })}
+    />
+  );
+}
+
+export function LearningStackScreen() {
+  return (
+    <Stack.Screen
+      name={navPaths.learningScreen}
+      component={LearningScreen}
+      options={({ navigation }) => ({
+        header: () => (
+          <HeaderContainer>
+            <HeaderArrowBackIcon navigation={navigation} />
+            <HeaderTitleText>Learning</HeaderTitleText>
             <View style={styles.headerRightIconsContainer}>
               <HeaderShareScreenIcon />
               <HeaderSearchIcon navigation={navigation} />
@@ -346,6 +392,49 @@ export function MusicTrackStackScreen() {
           <HeaderContainer>
             <HeaderArrowBackIcon navigation={navigation} />
             <View style={styles.headerRightIconsContainer}>
+              <HeaderSearchIcon navigation={navigation} />
+              <HeaderDotVerticalIcon />
+            </View>
+          </HeaderContainer>
+        ),
+      })}
+    />
+  );
+}
+
+export function NewsStackscreen() {
+  return (
+    <Stack.Screen
+      name={navPaths.newsScreen}
+      component={NewsScreen}
+      options={({ navigation }) => ({
+        header: () => (
+          <HeaderContainer>
+            <HeaderArrowBackIcon navigation={navigation} />
+            <HeaderTitleText>News</HeaderTitleText>
+            <View style={styles.headerRightIconsContainer}>
+              <HeaderShareScreenIcon />
+              <HeaderSearchIcon navigation={navigation} />
+            </View>
+          </HeaderContainer>
+        ),
+      })}
+    />
+  );
+}
+
+export function SportsStackScreen() {
+  return (
+    <Stack.Screen
+      name={navPaths.sportsScreen}
+      component={SportsScreen}
+      options={({ navigation }) => ({
+        header: () => (
+          <HeaderContainer>
+            <HeaderArrowBackIcon navigation={navigation} />
+            <HeaderTitleText>Sports</HeaderTitleText>
+            <View style={styles.headerRightIconsContainer}>
+              <HeaderShareScreenIcon />
               <HeaderSearchIcon navigation={navigation} />
               <HeaderDotVerticalIcon />
             </View>

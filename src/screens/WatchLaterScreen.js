@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Image, View } from "react-native";
-import { VideoHorizontalPreview } from "../components/CardsComponents";
+import { VideoHorizontalPreviewCard } from "../components/CardsComponents";
 import {
   LinearGradientView,
   ScreenScrollView,
@@ -119,7 +119,7 @@ export default function WatchLaterScreen({ navigation, route }) {
       <View style={{ paddingBottom: 8, width: "100%" }}>
         {likedVideos.map((videoData, index) => {
           return (
-            <VideoHorizontalPreview
+            <VideoHorizontalPreviewCard
               key={videoData.id}
               videoData={videoData}
               onPress={() =>

@@ -40,7 +40,7 @@ export function MainVideoView({ style, videoData, autoPlayVideoId, ...rest }) {
   });
 
   return (
-    <VideoView
+    <VideoView  
       style={[styles.mainVideo, style]}
       resizeMode="stretch"
       player={videoPlayer}

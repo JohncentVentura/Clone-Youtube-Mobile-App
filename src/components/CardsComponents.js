@@ -29,7 +29,10 @@ import { MainVideoView, ShortsVideoView } from "./VideoComponents";
 export function GamingCard({ style, videoData, ...rest }) {
   const { ctxColors, ctxFontSizes } = useThemeContext();
   return (
-    <BasePressable style={[{ paddingHorizontal: 12, paddingBottom:8 }, style]} {...rest}>
+    <BasePressable
+      style={[{ paddingHorizontal: 12, paddingBottom: 8 }, style]}
+      {...rest}
+    >
       <Image
         style={{ borderRadius: 8, width: 140, height: 210 }}
         resizeMode={"stretch"}
@@ -59,7 +62,12 @@ export function MusicTrackCard({ style, source, musicGenre, ...rest }) {
   return (
     <BasePressable
       style={[
-        { paddingVertical: 12, flexDirection: "row", alignItems: "center" },
+        {
+          width: "100%",
+          paddingVertical: 12,
+          flexDirection: "row",
+          alignItems: "center",
+        },
         styles.screenPadHorizontal,
         style,
       ]}
@@ -180,14 +188,74 @@ export function ShortsVideoCard({ style, videoData, source, ...rest }) {
   );
 }
 
-export function VideoHorizontalPreview({ style, videoData, ...rest }) {
+export function SportsVideoCard({ style, videoData, ...rest }) {
+  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
+
+  return (
+    <BasePressable
+      style={[{ paddingHorizontal: 10, paddingVertical: 6, width: 300 }, style]}
+      {...rest}
+    >
+      <Image
+        style={[{ borderRadius: 8, width: "100%", height: 150 }]}
+        resizeMode={"stretch"}
+        source={{ uri: videoData?.picture }}
+      />
+      <View
+        style={{
+          marginTop: 8,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+        }}
+      >
+        <BaseText
+          style={{
+            flexShrink: 1,
+            fontSize: ctxFontSizes.lg,
+            fontWeight: "bold",
+          }}
+        >
+          {shortenText(videoData?.title, 30)}
+        </BaseText>
+        <RippleButton
+          style={{ marginLeft: "auto", marginTop: 4 }}
+          rippleSize={6}
+        >
+          <DotVerticalIcon size={ctxIconSizes.xs2} />
+        </RippleButton>
+      </View>
+
+      <BaseText
+        style={{
+          marginTop: 4,
+          fontSize: ctxFontSizes.xs,
+          olors: ctxColors.textSecondary,
+        }}
+      >
+        {shortenText(videoData?.channelName, 20)}
+      </BaseText>
+      <BaseText
+        style={{
+          marginTop: 2,
+          fontSize: ctxFontSizes.xs,
+          colors: ctxColors.textSecondary,
+        }}
+      >
+        {videoData?.views} views • {videoData?.uploadedDate}
+      </BaseText>
+    </BasePressable>
+  );
+}
+
+export function VideoHorizontalPreviewCard({ style, videoData, ...rest }) {
   const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
 
   return (
     <BasePressable
       style={[
         {
-          width: "100%", 
+          width: "100%",
           paddingVertical: 12,
           flexDirection: "row",
           justifyContent: "center",
@@ -229,6 +297,63 @@ export function VideoHorizontalPreview({ style, videoData, ...rest }) {
       <RippleButton style={{ marginLeft: "auto", marginTop: 4 }} rippleSize={6}>
         <DotVerticalIcon size={ctxIconSizes.xs2} />
       </RippleButton>
+    </BasePressable>
+  );
+}
+
+export function VideoVerticalPreviewCard({ style, videoData, ...rest }) {
+  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
+
+  return (
+    <BasePressable
+      style={[
+        { paddingHorizontal: 10, paddingVertical: 6, width: 160, height: 190 },
+        style,
+      ]}
+      {...rest}
+    >
+      <Image
+        style={[{ borderRadius: 8, width: "100%", height: 80 }]}
+        resizeMode={"stretch"}
+        source={{ uri: videoData?.picture }}
+      />
+      <View
+        style={{
+          marginTop: 8,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+        }}
+      >
+        <BaseText style={{ flexShrink: 1, fontSize: ctxFontSizes.sm, fontWeight: "medium" }}>
+          {shortenText(videoData?.title, 20)}
+        </BaseText>
+        <RippleButton
+          style={{ marginLeft: "auto", marginTop: 4 }}
+          rippleSize={6}
+        >
+          <DotVerticalIcon size={ctxIconSizes.xs2} />
+        </RippleButton>
+      </View>
+
+      <BaseText
+        style={{
+          marginTop: 4,
+          fontSize: ctxFontSizes.xs,
+          olors: ctxColors.textSecondary,
+        }}
+      >
+        {shortenText(videoData?.channelName, 20)}
+      </BaseText>
+      <BaseText
+        style={{
+          marginTop: 2,
+          fontSize: ctxFontSizes.xs,
+          colors: ctxColors.textSecondary,
+        }}
+      >
+        {videoData?.views} views • {videoData?.uploadedDate}
+      </BaseText>
     </BasePressable>
   );
 }

@@ -23,6 +23,7 @@ export default function GamingScreen({ navigation }) {
   const scrollToTopRef = useRef(null);
   const [featuredGameVideos, setFeaturedGameVideos] = useState([]);
   const [shootingGameVideos, setSetShootingGameVideos] = useState([]);
+  const [horrorGameVideos, setHorrorGameVideos] = useState([]);
   const [gameDeviceVideos, setGameDeviceVideos] = useState([]);
   const [fantasyGameVideos, setFantasyGameVideos] = useState([]);
   const [actionGameVideos, setActionGameVideos] = useState([]);
@@ -39,6 +40,12 @@ export default function GamingScreen({ navigation }) {
     query: "Shooting Games",
     queryResults: 5,
     setVideos: setSetShootingGameVideos,
+    setIsLoading,
+  });
+  useSetVideoData({
+    query: "Horror Games",
+    queryResults: 5,
+    setVideos: setHorrorGameVideos,
     setIsLoading,
   });
   useSetVideoData({
@@ -61,9 +68,10 @@ export default function GamingScreen({ navigation }) {
   });
 
   return (
-    <ScreenContainer isLoading={isLoading} ref={scrollToTopRef}>
+    <ScreenContainer isLoading={isLoading}>
       <MixedFeedFlatList
         style={{ marginTop: 8 }}
+        ref={scrollToTopRef}
         isLoading={isLoading}
         setIsLoading={setIsLoading}
         navigation={navigation}
@@ -71,7 +79,7 @@ export default function GamingScreen({ navigation }) {
         ListHeaderComponent={
           <View
             style={[
-              {marginBottom: 16, flexDirection: "row", alignItems: "center" },
+              { marginBottom: 16, flexDirection: "row", alignItems: "center" },
               styles.screenPadLeft,
             ]}
           >
@@ -118,6 +126,7 @@ export default function GamingScreen({ navigation }) {
                 <View>
                   <BaseText
                     style={{
+                      fontSize: ctxFontSizes.lg,
                       fontWeight: "bold",
                     }}
                   >
@@ -141,13 +150,9 @@ export default function GamingScreen({ navigation }) {
               </View>
             ),
           },
-          ...gameDeviceVideos.slice(0, 3).map((video) => ({
-            type: "mainVideo",
-            data: video,
-          })),
           {
-            type: "videoHorizontalPreview",
-            data: fantasyGameVideos,
+            type: "videoVerticalPreview",
+            data: horrorGameVideos,
             headerComponent: (
               <View
                 style={[
@@ -163,6 +168,44 @@ export default function GamingScreen({ navigation }) {
                 <View>
                   <BaseText
                     style={{
+                      fontSize: ctxFontSizes.lg,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Top Horror Games
+                  </BaseText>
+                </View>
+                <OutlinedButton>
+                  <BaseText style={{ fontSize: ctxFontSizes.sm }}>
+                    View All
+                  </BaseText>
+                </OutlinedButton>
+              </View>
+            ),
+          },
+          ...gameDeviceVideos.slice(0, 3).map((video) => ({
+            type: "mainVideo",
+            data: video,
+          })),
+          {
+            type: "videoHorizontalPreview",
+            data: fantasyGameVideos,
+            headerComponent: (
+              <View
+                style={[
+                  {
+                    marginBottom: 6,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  },
+                  styles.screenPadHorizontal,
+                ]}
+              >
+                <View>
+                  <BaseText
+                    style={{
+                      fontSize: ctxFontSizes.lg,
                       fontWeight: "bold",
                     }}
                   >

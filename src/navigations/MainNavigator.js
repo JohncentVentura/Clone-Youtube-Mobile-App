@@ -9,7 +9,7 @@ import {
   ActiveShortsIcon,
   ActiveSubscriptionIcon,
   ActiveYouIcon,
-  CourseIcon,
+  LearningIcon,
   FashionAndBeautyIcon,
   GamingIcon,
   InactiveHomeIcon,
@@ -37,10 +37,14 @@ import { useThemeContext } from "../context/ThemeContext";
 import { useUIContext } from "../context/UIContext";
 import { styles } from "../styles/styles";
 import { navPaths } from "../utils/constants";
+import FashionAndBeautyStack from "./drawer/FashionAndBeautyStack";
 import GamingStack from "./drawer/GamingStack";
+import LearningStack from "./drawer/LearningStack";
 import LiveStack from "./drawer/LiveStack";
 import MoviesStack from "./drawer/MoviesStack";
 import MusicStack from "./drawer/MusicStack";
+import NewsStack from "./drawer/NewsStack";
+import SportsStack from "./drawer/SportsStack";
 import YoutubePremiumStack from "./drawer/YoutubePremiumStack";
 import ShortsStack from "./ShortsStack";
 import SubscriptionsStack from "./SubscriptionsStack";
@@ -51,7 +55,6 @@ import YoutubeHomeStack from "./YoutubeHomeStack";
 const Drawer = createDrawerNavigator();
 const BottomTab = createBottomTabNavigator();
 
-//TODO: Change drawerItems components into the actual component based on the same route name
 export const drawerItems = [
   {
     route: "YouTubeHomeStack",
@@ -83,25 +86,25 @@ export const drawerItems = [
   },
   {
     route: "NewsStack",
-    component: YoutubeHomeStack,
+    component: NewsStack,
     Icon: NewsIcon,
     label: "News",
   },
   {
     route: "SportsStack",
-    component: YoutubeHomeStack,
+    component: SportsStack,
     Icon: SportsIcon,
     label: "Sports",
   },
   {
     route: "CoursesStack",
-    component: YoutubeHomeStack,
-    Icon: CourseIcon,
+    component: LearningStack,
+    Icon: LearningIcon,
     label: "Learning",
   },
   {
     route: "FashionAndBeautyStack",
-    component: YoutubeHomeStack,
+    component: FashionAndBeautyStack,
     Icon: FashionAndBeautyIcon,
     label: "Fashion & Beauty",
   },

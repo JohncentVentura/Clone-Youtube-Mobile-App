@@ -111,6 +111,19 @@ export function MusicTrackImage({ style, source, ...rest }) {
   );
 }
 
+export function NewsPostImage({ source, ...rest }) {
+  return (
+    <Pressable {...rest}>
+      <Image
+        style={[{ borderRadius: 4, width: 80, height: 80 }]}
+        resizeMode={"stretch"}
+        source={source}
+        alt="NewsPostImage"
+      />
+    </Pressable>
+  );
+}
+
 export function NotifProfileImage({ source, ...rest }) {
   return (
     <Pressable {...rest}>

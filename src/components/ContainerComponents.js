@@ -11,7 +11,7 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { GamingCard, VideoHorizontalPreview } from "./CardsComponents";
+import { GamingCard, VideoHorizontalPreviewCard, VideoVerticalPreviewCard } from "./CardsComponents";
 import PostComponent from "./PostComponent";
 import { useThemeContext } from "../context/ThemeContext";
 import { useUIContext } from "../context/UIContext";
@@ -139,11 +139,7 @@ export function GamingCardRowScrollView({
     <>
       {headerComponent}
       <RowScrollView
-        style={[
-          { width: "100%", marginBottom: 16 },
-          styles.screenPadHorizontal,
-          style,
-        ]}
+        style={[{ width: "100%", marginBottom: 16 }, style]}
         {...rest}
       >
         {data.map((videoData, index) => (
@@ -172,7 +168,7 @@ export function RowScrollView({ style, children, ...rest }) {
       style={[{ flexGrow: 0 }, style]}
       contentContainerStyle={StyleSheet.create({
         flexDirection: "row",
-        alignItems: "center",
+        alignItems: "flex-start",
       })}
       showsHorizontalScrollIndicator={false}
       horizontal={true}
@@ -224,7 +220,7 @@ export function ShortsVideoGridScrollView({
   );
 }
 
-export function VideoHorizontalPreviewRowScrollView({
+export function VideoHorizontalPreviewCardColumnScrollView({
   style,
   isLoading,
   data,
@@ -242,7 +238,7 @@ export function VideoHorizontalPreviewRowScrollView({
         {...rest}
       >
         {data.map((videoData, index) => (
-          <VideoHorizontalPreview
+          <VideoHorizontalPreviewCard
             key={index + videoData.id}
             videoData={videoData}
             onPress={() =>
@@ -254,6 +250,40 @@ export function VideoHorizontalPreviewRowScrollView({
           />
         ))}
       </ColumnScrollView>
+    </>
+  );
+}
+
+export function VideoVerticalPreviewCardRowScrollView({
+  style,
+  isLoading,
+  data,
+  navigation,
+  headerComponent,
+  ...rest
+}) {
+  return isLoading ? (
+    <ActivityIndicator style={{ flex: 1 }} size="large" />
+  ) : (
+    <>
+      {headerComponent}
+      <RowScrollView
+        style={[{ width: "100%", marginBottom: 16 }, style]}
+        {...rest}
+      >
+        {data.map((videoData, index) => (
+          <VideoVerticalPreviewCard
+            key={index + videoData.id}
+            videoData={videoData}
+            onPress={() =>
+              navigation.navigate(navPaths.mainVideoScreen, {
+                query: videoData.title,
+                videoData,
+              })
+            }
+          />
+        ))}
+      </RowScrollView>
     </>
   );
 }
@@ -445,7 +475,17 @@ export function MixedFeedFlatList({
 
         if (mixedItem.type === "videoHorizontalPreview") {
           return (
-            <VideoHorizontalPreviewRowScrollView
+            <VideoHorizontalPreviewCardColumnScrollView
+              data={mixedItem.data}
+              navigation={navigation}
+              headerComponent={mixedItem.headerComponent}
+            />
+          );
+        }
+
+        if (mixedItem.type === "videoVerticalPreview") {
+          return (
+            <VideoVerticalPreviewCardRowScrollView
               data={mixedItem.data}
               navigation={navigation}
               headerComponent={mixedItem.headerComponent}
@@ -463,6 +503,7 @@ export function MixedFeedFlatList({
 
 //#region FlatList renderItem
 export function MainVideoViewRenderItem({
+  style,
   item,
   navigation,
   query,
@@ -473,7 +514,7 @@ export function MainVideoViewRenderItem({
   const { ctxSetMainVideoItemModal } = useUIContext();
 
   return (
-    <View style={[{ marginBottom: 32 }]}>
+    <View style={[{ marginBottom: 32 }, style]}>
       <Pressable
         onPress={() => {
           navigation.push(navPaths.mainVideoScreen, {

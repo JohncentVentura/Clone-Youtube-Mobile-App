@@ -250,12 +250,6 @@ export function CompassIcon({ ...rest }) {
   return <BaseIcon IconComponent={Ionicons} name="compass-outline" {...rest} />;
 }
 
-export function CourseIcon({ ...rest }) {
-  return (
-    <BaseIcon IconComponent={SimpleLineIcons} name="graduation" {...rest} />
-  );
-}
-
 export function DislikeIcon({ ...rest }) {
   return <BaseIcon IconComponent={SimpleLineIcons} name="dislike" {...rest} />;
 }
@@ -343,6 +337,12 @@ export function KeyboardArrowRightIcon({ ...rest }) {
       name="keyboard-arrow-right"
       {...rest}
     />
+  );
+}
+
+export function LearningIcon({ ...rest }) {
+  return (
+    <BaseIcon IconComponent={SimpleLineIcons} name="graduation" {...rest} />
   );
 }
 

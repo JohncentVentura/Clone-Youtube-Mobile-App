@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Image, View } from "react-native";
-import { VideoHorizontalPreview } from "../components/CardsComponents";
+import { VideoHorizontalPreviewCard } from "../components/CardsComponents";
 import {
   LinearGradientView,
   ScreenScrollView,
@@ -162,7 +162,7 @@ export default function MusicTrackScreen({ navigation, route }) {
       <View style={{ marginTop: 10, paddingBottom: 8, width: "100%" }}>
         {musicTracks.map((videoData, index) => {
           return (
-            <VideoHorizontalPreview
+            <VideoHorizontalPreviewCard
               key={videoData.id}
               videoData={videoData}
               onPress={() =>

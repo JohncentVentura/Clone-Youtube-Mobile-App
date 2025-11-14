@@ -1,9 +1,16 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList, Image, StyleSheet, View } from "react-native";
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  Pressable,
+  StyleSheet,
+  View,
+} from "react-native";
 import {
   MusicTrackCard,
-  VideoHorizontalPreview,
+  VideoHorizontalPreviewCard,
 } from "../../components/CardsComponents";
 import {
   DrawerDivider,
@@ -14,7 +21,7 @@ import {
 } from "../../components/ContainerComponents";
 import {
   ActiveSubscriptionIcon,
-  CourseIcon,
+  LearningIcon,
   MembershipIndividualIcon,
   MembershipFamilyIcon,
   PhoneSpeakerIcon,
@@ -32,6 +39,7 @@ import {
   SubscribeButton,
 } from "../../components/PressableComponents";
 import { BaseText } from "../../components/TextComponents";
+import { MainVideoView } from "../../components/VideoComponents";
 import { useThemeContext } from "../../context/ThemeContext";
 import { useScrollToTopOnFocus } from "../../hooks/useScrollToTopOnFocus";
 import { useSetImageData } from "../../hooks/useSetImageData";
@@ -43,12 +51,7 @@ import { shortenText } from "../../utils/utils";
 export default function MusicScreen({ navigation }) {
   const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
   const scrollToTopRef = useRef(null);
-  const [musicVideos, setMusicVideos] = useState([]);
-  const [latestMusicVideos, setLatestMusicVideos] = useState([]);
-  const [musicGenrePictures, setMusicGenrePictures] = useState([]);
-  const [musicChannel, setMusicChannel] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-
+  const [carouselMusicVideos, setCarouselMusicVideos] = useState([]);
   let musicGenres = [
     {
       query: "Pop Music",
@@ -81,18 +84,48 @@ export default function MusicScreen({ navigation }) {
       tracks: 8,
     },
   ];
+  const [musicGenrePictures, setMusicGenrePictures] = useState([]);
+  const [weeklyMusicVideos, setWeeklyMusicVideos] = useState([]);
+  let todaysMusicVideos = [
+    {
+      query: "Hit Music",
+      gradientColor: ["rgba(142, 213, 214, 1)", "rgba(101, 62, 120, 1)"],
+      title: "The Hit List",
+      description: "The home of today's biggest and hottest hits.",
+      tracks: 6,
+    },
+    {
+      query: "Popular Music",
+      gradientColor: ["rgba(96, 171, 204, 1)", "rgba(99, 95, 58, 1)"],
+      title: "Pop Certified",
+      description: "Today's biggest and best pop songs.",
+      tracks: 10,
+    },
+    {
+      query: "Hip-hop Music",
+      gradientColor: ["rgba(87, 29, 99, 1)", "rgba(111, 70, 177, 1)"],
+      title: "On Everything: Today's Hip-Hop Hits",
+      description:
+        "The hottest hip-hop hits tracks out now... and that's on everything.",
+      tracks: 8,
+    },
+    {
+      query: "Latin Music",
+      gradientColor: ["rgba(170, 215, 210, 1)", "rgba(50, 42, 32, 1)"],
+      title: "Latin Now",
+      description: "Today's biggest Latin hits.",
+      tracks: 8,
+    },
+  ];
+  const [todaysMusicVideoPictures, setTodaysMusicVideoPictures] = useState([]);
+  const [musicChannel, setMusicChannel] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   useScrollToTopOnFocus(scrollToTopRef);
   useSetVideoData({
     query: "Music",
     queryResults: 5,
-    setVideos: setMusicVideos,
-    setIsLoading,
-  });
-  useSetVideoData({
-    query: "Latest Music",
-    queryResults: 6,
-    setVideos: setLatestMusicVideos,
+    setVideos: setCarouselMusicVideos,
     setIsLoading,
   });
   useSetImageData({
@@ -101,16 +134,31 @@ export default function MusicScreen({ navigation }) {
     setData: setMusicGenrePictures,
     setIsLoading,
   });
+  useSetVideoData({
+    query: "Weekly Music",
+    queryResults: 6,
+    setVideos: setWeeklyMusicVideos,
+    setIsLoading,
+  });
+  useSetImageData({
+    query: "Todays Music",
+    queryResults: 4,
+    setData: setTodaysMusicVideoPictures,
+    setIsLoading,
+  });
 
   useEffect(() => {
-    if (musicVideos.length > 0 && musicVideos[0]) {
-      setMusicChannel(musicVideos[musicVideos.length - 1]);
+    if (carouselMusicVideos.length > 0 && carouselMusicVideos[0]) {
+      setMusicChannel(carouselMusicVideos[carouselMusicVideos.length - 1]);
     }
-  }, [musicVideos]);
+  }, [carouselMusicVideos]);
 
   return (
     <ScreenScrollView isLoading={isLoading} ref={scrollToTopRef}>
-      <MusicCarousel musicVideos={musicVideos} />
+      <MusicCarousel
+        musicVideos={carouselMusicVideos}
+        navigation={navigation}
+      />
       <View style={styles.screenPadHorizontal}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <ChannelProfileImage
@@ -198,9 +246,9 @@ export default function MusicScreen({ navigation }) {
           The hottest videos of this week
         </BaseText>
       </View>
-      {latestMusicVideos.map((videoData, index) => {
+      {weeklyMusicVideos.map((videoData, index) => {
         return (
-          <VideoHorizontalPreview
+          <VideoHorizontalPreviewCard
             key={index}
             videoData={videoData}
             onPress={() =>
@@ -212,21 +260,57 @@ export default function MusicScreen({ navigation }) {
           />
         );
       })}
+      <View
+        style={[
+          { marginTop: 32, marginBottom: 16 },
+          styles.screenPadHorizontal,
+        ]}
+      >
+        <BaseText
+          style={{
+            fontSize: ctxFontSizes.lg,
+            fontWeight: "bold",
+          }}
+        >
+          Today's Biggest Hits
+        </BaseText>
+      </View>
+      {todaysMusicVideos.map((musicVideo, index) => {
+        return (
+          <MusicTrackCard
+            key={index}
+            source={todaysMusicVideoPictures[index]?.picture}
+            musicGenre={musicVideo}
+            onPress={() =>
+              navigation.navigate(navPaths.musicTrackScreen, {
+                query: musicVideo.query,
+                gradientColor: musicVideo.gradientColor,
+                title: musicVideo.title,
+                description: musicVideo.description,
+                tracks: musicVideo.tracks,
+              })
+            }
+          />
+        );
+      })}
     </ScreenScrollView>
   );
 }
 
-function MusicCarousel({ musicVideos }) {
+function MusicCarousel({ style, musicVideos, navigation }) {
   const { ctxColors, ctxFontSizes } = useThemeContext();
   const [currentIndex, setCurrentIndex] = useState(0);
   const offset = 12;
 
   return (
     <View
-      style={{
-        width: screenWidth,
-        height: 425,
-      }}
+      style={[
+        {
+          width: screenWidth,
+          height: 425,
+        },
+        style,
+      ]}
     >
       <FlatList
         horizontal
@@ -243,13 +327,23 @@ function MusicCarousel({ musicVideos }) {
         keyExtractor={(item, index) =>
           item.id ? String(item.id) : String(index)
         }
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <>
-            <Image
-              style={{ width: screenWidth, height: "100%" }}
-              resizeMode="stretch"
-              source={{ uri: item.picture }}
-            />
+            <Pressable
+              style={{ backgroundColor: ctxColors.black }}
+              onPress={() =>
+                navigation.navigate(navPaths.mainVideoScreen, {
+                  query: item.title,
+                  videoData: item,
+                })
+              }
+            >
+              <MainVideoView
+                style={{ width: screenWidth, height: "100%" }}
+                videoData={item}
+                autoPlayVideoId={currentIndex === index && item.id}
+              />
+            </Pressable>
             <View
               style={{
                 position: "absolute",
