@@ -10,6 +10,7 @@ import {
 import { HeaderTitleText } from "../components/TextComponents";
 import UploadScreen from "../screens/UploadScreen";
 import { styles } from "../styles/styles";
+
 const Stack = createStackNavigator();
 
 export default function UploadStack() {

@@ -28,7 +28,6 @@ import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
 import { navigationRef } from "./NavigationConfig";
 
-
 export default function AppNavigator() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isFontsLoaded] = useFonts({

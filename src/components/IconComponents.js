@@ -232,6 +232,12 @@ export function ArrowUpLeftIcon({ ...rest }) {
   return <BaseIcon IconComponent={Feather} name="arrow-up-left" {...rest} />;
 }
 
+export function CameraIcon({ ...rest }) {
+  return (
+    <BaseIcon IconComponent={MaterialCommunityIcons} name="camera" {...rest} />
+  );
+}
+
 export function ClockRotateLeftIcon({ ...rest }) {
   return (
     <BaseIcon IconComponent={FontAwesome6} name="clock-rotate-left" {...rest} />
@@ -498,6 +504,10 @@ export function PhoneTextIcon({ ...rest }) {
       {...rest}
     />
   );
+}
+
+export function SparkleIcon({ ...rest }) {
+  return <BaseIcon IconComponent={Octicons} name="sparkle" {...rest} />;
 }
 
 export function SportsIcon({ ...rest }) {
