@@ -10,6 +10,14 @@ import {
 import { HeaderTitleText } from "../components/TextComponents";
 import UploadScreen from "../screens/UploadScreen";
 import { styles } from "../styles/styles";
+import {
+  ChannelStackScreen,
+  MainVideoStackScreen,
+  NotificationsStackScreen,
+  SearchResultStackScreen,
+  SearchStackScreen,
+  ShortsStackScreen,
+} from "./NavigationConfig";
 
 const Stack = createStackNavigator();
 
@@ -35,6 +43,12 @@ export default function UploadStack() {
           };
         }}
       />
+      {ChannelStackScreen()}
+      {MainVideoStackScreen()}
+      {NotificationsStackScreen()}
+      {SearchStackScreen()}
+      {SearchResultStackScreen()}
+      {ShortsStackScreen()}
     </Stack.Navigator>
   );
 }

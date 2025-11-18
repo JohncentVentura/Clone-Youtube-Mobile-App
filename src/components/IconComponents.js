@@ -231,6 +231,7 @@ export function ArrowBackIcon({ ...rest }) {
 export function ArrowUpLeftIcon({ ...rest }) {
   return <BaseIcon IconComponent={Feather} name="arrow-up-left" {...rest} />;
 }
+``;
 
 export function CameraIcon({ ...rest }) {
   return (
@@ -250,6 +251,12 @@ export function ClockIcon({ ...rest }) {
 
 export function CloseIcon({ ...rest }) {
   return <BaseIcon IconComponent={Ionicons} name="close" {...rest} />;
+}
+
+export function ColorFilterIcon({ ...rest }) {
+  return (
+    <BaseIcon IconComponent={Ionicons} name="color-filter-outline" {...rest} />
+  );
 }
 
 export function CompassIcon({ ...rest }) {
@@ -290,6 +297,10 @@ export function EyeInvisbleIcon({ ...rest }) {
 
 export function FashionAndBeautyIcon({ ...rest }) {
   return <BaseIcon IconComponent={Ionicons} name="brush-outline" {...rest} />;
+}
+
+export function FlashIcon({ ...rest }) {
+  return <BaseIcon IconComponent={Ionicons} name="flash" {...rest} />;
 }
 
 export function GamingIcon({ ...rest }) {
@@ -350,6 +361,10 @@ export function LearningIcon({ ...rest }) {
   return (
     <BaseIcon IconComponent={SimpleLineIcons} name="graduation" {...rest} />
   );
+}
+
+export function LightIcon({ ...rest }) {
+  return <BaseIcon IconComponent={Ionicons} name="sunny-outline" {...rest} />;
 }
 
 export function LikeIcon({ ...rest }) {
@@ -456,6 +471,16 @@ export function ReportIcon({ ...rest }) {
   return <BaseIcon IconComponent={Ionicons} name="flag-outline" {...rest} />;
 }
 
+export function RetouchIcon({ ...rest }) {
+  return (
+    <BaseIcon
+      IconComponent={FontAwesome6}
+      name="wand-magic-sparkles"
+      {...rest}
+    />
+  );
+}
+
 export function SaveIcon({ ...rest }) {
   return (
     <BaseIcon IconComponent={Ionicons} name="bookmark-outline" {...rest} />
@@ -490,6 +515,12 @@ export function ShuffleIcon({ ...rest }) {
   return <BaseIcon IconComponent={Entypo} name="shuffle" {...rest} />;
 }
 
+export function PersonGreenScreenIcon({ ...rest }) {
+  return (
+    <BaseIcon IconComponent={FontAwesome6} name="person-chalkboard" {...rest} />
+  );
+}
+
 export function PhoneSpeakerIcon({ ...rest }) {
   return (
     <BaseIcon IconComponent={MaterialIcons} name="speaker-phone" {...rest} />
@@ -506,8 +537,18 @@ export function PhoneTextIcon({ ...rest }) {
   );
 }
 
+export function RotateIcon({ ...rest }) {
+  return <BaseIcon IconComponent={FontAwesome6} name="rotate" {...rest} />;
+}
+
 export function SparkleIcon({ ...rest }) {
   return <BaseIcon IconComponent={Octicons} name="sparkle" {...rest} />;
+}
+
+export function SparklesIcon({ ...rest }) {
+  return (
+    <BaseIcon IconComponent={Ionicons} name="sparkles-outline" {...rest} />
+  );
 }
 
 export function SportsIcon({ ...rest }) {
@@ -517,6 +558,16 @@ export function SportsIcon({ ...rest }) {
 export function StatsChartIcon({ ...rest }) {
   return (
     <BaseIcon IconComponent={Ionicons} name="stats-chart-sharp" {...rest} />
+  );
+}
+
+export function TimerIcon({ ...rest }) {
+  return (
+    <BaseIcon
+      IconComponent={MaterialCommunityIcons}
+      name="timer-outline"
+      {...rest}
+    />
   );
 }
 
