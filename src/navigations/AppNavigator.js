@@ -1,6 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { useState } from "react";
 import { ActivityIndicator } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { CommentsProfileModal } from "../components/modals/CommentsModal";
@@ -24,12 +23,10 @@ import { SearchContextProvider } from "../context/SearchContext";
 import { ThemeContextProvider } from "../context/ThemeContext";
 import { UIContextProvider, useUIContext } from "../context/UIContext";
 import { fontPaths } from "../utils/constants";
-import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
-import { navigationRef } from "./NavigationConfig";
+import { navigationRef } from "./StackNavigator";
 
 export default function AppNavigator() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isFontsLoaded] = useFonts({
     "roboto-bold": fontPaths.robotoBold,
     "roboto-medium": fontPaths.robotoMedium,
@@ -46,7 +43,7 @@ export default function AppNavigator() {
         <ThemeContextProvider>
           <UIContextProvider>
             <NavigationContainer ref={navigationRef}>
-              {isLoggedIn ? <MainNavigator /> : <AuthNavigator />}
+              <MainNavigator />
               <GlobalModals />
             </NavigationContainer>
           </UIContextProvider>

@@ -1,47 +1,19 @@
-import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList, Image, StyleSheet, View } from "react-native";
-import {
-  MusicTrackCard,
-  VideoHorizontalPreviewCard,
-} from "../../components/CardsComponents";
-import {
-  DrawerDivider,
-  ColumnScrollView,
-  LinearGradientView,
-  RowScrollView,
-  ScreenScrollView,
-} from "../../components/ContainerComponents";
-import {
-  ActiveSubscriptionIcon,
-  LearningIcon,
-  LiveIcon,
-  MembershipIndividualIcon,
-  MembershipFamilyIcon,
-  PhoneSpeakerIcon,
-  PhoneTextIcon,
-  VideoIcon,
-  YoutubeMusicIcon,
-} from "../../components/IconComponents";
-import {
-  ChannelProfileImage,
-  YoutubePremiumLogoImage,
-  CommentsProfileSmallImage,
-} from "../../components/ImageComponents";
+import { useRef, useState } from "react";
+import { FlatList, Image, View } from "react-native";
 import {
   MinimizingButton,
   OutlinedButton,
-  SubscribeButton,
-} from "../../components/PressableComponents";
+} from "../../components/ButtonComponents";
+import { HorizontalCard } from "../../components/CardsComponents";
+import { ScreenScrollView } from "../../components/ContainerComponents";
+import { LiveIcon } from "../../components/IconComponents";
+import { CommentsProfileSmallImage } from "../../components/ImageComponents";
 import { BaseText } from "../../components/TextComponents";
-import { MainVideoView } from "../../components/VideoComponents";
 import { useThemeContext } from "../../context/ThemeContext";
 import { useScrollToTopOnFocus } from "../../hooks/useScrollToTopOnFocus";
-import { useSetImageData } from "../../hooks/useSetImageData";
 import { useSetVideoData } from "../../hooks/useSetVideoData";
 import { screenWidth, styles } from "../../styles/styles";
 import { navPaths } from "../../utils/constants";
-import { shortenText } from "../../utils/utils";
 
 export default function LiveScreen({ navigation }) {
   const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
@@ -145,7 +117,7 @@ export default function LiveScreen({ navigation }) {
       </View>
       {liveNowVideos.map((videoData, index) => {
         return (
-          <VideoHorizontalPreviewCard
+          <HorizontalCard
             key={index}
             videoData={videoData}
             onPress={() =>
@@ -185,7 +157,7 @@ export default function LiveScreen({ navigation }) {
       </View>
       {liveNewsVideos.map((videoData, index) => {
         return (
-          <VideoHorizontalPreviewCard
+          <HorizontalCard
             key={index}
             videoData={videoData}
             onPress={() =>
@@ -225,7 +197,7 @@ export default function LiveScreen({ navigation }) {
       </View>
       {liveGamingVideos.map((videoData, index) => {
         return (
-          <VideoHorizontalPreviewCard
+          <HorizontalCard
             key={index}
             videoData={videoData}
             onPress={() =>
@@ -265,7 +237,7 @@ export default function LiveScreen({ navigation }) {
       </View>
       {liveSportsVideos.map((videoData, index) => {
         return (
-          <VideoHorizontalPreviewCard
+          <HorizontalCard
             key={index}
             videoData={videoData}
             onPress={() =>

@@ -2,10 +2,14 @@ import { useRef, useState } from "react";
 import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
-  MainVideoFlatList,
+  IconTextButton,
+  SubscribeButton,
+} from "../components/ButtonComponents";
+import {
   RowScrollView,
   ScreenContainer,
 } from "../components/ContainerComponents";
+import { MainVideoFlatList } from "../components/FlatListComponents";
 import {
   DislikeIcon,
   DownloadIcon,
@@ -19,11 +23,7 @@ import {
   MainVideoChannelImage,
   CommentsProfileSmallImage,
 } from "../components/ImageComponents";
-import {
-  BasePressable,
-  IconTextButton,
-  SubscribeButton,
-} from "../components/PressableComponents";
+import { BasePressable } from "../components/PressableComponents";
 import { BaseText } from "../components/TextComponents";
 import { MainVideoView } from "../components/VideoComponents";
 import { useThemeContext } from "../context/ThemeContext";

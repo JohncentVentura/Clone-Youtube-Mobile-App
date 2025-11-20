@@ -1,20 +1,7 @@
-import { LinearGradient } from "expo-linear-gradient";
-import { useRef, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import PostComponent from "./PostComponent";
+import { Image, Pressable, View } from "react-native";
 import { useThemeContext } from "../context/ThemeContext";
 import { useUIContext } from "../context/UIContext";
-import { screenHeight, styles } from "../styles/styles";
+import { styles } from "../styles/styles";
 import { navPaths } from "../utils/constants";
 import { shortenText } from "../utils/utils";
 import { DotVerticalIcon } from "./IconComponents";
@@ -22,9 +9,9 @@ import {
   MainVideoChannelImage,
   MainVideoThumbnailImage,
 } from "./ImageComponents";
-import { BasePressable, RippleButton } from "./PressableComponents";
+import { BasePressable, RippleFXPressable } from "./PressableComponents";
 import { BaseText } from "./TextComponents";
-import { MainVideoView, ShortsVideoView } from "./VideoComponents";
+import { MainVideoView } from "./VideoComponents";
 
 export function GamingCard({ style, videoData, ...rest }) {
   const { ctxColors, ctxFontSizes } = useThemeContext();
@@ -54,6 +41,139 @@ export function GamingCard({ style, videoData, ...rest }) {
         </BaseText>
       </View>
     </BasePressable>
+  );
+}
+
+export function HorizontalCard({ style, videoData, ...rest }) {
+  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
+
+  return (
+    <BasePressable
+      style={[
+        {
+          width: "100%",
+          paddingVertical: 12,
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          backgroundColor: "transparent",
+        },
+        styles.screenPadHorizontal,
+        style,
+      ]}
+      {...rest}
+    >
+      <Image
+        style={[{ borderRadius: 8, width: 140, height: 80 }]}
+        resizeMode={"stretch"}
+        source={{ uri: videoData?.picture }}
+        alt="UserPlaylistImage"
+      />
+      <View style={{ marginLeft: 12, flexShrink: 1 }}>
+        <BaseText style={{ fontWeight: "medium" }}>{videoData?.title}</BaseText>
+        <BaseText
+          style={{
+            marginTop: 4,
+            fontSize: ctxFontSizes.xs,
+            olors: ctxColors.textSecondary,
+          }}
+        >
+          {videoData?.channelName}
+        </BaseText>
+        <BaseText
+          style={{
+            marginTop: 2,
+            fontSize: ctxFontSizes.xs,
+            colors: ctxColors.textSecondary,
+          }}
+        >
+          {videoData?.views} views • {videoData?.uploadedDate}{" "}
+        </BaseText>
+      </View>
+      <RippleFXPressable
+        style={{ marginLeft: "auto", marginTop: 4 }}
+        rippleSize={6}
+      >
+        <DotVerticalIcon size={ctxIconSizes.xs2} />
+      </RippleFXPressable>
+    </BasePressable>
+  );
+}
+
+export function MainVideoCard({
+  style,
+  item,
+  navigation,
+  query,
+  isAutoPlayingVideo,
+  autoPlayVideoId,
+}) {
+  const { ctxColors, ctxFontSizes } = useThemeContext();
+  const { ctxSetMainVideoItemModal } = useUIContext();
+
+  return (
+    <View style={[{ marginBottom: 32 }, style]}>
+      <Pressable
+        onPress={() => {
+          navigation.push(navPaths.mainVideoScreen, {
+            query: query,
+            videoData: item,
+          });
+        }}
+      >
+        {isAutoPlayingVideo ? (
+          <MainVideoView videoData={item} autoPlayVideoId={autoPlayVideoId} />
+        ) : (
+          <MainVideoThumbnailImage source={{ uri: item.picture }} />
+        )}
+      </Pressable>
+      <View
+        style={[
+          styles.screenPadHorizontal,
+          {
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            alignItems: "flex-start",
+          },
+        ]}
+      >
+        <MainVideoChannelImage
+          style={{ marginTop: 10 }}
+          source={{ uri: item.picture }}
+          onPress={() => {
+            navigation.navigate(navPaths.channelScreen, {
+              videoData: item,
+            });
+          }}
+        />
+        <View style={{ marginLeft: 14, marginTop: 8, flexShrink: 1 }}>
+          <BaseText
+            style={{
+              fontSize: ctxFontSizes.lg,
+              fontWeight: "bold",
+            }}
+          >
+            {item.title}
+          </BaseText>
+          <BaseText
+            style={{
+              marginTop: 4,
+              fontSize: ctxFontSizes.xs,
+              color: ctxColors.textSecondary,
+            }}
+          >
+            {item.channelName} • {item.views} views • {item.uploadedDate}
+          </BaseText>
+        </View>
+        <RippleFXPressable
+          style={{ marginLeft: "auto", marginTop: 6 }}
+          rippleSize={4}
+          onPress={() => ctxSetMainVideoItemModal(true)}
+        >
+          <DotVerticalIcon />
+        </RippleFXPressable>
+      </View>
+    </View>
   );
 }
 
@@ -188,7 +308,7 @@ export function ShortsVideoCard({ style, videoData, source, ...rest }) {
   );
 }
 
-export function SportsVideoCard({ style, videoData, ...rest }) {
+export function SportsCard({ style, videoData, ...rest }) {
   const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
 
   return (
@@ -218,12 +338,12 @@ export function SportsVideoCard({ style, videoData, ...rest }) {
         >
           {shortenText(videoData?.title, 30)}
         </BaseText>
-        <RippleButton
+        <RippleFXPressable
           style={{ marginLeft: "auto", marginTop: 4 }}
           rippleSize={6}
         >
           <DotVerticalIcon size={ctxIconSizes.xs2} />
-        </RippleButton>
+        </RippleFXPressable>
       </View>
 
       <BaseText
@@ -248,60 +368,7 @@ export function SportsVideoCard({ style, videoData, ...rest }) {
   );
 }
 
-export function VideoHorizontalPreviewCard({ style, videoData, ...rest }) {
-  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
-
-  return (
-    <BasePressable
-      style={[
-        {
-          width: "100%",
-          paddingVertical: 12,
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "flex-start",
-          backgroundColor: "transparent",
-        },
-        styles.screenPadHorizontal,
-        style,
-      ]}
-      {...rest}
-    >
-      <Image
-        style={[{ borderRadius: 8, width: 140, height: 80 }]}
-        resizeMode={"stretch"}
-        source={{ uri: videoData?.picture }}
-        alt="UserPlaylistImage"
-      />
-      <View style={{ marginLeft: 12, flexShrink: 1 }}>
-        <BaseText style={{ fontWeight: "medium" }}>{videoData?.title}</BaseText>
-        <BaseText
-          style={{
-            marginTop: 4,
-            fontSize: ctxFontSizes.xs,
-            olors: ctxColors.textSecondary,
-          }}
-        >
-          {videoData?.channelName}
-        </BaseText>
-        <BaseText
-          style={{
-            marginTop: 2,
-            fontSize: ctxFontSizes.xs,
-            colors: ctxColors.textSecondary,
-          }}
-        >
-          {videoData?.views} views • {videoData?.uploadedDate}{" "}
-        </BaseText>
-      </View>
-      <RippleButton style={{ marginLeft: "auto", marginTop: 4 }} rippleSize={6}>
-        <DotVerticalIcon size={ctxIconSizes.xs2} />
-      </RippleButton>
-    </BasePressable>
-  );
-}
-
-export function VideoVerticalPreviewCard({ style, videoData, ...rest }) {
+export function VerticalCard({ style, videoData, ...rest }) {
   const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
 
   return (
@@ -325,15 +392,21 @@ export function VideoVerticalPreviewCard({ style, videoData, ...rest }) {
           alignItems: "flex-start",
         }}
       >
-        <BaseText style={{ flexShrink: 1, fontSize: ctxFontSizes.sm, fontWeight: "medium" }}>
+        <BaseText
+          style={{
+            flexShrink: 1,
+            fontSize: ctxFontSizes.sm,
+            fontWeight: "medium",
+          }}
+        >
           {shortenText(videoData?.title, 20)}
         </BaseText>
-        <RippleButton
+        <RippleFXPressable
           style={{ marginLeft: "auto", marginTop: 4 }}
           rippleSize={6}
         >
           <DotVerticalIcon size={ctxIconSizes.xs2} />
-        </RippleButton>
+        </RippleFXPressable>
       </View>
 
       <BaseText

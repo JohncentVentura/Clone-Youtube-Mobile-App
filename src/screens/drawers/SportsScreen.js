@@ -1,50 +1,16 @@
-import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { FlatList, Pressable, View } from "react-native";
+import { OutlinedButton } from "../../components/ButtonComponents";
+import { MainVideoCard, SportsCard } from "../../components/CardsComponents";
 import {
-  Dimensions,
-  FlatList,
-  Image,
-  Pressable,
-  StyleSheet,
-  View,
-} from "react-native";
-import {
-  MusicTrackCard,
-  VideoHorizontalPreviewCard,
-  SportsVideoCard,
-} from "../../components/CardsComponents";
-import {
-  DrawerDivider,
-  ColumnScrollView,
-  LinearGradientView,
+  DividerView,
   RowScrollView,
   ScreenScrollView,
-  MainVideoViewRenderItem,
 } from "../../components/ContainerComponents";
-import {
-  ActiveSubscriptionIcon,
-  LearningIcon,
-  MembershipIndividualIcon,
-  MembershipFamilyIcon,
-  PhoneSpeakerIcon,
-  PhoneTextIcon,
-  VideoIcon,
-  YoutubeMusicIcon,
-} from "../../components/IconComponents";
-import {
-  ChannelProfileImage,
-  YoutubePremiumLogoImage,
-} from "../../components/ImageComponents";
-import {
-  MinimizingButton,
-  OutlinedButton,
-  SubscribeButton,
-} from "../../components/PressableComponents";
 import { BaseText } from "../../components/TextComponents";
 import { MainVideoView } from "../../components/VideoComponents";
 import { useThemeContext } from "../../context/ThemeContext";
 import { useScrollToTopOnFocus } from "../../hooks/useScrollToTopOnFocus";
-import { useSetImageData } from "../../hooks/useSetImageData";
 import { useSetVideoData } from "../../hooks/useSetVideoData";
 import { screenWidth, styles } from "../../styles/styles";
 import { navPaths } from "../../utils/constants";
@@ -114,7 +80,7 @@ export default function SportsScreen({ navigation }) {
       </View>
       <RowScrollView>
         {trendingSportsVideos.map((videoData, index) => (
-          <SportsVideoCard
+          <SportsCard
             key={index + videoData.id}
             style={{
               marginLeft: 8,
@@ -130,7 +96,7 @@ export default function SportsScreen({ navigation }) {
           />
         ))}
       </RowScrollView>
-      <DrawerDivider />
+      <DividerView />
       <View
         style={[
           {
@@ -154,7 +120,7 @@ export default function SportsScreen({ navigation }) {
       </View>
       <RowScrollView style={{ marginBottom: 12 }}>
         {highlightsSportsVideos.map((videoData, index) => (
-          <SportsVideoCard
+          <SportsCard
             key={index + videoData.id}
             style={{
               marginLeft: 8,
@@ -171,9 +137,9 @@ export default function SportsScreen({ navigation }) {
         ))}
       </RowScrollView>
       {mainSportsVideos.map((videoData, index) => (
-        <MainVideoViewRenderItem
+        <MainVideoCard
           key={index + videoData.id}
-          style={{width: "100%"}}
+          style={{ width: "100%" }}
           item={videoData}
           navigation={navigation}
           query={videoData.title}

@@ -1,29 +1,22 @@
 import { useState } from "react";
-import { Image, View } from "react-native";
-import { VideoHorizontalPreviewCard } from "../components/CardsComponents";
+import { View } from "react-native";
 import {
-  LinearGradientView,
+  IconRoundedButton,
+  IconTextButton,
+} from "../components/ButtonComponents";
+import { HorizontalCard } from "../components/CardsComponents";
+import {
+  LinearGradientContainer,
   ScreenScrollView,
 } from "../components/ContainerComponents";
 import {
-  DotVerticalIcon,
   DownloadIcon,
-  LockIcon,
   PlayIcon,
   SaveIcon,
   ShareIcon,
   ShuffleIcon,
 } from "../components/IconComponents";
-import {
-  UserPlaylistCoverImage,
-  MusicTrackImage,
-} from "../components/ImageComponents";
-import {
-  BasePressable,
-  RippleButton,
-  IconRoundedButton,
-  IconTextButton,
-} from "../components/PressableComponents";
+import { MusicTrackImage } from "../components/ImageComponents";
 import { BaseText } from "../components/TextComponents";
 import { useThemeContext } from "../context/ThemeContext";
 import { useSetVideoData } from "../hooks/useSetVideoData";
@@ -46,7 +39,7 @@ export default function MusicTrackScreen({ navigation, route }) {
 
   return (
     <ScreenScrollView isLoading={isLoading}>
-      <LinearGradientView
+      <LinearGradientContainer
         colors={gradientColor}
         style={[{ paddingVertical: 16 }, styles.screenPadHorizontal]}
       >
@@ -157,12 +150,12 @@ export default function MusicTrackScreen({ navigation, route }) {
             onPress={() => console.log("Shuffle Press")}
           />
         </View>
-      </LinearGradientView>
+      </LinearGradientContainer>
 
       <View style={{ marginTop: 10, paddingBottom: 8, width: "100%" }}>
         {musicTracks.map((videoData, index) => {
           return (
-            <VideoHorizontalPreviewCard
+            <HorizontalCard
               key={videoData.id}
               videoData={videoData}
               onPress={() =>

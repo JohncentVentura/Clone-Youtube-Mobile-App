@@ -7,14 +7,13 @@ import {
   HeaderArrowBackIcon,
   HeaderDotVerticalIcon,
   HeaderMicIcon,
-  HeaderNotificationsIcon,
   HeaderSearchIcon,
   HeaderShareScreenIcon,
 } from "../components/IconComponents";
 import {
   BaseText,
   HeaderTitleText,
-  TextInputView,
+  SearchTextInput,
 } from "../components/TextComponents";
 import { useThemeContext } from "../context/ThemeContext";
 import { useSearchContext } from "../context/SearchContext";
@@ -132,7 +131,7 @@ export function SearchStackScreen() {
           return (
             <HeaderContainer>
               <HeaderArrowBackIcon navigation={navigation} />
-              <TextInputView
+              <SearchTextInput
                 autoFocus={true}
                 value={ctxSearchInput ? ctxSearchInput : searchInput}
                 onChangeText={
@@ -179,7 +178,7 @@ export function SearchResultStackScreen() {
                   navigation.pop(2);
                 }}
               />
-              <TextInputView
+              <SearchTextInput
                 value={searchInput}
                 onPress={() =>
                   navigation.navigate(navPaths.searchScreen, {

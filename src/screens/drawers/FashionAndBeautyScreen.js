@@ -1,54 +1,18 @@
-import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { View } from "react-native";
+import { OutlinedButton } from "../../components/ButtonComponents";
+import { HorizontalCard } from "../../components/CardsComponents";
 import {
-  Dimensions,
-  FlatList,
-  Image,
-  Pressable,
-  StyleSheet,
-  View,
-} from "react-native";
-import {
-  MusicTrackCard,
-  VideoHorizontalPreviewCard,
-  VideoVerticalPreviewCard,
-} from "../../components/CardsComponents";
-import {
-  DrawerDivider,
-  ColumnScrollView,
-  LinearGradientView,
-  RowScrollView,
+  DividerView,
   ScreenScrollView,
 } from "../../components/ContainerComponents";
-import {
-  ActiveSubscriptionIcon,
-  MembershipIndividualIcon,
-  MembershipFamilyIcon,
-  PhoneSpeakerIcon,
-  PhoneTextIcon,
-  VideoIcon,
-  YoutubeMusicIcon,
-  LearningIcon,
-  FashionAndBeautyIcon,
-} from "../../components/IconComponents";
-import {
-  ChannelProfileImage,
-  YoutubePremiumLogoImage,
-} from "../../components/ImageComponents";
-import {
-  MinimizingButton,
-  OutlinedButton,
-  SubscribeButton,
-} from "../../components/PressableComponents";
+import { FashionAndBeautyIcon } from "../../components/IconComponents";
 import { BaseText } from "../../components/TextComponents";
-import { MainVideoView } from "../../components/VideoComponents";
 import { useThemeContext } from "../../context/ThemeContext";
 import { useScrollToTopOnFocus } from "../../hooks/useScrollToTopOnFocus";
-import { useSetImageData } from "../../hooks/useSetImageData";
 import { useSetVideoData } from "../../hooks/useSetVideoData";
-import { screenWidth, styles } from "../../styles/styles";
+import { styles } from "../../styles/styles";
 import { navPaths } from "../../utils/constants";
-import { shortenText } from "../../utils/utils";
 
 export default function FashionAndBeautyScreen({ navigation }) {
   const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
@@ -136,7 +100,7 @@ export default function FashionAndBeautyScreen({ navigation }) {
         </OutlinedButton>
       </View>
       {womensWearVideos.map((videoData, index) => (
-        <VideoHorizontalPreviewCard
+        <HorizontalCard
           key={index + videoData.id}
           videoData={videoData}
           onPress={() =>
@@ -148,7 +112,7 @@ export default function FashionAndBeautyScreen({ navigation }) {
         />
       ))}
 
-      <DrawerDivider />
+      <DividerView />
       <View
         style={[
           {
@@ -169,7 +133,7 @@ export default function FashionAndBeautyScreen({ navigation }) {
         </OutlinedButton>
       </View>
       {mensWearVideos.map((videoData, index) => (
-        <VideoHorizontalPreviewCard
+        <HorizontalCard
           key={index + videoData.id}
           videoData={videoData}
           onPress={() =>
@@ -181,7 +145,7 @@ export default function FashionAndBeautyScreen({ navigation }) {
         />
       ))}
 
-      <DrawerDivider />
+      <DividerView />
       <View
         style={[
           {
@@ -202,7 +166,7 @@ export default function FashionAndBeautyScreen({ navigation }) {
         </OutlinedButton>
       </View>
       {kidsWearVideos.map((videoData, index) => (
-        <VideoHorizontalPreviewCard
+        <HorizontalCard
           key={index + videoData.id}
           videoData={videoData}
           onPress={() =>
@@ -214,7 +178,7 @@ export default function FashionAndBeautyScreen({ navigation }) {
         />
       ))}
 
-      <DrawerDivider />
+      <DividerView />
       <View
         style={[
           {
@@ -235,7 +199,7 @@ export default function FashionAndBeautyScreen({ navigation }) {
         </OutlinedButton>
       </View>
       {accessoriesVideos.map((videoData, index) => (
-        <VideoHorizontalPreviewCard
+        <HorizontalCard
           key={index + videoData.id}
           videoData={videoData}
           onPress={() =>

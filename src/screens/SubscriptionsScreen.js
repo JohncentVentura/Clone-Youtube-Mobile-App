@@ -1,26 +1,29 @@
 import { useState } from "react";
 import { Pressable, View } from "react-native";
 import {
-  MainVideoFlatList,
-  MixedFeedFlatList,
   ColumnScrollView,
   RowScrollView,
   ScreenContainer,
-  ShortsVideoGridScrollView,
+  ShortsVideoCardScrollView,
 } from "../components/ContainerComponents";
+import {
+  MainVideoFlatList,
+  MixedFeedFlatList,
+} from "../components/FlatListComponents";
 import { InactiveYouIcon } from "../components/IconComponents";
 import PostComponent from "../components/PostComponent";
+
 import {
   BasePressable,
-  ImageTextTabButton,
-  TextTabButton,
+  ImageTextTab,
+  TextTab,
 } from "../components/PressableComponents";
 import { BaseText } from "../components/TextComponents";
 import { useThemeContext } from "../context/ThemeContext";
 import { useSetChannelData } from "../hooks/useSetChannelData";
 import { useSetVideoData } from "../hooks/useSetVideoData";
 import { styles } from "../styles/styles";
-import { navPaths } from "../utils/constants";
+import { feedTypes, navPaths } from "../utils/constants";
 
 const CONTENT_TYPES = {
   ALL: "All",
@@ -134,27 +137,27 @@ export default function SubscriptionsScreen({ navigation }) {
           query={selectedChannelName || query}
           mixedData={[
             ...subscribedMainVideos.slice(0, 2).map((video) => ({
-              type: "mainVideo",
+              feedType: feedTypes.mainVideo,
               data: video,
             })),
             ...subscribedMainVideos.slice(0, 2).map((video) => ({
-              type: "posts",
+              feedType: feedTypes.posts,
               data: video,
             })),
             {
-              type: "shortsVideos",
+              feedType: feedTypes.shortsVideos,
               data: subscribedShortsVideos,
             },
             ...subscribedMainVideos.slice(2, 3).map((video) => ({
-              type: "posts",
+              feedType: feedTypes.posts,
               data: video,
             })),
             ...subscribedMainVideos.slice(3, 5).map((video) => ({
-              type: "mainVideo",
+              feedType: feedTypes.mainVideo,
               data: video,
             })),
             ...subscribedMainVideos.slice(3, 5).map((video) => ({
-              type: "posts",
+              feedType: feedTypes.posts,
               data: video,
             })),
           ]}
@@ -168,27 +171,27 @@ export default function SubscriptionsScreen({ navigation }) {
           query={query}
           mixedData={[
             ...subscribedMainVideos.slice(0, 1).map((video) => ({
-              type: "posts",
+              feedType: feedTypes.posts,
               data: video,
             })),
             ...subscribedMainVideos.slice(0, 3).map((video) => ({
-              type: "mainVideo",
+              feedType: feedTypes.mainVideo,
               data: video,
             })),
             {
-              type: "shortsVideos",
+              feedType: feedTypes.shortsVideos,
               data: subscribedShortsVideos,
             },
             ...subscribedMainVideos.slice(1, 2).map((video) => ({
-              type: "posts",
+              feedType: feedTypes.posts,
               data: video,
             })),
             ...subscribedMainVideos.slice(3, 5).map((video) => ({
-              type: "mainVideo",
+              feedType: feedTypes.mainVideo,
               data: video,
             })),
             ...subscribedMainVideos.slice(2, 4).map((video) => ({
-              type: "posts",
+              feedType: feedTypes.posts,
               data: video,
             })),
           ]}
@@ -202,7 +205,7 @@ export default function SubscriptionsScreen({ navigation }) {
           query={query}
         />
       ) : contentType === CONTENT_TYPES.SHORTS ? (
-        <ShortsVideoGridScrollView
+        <ShortsVideoCardScrollView
           style={{ marginTop: 8 }}
           isLoading={isLoading}
           data={subscribedShortsVideos}
@@ -288,7 +291,7 @@ function SubscribedChannelsTabBar({
       <RowScrollView>
         {subscribedChannels.map((item, index) => {
           return (
-            <ImageTextTabButton
+            <ImageTextTab
               key={index}
               isSelected={selectedChannelName === item.channelName}
               selectedTabName={selectedChannelName}
@@ -325,14 +328,14 @@ function TopContentTypeTabBar({ style, contentType, setContentType }) {
     >
       {selectableTabs.map((item, index) => {
         return (
-          <TextTabButton
+          <TextTab
             key={index}
             isFirstTab={index === 0}
             isSelected={contentType === item.type}
             onPress={() => handleSelected(item.type)}
           >
             {item.label}
-          </TextTabButton>
+          </TextTab>
         );
       })}
     </RowScrollView>

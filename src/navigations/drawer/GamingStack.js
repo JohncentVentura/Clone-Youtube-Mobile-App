@@ -6,12 +6,12 @@ import {
 import { useUIContext } from "../../context/UIContext";
 import {
   ChannelStackScreen,
-  MainVideoStackScreen,
   GamingStackScreen,
+  MainVideoStackScreen,
   SearchResultStackScreen,
   SearchStackScreen,
   ShortsStackScreen,
-} from "../NavigationConfig";
+} from "../StackNavigator";
 
 const Stack = createStackNavigator();
 

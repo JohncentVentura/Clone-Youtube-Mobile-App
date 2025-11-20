@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 import { ActivityIndicator, ScrollView, View } from "react-native";
+import { useThemeContext } from "../context/ThemeContext";
+import { useUIContext } from "../context/UIContext";
+import { useSetImageData } from "../hooks/useSetImageData";
+import { screenWidth, styles } from "../styles/styles";
+import { navPaths } from "../utils/constants";
+import { shortenText } from "../utils/utils";
 import {
   DislikeIcon,
   DotVerticalIcon,
@@ -10,16 +16,10 @@ import {
 import {
   CommentsProfileSmallImage,
   MainVideoChannelImage,
-  SubscribedPostImage,
+  PostImage,
 } from "./ImageComponents";
+import { BasePressable, RippleFXPressable } from "./PressableComponents";
 import { BaseText } from "./TextComponents";
-import { useThemeContext } from "../context/ThemeContext";
-import { useUIContext } from "../context/UIContext";
-import { useSetImageData } from "../hooks/useSetImageData";
-import { screenWidth, styles } from "../styles/styles";
-import { navPaths } from "../utils/constants";
-import { shortenText } from "../utils/utils";
-import { BasePressable, RippleButton } from "./PressableComponents";
 
 export default function PostComponent({
   style,
@@ -76,9 +76,9 @@ export default function PostComponent({
             {videoData.uploadedDate}
           </BaseText>
         </View>
-        <RippleButton style={{ marginLeft: "auto" }}>
+        <RippleFXPressable style={{ marginLeft: "auto" }}>
           <DotVerticalIcon />
-        </RippleButton>
+        </RippleFXPressable>
       </View>
       <BaseText style={{ marginTop: 8 }}>
         {shortenText(videoData.description, 100)}{" "}
@@ -99,19 +99,19 @@ export default function PostComponent({
         }}
       >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <RippleButton>
+          <RippleFXPressable>
             <LikeIcon />
-          </RippleButton>
+          </RippleFXPressable>
           <BaseText style={{ marginLeft: 8 }}>{videoData.likes}</BaseText>
-          <RippleButton style={{ marginLeft: 16 }}>
+          <RippleFXPressable style={{ marginLeft: 16 }}>
             <DislikeIcon />
-          </RippleButton>
+          </RippleFXPressable>
         </View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <RippleButton>
+          <RippleFXPressable>
             <ShareIcon size={ctxIconSizes.xl} />
-          </RippleButton>
-          <RippleButton
+          </RippleFXPressable>
+          <RippleFXPressable
             style={{ marginLeft: 16 }}
             onPress={() => {
               ctxSetModalVideoData(videoData);
@@ -119,7 +119,7 @@ export default function PostComponent({
             }}
           >
             <MessageTextIcon size={ctxIconSizes.lg} />
-          </RippleButton>
+          </RippleFXPressable>
           <BaseText style={{ marginLeft: 8 }}>
             {videoData.commentsCount}
           </BaseText>
@@ -213,7 +213,7 @@ export function PostedImageScrollView({
         showsHorizontalScrollIndicator={false}
       >
         {imageData.map((image, index) => (
-          <SubscribedPostImage
+          <PostImage
             key={index}
             style={{ width: screenWidth * 0.92, height: 400 }}
             source={{ uri: image.picture }}

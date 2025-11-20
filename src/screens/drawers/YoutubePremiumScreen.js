@@ -1,12 +1,10 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useRef, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { MoviesCard } from "../../components/CardsComponents";
+import { View } from "react-native";
+import { MinimizingButton } from "../../components/ButtonComponents";
 import {
-  DrawerDivider,
-  ColumnScrollView,
-  LinearGradientView,
-  RowScrollView,
+  DividerView,
+  LinearGradientContainer,
   ScreenScrollView,
 } from "../../components/ContainerComponents";
 import {
@@ -19,34 +17,20 @@ import {
   VideoIcon,
 } from "../../components/IconComponents";
 import { YoutubePremiumLogoImage } from "../../components/ImageComponents";
-import {
-  MinimizingButton,
-  OutlinedButton,
-} from "../../components/PressableComponents";
 import { BaseText } from "../../components/TextComponents";
 import { useThemeContext } from "../../context/ThemeContext";
 import { useScrollToTopOnFocus } from "../../hooks/useScrollToTopOnFocus";
-import { useSetVideoData } from "../../hooks/useSetVideoData";
 import { styles } from "../../styles/styles";
-import { navPaths } from "../../utils/constants";
 
 export default function MoviesScreen({ navigation }) {
-  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
+  const { ctxColors, ctxFontSizes } = useThemeContext();
   const scrollToTopRef = useRef(null);
-  const [premiumVideos, setPremiumVideos] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   useScrollToTopOnFocus(scrollToTopRef);
-  useSetVideoData({
-    query: "premium videos",
-    queryResults: 4,
-    setVideos: setPremiumVideos,
-    setIsLoading,
-  });
-
+  
   return (
-    <ScreenScrollView isLoading={isLoading} ref={scrollToTopRef}>
-      <LinearGradientView
+    <ScreenScrollView ref={scrollToTopRef}>
+      <LinearGradientContainer
         style={[{ alignItems: "center" }, styles.screenPadHorizontal]}
         colors={[ctxColors.tintedRed, ctxColors.tintedBlue, ctxColors.bg]}
       >
@@ -134,7 +118,7 @@ export default function MoviesScreen({ navigation }) {
             Restrictions apply.
           </BaseText>
         </BaseText>
-      </LinearGradientView>
+      </LinearGradientContainer>
       <IconText
         style={{ marginTop: 72 }}
         Icon={VideoIcon}
@@ -295,7 +279,7 @@ export function MembershipCard({
           {titleText}
         </BaseText>
       </View>
-      <DrawerDivider
+      <DividerView
         style={{ marginTop: 8, backgroundColor: ctxColors.bgContrast }}
       />
       <BaseText

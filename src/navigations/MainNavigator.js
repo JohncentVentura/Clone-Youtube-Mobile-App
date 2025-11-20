@@ -1,9 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import React, { useEffect, useMemo, useState } from "react";
-import { Pressable, View } from "react-native";
+import React, { useMemo } from "react";
+import { Linking, Pressable, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { DrawerDivider } from "../components/ContainerComponents";
+import { DividerView } from "../components/ContainerComponents";
 import {
   ActiveHomeIcon,
   ActiveShortsIcon,
@@ -55,9 +55,21 @@ import YoutubeHomeStack from "./YoutubeHomeStack";
 const Drawer = createDrawerNavigator();
 const BottomTab = createBottomTabNavigator();
 
+const openYoutubeKidsInPlayStore = () => {
+  const url =
+    "https://play.google.com/store/search?q=youtube%20kids&c=apps&hl=en";
+  Linking.openURL(url);
+};
+
+const openYoutubeMusicInPlayStore = () => {
+  const url =
+    "https://play.google.com/store/search?q=youtube+music&c=apps&hl=en";
+  Linking.openURL(url);
+};
+
 export const drawerItems = [
   {
-    route: "YouTubeHomeStack",
+    route: navPaths.youtubeHomeStack,
     component: YoutubeHomeStack,
   },
   {
@@ -116,13 +128,13 @@ export const drawerItems = [
   },
   {
     route: "YoutubeMusicStack",
-    component: YoutubeHomeStack,
+    openExternal: openYoutubeMusicInPlayStore,
     Icon: YoutubeMusicIcon,
     label: "Youtube Music",
   },
   {
     route: "YoutubeKidsStack",
-    component: YoutubeHomeStack,
+    openExternal: openYoutubeKidsInPlayStore,
     Icon: YoutubeKidsIcon,
     label: "Youtube Kids",
   },
@@ -196,7 +208,7 @@ export default function MainNavigator() {
 
               return (
                 <React.Fragment key={index + item.route}>
-                  {index === drawerItems.length - 3 && <DrawerDivider />}
+                  {index === drawerItems.length - 3 && <DividerView />}
                   {isHomeRoute ? (
                     <Pressable
                       style={[
@@ -221,7 +233,16 @@ export default function MainNavigator() {
                       Icon={item.Icon}
                       iconColor={isYoutubeSpecialRoute && ctxColors.primary}
                       label={item.label}
-                      onPress={() => props.navigation.navigate(item.route)}
+                      onPress={() => {
+                        if (item.openExternal) {
+                          item.openExternal();
+                          props.navigation.closeDrawer(); // close first
+                          props.navigation.navigate(navPaths.youtubeHomeStack);
+                          return;
+                        }
+
+                        props.navigation.navigate(item.route);
+                      }}
                     />
                   )}
                 </React.Fragment>
@@ -269,7 +290,10 @@ function MainBottomTabBar({ homeComponent }) {
   const { ctxMainBottomTabBar } = useUIContext();
 
   //Assign updated bottomTabItems so the HomeStack route of this tab uses the component of the currently selected Drawer route
-  const updatedTabItems = useMemo(() => bottomTabItems(homeComponent), [homeComponent]);
+  const updatedTabItems = useMemo(
+    () => bottomTabItems(homeComponent),
+    [homeComponent]
+  );
 
   return (
     <BottomTab.Navigator

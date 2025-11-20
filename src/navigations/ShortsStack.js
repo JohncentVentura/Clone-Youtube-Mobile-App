@@ -6,7 +6,7 @@ import {
   SearchStackScreen,
   SearchResultStackScreen,
   ShortsStackScreen,
-} from "./NavigationConfig";
+} from "./StackNavigator";
 
 const Stack = createStackNavigator();
 

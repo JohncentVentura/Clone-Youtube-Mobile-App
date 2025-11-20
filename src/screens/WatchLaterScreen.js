@@ -1,8 +1,12 @@
 import { useState } from "react";
-import { Image, View } from "react-native";
-import { VideoHorizontalPreviewCard } from "../components/CardsComponents";
+import { View } from "react-native";
 import {
-  LinearGradientView,
+  IconRoundedButton,
+  IconTextButton,
+} from "../components/ButtonComponents";
+import { HorizontalCard } from "../components/CardsComponents";
+import {
+  LinearGradientContainer,
   ScreenScrollView,
 } from "../components/ContainerComponents";
 import {
@@ -13,12 +17,6 @@ import {
   ShuffleIcon,
 } from "../components/IconComponents";
 import { UserPlaylistCoverImage } from "../components/ImageComponents";
-import {
-  BasePressable,
-  RippleButton,
-  IconRoundedButton,
-  IconTextButton,
-} from "../components/PressableComponents";
 import { BaseText } from "../components/TextComponents";
 import { useThemeContext } from "../context/ThemeContext";
 import { useSetVideoData } from "../hooks/useSetVideoData";
@@ -44,7 +42,7 @@ export default function WatchLaterScreen({ navigation, route }) {
 
   return (
     <ScreenScrollView isLoading={isLoading}>
-      <LinearGradientView
+      <LinearGradientContainer
         colors={["rgba(176, 190, 202, 1)", "rgba(46, 134, 178, 1)"]}
         style={[{ paddingVertical: 18 }, styles.screenPadHorizontal]}
       >
@@ -114,12 +112,12 @@ export default function WatchLaterScreen({ navigation, route }) {
             onPress={() => console.log("Shuffle Press")}
           />
         </View>
-      </LinearGradientView>
+      </LinearGradientContainer>
 
       <View style={{ paddingBottom: 8, width: "100%" }}>
         {likedVideos.map((videoData, index) => {
           return (
-            <VideoHorizontalPreviewCard
+            <HorizontalCard
               key={videoData.id}
               videoData={videoData}
               onPress={() =>

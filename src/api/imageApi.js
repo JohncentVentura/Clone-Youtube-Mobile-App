@@ -1,10 +1,4 @@
 import Constants from "expo-constants";
-import {
-  randomTimeAgo,
-  roundOffNumber,
-  urlToUserTag,
-  urlToVideoTitle,
-} from "../utils/utils";
 
 const { PEXELS_API_URL, PEXELS_API_KEY } = Constants.expoConfig.extra;
 
@@ -35,7 +29,7 @@ export async function fetchImageData({
     return data.videos.map((video) => ({
       picture: video.video_pictures[0].picture,
     }));
-   } catch (err) {
+  } catch (err) {
     if (err.name === "AbortError") return [];
     console.error("fetchImageData error:", err);
     return [];

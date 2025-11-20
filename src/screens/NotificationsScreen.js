@@ -6,7 +6,7 @@ import {
   NotifThumbnailImage,
   NotifProfileImage,
 } from "../components/ImageComponents";
-import { BasePressable, RippleButton } from "../components/PressableComponents";
+import { BasePressable, RippleFXPressable } from "../components/PressableComponents";
 import { BaseText } from "../components/TextComponents";
 import { useThemeContext } from "../context/ThemeContext";
 import { useUIContext } from "../context/UIContext";
@@ -153,7 +153,7 @@ function NotificationItem({ navigation, query, videoData, setVisible }) {
           }}
         />
 
-        <RippleButton
+        <RippleFXPressable
           style={{ marginLeft: 4 }}
           rippleSize={2}
           onPress={() => {
@@ -161,7 +161,7 @@ function NotificationItem({ navigation, query, videoData, setVisible }) {
           }}
         >
           <DotVerticalIcon size={ctxIconSizes.sm} />
-        </RippleButton>
+        </RippleFXPressable>
       </View>
     </BasePressable>
   );

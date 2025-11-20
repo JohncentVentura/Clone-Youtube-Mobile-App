@@ -1,3 +1,12 @@
+export const feedTypes = {
+  mainVideo: "mainVideo",
+  shortsVideos: "shortsVideos",
+  posts: "posts",
+  gamingCards: "gamingCards",
+  horizontalCards: "horizontalCards",
+  verticalCards: "verticalCards",
+};
+
 export const fontPaths = {
   robotoBold: require("../assets/fonts/Roboto-Bold.ttf"),
   robotoMedium: require("../assets/fonts/Roboto-Medium.ttf"),

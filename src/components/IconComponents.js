@@ -14,7 +14,7 @@ import { useThemeContext } from "../context/ThemeContext";
 import { useUIContext } from "../context/UIContext";
 import { styles } from "../styles/styles";
 import { navPaths } from "../utils/constants";
-import { RippleButton } from "./PressableComponents";
+import { RippleFXPressable } from "./PressableComponents";
 
 export function BaseIcon({ IconComponent, ...rest }) {
   const { ctxColors, ctxIconSizes } = useThemeContext();
@@ -69,7 +69,6 @@ export function InactiveYouIcon({ ...rest }) {
   );
 }
 //#endregion
-
 //#region Header Icons
 export function HeaderArrowBackIcon({
   navigation,
@@ -89,9 +88,9 @@ export function HeaderArrowBackIcon({
         return;
       }
 
-      const parentNav = navigation.getParent?.("MainNavigator");
+      const parentNav = navigation.getParent?.(navPaths.MainNavigator);
       if (parentNav) {
-        parentNav.navigate("YouTubeHomeStack");
+        parentNav.navigate(navPaths.youtubeHomeStack);
         return;
       }
 
@@ -102,12 +101,12 @@ export function HeaderArrowBackIcon({
   }
 
   return (
-    <RippleButton onPress={handleBackPress} {...rest}>
+    <RippleFXPressable onPress={handleBackPress} {...rest}>
       <ArrowBackIcon
         size={size || ctxIconSizes.base}
         color={color || ctxColors.iconPrimary}
       />
-    </RippleButton>
+    </RippleFXPressable>
   );
 }
 
@@ -115,12 +114,12 @@ export function HeaderDotVerticalIcon({ style, size, color, ...rest }) {
   const { ctxColors, ctxIconSizes } = useThemeContext();
 
   return (
-    <RippleButton style={[styles.headerRightIcon, style]} {...rest}>
+    <RippleFXPressable style={[styles.headerRightIcon, style]} {...rest}>
       <DotVerticalIcon
         size={size || ctxIconSizes.base}
         color={color || ctxColors.iconPrimary}
       />
-    </RippleButton>
+    </RippleFXPressable>
   );
 }
 
@@ -128,12 +127,12 @@ export function HeaderMicIcon({ style, size, color, ...rest }) {
   const { ctxColors, ctxIconSizes } = useThemeContext();
 
   return (
-    <RippleButton style={[styles.headerRightIcon, style]} {...rest}>
+    <RippleFXPressable style={[styles.headerRightIcon, style]} {...rest}>
       <MicIcon
         size={size || ctxIconSizes.base}
         color={color || ctxColors.iconPrimary}
       />
-    </RippleButton>
+    </RippleFXPressable>
   );
 }
 
@@ -147,7 +146,7 @@ export function HeaderNotificationsIcon({
   const { ctxColors, ctxIconSizes } = useThemeContext();
 
   return (
-    <RippleButton
+    <RippleFXPressable
       style={[styles.headerRightIcon, style]}
       onPress={() => {
         navigation.navigate(navPaths.notificationsScreen);
@@ -158,7 +157,7 @@ export function HeaderNotificationsIcon({
         size={size || ctxIconSizes.base}
         color={color || ctxColors.iconPrimary}
       />
-    </RippleButton>
+    </RippleFXPressable>
   );
 }
 
@@ -166,7 +165,7 @@ export function HeaderSearchIcon({ style, navigation, size, color, ...rest }) {
   const { ctxColors, ctxIconSizes } = useThemeContext();
 
   return (
-    <RippleButton
+    <RippleFXPressable
       style={[styles.headerRightIcon, style]}
       onPress={() => {
         navigation.navigate(navPaths.searchScreen, { search: "" });
@@ -177,7 +176,7 @@ export function HeaderSearchIcon({ style, navigation, size, color, ...rest }) {
         size={size || ctxIconSizes.base}
         color={color || ctxColors.iconPrimary}
       />
-    </RippleButton>
+    </RippleFXPressable>
   );
 }
 
@@ -185,12 +184,12 @@ export function HeaderSettingsIcon({ style, size, color, ...rest }) {
   const { ctxColors, ctxIconSizes } = useThemeContext();
 
   return (
-    <RippleButton style={[styles.headerRightIcon, style]} {...rest}>
+    <RippleFXPressable style={[styles.headerRightIcon, style]} {...rest}>
       <SettingsIcon
         size={size || ctxIconSizes.base}
         color={color || ctxColors.iconPrimary}
       />
-    </RippleButton>
+    </RippleFXPressable>
   );
 }
 
@@ -199,7 +198,7 @@ export function HeaderShareScreenIcon({ style, size, color, ...rest }) {
   const { ctxSetShareScreenModal } = useUIContext();
 
   return (
-    <RippleButton
+    <RippleFXPressable
       style={[styles.headerRightIcon, style]}
       onPress={() => ctxSetShareScreenModal(true)}
       {...rest}
@@ -208,11 +207,10 @@ export function HeaderShareScreenIcon({ style, size, color, ...rest }) {
         size={size || ctxIconSizes.base}
         color={color || ctxColors.iconPrimary}
       />
-    </RippleButton>
+    </RippleFXPressable>
   );
 }
 //#endregion
-
 //#region Menu Icons
 export function AccountBoxMultipleIcon({ ...rest }) {
   return (

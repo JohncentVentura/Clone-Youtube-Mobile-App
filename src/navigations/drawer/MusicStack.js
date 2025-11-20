@@ -12,7 +12,7 @@ import {
   SearchResultStackScreen,
   SearchStackScreen,
   ShortsStackScreen,
-} from "../NavigationConfig";
+} from "../StackNavigator";
 
 const Stack = createStackNavigator();
 

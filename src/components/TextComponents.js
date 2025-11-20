@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { useThemeContext } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
 
+//#region Text
 export function BaseText({ style, children, ...rest }) {
   const { ctxColors, ctxFontSizes } = useThemeContext();
   const { fontWeight, ...restStyle } = StyleSheet.flatten(style) || {};
@@ -55,7 +56,7 @@ export function HeaderTitleText({ style, children, ...rest }) {
       style={[
         styles.headerCenter,
         {
-          marginLeft: 12,
+          marginLeft: 16,
           fontSize: ctxFontSizes.xl,
           fontWeight: "medium",
         },
@@ -67,8 +68,38 @@ export function HeaderTitleText({ style, children, ...rest }) {
     </BaseText>
   );
 }
+//#endregion
+//#region Text Inputs
+export function CommentTextInput({
+  style,
+  placeholder = "Add a comment or @mention",
+  returnKeyType = "go",
+  ...rest
+}) {
+  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
 
-export function TextInputView({
+  return (
+    <TextInput
+      style={[
+        {
+          borderRadius: 99,
+          paddingHorizontal: 8,
+          fontSize: ctxFontSizes.xs,
+          fontWeight: "medium",
+          backgroundColor: ctxColors.bgSecondary,
+          color: ctxColors.textSecondary,
+        },
+        style,
+      ]}
+      placeholder={placeholder}
+      placeholderTextColor={ctxColors.textSecondary}
+      returnKeyType={returnKeyType}
+      {...rest}
+    />
+  );
+}
+
+export function SearchTextInput({
   style,
   placeholder = "Search YouTube",
   returnKeyType = "search",
@@ -111,32 +142,4 @@ export function TextInputView({
     </View>
   );
 }
-
-export function CommentTextInput({
-  style,
-  placeholder = "Add a comment or @mention",
-  returnKeyType = "go",
-  ...rest
-}) {
-  const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
-
-  return (
-    <TextInput
-      style={[
-        {
-          borderRadius: 99,
-          paddingHorizontal: 8,
-          fontSize: ctxFontSizes.xs,
-          fontWeight: "medium",
-          backgroundColor: ctxColors.bgSecondary,
-          color: ctxColors.textSecondary,
-        },
-        style,
-      ]}
-      placeholder={placeholder}
-      placeholderTextColor={ctxColors.textSecondary}
-      returnKeyType={returnKeyType}
-      {...rest}
-    />
-  );
-}
+//#endregion

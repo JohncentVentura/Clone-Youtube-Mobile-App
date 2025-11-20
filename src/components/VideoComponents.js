@@ -1,24 +1,6 @@
 import { useVideoPlayer, VideoView } from "expo-video";
-import { useEffect, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import {
-  DislikeIcon,
-  HeaderDotVerticalIcon,
-  HeaderSearchIcon,
-  LikeIcon,
-  MessageTextIcon,
-  RemixIcon,
-  ShareIcon,
-} from "../components/IconComponents";
-import { CommentsProfileSmallImage } from "../components/ImageComponents";
-import {
-  RippleButton,
-  ShortsPlayButton,
-  ShortsIconTextButton,
-  SubscribeButton,
-} from "../components/PressableComponents";
-import { BaseText } from "../components/TextComponents";
 import { useThemeContext } from "../context/ThemeContext";
 import { useUIContext } from "../context/UIContext";
 import {
@@ -27,6 +9,21 @@ import {
 } from "../hooks/usePlayVideoOnFocus";
 import { styles } from "../styles/styles";
 import { navPaths } from "../utils/constants";
+import {
+  ShortsPlayButton,
+  ShortsIconTextButton,
+  SubscribeButton,
+} from "./ButtonComponents";
+import {
+  DislikeIcon,
+  LikeIcon,
+  MessageTextIcon,
+  RemixIcon,
+  ShareIcon,
+} from "./IconComponents";
+import { CommentsProfileSmallImage } from "./ImageComponents";
+import { RippleFXPressable } from "./PressableComponents";
+import { BaseText } from "./TextComponents";
 
 export function MainVideoView({ style, videoData, autoPlayVideoId, ...rest }) {
   const videoPlayer = useVideoPlayer(videoData.video, (player) => {
@@ -40,7 +37,7 @@ export function MainVideoView({ style, videoData, autoPlayVideoId, ...rest }) {
   });
 
   return (
-    <VideoView  
+    <VideoView
       style={[styles.mainVideo, style]}
       resizeMode="stretch"
       player={videoPlayer}
@@ -242,7 +239,7 @@ function ShortsVerticalButton({ style, Icon, text, ...rest }) {
   const { ctxColors, ctxFontSizes } = useThemeContext();
 
   return (
-    <RippleButton
+    <RippleFXPressable
       style={[{ marginTop: 16, height: 42, width: 42 }, style]}
       rippleSize={4}
       {...rest}
@@ -251,6 +248,6 @@ function ShortsVerticalButton({ style, Icon, text, ...rest }) {
       <BaseText style={{ color: ctxColors.white, fontSize: ctxFontSizes.sm }}>
         {text}
       </BaseText>
-    </RippleButton>
+    </RippleFXPressable>
   );
 }

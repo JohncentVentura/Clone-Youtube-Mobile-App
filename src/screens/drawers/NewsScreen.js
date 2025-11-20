@@ -1,38 +1,13 @@
-import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { FlatList, Pressable, View } from "react-native";
+import { MainVideoCard, VerticalCard } from "../../components/CardsComponents";
 import {
-  Dimensions,
-  FlatList,
-  Image,
-  Pressable,
-  StyleSheet,
-  View,
-} from "react-native";
-import {
-  MusicTrackCard,
-  VideoHorizontalPreviewCard,
-  VideoVerticalPreviewCard,
-} from "../../components/CardsComponents";
-import {
-  DrawerDivider,
-  ColumnScrollView,
-  LinearGradientView,
+  DividerView,
   RowScrollView,
   ScreenScrollView,
-  MainVideoFlatList,
-  MainVideoViewRenderItem,
 } from "../../components/ContainerComponents";
 import {
-  ActiveSubscriptionIcon,
-  LearningIcon,
-  LiveIcon,
-  MembershipIndividualIcon,
-  MembershipFamilyIcon,
   NewsIcon,
-  PhoneSpeakerIcon,
-  PhoneTextIcon,
-  VideoIcon,
-  YoutubeMusicIcon,
   LikeIcon,
   DislikeIcon,
   ShareIcon,
@@ -40,23 +15,17 @@ import {
   DotVerticalIcon,
 } from "../../components/IconComponents";
 import {
-  ChannelProfileImage,
-  YoutubePremiumLogoImage,
   CommentsProfileSmallImage,
-  NewsPostImage,
+  NewsCardImage,
 } from "../../components/ImageComponents";
 import {
   BasePressable,
-  MinimizingButton,
-  OutlinedButton,
-  RippleButton,
-  SubscribeButton,
+  RippleFXPressable,
 } from "../../components/PressableComponents";
 import { BaseText } from "../../components/TextComponents";
 import { MainVideoView } from "../../components/VideoComponents";
 import { useThemeContext } from "../../context/ThemeContext";
 import { useScrollToTopOnFocus } from "../../hooks/useScrollToTopOnFocus";
-import { useSetImageData } from "../../hooks/useSetImageData";
 import { useSetVideoData } from "../../hooks/useSetVideoData";
 import { screenWidth, styles } from "../../styles/styles";
 import { navPaths } from "../../utils/constants";
@@ -145,7 +114,7 @@ export default function NewsScreen({ navigation }) {
           </BaseText>
         </View>
       </View>
-      <DrawerDivider style={{ marginVertical: 16, height: 6 }} />
+      <DividerView style={{ marginVertical: 16, height: 6 }} />
       <View style={styles.screenPadHorizontal}>
         <BaseText style={{ fontSize: ctxFontSizes.xl, fontWeight: "bold" }}>
           Latest news post
@@ -169,7 +138,7 @@ export default function NewsScreen({ navigation }) {
           ))}
         </RowScrollView>
       </View>
-      <DrawerDivider style={{ marginVertical: 16, height: 6 }} />
+      <DividerView style={{ marginVertical: 16, height: 6 }} />
       <View>
         <BaseText
           style={[
@@ -181,7 +150,7 @@ export default function NewsScreen({ navigation }) {
         </BaseText>
         <RowScrollView style={{ marginTop: 8 }}>
           {liveNewsVideos.map((videoData, index) => (
-            <VideoVerticalPreviewCard
+            <VerticalCard
               key={index + videoData.id}
               style={{ marginLeft: 12 }}
               videoData={videoData}
@@ -195,7 +164,7 @@ export default function NewsScreen({ navigation }) {
           ))}
         </RowScrollView>
       </View>
-      <DrawerDivider style={{ marginVertical: 16, height: 6 }} />
+      <DividerView style={{ marginVertical: 16, height: 6 }} />
       <View>
         <BaseText
           style={[
@@ -207,7 +176,7 @@ export default function NewsScreen({ navigation }) {
         </BaseText>
         <RowScrollView style={{ marginTop: 8 }}>
           {personalNewsVideos.map((videoData, index) => (
-            <VideoVerticalPreviewCard
+            <VerticalCard
               key={index + videoData.id}
               style={{ marginLeft: 12 }}
               videoData={videoData}
@@ -221,7 +190,7 @@ export default function NewsScreen({ navigation }) {
           ))}
         </RowScrollView>
       </View>
-      <DrawerDivider style={{ marginVertical: 16, height: 6 }} />
+      <DividerView style={{ marginVertical: 16, height: 6 }} />
       <LiveCarousel
         carouselNewsVideos={carousel2NewsVideos}
         navigation={navigation}
@@ -255,9 +224,9 @@ export default function NewsScreen({ navigation }) {
           </BaseText>
         </View>
       </View>
-      <DrawerDivider style={{ marginVertical: 16, height: 6 }} />
+      <DividerView style={{ marginVertical: 16, height: 6 }} />
       {oldNewsVideos.map((videoData, index) => (
-        <MainVideoViewRenderItem
+        <MainVideoCard
           key={index + videoData.id}
           item={videoData}
           navigation={navigation}
@@ -423,7 +392,7 @@ function NewsPost({ style, videoData, navigation, ...rest }) {
         >
           {videoData?.description}
         </BaseText>
-        <NewsPostImage source={{ uri: videoData?.picture }} />
+        <NewsCardImage source={{ uri: videoData?.picture }} />
       </View>
       <View
         style={{
@@ -434,9 +403,9 @@ function NewsPost({ style, videoData, navigation, ...rest }) {
         }}
       >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <RippleButton rippleSize={6}>
+          <RippleFXPressable rippleSize={6}>
             <LikeIcon size={ctxIconSizes.xs} />
-          </RippleButton>
+          </RippleFXPressable>
           <BaseText
             style={{
               marginLeft: 12,
@@ -446,17 +415,17 @@ function NewsPost({ style, videoData, navigation, ...rest }) {
           >
             {videoData?.likes}
           </BaseText>
-          <RippleButton rippleSize={6} style={{ marginLeft: 12 }}>
+          <RippleFXPressable rippleSize={6} style={{ marginLeft: 12 }}>
             <DislikeIcon size={ctxIconSizes.xs} />
-          </RippleButton>
+          </RippleFXPressable>
         </View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <RippleButton rippleSize={6} style={{ marginLeft: 12 }}>
+          <RippleFXPressable rippleSize={6} style={{ marginLeft: 12 }}>
             <ShareIcon size={ctxIconSizes.xs} />
-          </RippleButton>
-          <RippleButton rippleSize={6} style={{ marginLeft: 12 }}>
+          </RippleFXPressable>
+          <RippleFXPressable rippleSize={6} style={{ marginLeft: 12 }}>
             <MessageTextIcon size={ctxIconSizes.xs} />
-          </RippleButton>
+          </RippleFXPressable>
           <BaseText
             style={{
               marginLeft: 12,
@@ -466,9 +435,9 @@ function NewsPost({ style, videoData, navigation, ...rest }) {
           >
             {videoData?.commentsCount}
           </BaseText>
-          <RippleButton rippleSize={6} style={{ marginLeft: 12 }}>
+          <RippleFXPressable rippleSize={6} style={{ marginLeft: 12 }}>
             <DotVerticalIcon size={ctxIconSizes.xs} />
-          </RippleButton>
+          </RippleFXPressable>
         </View>
       </View>
     </BasePressable>

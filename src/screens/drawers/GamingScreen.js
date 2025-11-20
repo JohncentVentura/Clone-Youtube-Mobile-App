@@ -1,22 +1,15 @@
 import { useRef, useState } from "react";
 import { View } from "react-native";
-import { MoviesCard, GamingCard } from "../../components/CardsComponents";
-import {
-  DrawerDivider,
-  RowScrollView,
-  ScreenScrollView,
-  ScreenContainer,
-  MixedFeedFlatList,
-} from "../../components/ContainerComponents";
-import { MovieIcon, GamingIcon } from "../../components/IconComponents";
-import { OutlinedButton } from "../../components/PressableComponents";
+import { OutlinedButton } from "../../components/ButtonComponents";
+import { ScreenContainer } from "../../components/ContainerComponents";
+import { MixedFeedFlatList } from "../../components/FlatListComponents";
+import { GamingIcon } from "../../components/IconComponents";
 import { BaseText } from "../../components/TextComponents";
 import { useThemeContext } from "../../context/ThemeContext";
-import { MainVideoFlatList } from "../../components/ContainerComponents";
 import { useScrollToTopOnFocus } from "../../hooks/useScrollToTopOnFocus";
 import { useSetVideoData } from "../../hooks/useSetVideoData";
 import { styles } from "../../styles/styles";
-import { navPaths } from "../../utils/constants";
+import { feedTypes } from "../../utils/constants";
 
 export default function GamingScreen({ navigation }) {
   const { ctxColors, ctxFontSizes, ctxIconSizes } = useThemeContext();
@@ -105,11 +98,11 @@ export default function GamingScreen({ navigation }) {
         }
         mixedData={[
           ...featuredGameVideos.slice(0, 3).map((video) => ({
-            type: "mainVideo",
+            feedType: feedTypes.mainVideo,
             data: video,
           })),
           {
-            type: "gamingCards",
+            feedType: feedTypes.gamingCards,
             data: shootingGameVideos,
             headerComponent: (
               <View
@@ -151,7 +144,7 @@ export default function GamingScreen({ navigation }) {
             ),
           },
           {
-            type: "videoVerticalPreview",
+            feedType: feedTypes.verticalCards,
             data: horrorGameVideos,
             headerComponent: (
               <View
@@ -184,11 +177,11 @@ export default function GamingScreen({ navigation }) {
             ),
           },
           ...gameDeviceVideos.slice(0, 3).map((video) => ({
-            type: "mainVideo",
+            feedType: feedTypes.mainVideo,
             data: video,
           })),
           {
-            type: "videoHorizontalPreview",
+            feedType: feedTypes.horizontalCards,
             data: fantasyGameVideos,
             headerComponent: (
               <View
@@ -230,7 +223,7 @@ export default function GamingScreen({ navigation }) {
             ),
           },
           ...actionGameVideos.slice(0, 3).map((video) => ({
-            type: "mainVideo",
+            feedType: feedTypes.mainVideo,
             data: video,
           })),
         ]}

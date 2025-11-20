@@ -1,5 +1,6 @@
 export const colorThemes = {
   light: {
+    //Colors
     transparentBlack: "rgba(0, 0, 0, 0.5)",
     transparentWhite: "rgba(255, 255, 255, 0.5)",
     tintedRed: "#dcb8b8ff",
@@ -8,6 +9,7 @@ export const colorThemes = {
     blue: "#0760d6",
     green: "#2bb42dff",
     white: "#ffffff",
+    //Utility
     primary: "#fe0032",
     bg: "#ffffff",
     bgSecondary: "#f2f2f2",
@@ -23,6 +25,7 @@ export const colorThemes = {
     borderSecondary: "#e2e2e2",
   },
   dark: {
+    //Colors
     transparentBlack: "rgba(0, 0, 0, 0.5)",
     transparentWhite: "rgba(255, 255, 255, 0.5)",
     tintedRed: "#5b444fff",
@@ -31,6 +34,7 @@ export const colorThemes = {
     blue: "#41a6ff",
     green: "#2bb42dff",
     white: "#ffffff",
+    //Utility
     primary: "#fe0032",
     bg: "#0f0f0f",
     bgSecondary: "#272727",

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { ScreenContainer, ShortsVideoFlatList } from "../components/ContainerComponents";
+import { ScreenContainer } from "../components/ContainerComponents";
+import { ShortsVideoFlatList } from "../components/FlatListComponents";
 import { useSetVideoData } from "../hooks/useSetVideoData";
 
 export default function ShortsScreen({ navigation, route }) {

@@ -1,11 +1,12 @@
 import { CameraView, useCameraPermissions } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Image, Pressable, View } from "react-native";
+import { MinimizingButton } from "../components/ButtonComponents";
 import {
   ScreenContainer,
-  LinearGradientView,
-  DrawerDivider,
+  LinearGradientContainer,
+  DividerView,
 } from "../components/ContainerComponents";
 import {
   CameraIcon,
@@ -22,12 +23,10 @@ import {
   SparklesIcon,
   TimerIcon,
 } from "../components/IconComponents";
-import { MinimizingButton } from "../components/PressableComponents";
 import { BaseText } from "../components/TextComponents";
 import { useThemeContext } from "../context/ThemeContext";
-import { useUIContext } from "../context/UIContext";
 import { useSetImageData } from "../hooks/useSetImageData";
-import { screenWidth, screenHeight, styles } from "../styles/styles";
+import { styles } from "../styles/styles";
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -100,7 +99,7 @@ export default function UploadScreen({ navigation }) {
   };
 
   return !permission || !permission.granted ? (
-    <LinearGradientView
+    <LinearGradientContainer
       style={styles.screenContainer}
       colors={[ctxColors.tintedRed, ctxColors.tintedBlue]}
     >
@@ -171,7 +170,7 @@ export default function UploadScreen({ navigation }) {
           </BaseText>
         </MinimizingButton>
       </View>
-    </LinearGradientView>
+    </LinearGradientContainer>
   ) : (
     <ScreenContainer>
       <CameraView
@@ -194,7 +193,7 @@ export default function UploadScreen({ navigation }) {
           styles.screenPadHorizontal,
         ]}
       >
-        <DrawerDivider
+        <DividerView
           style={{
             marginVertical: 16,
             height: 4,
@@ -324,7 +323,6 @@ export default function UploadScreen({ navigation }) {
             <UploadMenuItem style={{ marginTop: 8 }}>
               <LightIcon color={ctxColors.white} size={ctxIconSizes.sm} />
             </UploadMenuItem>
-            
           </Animated.View>
 
           <UploadMenuItem style={{ marginTop: 8 }} onPress={toggleMenu}>

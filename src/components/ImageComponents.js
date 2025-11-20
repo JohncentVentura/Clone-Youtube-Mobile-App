@@ -1,9 +1,7 @@
-import { Image, Pressable, View } from "react-native";
+import { Image, Pressable } from "react-native";
 import { useThemeContext } from "../context/ThemeContext";
 import { styles } from "../styles/styles";
 import { imagePaths } from "../utils/constants";
-import { shortenText } from "../utils/utils";
-import { BaseText } from "./TextComponents";
 
 export function ChannelCoverImage({ source, ...rest }) {
   return (
@@ -111,7 +109,7 @@ export function MusicTrackImage({ style, source, ...rest }) {
   );
 }
 
-export function NewsPostImage({ source, ...rest }) {
+export function NewsCardImage({ source, ...rest }) {
   return (
     <Pressable {...rest}>
       <Image
@@ -150,6 +148,18 @@ export function NotifThumbnailImage({ source, ...rest }) {
   );
 }
 
+export function PostImage({ style, source, ...rest }) {
+  return (
+    <Image
+      style={[{ borderRadius: 8 }, style]}
+      resizeMode={"stretch"}
+      source={source}
+      alt="SubscribedPostImage"
+      {...rest}
+    />
+  );
+}
+
 export function SearchHistoryThumbnailImage({ source, ...rest }) {
   return (
     <Pressable {...rest}>
@@ -170,18 +180,6 @@ export function SubscribedChannelImage({ style, source, ...rest }) {
       resizeMode={"stretch"}
       source={source}
       alt="SubscribedChannelImage"
-      {...rest}
-    />
-  );
-}
-
-export function SubscribedPostImage({ style, source, ...rest }) {
-  return (
-    <Image
-      style={[{ borderRadius: 8 }, style]}
-      resizeMode={"stretch"}
-      source={source}
-      alt="SubscribedPostImage"
       {...rest}
     />
   );

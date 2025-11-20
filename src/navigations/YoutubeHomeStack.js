@@ -1,7 +1,10 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { View } from "react-native";
+import {
+  HomeCommentsModal,
+  PostCommentsModal,
+} from "../components/modals/CommentsModal";
 import { HeaderContainer } from "../components/ContainerComponents";
-import { HomeCommentsModal, PostCommentsModal } from "../components/modals/CommentsModal";
 import {
   HeaderArrowBackIcon,
   HeaderNotificationsIcon,
@@ -22,7 +25,7 @@ import {
   SearchResultStackScreen,
   SearchStackScreen,
   ShortsStackScreen,
-} from "./NavigationConfig";
+} from "./StackNavigator";
 
 const Stack = createStackNavigator();
 

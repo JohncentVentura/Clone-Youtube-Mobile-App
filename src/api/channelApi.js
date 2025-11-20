@@ -1,10 +1,5 @@
 import Constants from "expo-constants";
-import {
-  randomTimeAgo,
-  roundOffNumber,
-  urlToUserTag,
-  urlToVideoTitle,
-} from "../utils/utils";
+import { randomTimeAgo, roundOffNumber, urlToUserTag } from "../utils/utils";
 
 const { PEXELS_API_URL, PEXELS_API_KEY } = Constants.expoConfig.extra;
 

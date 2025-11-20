@@ -1,43 +1,16 @@
-import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useRef, useState } from "react";
+import { FlatList, Pressable, View } from "react-native";
 import {
-  Dimensions,
-  FlatList,
-  Image,
-  Pressable,
-  StyleSheet,
-  View,
-} from "react-native";
-import {
-  MusicTrackCard,
-  VideoHorizontalPreviewCard,
-} from "../../components/CardsComponents";
-import {
-  DrawerDivider,
-  ColumnScrollView,
-  LinearGradientView,
-  RowScrollView,
-  ScreenScrollView,
-} from "../../components/ContainerComponents";
-import {
-  ActiveSubscriptionIcon,
-  LearningIcon,
-  MembershipIndividualIcon,
-  MembershipFamilyIcon,
-  PhoneSpeakerIcon,
-  PhoneTextIcon,
-  VideoIcon,
-  YoutubeMusicIcon,
-} from "../../components/IconComponents";
-import {
-  ChannelProfileImage,
-  YoutubePremiumLogoImage,
-} from "../../components/ImageComponents";
-import {
-  MinimizingButton,
   OutlinedButton,
   SubscribeButton,
-} from "../../components/PressableComponents";
+} from "../../components/ButtonComponents";
+import {
+  MusicTrackCard,
+  HorizontalCard,
+} from "../../components/CardsComponents";
+import { ScreenScrollView } from "../../components/ContainerComponents";
+import { YoutubeMusicIcon } from "../../components/IconComponents";
+import { ChannelProfileImage } from "../../components/ImageComponents";
 import { BaseText } from "../../components/TextComponents";
 import { MainVideoView } from "../../components/VideoComponents";
 import { useThemeContext } from "../../context/ThemeContext";
@@ -248,7 +221,7 @@ export default function MusicScreen({ navigation }) {
       </View>
       {weeklyMusicVideos.map((videoData, index) => {
         return (
-          <VideoHorizontalPreviewCard
+          <HorizontalCard
             key={index}
             videoData={videoData}
             onPress={() =>

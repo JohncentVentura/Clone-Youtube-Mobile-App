@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Image, View } from "react-native";
+import { OutlinedButton, IconTextButton } from "../components/ButtonComponents";
 import {
-  DrawerDivider,
+  DividerView,
   RowScrollView,
   ScreenScrollView,
 } from "../components/ContainerComponents";
@@ -23,9 +24,7 @@ import {
 import { ChannelProfileImage } from "../components/ImageComponents";
 import {
   BasePressable,
-  OutlinedButton,
-  RippleButton,
-  IconTextButton,
+  RippleFXPressable,
 } from "../components/PressableComponents";
 import { BaseText } from "../components/TextComponents";
 import { useThemeContext } from "../context/ThemeContext";
@@ -213,7 +212,7 @@ export default function YouScreen({ navigation }) {
           <DownloadIcon />
           <BaseText style={{ marginLeft: 16 }}>Downloads</BaseText>
         </UserIconTextPressable>
-        <DrawerDivider />
+        <DividerView />
         <UserIconTextPressable
           onPress={() => navigation.navigate(navPaths.moviesScreen)}
         >
@@ -226,7 +225,7 @@ export default function YouScreen({ navigation }) {
           <YoutubePremiumIcon />
           <BaseText style={{ marginLeft: 16 }}>Get YouTube Premium</BaseText>
         </UserIconTextPressable>
-        <DrawerDivider />
+        <DividerView />
         <UserIconTextPressable>
           <StatsChartIcon />
           <BaseText style={{ marginLeft: 16 }}>Time watched</BaseText>
@@ -270,9 +269,9 @@ function UserHistoryCard({ style, source, userData, ...rest }) {
         >
           {shortenText(userData.title, 30)}
         </BaseText>
-        <RippleButton rippleSize={6}>
+        <RippleFXPressable rippleSize={6}>
           <DotVerticalIcon size={ctxIconSizes.xs2} />
-        </RippleButton>
+        </RippleFXPressable>
       </View>
       <BaseText
         style={{
@@ -374,9 +373,9 @@ function UserPlaylistsCard({
         >
           {playlistsName}
         </BaseText>
-        <RippleButton rippleSize={6}>
+        <RippleFXPressable rippleSize={6}>
           <DotVerticalIcon size={ctxIconSizes.xs2} />
-        </RippleButton>
+        </RippleFXPressable>
       </View>
       <BaseText
         style={{

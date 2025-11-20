@@ -11,7 +11,7 @@ import {
   SearchStackScreen,
   ShortsStackScreen,
   SportsStackScreen,
-} from "../NavigationConfig";
+} from "../StackNavigator";
 
 const Stack = createStackNavigator();
 

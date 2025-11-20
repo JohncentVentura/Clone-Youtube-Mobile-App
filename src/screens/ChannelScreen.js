@@ -1,26 +1,27 @@
 import { useState } from "react";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
+import { SubscribeButton } from "../components/ButtonComponents";
+import {
+  ScreenContainer,
+  RowScrollView,
+  ShortsVideoCardScrollView,
+  ColumnScrollView,
+} from "../components/ContainerComponents";
 import {
   MainVideoFlatList,
   MixedFeedFlatList,
-  ScreenContainer,
-  RowScrollView,
-  ShortsVideoGridScrollView,
-  ColumnScrollView,
-} from "../components/ContainerComponents";
+} from "../components/FlatListComponents";
 import {
   ChannelCoverImage,
   ChannelProfileImage,
 } from "../components/ImageComponents";
 import PostComponent from "../components/PostComponent";
-import {
-  SubscribeButton,
-  TextTabButton,
-} from "../components/PressableComponents";
+import { TextTab } from "../components/PressableComponents";
 import { BaseText } from "../components/TextComponents";
 import { useThemeContext } from "../context/ThemeContext";
 import { useSetVideoData } from "../hooks/useSetVideoData";
 import { styles } from "../styles/styles";
+import { feedTypes } from "../utils/constants";
 
 const CONTENT_TYPES = {
   ALL: "All",
@@ -72,23 +73,23 @@ export default function ChannelScreen({ navigation, route }) {
           }
           mixedData={[
             ...channelMainVideos.slice(0, 3).map((video) => ({
-              type: "mainVideo",
+              feedType: feedTypes.mainVideo,
               data: video,
             })),
             ...channelMainVideos.slice(0, 3).map((video) => ({
-              type: "posts",
+              feedType: feedTypes.posts,
               data: video,
             })),
             {
-              type: "shortsVideos",
+              feedType: feedTypes.shortsVideos,
               data: channelShortsVideos,
             },
             ...channelMainVideos.slice(3, 5).map((video) => ({
-              type: "mainVideo",
+              feedType: feedTypes.mainVideo,
               data: video,
             })),
             ...channelMainVideos.slice(3, 5).map((video) => ({
-              type: "posts",
+              feedType: feedTypes.posts,
               data: video,
             })),
           ]}
@@ -111,7 +112,7 @@ export default function ChannelScreen({ navigation, route }) {
         />
       ) : contentType === CONTENT_TYPES.SHORTS ? (
         <>
-          <ShortsVideoGridScrollView
+          <ShortsVideoCardScrollView
             style={[{ marginTop: 8 }]}
             isLoading={isLoading}
             data={channelShortsVideos}
@@ -172,14 +173,14 @@ function TopContentTypeTabBar({ style, contentType, setContentType }) {
     <RowScrollView style={[{ minHeight: 40 }, style]}>
       {selectableTabs.map((item, index) => {
         return (
-          <TextTabButton
+          <TextTab
             key={index}
             isFirstTab={index === 0}
             isSelected={contentType === item.type}
             onPress={() => handleSelected(item.type)}
           >
             {item.label}
-          </TextTabButton>
+          </TextTab>
         );
       })}
     </RowScrollView>

@@ -1,24 +1,21 @@
 import { useState } from "react";
-import { Image, View } from "react-native";
-import { VideoHorizontalPreviewCard } from "../components/CardsComponents";
+import { View } from "react-native";
 import {
-  LinearGradientView,
+  IconRoundedButton,
+  IconTextButton,
+} from "../components/ButtonComponents";
+import { HorizontalCard } from "../components/CardsComponents";
+import {
+  LinearGradientContainer,
   ScreenScrollView,
 } from "../components/ContainerComponents";
 import {
-  DotVerticalIcon,
   DownloadIcon,
   LockIcon,
   PlayIcon,
   ShuffleIcon,
 } from "../components/IconComponents";
 import { UserPlaylistCoverImage } from "../components/ImageComponents";
-import {
-  BasePressable,
-  RippleButton,
-  IconRoundedButton,
-  IconTextButton,
-} from "../components/PressableComponents";
 import { BaseText } from "../components/TextComponents";
 import { useThemeContext } from "../context/ThemeContext";
 import { useSetVideoData } from "../hooks/useSetVideoData";
@@ -44,7 +41,7 @@ export default function LikedVideosScreen({ navigation, route }) {
 
   return (
     <ScreenScrollView isLoading={isLoading}>
-      <LinearGradientView
+      <LinearGradientContainer
         colors={["rgba(67, 80, 91, 1)", "rgba(45, 108, 175, 1)"]}
         style={[{ paddingVertical: 16 }, styles.screenPadHorizontal]}
       >
@@ -98,11 +95,11 @@ export default function LikedVideosScreen({ navigation, route }) {
             Icon={PlayIcon}
             text="Play all"
             onPress={() =>
-                navigation.navigate(navPaths.mainVideoScreen, {
-                  query: likedVideos[0].title,
-                  videoData: likedVideos[0],
-                })
-              }
+              navigation.navigate(navPaths.mainVideoScreen, {
+                query: likedVideos[0].title,
+                videoData: likedVideos[0],
+              })
+            }
           />
           <IconTextButton
             style={[
@@ -114,12 +111,12 @@ export default function LikedVideosScreen({ navigation, route }) {
             onPress={() => console.log("Shuffle Press")}
           />
         </View>
-      </LinearGradientView>
+      </LinearGradientContainer>
 
       <View style={{ paddingBottom: 8, width: "100%" }}>
         {likedVideos.map((videoData, index) => {
           return (
-            <VideoHorizontalPreviewCard
+            <HorizontalCard
               key={videoData.id}
               videoData={videoData}
               onPress={() =>

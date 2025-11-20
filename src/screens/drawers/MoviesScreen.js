@@ -1,13 +1,13 @@
 import { useRef, useState } from "react";
 import { View } from "react-native";
+import { OutlinedButton } from "../../components/ButtonComponents";
 import { MoviesCard } from "../../components/CardsComponents";
 import {
-  DrawerDivider,
+  DividerView,
   RowScrollView,
   ScreenScrollView,
 } from "../../components/ContainerComponents";
 import { MovieIcon } from "../../components/IconComponents";
-import { OutlinedButton } from "../../components/PressableComponents";
 import { BaseText } from "../../components/TextComponents";
 import { useThemeContext } from "../../context/ThemeContext";
 import { useScrollToTopOnFocus } from "../../hooks/useScrollToTopOnFocus";
@@ -113,7 +113,7 @@ export default function MoviesScreen({ navigation }) {
           />
         ))}
       </RowScrollView>
-      <DrawerDivider />
+      <DividerView />
       <View
         style={[
           {
@@ -150,7 +150,7 @@ export default function MoviesScreen({ navigation }) {
           />
         ))}
       </RowScrollView>
-      <DrawerDivider />
+      <DividerView />
       <View
         style={[
           {
@@ -187,7 +187,7 @@ export default function MoviesScreen({ navigation }) {
           />
         ))}
       </RowScrollView>
-      <DrawerDivider />
+      <DividerView />
       <View
         style={[
           {

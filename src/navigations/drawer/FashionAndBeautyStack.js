@@ -6,12 +6,12 @@ import {
 import { useUIContext } from "../../context/UIContext";
 import {
   ChannelStackScreen,
-  MainVideoStackScreen,
   FashionAndBeautyStackScreen,
+  MainVideoStackScreen,
   SearchResultStackScreen,
   SearchStackScreen,
   ShortsStackScreen,
-} from "../NavigationConfig";
+} from "../StackNavigator";
 
 const Stack = createStackNavigator();
 
@@ -28,7 +28,7 @@ export default function FashionAndBeautyStack() {
         {SearchResultStackScreen()}
         {ShortsStackScreen()}
       </Stack.Navigator>
-      
+
       {ctxHomeCommentsModal && <HomeCommentsModal />}
       {ctxPostCommentsModal && <PostCommentsModal />}
     </>

@@ -16,7 +16,7 @@ import Animated, {
 import { useThemeContext } from "../../context/ThemeContext";
 import { useUIContext } from "../../context/UIContext";
 import { useSetVideoData } from "../../hooks/useSetVideoData";
-import { navigate } from "../../navigations/NavigationConfig";
+import { navigate } from "../../navigations/StackNavigator";
 import { styles } from "../../styles/styles";
 import { navPaths } from "../../utils/constants";
 import { ColumnScrollView, RowScrollView } from "../ContainerComponents";
@@ -32,11 +32,7 @@ import {
   CommentsProfileSmallImage,
   CommentsProfileLargeImage,
 } from "../ImageComponents";
-import {
-  BasePressable,
-  RippleButton,
-  TextTabButton,
-} from "../PressableComponents";
+import { BasePressable, RippleFXPressable, TextTab } from "../PressableComponents";
 import { BaseText, CommentTextInput } from "../TextComponents";
 import { SwipeDownModal } from "./SwipeDownModals";
 
@@ -95,12 +91,12 @@ export function CommentsProfileModal({ isVisible, setIsVisible }) {
             {ctxModalVideoData.channelSubscribers} subscribers
           </BaseText>
         </View>
-        <RippleButton
+        <RippleFXPressable
           style={{ marginLeft: "auto" }}
           onPress={() => ctxSetCommentsProfileItemModal(true)}
         >
           <DotVerticalIcon />
-        </RippleButton>
+        </RippleFXPressable>
       </View>
       <Pressable
         style={({ pressed }) => [
@@ -593,38 +589,38 @@ function CommentsItem({
             alignItems: "center",
           }}
         >
-          <RippleButton
+          <RippleFXPressable
             rippleSize={6}
             onPress={() => console.log("Comment Like Press")}
           >
             <LikeIcon size={ctxIconSizes.xs2} />
-          </RippleButton>
+          </RippleFXPressable>
           <BaseText style={{ marginLeft: 8, fontSize: ctxFontSizes.xs }}>
             {videoData.likes}
           </BaseText>
-          <RippleButton
+          <RippleFXPressable
             style={{ marginLeft: 20 }}
             rippleSize={6}
             onPress={() => console.log("Comment Dislike Press")}
           >
             <DislikeIcon size={ctxIconSizes.xs2} />
-          </RippleButton>
-          <RippleButton
+          </RippleFXPressable>
+          <RippleFXPressable
             style={{ marginLeft: 24 }}
             rippleSize={6}
             onPress={() => console.log("Comment Messages Press")}
           >
             <MessageTextIcon size={ctxIconSizes.xs} />
-          </RippleButton>
+          </RippleFXPressable>
         </View>
       </View>
-      <RippleButton
+      <RippleFXPressable
         style={{ marginLeft: "auto", marginTop: 6 }}
         rippleSize={4}
         onPress={() => ctxSetCommentsItemModal(true)}
       >
         <DotVerticalIcon size={ctxIconSizes.xs} />
-      </RippleButton>
+      </RippleFXPressable>
     </BasePressable>
   );
 }
@@ -659,14 +655,14 @@ function SortOrderTabBar() {
     >
       {selectableTabs.map((item, index) => {
         return (
-          <TextTabButton
+          <TextTab
             key={index}
             isFirstTab={index === 0}
             isSelected={selected === item.query}
             onPress={() => handleSelected(item.query)}
           >
             {item.label}
-          </TextTabButton>
+          </TextTab>
         );
       })}
     </RowScrollView>

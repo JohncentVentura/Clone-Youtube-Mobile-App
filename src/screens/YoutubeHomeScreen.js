@@ -1,16 +1,17 @@
 import { useRef, useState } from "react";
 import { Pressable } from "react-native";
-import {MixedFeedFlatList,
+import {
   RowScrollView,
   ScreenContainer,
 } from "../components/ContainerComponents";
+import { MixedFeedFlatList } from "../components/FlatListComponents";
 import { CompassIcon } from "../components/IconComponents";
-import { TextTabButton } from "../components/PressableComponents";
+import { TextTab } from "../components/PressableComponents";
 import { useThemeContext } from "../context/ThemeContext";
 import { useSetVideoData } from "../hooks/useSetVideoData";
 import { useScrollToTopOnFocus } from "../hooks/useScrollToTopOnFocus";
 import { styles } from "../styles/styles";
-import { navPaths } from "../utils/constants";
+import { feedTypes, navPaths } from "../utils/constants";
 
 const defaultQuery = "Life";
 
@@ -55,23 +56,23 @@ export default function YoutubeHomeScreen({ navigation }) {
         query={query}
         mixedData={[
           ...homeMainVideos.slice(0, 3).map((video) => ({
-            type: "mainVideo",
+            feedType: feedTypes.mainVideo,
             data: video,
           })),
           {
-            type: "shortsVideos",
+            feedType: feedTypes.shortsVideos,
             data: homeShortsVideos,
           },
           ...homeMainVideos.slice(0, 1).map((video) => ({
-            type: "posts",
+            feedType: feedTypes.posts,
             data: video,
           })),
           ...homeMainVideos.slice(3, 5).map((video) => ({
-            type: "mainVideo",
+            feedType: feedTypes.mainVideo,
             data: video,
           })),
           ...homeMainVideos.slice(1, 3).map((video) => ({
-            type: "posts",
+            feedType: feedTypes.posts,
             data: video,
           })),
         ]}
@@ -116,23 +117,23 @@ function TopQueryTabBar({ navigation, query, setQuery }) {
       </Pressable>
       {selectableTabs.map((item, index) => {
         return (
-          <TextTabButton
+          <TextTab
             key={index}
             isSelected={query === item.query}
             onPress={() => handleSelected(item.query)}
           >
             {item.label}
-          </TextTabButton>
+          </TextTab>
         );
       })}
-      <TextTabButton
+      <TextTab
         style={{ marginRight: 32 }}
         onPress={() => {
           navigation.navigate("YouTubeFlatListScreen");
         }}
       >
         (YouTube API)
-      </TextTabButton>
+      </TextTab>
     </RowScrollView>
   );
 }
